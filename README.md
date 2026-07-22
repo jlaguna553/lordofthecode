@@ -140,6 +140,8 @@ distribuir tu juego:
 (`json_encode($__sut->{input})`), cada uno envuelto en `try/catch`. Luego compara
 contra `JSON.stringify(expected)`.
 
+El evaluador **muestra los avisos de PHP** (Warning/Notice) junto al test que los provocó: p. ej. llamar a un método sin paréntesis produce «Undefined property» y el jugador lo ve, en vez de un desconcertante «esperado X · obtuvo Y». El `support_code` de cada reto se muestra en un panel «Código de apoyo» para que se sepa qué clases auxiliares existen.
+
 Un `test_case` puede marcarse como **`raw: true`**: entonces `input` se evalúa
 como expresión PHP completa (con `$sut` disponible) en vez de anteponer
 `$sut->`. Es lo que permite comprobar efectos indirectos como un `__destruct`.

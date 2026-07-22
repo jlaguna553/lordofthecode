@@ -246,6 +246,8 @@ export interface TestResult {
   expected: string; // json
   got: string; // json o "<sin salida>"
   pass: boolean;
+  /** Avisos de PHP emitidos durante este test (propiedad indefinida, etc.). */
+  warning?: string;
 }
 
 /** Resultado global de una evaluación. */

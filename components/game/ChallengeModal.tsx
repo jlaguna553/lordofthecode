@@ -134,6 +134,21 @@ export default function ChallengeModal({
               {c.instructions}
             </p>
 
+            {c.support_code && (
+              <details className="mb-4 rounded-lg bg-slate-800/60 ring-1 ring-white/10">
+                <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-sky-300 select-none">
+                  🧩 Código de apoyo disponible
+                </summary>
+                <p className="px-3 pb-2 text-[11px] leading-relaxed text-slate-400">
+                  Estas clases y funciones ya existen: puedes usarlas, pero no
+                  las declares tú.
+                </p>
+                <pre className="overflow-x-auto rounded-b-lg bg-slate-950/70 px-3 py-2 text-[11px] leading-relaxed text-slate-200">
+                  <code>{c.support_code}</code>
+                </pre>
+              </details>
+            )}
+
             <h3 className="mb-2 text-sm font-bold text-slate-200">
               Runas de prueba ({c.test_cases.length})
             </h3>
@@ -164,6 +179,11 @@ export default function ChallengeModal({
                     {r && !r.pass && (
                       <p className="mt-1 pl-5 font-mono text-[11px] opacity-90">
                         esperado {r.expected} · obtuvo {r.got}
+                      </p>
+                    )}
+                    {r?.warning && (
+                      <p className="mt-1 pl-5 text-[11px] text-amber-300/90">
+                        ⚠ PHP avisa: {r.warning}
                       </p>
                     )}
                   </li>

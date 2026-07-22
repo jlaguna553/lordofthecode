@@ -58,7 +58,15 @@ function stripTags(code: string): string {
 export function buildHarness(playerCode: string, c: PooChallenge): string {
   const lines: string[] = [
     "<?php",
-    "error_reporting(E_ALL & ~E_DEPRECATED & ~E_WARNING & ~E_NOTICE);",
+    // Emitimos todo MENOS deprecations, pero en vez de dejar que PHP los
+    // imprima, un manejador los acumula en $__warnings para poder mostrarlos
+    // junto al test que los provocó (p. ej. "Undefined property": un método
+    // llamado sin paréntesis). Sin esto, el aviso clave se perdía y el jugador
+    // sólo veía "esperado X · obtuvo Y".
+    "error_reporting(E_ALL & ~E_DEPRECATED);",
+    "$__warnings = [];",
+    "set_error_handler(function ($no, $str) { global $__warnings;" +
+      " $__warnings[] = $str; return true; });",
     c.support_code ?? "",
     stripTags(playerCode),
   ];
@@ -79,9 +87,13 @@ export function buildHarness(playerCode: string, c: PooChallenge): string {
     // sin escapar tildes (í) ni barras (\/), o fallarían las comparaciones.
     const enc = `json_encode(${expr}, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)`;
     lines.push(
+      // Vaciamos los avisos antes del test para atribuir sólo los suyos.
+      "$__warnings = [];",
       `try { echo "@@T${i}S@@" . ${enc} . "@@T${i}E@@"; }` +
         ` catch (\\Throwable $__e) {` +
         ` echo "@@T${i}S@@__ERR__" . $__e->getMessage() . "@@T${i}E@@"; }`,
+      // Avisos acumulados durante este test (deduplicados).
+      `echo "@@W${i}S@@" . implode(" · ", array_unique($__warnings)) . "@@W${i}E@@";`,
     );
   });
   return lines.join("\n");
@@ -107,18 +119,21 @@ function parseOutput(
         : isErr
           ? "⚠ " + raw.replace("__ERR__", "")
           : raw;
+    const w = out.match(new RegExp(`@@W${i}S@@([\\s\\S]*?)@@W${i}E@@`))?.[1];
     results.push({
       input: t.input,
       description: t.description,
       expected,
       got,
       pass: !isErr && raw !== null && raw === expected,
+      warning: w ? w.trim() : undefined,
     });
   });
 
   // Salida "libre" del jugador (echo/print) sin los marcadores del arnés.
   const stdout = out
     .replace(/@@T\d+S@@[\s\S]*?@@T\d+E@@/g, "")
+    .replace(/@@W\d+S@@[\s\S]*?@@W\d+E@@/g, "")
     .replace(/@@SUTERR@@[\s\S]*?@@SUTERR@@/g, "")
     .trim();
 
