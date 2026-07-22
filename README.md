@@ -41,13 +41,26 @@ su jefe no existiera entonces.
 Los libros de práctica (9–14) no tienen combate ni bloqueo: son un anexo de
 entrenamiento siempre disponible.
 
+`pnpm check:balance` comprueba que la campaña es **superable**: que la puerta de
+experiencia de cada capítulo se pueda alcanzar venciendo sólo a sus enemigos
+normales (la del jefe no cuenta, porque está detrás de los retos) y que todo
+capítulo bloqueado dependa de uno que sí tenga jefe. Es un fallo que ni
+TypeScript ni el build detectan — deja el capítulo encallado — y ya cazó uno.
+
 ## Controles
 
 **Escritorio:** `WASD` o flechas para moverse, `E` para interactuar con el
 marcador que tengas al lado.
 
 **Móvil:** cruceta y botón `E` en pantalla, que aparecen solos en dispositivos
-de puntero grueso. El lienzo escala para caber en la pantalla.
+de puntero grueso.
+
+La ventana de juego se mide en TILES, no en píxeles: en un móvil el lienzo baja
+a unos 370 px, así que mostrar los 22×14 tiles del escritorio dejaría cada tile
+a 16 px — la mitad de su tamaño real, con los personajes ilegibles. En pantalla
+estrecha se muestran 13 columnas y entre 9 y 14 filas según la altura
+disponible, de modo que cada tile se dibuja a ~28 px. Como la cámara sigue a
+Frodo, ver menos mapa de golpe no quita juego.
 
 Los compañeros de la Comunidad caminan sobre el rastro del jugador, los PNJ
 ambientales deambulan por su cuenta y los de los nodos giran hacia ti al

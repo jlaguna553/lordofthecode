@@ -229,12 +229,15 @@ export default function GamePage() {
         En móvil la cabecera va apretada y en una sola fila de botones: el
         objetivo es que el mapa y el mando quepan sin tener que desplazarse.
       */}
-      <header className="mb-2 flex flex-col gap-2 sm:mb-4 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-        <div className="min-w-0">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-400 sm:text-xs">
+      <header className="mb-2 flex flex-col gap-1.5 sm:mb-4 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+        <div className="flex min-w-0 items-baseline gap-2 sm:block">
+          <p className="hidden text-[10px] font-semibold uppercase tracking-wider text-amber-400 sm:block sm:text-xs">
             Capítulo {chapter.chapter} · La Sintaxis Ancestral
           </p>
-          <h1 className="truncate bg-gradient-to-r from-amber-200 to-emerald-300 bg-clip-text text-lg font-black text-transparent sm:text-2xl">
+          <span className="shrink-0 text-sm font-black text-amber-400 sm:hidden">
+            {chapter.chapter}.
+          </span>
+          <h1 className="truncate bg-gradient-to-r from-amber-200 to-emerald-300 bg-clip-text text-base font-black text-transparent sm:text-2xl">
             {chapter.title}
           </h1>
         </div>
@@ -314,14 +317,14 @@ export default function GamePage() {
       {chapter.xpParaRetos ? (
         <div
           className={
-            "mb-3 flex items-center gap-3 rounded-xl px-3 py-2 text-xs ring-1 " +
+            "mb-2 flex items-center gap-2 rounded-lg px-2.5 py-1 text-[11px] ring-1 sm:mb-3 sm:gap-3 sm:rounded-xl sm:px-3 sm:py-2 sm:text-xs " +
             (xpCapitulo >= chapter.xpParaRetos
               ? "bg-emerald-500/10 text-emerald-200 ring-emerald-500/30"
               : "bg-orange-500/10 text-orange-200 ring-orange-500/30")
           }
         >
           <span className="shrink-0 font-bold">
-            {xpCapitulo >= chapter.xpParaRetos ? "✓ Estás listo" : "⚔ Entrenamiento"}
+            {xpCapitulo >= chapter.xpParaRetos ? "✓ Listo" : "⚔ Entrena"}
           </span>
           <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-800">
             <div

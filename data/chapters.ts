@@ -1155,13 +1155,26 @@ export const CHAPTER_4: Chapter = {
   chapter: 4,
   title: "Huida al Vado de Bruinen",
   lore: "Frodo, herido por la hoja de Morgul, huye a lomos de Asfaloth. Los Nueve galopan tras él hasta las aguas del Bruinen, donde el poder de Elrond aguarda para desbordar el río.",
-  mapSize: { cols: 24, rows: 14 },
+  mapSize: { cols: 36, rows: 20 },
   spawn: { x: 2, y: 7 },
+  xpParaRetos: 80,
+  unlockedBy: 3,
   scenery: {
     ground: "grass",
     pathRows: [7],
     pond: { x: 18, y: 0, w: 4, h: 14 }, // el río Bruinen, de norte a sur
     decor: [
+      { type: "tree", x: 26, y: 2 },
+      { type: "tree", x: 30, y: 6 },
+      { type: "tree", x: 33, y: 3 },
+      { type: "tree", x: 25, y: 17 },
+      { type: "tree", x: 29, y: 12 },
+      { type: "tree", x: 19, y: 16 },
+      { type: "tree", x: 11, y: 17 },
+      { type: "rock", x: 28, y: 8 },
+      { type: "rock", x: 34, y: 13 },
+      { type: "rock", x: 22, y: 12 },
+      { type: "rock", x: 15, y: 18 },
       { type: "pine", x: 5, y: 3 },
       { type: "pine", x: 9, y: 2 },
       { type: "pine", x: 13, y: 3 },
@@ -1178,6 +1191,187 @@ export const CHAPTER_4: Chapter = {
   },
   companions: ["aragorn", "sam"],
   nodes: [
+    // ---- Combates: estáticos, self:: y constantes de clase ----
+    {
+      node_id: "c4_jinete_rezagado",
+      kind: "battle",
+      title: "El rezagado del camino",
+      lore_intro:
+        "Uno de los Nueve se ha separado de la cacería. Nueve son siempre nueve: ni uno más, ni uno menos, y ese número no pertenece a ningún jinete en particular.",
+      position: { x: 27, y: 4 },
+      spriteId: "nazgul",
+      enemy: {
+        name: "Jinete rezagado",
+        spriteId: "nazgul",
+        hp: 3,
+        damage: 1,
+        xp: 35,
+        taunt: "«Somos nueve. Siempre nueve.»",
+        questions: [
+          {
+            question: "¿A quién pertenece una propiedad `static`?",
+            options: [
+              "A la clase: la comparten todas sus instancias",
+              "A cada objeto, como cualquier otra propiedad",
+              "Al primer objeto que se cree",
+              "Al fichero donde está la clase",
+            ],
+            correct: 0,
+            explanation:
+              "Sólo hay UNA copia, viva mientras dure el script, y todos los objetos ven la misma. Por eso sirve para contar instancias o llevar un registro común — y por eso también es peligrosa: es estado global disfrazado.",
+          },
+          {
+            question:
+              "¿Cómo se lee una propiedad estática desde dentro de la propia clase?",
+            options: [
+              "self::$contador",
+              "$this->contador",
+              "self->contador",
+              "static.contador",
+            ],
+            correct: 0,
+            explanation:
+              "Se accede con `::` y CONSERVANDO el `$`: `self::$contador`. Es justo al revés que en las propiedades normales, donde el `$` desaparece (`$this->contador`). Confundirlo es el error de sintaxis más habitual con estáticos.",
+          },
+          {
+            question: "¿Y una constante de clase?",
+            options: [
+              "self::NOMBRE, sin signo dólar",
+              "self::$NOMBRE",
+              "$this->NOMBRE",
+              "const::NOMBRE",
+            ],
+            correct: 0,
+            explanation:
+              "Las constantes no llevan `$` nunca, ni al declararlas (`const NUEVE = 9;`) ni al leerlas (`self::NUEVE`). Desde fuera se leen con el nombre de la clase: `Nazgul::NUEVE`.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c4_lobo",
+      kind: "battle",
+      title: "El acecho en el bosque",
+      lore_intro:
+        "Algo corre en paralelo al camino, entre los troncos, sin dejarse ver del todo. Lleva un buen rato haciéndolo.",
+      position: { x: 31, y: 15 },
+      spriteId: "orco",
+      enemy: {
+        name: "Batidor de Angmar",
+        spriteId: "orco",
+        hp: 4,
+        damage: 1,
+        xp: 45,
+        taunt: "«Mi señor sabrá por dónde vais antes de que crucéis el río.»",
+        questions: [
+          {
+            question:
+              "¿Cuál es la diferencia entre `self::` y `static::`?",
+            options: [
+              "self:: apunta a la clase donde está escrito; static:: a la clase real del objeto",
+              "Son sinónimos",
+              "self:: sólo funciona con constantes",
+              "static:: sólo funciona en métodos estáticos",
+            ],
+            correct: 0,
+            explanation:
+              "`static::` es «resolución estática tardía»: mira la clase con la que REALMENTE se llamó, no dónde está el código. Si una hija sobrescribe un método y el padre usa `self::`, se ejecutará el del padre; con `static::`, el de la hija. Es lo que hace funcionar patrones como los factory heredables.",
+          },
+          {
+            question:
+              "Dentro de un método `static`, ¿puedes usar `$this`?",
+            options: [
+              "No: un método estático se llama sin objeto, así que no hay $this",
+              "Sí, apunta al último objeto creado",
+              "Sí, pero sólo para leer",
+              "Sí, si la clase tiene al menos una instancia",
+            ],
+            correct: 0,
+            explanation:
+              "`Clase::metodo()` se llama sin ningún objeto de por medio, así que `$this` no existe y usarlo es error fatal. Si un método necesita el estado del objeto, no debería ser estático.",
+          },
+          {
+            question:
+              "¿Por qué se dice que abusar de los estáticos complica las pruebas?",
+            options: [
+              "Porque son estado global: no se pueden sustituir por un doble ni se reinician entre pruebas",
+              "Porque son más lentos",
+              "Porque no se pueden llamar desde otra clase",
+              "Porque PHP los ejecuta en otro hilo",
+            ],
+            correct: 0,
+            explanation:
+              "Una dependencia que recibes por constructor la puedes cambiar por una falsa en un test. Una llamada estática está soldada al código: no hay dónde meter la mano. Además el valor sobrevive de un test al siguiente y aparecen fallos fantasma según el orden.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c4_jefe_nueve",
+      kind: "battle",
+      title: "Los Nueve en el Vado",
+      lore_intro:
+        "Los nueve caballos entran en el agua a la vez. Detrás, Rivendel; delante, la corriente. Elrond ya ha empezado a cantar río arriba.",
+      position: { x: 34, y: 9 },
+      spriteId: "nazgul",
+      enemy: {
+        name: "Los Nueve",
+        spriteId: "nazgul",
+        hp: 5,
+        damage: 2,
+        xp: 85,
+        boss: true,
+        taunt: "«Entréganos el Anillo, mediano. ¡Ahora!»",
+        questions: [
+          {
+            question:
+              "```\nclass N { public static int $vistos = 0;\n  public function __construct() { self::$vistos++; } }\nnew N(); new N(); new N();\necho N::$vistos;\n```",
+            options: ["3", "1", "0", "Error: no se puede leer desde fuera"],
+            correct: 0,
+            explanation:
+              "La propiedad estática es una sola para toda la clase, así que los tres constructores incrementan el MISMO contador. Es el uso clásico y legítimo de un estático: contar instancias. Y siendo `public` se lee desde fuera con `N::$vistos`.",
+          },
+          {
+            question: "¿Se puede cambiar el valor de una `const` en tiempo de ejecución?",
+            options: [
+              "No: se fija al declararla y es inmutable",
+              "Sí, con self::CONST = nuevo",
+              "Sí, sólo dentro de la clase",
+              "Sí, si la clase no es final",
+            ],
+            correct: 0,
+            explanation:
+              "Una constante de clase es inmutable por definición. Si el valor tiene que poder cambiar, no es una constante: usa una propiedad estática, o mejor una normal inyectada por constructor.",
+          },
+          {
+            question:
+              "¿Cuál es un buen uso de un método estático?",
+            options: [
+              "Un constructor con nombre: Fecha::desdeTexto('2026-07-22')",
+              "Guardar la conexión a la base de datos para todo el programa",
+              "Cualquier método que no use $this",
+              "Reemplazar a las funciones sueltas",
+            ],
+            correct: 0,
+            explanation:
+              "Los constructores con nombre son ideales: crean y devuelven una instancia, expresan la intención mejor que un `new` con cinco argumentos, y no guardan estado global. Lo contrario es el singleton de conexión: estado compartido escondido, imposible de sustituir en un test.",
+          },
+          {
+            question:
+              "Una clase padre tiene `public static function crear(): static { return new static(); }`. ¿Qué devuelve `Hija::crear()`?",
+            options: [
+              "Una instancia de Hija",
+              "Una instancia del padre",
+              "Error: new static no existe",
+              "null",
+            ],
+            correct: 0,
+            explanation:
+              "`new static()` usa resolución estática tardía: construye la clase con la que se hizo la llamada. Con `new self()` habrías obtenido siempre el padre. Es exactamente lo que permite escribir un factory una vez en el padre y que funcione en todas las hijas.",
+          },
+        ],
+      },
+    },
     {
       node_id: "pergamino_estatico",
       kind: "scroll",

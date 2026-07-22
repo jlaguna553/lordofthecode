@@ -94,9 +94,39 @@ export default function GameCanvas({
 
       const W = chapter.mapSize.cols * TILE;
       const H = chapter.mapSize.rows * TILE;
-      // Ventana visible: si el mapa es mayor, la cámara seguirá a Frodo.
-      const VIEW_W = Math.min(W, 22 * TILE);
-      const VIEW_H = Math.min(H, 14 * TILE);
+
+      /*
+       * Ventana visible, en TILES. En un móvil el lienzo se encoge hasta unos
+       * 370 px de ancho: con 22 tiles cada uno quedaría a 16 px, la mitad de su
+       * tamaño real, y los personajes se vuelven ilegibles. Mostrando menos
+       * tiles cada uno se dibuja más grande. La cámara sigue a Frodo, así que
+       * ver menos mapa de golpe no quita nada de juego.
+       */
+      const pantallaEstrecha =
+        typeof window !== "undefined" &&
+        (window.matchMedia?.("(pointer: coarse)").matches === true ||
+          window.innerWidth < 640);
+      const altoPantalla =
+        typeof window !== "undefined" ? window.innerHeight : 900;
+      const COLS_VISTA = pantallaEstrecha ? 13 : 22;
+      /*
+       * Cuántas filas caben debajo de la cabecera y encima del mando. Los
+       * cortes salen de medir el hueco real en un Pixel 5 (727), un iPhone 12
+       * (664) y una pantalla baja de 600.
+       */
+      const FILAS_VISTA = pantallaEstrecha
+        ? altoPantalla >= 860
+          ? 14
+          : altoPantalla >= 780
+            ? 12
+            : altoPantalla >= 700
+              ? 11
+              : altoPantalla >= 640
+                ? 10
+                : 9
+        : 14;
+      const VIEW_W = Math.min(W, COLS_VISTA * TILE);
+      const VIEW_H = Math.min(H, FILAS_VISTA * TILE);
       const scenery = chapter.scenery ?? {};
 
       class MainScene extends Phaser.Scene {
@@ -759,7 +789,7 @@ export default function GameCanvas({
     <button
       type="button"
       aria-label={dir}
-      className={`${clase} flex h-14 w-14 select-none items-center justify-center rounded-lg bg-slate-700/80 text-xl font-bold text-slate-100 ring-1 ring-white/20 active:bg-amber-500 active:text-slate-900`}
+      className={`${clase} flex h-12 w-12 select-none items-center justify-center rounded-lg bg-slate-700/80 text-lg font-bold text-slate-100 ring-1 ring-white/20 active:bg-amber-500 active:text-slate-900`}
       onPointerDown={(e) => {
         e.preventDefault();
         e.currentTarget.setPointerCapture(e.pointerId);
@@ -788,7 +818,7 @@ export default function GameCanvas({
       />
 
       {isTouch && (
-        <div className="mt-3 flex touch-none items-center justify-between gap-4 select-none">
+        <div className="mt-2 flex touch-none items-center justify-between gap-4 px-2 select-none">
           {/* Cruceta */}
           <div className="grid grid-cols-3 grid-rows-3 gap-1">
             {dpad("up", "▲", "col-start-2 row-start-1")}
@@ -801,7 +831,7 @@ export default function GameCanvas({
           <button
             type="button"
             aria-label="interactuar"
-            className="h-20 w-20 select-none rounded-full bg-amber-500 text-lg font-black text-slate-900 ring-2 ring-amber-300/50 active:bg-amber-300"
+            className="h-16 w-16 select-none rounded-full bg-amber-500 text-lg font-black text-slate-900 ring-2 ring-amber-300/50 active:bg-amber-300"
             onPointerDown={(e) => {
               e.preventDefault();
               (
