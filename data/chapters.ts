@@ -1815,8 +1815,10 @@ export const CHAPTER_5: Chapter = {
   chapter: 5,
   title: "El Paso de Caradhras",
   lore: "La Montaña Cruel no quiere que la crucen. La nieve se amontona, el frío muerde y la voluntad de la Comunidad se agrieta. Hay estados que no deben poder alterarse desde fuera… y otros que no deben cambiar jamás.",
-  mapSize: { cols: 24, rows: 14 },
+  mapSize: { cols: 44, rows: 26 },
   spawn: { x: 2, y: 11 },
+  xpParaRetos: 140,
+  unlockedBy: 4,
   scenery: {
     ground: "snow",
     pathRows: [11],
@@ -1837,10 +1839,275 @@ export const CHAPTER_5: Chapter = {
       { type: "rock", x: 22, y: 3 },
       { type: "rock", x: 6, y: 3 },
       { type: "rock", x: 19, y: 2 },
+      // el ascenso continúa hacia el este y arriba: sólo roca y hielo
+      { type: "rock", x: 26, y: 8 },
+      { type: "rock", x: 29, y: 4 },
+      { type: "rock", x: 31, y: 11 },
+      { type: "rock", x: 34, y: 6 },
+      { type: "rock", x: 37, y: 9 },
+      { type: "rock", x: 39, y: 4 },
+      { type: "rock", x: 41, y: 15 },
+      { type: "rock", x: 28, y: 18 },
+      { type: "rock", x: 35, y: 22 },
+      { type: "rock", x: 24, y: 14 },
+      { type: "pine", x: 30, y: 24 },
+      { type: "pine", x: 38, y: 24 },
     ],
   },
   companions: ["gandalf", "aragorn", "boromir", "gimli", "legolas", "sam"],
   nodes: [
+    // ---- Combates: encapsulamiento, readonly e invariantes ----
+    {
+      node_id: "c5_crebain",
+      kind: "battle",
+      title: "Los Crebain de Fangorn",
+      lore_intro:
+        "Una nube negra de cuervos cruza el cielo hacia el sur: los espías de Saruman. Boromir grita que os agachéis entre las rocas.",
+      position: { x: 27, y: 5 },
+      spriteId: "trasgo",
+      enemy: {
+        name: "Bandada de Crebain",
+        spriteId: "trasgo",
+        hp: 4,
+        damage: 1,
+        xp: 45,
+        taunt: "Los cuervos giran en círculo, contando cabezas.",
+        questions: [
+          {
+            question: "¿Qué garantiza una propiedad `readonly`?",
+            options: [
+              "Que se asigna una vez y ya no puede cambiar",
+              "Que nadie de fuera puede leerla",
+              "Que su valor es siempre null hasta el constructor",
+              "Que es compartida por todas las instancias",
+            ],
+            correct: 0,
+            explanation:
+              "`readonly` (PHP 8.1) permite UNA asignación —normalmente en el constructor— y después cualquier intento de escribir lanza error. No afecta a la lectura: sirve para objetos inmutables, no para ocultar. Ocultar sigue siendo cosa de la visibilidad.",
+          },
+          {
+            question:
+              "¿Dónde se puede asignar por primera vez una propiedad readonly?",
+            options: [
+              "Desde dentro de la clase, típicamente en el constructor",
+              "Desde cualquier parte, una sola vez",
+              "Sólo en la declaración, con un valor literal",
+              "En cualquier método público",
+            ],
+            correct: 0,
+            explanation:
+              "La primera asignación debe hacerse desde el ámbito de la propia clase (el constructor es lo habitual). Intentar `$obj->prop = x` desde fuera falla aunque nunca se hubiera asignado: readonly no es «write-once desde donde sea», es «write-once desde dentro».",
+          },
+          {
+            question:
+              "¿Puede una propiedad `readonly` tener también un tipo declarado?",
+            options: [
+              "Sí, y de hecho DEBE tenerlo",
+              "No, son incompatibles",
+              "Sólo si el tipo es un objeto",
+              "Sólo si además es private",
+            ],
+            correct: 0,
+            explanation:
+              "readonly EXIGE un tipo: `public readonly int $edad;`. Una propiedad sin tipo no puede ser readonly. Combina bien con la promoción en el constructor: `public function __construct(public readonly int $edad) {}`.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c5_lobo_nieve",
+      kind: "battle",
+      title: "Aullidos en la ventisca",
+      lore_intro:
+        "Entre la nieve que cae de lado, unos ojos amarillos siguen tu rastro. Los Huargos han olido a la Comunidad.",
+      position: { x: 33, y: 20 },
+      spriteId: "orco",
+      enemy: {
+        name: "Huargo de Hollin",
+        spriteId: "orco",
+        hp: 5,
+        damage: 2,
+        xp: 45,
+        taunt: "«Carne fresca en la montaña. Hacía frío y hambre.»",
+        questions: [
+          {
+            question:
+              "Un `setEdad($n)` que rechaza edades negativas protege una…",
+            options: [
+              "invariante: una condición que el objeto mantiene siempre cierta",
+              "constante de clase",
+              "propiedad estática",
+              "interfaz",
+            ],
+            correct: 0,
+            explanation:
+              "Una invariante es una regla que el objeto se compromete a no romper nunca: «la edad nunca es negativa», «el saldo nunca baja de cero». Validar en el setter (o en el constructor) es cómo se hace cumplir. Con la propiedad pública, esa promesa no existe.",
+          },
+          {
+            question:
+              "¿Por qué un setter con validación es mejor que una propiedad pública?",
+            options: [
+              "Centraliza la comprobación: es imposible dejar el objeto en un estado inválido",
+              "Es más rápido de ejecutar",
+              "Ocupa menos memoria",
+              "Permite herencia múltiple",
+            ],
+            correct: 0,
+            explanation:
+              "Si el ÚNICO camino para cambiar el valor pasa por tu setter, ahí validas una vez y queda garantizado para siempre. Con la propiedad pública, cada punto del programa que la toque tendría que recordar validar — y alguno se olvidará.",
+          },
+          {
+            question:
+              "Quieres cambiar un dato de un objeto `readonly`. ¿Cuál es el patrón idiomático?",
+            options: [
+              "Devolver una copia nueva con el cambio (with...), sin tocar el original",
+              "Quitar el readonly temporalmente",
+              "Usar reflexión para forzar la escritura",
+              "Convertirlo en propiedad estática",
+            ],
+            correct: 0,
+            explanation:
+              "Los objetos inmutables no se modifican: se crea otro. Un método `conEdad(int $n): static { return new static($n, ...); }` devuelve una copia con el cambio y deja intacto el original. Es el mismo patrón de `DateTimeImmutable`.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c5_jefe_caradhras",
+      kind: "battle",
+      title: "La Voluntad de Caradhras",
+      lore_intro:
+        "No hay enemigo con rostro: es la montaña misma. Truenos sin nube, nieve que sepulta el sendero, piedras que caen solas. Alguien poderoso no quiere que crucéis.",
+      position: { x: 40, y: 12 },
+      spriteId: "balrog",
+      enemy: {
+        name: "La Ventisca de Caradhras",
+        spriteId: "balrog",
+        hp: 6,
+        damage: 2,
+        xp: 140,
+        boss: true,
+        taunt: "«Ni por arriba pasaréis. La montaña os rechaza.»",
+        reward: {
+          hero: "gimli",
+          name: "Gimli hijo de Glóin",
+          blurb:
+            "El enano que prefiere la roca al hielo. Fuerte y terco: Gimli se une a tus héroes.",
+        },
+        questions: [
+          {
+            question:
+              "```\nclass Temp {\n  public function __construct(public readonly int $grados) {}\n}\n$t = new Temp(-5);\n$t->grados = 0;\n```\n¿Qué ocurre en la última línea?",
+            options: [
+              "Error: no se puede modificar una propiedad readonly ya inicializada",
+              "Se asigna 0 sin problema",
+              "Se ignora en silencio",
+              "Error: -5 no es válido",
+            ],
+            correct: 0,
+            explanation:
+              "La promoción ya inicializó `$grados` con -5 en el constructor. Cualquier escritura posterior —incluso al mismo valor— lanza «Cannot modify readonly property». Es justo la garantía que buscas: una vez creado, el objeto no cambia.",
+          },
+          {
+            question:
+              "Un constructor recibe un porcentaje y hace `if ($p < 0 || $p > 100) throw new InvalidArgumentException();`. ¿Qué consigue?",
+            options: [
+              "Que no exista ningún objeto con un porcentaje fuera de rango",
+              "Que el porcentaje se ajuste solo al rango válido",
+              "Que la propiedad sea readonly",
+              "Que el método sea más rápido",
+            ],
+            correct: 0,
+            explanation:
+              "Validar en el constructor y lanzar si algo no cuadra hace IMPOSIBLE construir un objeto inválido: el error salta en el punto exacto del fallo, no tres capas más abajo. Es la base de los objetos de valor: si existe, es válido.",
+          },
+          {
+            question:
+              "¿Qué es un «objeto de valor» (value object)?",
+            options: [
+              "Un objeto pequeño e inmutable que representa un valor (Dinero, Fecha, Coordenada)",
+              "Cualquier objeto con propiedades públicas",
+              "Un objeto que sólo tiene métodos estáticos",
+              "El objeto principal de la aplicación",
+            ],
+            correct: 0,
+            explanation:
+              "Un value object encapsula un concepto (un Dinero, un Email, una Temperatura) validándolo al crearlo y sin permitir cambios después. Dos son iguales si sus valores coinciden, no por identidad. `readonly` + validación en el constructor es exactamente la receta.",
+          },
+          {
+            question:
+              "¿Cuál es la diferencia entre `private` y `readonly`?",
+            options: [
+              "private controla QUIÉN accede; readonly controla CUÁNDO se puede escribir",
+              "Son sinónimos",
+              "readonly impide la lectura; private no",
+              "private sólo aplica a métodos",
+            ],
+            correct: 0,
+            explanation:
+              "Son ejes distintos y combinables. `private` es visibilidad: desde dónde se ve. `readonly` es mutabilidad: cuántas veces se escribe. Una propiedad puede ser `private readonly` (oculta e inmutable) o `public readonly` (visible pero inmutable).",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c5_trasgo_montanes",
+      kind: "battle",
+      title: "El vigía de la cornisa",
+      lore_intro:
+        "Apostado tras un pilar de hielo, un trasgo montañés hace señales con un espejo hacia las cumbres. Lleva ahí toda la noche.",
+      position: { x: 24, y: 22 },
+      spriteId: "trasgo",
+      enemy: {
+        name: "Vigía de las cumbres",
+        spriteId: "trasgo",
+        hp: 4,
+        damage: 1,
+        xp: 50,
+        taunt: "«Nadie cruza Caradhras sin que mi señor lo sepa.»",
+        questions: [
+          {
+            question:
+              "Declaras `public readonly array $items;` y en el constructor haces `$this->items = [];`. Luego `$this->items[] = 'x';` desde un método. ¿Funciona?",
+            options: [
+              "No: readonly impide modificar el array tras asignarlo, incluso añadir elementos",
+              "Sí: readonly sólo protege la reasignación completa",
+              "Sí, pero sólo desde el constructor",
+              "Sí, siempre",
+            ],
+            correct: 0,
+            explanation:
+              "readonly protege la propiedad ENTERA: una vez asignado el array, no puedes reasignarlo ni mutarlo (ni `[]=`, ni `unset` de una clave). Para «cambiar» un array readonly creas uno nuevo y devuelves una copia del objeto. Es la inmutabilidad llevada al contenido, no sólo a la referencia.",
+          },
+          {
+            question:
+              "¿Qué pasa si un método intenta LEER una propiedad readonly?",
+            options: [
+              "Nada: leer siempre está permitido",
+              "Error: readonly bloquea la lectura",
+              "Devuelve null",
+              "Sólo se puede leer una vez",
+            ],
+            correct: 0,
+            explanation:
+              "readonly no tiene nada que ver con la lectura, que es libre y tantas veces como quieras. Sólo limita la ESCRITURA a una vez, desde dentro de la clase. Quien confunde readonly con private busca la herramienta equivocada.",
+          },
+          {
+            question:
+              "¿Cuál es la ventaja de un objeto inmutable a la hora de razonar sobre el código?",
+            options: [
+              "Si lo pasas a otra función, sabes que no te lo van a cambiar por detrás",
+              "Ocupa la mitad de memoria",
+              "Se ejecuta en paralelo",
+              "No necesita constructor",
+            ],
+            correct: 0,
+            explanation:
+              "Con un objeto mutable, cualquiera que reciba una referencia puede alterarlo y provocarte un bug a distancia. Uno inmutable es un dato de confianza: una vez creado, vale lo mismo para siempre y en todas partes. Menos cosas que vigilar.",
+          },
+        ],
+      },
+    },
     {
       node_id: "pergamino_hielo",
       kind: "scroll",
@@ -2039,6 +2306,7 @@ export const CHAPTER_6: Chapter = {
   lore: "Khazad-dûm, el reino subterráneo de los Enanos, hoy tomado por los trasgos. Bajo la montaña sólo importa una cosa: qué CONTRATO cumple cada cosa, no de qué está hecha. Y en el puente aguarda el Daño de Durin.",
   mapSize: { cols: 24, rows: 14 },
   spawn: { x: 2, y: 7 },
+  unlockedBy: 5,
   scenery: {
     ground: "darkstone", // las profundidades
     pathRows: [7],

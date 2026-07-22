@@ -32,7 +32,7 @@ quita a ti `damage`. Tu vida máxima crece con el nivel (`3 + nivel`), así que
 subir de nivel se traduce en margen de error. Perder no penaliza: se reintenta.
 
 Al caer un jefe aparece una pantalla de **recompensa**: un personaje secundario
-del episodio (Sam, Merry, Aragorn, Pippin…) se suma a la Comunidad como **héroe
+del episodio (Sam, Merry, Aragorn, Pippin, Gimli…) se suma a la Comunidad como **héroe
 jugable**, y el botón continúa directo al capítulo siguiente. Los héroes
 desbloqueados se eligen desde 🦸 Héroe y con ellos se recorre el mapa.
 
