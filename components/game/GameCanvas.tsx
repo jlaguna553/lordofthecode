@@ -12,6 +12,8 @@ interface Props {
   /** Spritesheets de los PNJ que habitan los nodos, por spriteId. */
   nodeSheets?: Record<string, { url: string; cols: number; frameSize: number }>;
   completed: Set<string>;
+  /** node_id -> motivo, para pintar con candado los nodos aún cerrados. */
+  lockedNodes?: Record<string, string>;
   locked: boolean;
   onEnterNode: (nodeId: string) => void;
 }
@@ -52,6 +54,7 @@ export default function GameCanvas({
   frameSize,
   nodeSheets = {},
   completed,
+  lockedNodes = {},
   locked,
   onEnterNode,
 }: Props) {
@@ -64,10 +67,12 @@ export default function GameCanvas({
   const touchRef = useRef({ up: false, down: false, left: false, right: false });
   const [isTouch, setIsTouch] = useState(false);
   const enterRef = useRef(onEnterNode);
+  const lockedNodesRef = useRef(lockedNodes);
   const completedRef = useRef(completed);
   const lockedRef = useRef(locked);
   enterRef.current = onEnterNode;
   completedRef.current = completed;
+  lockedNodesRef.current = lockedNodes;
   lockedRef.current = locked;
 
   // Sólo mostramos el mando en pantallas de puntero grueso (móvil/tableta).
@@ -419,15 +424,21 @@ export default function GameCanvas({
             // Cada tipo de nodo tiene su color: reto (oro), pergamino (azul),
             // enigma de lógica (violeta).
             const kind = node.kind ?? "challenge";
-            const style = {
+            const esJefe = node.kind === "battle" && node.enemy.boss;
+            const ESTILOS = {
               challenge: { color: 0xffd24a, text: "#ffe9a8", icon: "" },
               scroll: { color: 0x8ab4ff, text: "#cfe0ff", icon: "📜 " },
               quiz: { color: 0xc084fc, text: "#e9d5ff", icon: "🜛 " },
-            }[kind];
+              battle: { color: 0xfb923c, text: "#fed7aa", icon: "⚔ " },
+            } as const;
+            const style = esJefe
+              ? { color: 0xf43f5e, text: "#fecdd3", icon: "☠ " }
+              : ESTILOS[kind];
             const ring = this.add.circle(0, 0, 15, style.color, 0.3);
             const dot = this.add.circle(0, 0, 6, style.color, 1);
+            const cerrado = Boolean(lockedNodes[node.node_id]);
             const label = this.add
-              .text(0, -30, style.icon + node.title, {
+              .text(0, -30, (cerrado ? "🔒 " : style.icon) + node.title, {
                 fontFamily: "monospace",
                 fontSize: "11px",
                 color: style.text,
@@ -437,13 +448,18 @@ export default function GameCanvas({
               .setPadding(3, 1, 3, 1);
             const cont = this.add.container(cx, cy, [ring, dot, label]);
             cont.setDepth(90000);
-            this.tweens.add({
-              targets: ring,
-              scale: 1.6,
-              alpha: 0,
-              duration: 1200,
-              repeat: -1,
-            });
+            if (cerrado) {
+              // Apagado y quieto: se ve que está ahí, pero que aún no toca.
+              cont.setAlpha(0.45);
+            } else {
+              this.tweens.add({
+                targets: ring,
+                scale: 1.6,
+                alpha: 0,
+                duration: 1200,
+                repeat: -1,
+              });
+            }
             this.markers.set(node.node_id, cont);
           }
 
@@ -454,6 +470,9 @@ export default function GameCanvas({
             "frodo",
             DIR_ROW.down * cols,
           );
+          // El mundo físico es el MAPA, no la ventana visible: sin esto el
+          // jugador queda encerrado en la primera pantalla de un mapa grande.
+          this.physics.world.setBounds(0, 0, W, H);
           this.player.setCollideWorldBounds(true);
           // cuerpo de colisión más pequeño (pies), no todo el frame de 64px.
           this.player.body.setSize(frameSize * 0.4, frameSize * 0.3);

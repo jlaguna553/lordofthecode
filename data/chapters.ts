@@ -9,8 +9,11 @@ export const CHAPTER_1: Chapter = {
   chapter: 1,
   title: "Sombras en la Comarca",
   lore: "Frodo debe abandonar Bolsón Cerrado y cruzar la Comarca hacia Los Gamos, evadiendo a los Jinetes Negros que buscan el Anillo.",
-  mapSize: { cols: 22, rows: 14 },
+  // El mapa desborda la pantalla a propósito: hay que recorrerlo para dar con
+  // los enemigos que dan la experiencia necesaria para los acertijos.
+  mapSize: { cols: 34, rows: 20 },
   spawn: { x: 2, y: 9 },
+  xpParaRetos: 40,
   scenery: {
     pathRows: [9],
     pond: { x: 16, y: 10, w: 5, h: 3 },
@@ -38,10 +41,211 @@ export const CHAPTER_1: Chapter = {
       { type: "rock", x: 11, y: 7 },
       { type: "rock", x: 8, y: 11 },
       { type: "rock", x: 15, y: 8 },
+      // --- Los Gamos: la mitad este del mapa, abierta tras el estanque ---
+      { type: "tree", x: 24, y: 3 },
+      { type: "tree", x: 28, y: 2 },
+      { type: "tree", x: 31, y: 5 },
+      { type: "tree", x: 25, y: 13 },
+      { type: "tree", x: 30, y: 16 },
+      { type: "tree", x: 22, y: 17 },
+      { type: "tree", x: 15, y: 17 },
+      { type: "tree", x: 9, y: 16 },
+      { type: "rock", x: 26, y: 7 },
+      { type: "rock", x: 32, y: 11 },
+      { type: "rock", x: 19, y: 15 },
+      { type: "rock", x: 12, y: 18 },
     ],
   },
   companions: ["sam"],
   nodes: [
+    // ---- Combates: entrenan clases, propiedades y visibilidad ----
+    {
+      node_id: "c1_espia",
+      kind: "battle",
+      title: "El husmeador del Camino Verde",
+      lore_intro:
+        "Un hombre flaco pregunta por «un tal Bolsón» a todo el que pasa. No lleva armas, pero lleva preguntas.",
+      position: { x: 26, y: 5 },
+      spriteId: "aldeano",
+      enemy: {
+        name: "Husmeador de Bree",
+        spriteId: "aldeano",
+        hp: 2,
+        damage: 1,
+        xp: 20,
+        taunt: "«¿Bolsón, dice? Conozco a alguien muy interesado en ese apellido…»",
+        questions: [
+          {
+            question:
+              "«Dime, mediano: para guardar el nombre de tu amo dentro de una clase, ¿qué escribes?»",
+            options: [
+              "private string $nombre;",
+              "private $nombre: string;",
+              "var string nombre;",
+              "let $nombre = '';",
+            ],
+            correct: 0,
+            explanation:
+              "En PHP la propiedad se declara como «visibilidad tipo $nombre;». El tipo va ANTES del $, al revés que en TypeScript. `var` existe pero está obsoleto desde PHP 7 (equivale a public) y `let` no es de PHP.",
+          },
+          {
+            question:
+              "Dentro de un método, ¿cómo lees una propiedad del propio objeto?",
+            options: [
+              "$this->nombre",
+              "$this.nombre",
+              "self::$nombre",
+              "$nombre",
+            ],
+            correct: 0,
+            explanation:
+              "`$this->propiedad`, con flecha y SIN el signo dólar en el nombre (`$this->$nombre` significaría otra cosa: acceso dinámico por variable). El punto es concatenación en PHP, no acceso a miembro. `self::$nombre` es para propiedades estáticas, y `$nombre` a secas sería una variable local.",
+          },
+          {
+            question:
+              "Tienes `private $anillo;`. ¿Desde dónde se puede leer?",
+            options: [
+              "Sólo desde dentro de la propia clase",
+              "Desde la clase y sus hijas",
+              "Desde cualquier parte del programa",
+              "Sólo desde fuera de la clase",
+            ],
+            correct: 0,
+            explanation:
+              "`private` es el cerrojo más estricto: ni siquiera las clases hijas lo ven. Si quieres que las hijas sí puedan, usa `protected`. Y `public` lo abre a todo el mundo. Empieza siempre por private y abre sólo lo que haga falta.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c1_jinete_rastreador",
+      kind: "battle",
+      title: "El rastreador",
+      lore_intro:
+        "El caballo negro olfatea el suelo donde te detuviste. El jinete no tiene rostro, pero sabe que estás cerca.",
+      position: { x: 30, y: 13 },
+      spriteId: "nazgul",
+      enemy: {
+        name: "Jinete Negro rastreador",
+        spriteId: "nazgul",
+        hp: 3,
+        damage: 1,
+        xp: 25,
+        taunt: "«Ssssiento el Anillo. Está muy cerca…»",
+        questions: [
+          {
+            question: "¿Qué hace exactamente la palabra `new`?",
+            options: [
+              "Crea un objeto nuevo a partir de la clase y ejecuta su constructor",
+              "Declara una clase",
+              "Copia un objeto que ya existe",
+              "Reserva memoria sin ejecutar nada",
+            ],
+            correct: 0,
+            explanation:
+              "La clase es el molde; `new` fabrica una pieza con ese molde y llama a `__construct()`. Para copiar un objeto existente se usa `clone` (y ojo: la copia es superficial, los objetos internos se comparten).",
+          },
+          {
+            question:
+              "¿Cuál de estas cosas NO puede hacer un método `private`?",
+            options: [
+              "Ser llamado desde otra clase, aunque sea hija",
+              "Ser llamado desde otro método de su clase",
+              "Devolver un valor",
+              "Recibir parámetros",
+            ],
+            correct: 0,
+            explanation:
+              "La visibilidad no limita lo que el método hace, sólo desde DÓNDE se le puede llamar. Un private es invisible fuera de su propia clase — incluidas las hijas. Es la herramienta para que los detalles internos no se conviertan en contrato público.",
+          },
+          {
+            question:
+              "¿Por qué se considera mala práctica dejar todas las propiedades en `public`?",
+            options: [
+              "Cualquiera puede dejar el objeto en un estado imposible sin pasar por tus validaciones",
+              "Porque es más lento",
+              "Porque PHP lanza un aviso",
+              "Porque consume más memoria",
+            ],
+            correct: 0,
+            explanation:
+              "El coste no es de rendimiento, es de control: con la propiedad pública nadie te garantiza que valga algo válido. Si el único camino para cambiarla es un método tuyo, ahí puedes validar, registrar o rechazar. Eso es encapsulamiento.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c1_jefe_nazgul",
+      kind: "battle",
+      title: "El Jinete del Vado",
+      lore_intro:
+        "Cierra el paso al este. La hoja está desenvainada y el aire huele a frío. No hay rodeo posible: o pasas por encima, o vuelves a Bolsón Cerrado.",
+      position: { x: 32, y: 9 },
+      spriteId: "nazgul",
+      enemy: {
+        name: "El Jinete del Vado",
+        spriteId: "nazgul",
+        hp: 4,
+        damage: 2,
+        xp: 45,
+        boss: true,
+        taunt: "«El Anillo… ¡el Anillo va a Mordor, y tú con él!»",
+        questions: [
+          {
+            question:
+              "Una clase declara `private string $palabra = 'Mellon';` y un método `public function decir(): string { return $this->palabra; }`. ¿Qué imprime `echo (new Puerta())->decir();`?",
+            options: [
+              "Mellon",
+              "Error: $palabra es privada",
+              "Nada, cadena vacía",
+              "El nombre de la propiedad",
+            ],
+            correct: 0,
+            explanation:
+              "`decir()` es público y vive DENTRO de la clase, así que ve la propiedad privada sin problema. Ése es el patrón: el dato se cierra y se expone una puerta controlada. El error saltaría con `(new Puerta())->palabra` desde fuera.",
+          },
+          {
+            question:
+              "¿Cuál es la diferencia entre `protected` y `private`?",
+            options: [
+              "protected lo heredan las clases hijas; private no",
+              "protected es visible desde fuera; private no",
+              "Son sinónimos",
+              "private sólo aplica a métodos y protected sólo a propiedades",
+            ],
+            correct: 0,
+            explanation:
+              "Los dos cierran el acceso desde fuera. La diferencia está en la herencia: una clase hija puede usar los miembros `protected` de su padre, pero no los `private`. Usa protected cuando diseñes una clase pensada para extenderse.",
+          },
+          {
+            question:
+              "¿Qué devuelve `$a === $b` si `$a = new Hobbit(); $b = new Hobbit();`?",
+            options: [
+              "false: son dos objetos distintos aunque sean de la misma clase",
+              "true: tienen los mismos valores",
+              "Error: los objetos no se comparan con ===",
+              "true: son de la misma clase",
+            ],
+            correct: 0,
+            explanation:
+              "Con objetos, `===` pregunta si son LA MISMA instancia, no si se parecen. `==` sí compara clase y valores de las propiedades. Confundirlos es una fuente clásica de bugs: dos objetos con idénticos datos son `==` pero nunca `===`.",
+          },
+          {
+            question:
+              "¿Para qué sirve el constructor `__construct()`?",
+            options: [
+              "Para dejar el objeto en un estado válido en el momento de nacer",
+              "Para destruir el objeto al terminar",
+              "Para declarar las propiedades",
+              "Es opcional y no hace nada especial",
+            ],
+            correct: 0,
+            explanation:
+              "Se ejecuta solo al hacer `new` y es tu única oportunidad de exigir lo imprescindible. Si un Hobbit no puede existir sin nombre, pídelo en el constructor: así es imposible construir uno inválido, y te ahorras validar en todos los demás métodos.",
+          },
+        ],
+      },
+    },
     {
       node_id: "pergamino_clases",
       kind: "scroll",
@@ -191,8 +395,10 @@ export const CHAPTER_2: Chapter = {
   chapter: 2,
   title: "El Bosque Viejo y los Túmulos",
   lore: "Más allá de la Cerca, los árboles del Bosque Viejo tienen voluntad propia y las nieblas de los Túmulos guardan a los muertos. Sólo el canto de Tom Bombadil deshace sus hechizos.",
-  mapSize: { cols: 22, rows: 14 },
+  mapSize: { cols: 34, rows: 20 },
   spawn: { x: 2, y: 7 },
+  xpParaRetos: 55,
+  unlockedBy: 1,
   scenery: {
     ground: "grassDark", // el Bosque Viejo es sombrío
     pathRows: [7],
@@ -221,6 +427,186 @@ export const CHAPTER_2: Chapter = {
   },
   companions: ["sam", "merry", "pippin"],
   nodes: [
+    // ---- Combates: constructores, métodos y destructores ----
+    {
+      node_id: "c2_raiz",
+      kind: "battle",
+      title: "La raíz que respira",
+      lore_intro:
+        "Una raíz gruesa se mueve cuando no la miras. El Bosque Viejo está despierto y no le gustan los visitantes.",
+      position: { x: 25, y: 4 },
+      spriteId: "tumulario",
+      enemy: {
+        name: "Raíz del Bosque Viejo",
+        spriteId: "tumulario",
+        hp: 3,
+        damage: 1,
+        xp: 25,
+        taunt: "El sendero que acabas de cruzar ya no está donde lo dejaste.",
+        questions: [
+          {
+            question: "¿Cuándo se ejecuta `__construct()`?",
+            options: [
+              "Al hacer `new`, antes de que nadie pueda usar el objeto",
+              "La primera vez que se llama a un método",
+              "Cuando se declara la clase",
+              "Hay que llamarlo a mano tras crear el objeto",
+            ],
+            correct: 0,
+            explanation:
+              "PHP lo llama solo, y sólo una vez, justo al construir. Por eso es el sitio donde exigir lo imprescindible: si el objeto no puede existir sin cierto dato, pídelo ahí y ningún otro método tendrá que volver a comprobarlo.",
+          },
+          {
+            question:
+              "¿Qué hace la promoción de propiedades en el constructor?\n`public function __construct(private string $nombre) {}`",
+            options: [
+              "Declara la propiedad, la asigna y la deja privada, todo de una vez",
+              "Sólo declara un parámetro; hay que asignarlo después",
+              "Hace la propiedad pública",
+              "Es sintaxis inválida",
+            ],
+            correct: 0,
+            explanation:
+              "Desde PHP 8, poner la visibilidad delante del parámetro declara la propiedad y hace el `$this->nombre = $nombre;` por ti. Ahorra la triple repetición (declaración, parámetro, asignación) que llenaba los constructores antiguos.",
+          },
+          {
+            question: "¿Qué debe devolver un constructor?",
+            options: [
+              "Nada: no puede tener tipo de retorno",
+              "El objeto creado",
+              "true si todo fue bien",
+              "$this",
+            ],
+            correct: 0,
+            explanation:
+              "`__construct` no devuelve nada y declararle un tipo de retorno es error fatal. El objeto lo entrega `new`, no el constructor. Si necesitas varias formas de construir, usa métodos estáticos con nombre (`Hobbit::desdeArray(...)`).",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c2_niebla",
+      kind: "battle",
+      title: "Niebla entre los túmulos",
+      lore_intro:
+        "La niebla se cierra y las piedras verticales aparecen donde antes había hierba. Algo te llama por tu nombre.",
+      position: { x: 29, y: 15 },
+      spriteId: "tumulario",
+      enemy: {
+        name: "Espectro de la niebla",
+        spriteId: "tumulario",
+        hp: 3,
+        damage: 1,
+        xp: 30,
+        taunt: "«Fría sea la mano… frío el corazón bajo la piedra…»",
+        questions: [
+          {
+            question: "¿Cuándo se ejecuta `__destruct()`?",
+            options: [
+              "Cuando ya no queda ninguna referencia al objeto, o al terminar el script",
+              "Cuando escribes `delete $objeto`",
+              "Inmediatamente después del constructor",
+              "Nunca: PHP no tiene destructores",
+            ],
+            correct: 0,
+            explanation:
+              "PHP cuenta referencias: cuando la última desaparece (`unset()`, reasignación, salir de ámbito) llama al destructor. Sirve para soltar recursos — cerrar un fichero, liberar un bloqueo. No lo uses para lógica de negocio: no controlas el momento exacto.",
+          },
+          {
+            question: "¿Qué hace `unset($hobbit);` si `$hobbit` es la única referencia?",
+            options: [
+              "Destruye el objeto y llama a su __destruct()",
+              "Pone la variable a null pero el objeto sigue vivo",
+              "Vacía las propiedades del objeto",
+              "Da error si el objeto tiene destructor",
+            ],
+            correct: 0,
+            explanation:
+              "`unset()` quita ESA referencia. Si era la última, el objeto se destruye y su destructor se ejecuta ahí mismo. Si había otra variable apuntando al mismo objeto, no pasa nada: sigue vivo hasta que caiga la última.",
+          },
+          {
+            question:
+              "Un método declara `public function cantar(): void`. ¿Qué significa `void`?",
+            options: [
+              "Que no devuelve valor; un `return $algo;` dentro sería error",
+              "Que devuelve null",
+              "Que puede devolver cualquier cosa",
+              "Que no recibe parámetros",
+            ],
+            correct: 0,
+            explanation:
+              "`void` promete que el método no entrega nada; se permite `return;` a secas para salir antes, pero no `return $x;`. Y ojo: llamarlo dentro de una expresión (`$y = $obj->cantar();`) te deja null, que casi nunca es lo que querías.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c2_jefe_tumulario",
+      kind: "battle",
+      title: "El Tumulario",
+      lore_intro:
+        "Un brazo salido de la tierra arrastra a los hobbits hacia la cámara de piedra. Aquí termina la huida y empieza la prueba.",
+      position: { x: 32, y: 9 },
+      spriteId: "tumulario",
+      enemy: {
+        name: "El Tumulario",
+        spriteId: "tumulario",
+        hp: 4,
+        damage: 2,
+        xp: 55,
+        boss: true,
+        taunt: "«Aquí yaceréis hasta que el sol se apague y la luna muera.»",
+        questions: [
+          {
+            question:
+              "¿Qué imprime?\n```\nclass A { public function __construct() { echo '1'; } public function __destruct() { echo '3'; } }\n$a = new A(); echo '2'; unset($a);\n```",
+            options: ["123", "132", "213", "321"],
+            correct: 0,
+            explanation:
+              "El constructor sale al hacer `new` (1), luego el echo suelto (2), y el destructor al soltar la última referencia con unset (3). Sin el `unset`, el 3 saldría igualmente, pero al final del script.",
+          },
+          {
+            question:
+              "¿Cuál es la diferencia entre un método y una función suelta?",
+            options: [
+              "El método pertenece a una clase y tiene acceso a `$this`",
+              "El método no puede recibir parámetros",
+              "La función no puede devolver valores",
+              "Ninguna: son sinónimos",
+            ],
+            correct: 0,
+            explanation:
+              "Un método vive dentro de una clase y por eso puede leer y modificar el estado del objeto a través de `$this`. Esa es toda la diferencia relevante: la función opera sólo con lo que le pasas; el método, además, con lo que el objeto recuerda.",
+          },
+          {
+            question:
+              "Quieres que sea IMPOSIBLE crear un Hobbit sin nombre. ¿Dónde lo garantizas?",
+            options: [
+              "Exigiendo el nombre como parámetro obligatorio del constructor",
+              "Comprobándolo en cada método que use el nombre",
+              "Poniendo la propiedad como public para que se la asignen",
+              "Documentándolo en un comentario",
+            ],
+            correct: 0,
+            explanation:
+              "Si el constructor lo exige, un Hobbit sin nombre no llega a existir: el error salta en el punto exacto donde está el fallo. Validar en cada método es repetir el trabajo y descubrirlo tarde; el comentario no lo comprueba nadie.",
+          },
+          {
+            question:
+              "¿Qué pasa si una clase hija define `__construct()` y NO llama a `parent::__construct()`?",
+            options: [
+              "El constructor del padre no se ejecuta y su inicialización se pierde",
+              "PHP llama al del padre automáticamente antes",
+              "Error fatal al instanciar",
+              "Se ejecutan los dos, en orden padre→hijo",
+            ],
+            correct: 0,
+            explanation:
+              "A diferencia de otros lenguajes, PHP NO encadena constructores solo: el de la hija sustituye al del padre por completo. Si el padre inicializaba algo, tienes que llamar tú a `parent::__construct()`. Es una de las fuentes de bugs más silenciosas al heredar.",
+          },
+        ],
+      },
+    },
     {
       node_id: "pergamino_ciclo_vida",
       kind: "scroll",
@@ -377,8 +763,10 @@ export const CHAPTER_3: Chapter = {
   chapter: 3,
   title: "Bree y la Cima de los Vientos",
   lore: "En El Póney Pisador aguarda un montaraz encapuchado al que llaman Trancos. Tras él, el camino asciende hasta Amon Sûl, donde cinco Jinetes Negros esperan bajo las ruinas.",
-  mapSize: { cols: 24, rows: 14 },
+  mapSize: { cols: 36, rows: 20 },
   spawn: { x: 2, y: 9 },
+  xpParaRetos: 70,
+  unlockedBy: 2,
   scenery: {
     ground: "dry", // tierras pardas del camino del Este
     pathRows: [9],
@@ -417,6 +805,187 @@ export const CHAPTER_3: Chapter = {
   },
   companions: ["sam", "merry", "pippin", "aragorn"],
   nodes: [
+    // ---- Combates: herencia y sobrescritura ----
+    {
+      node_id: "c3_ferny",
+      kind: "battle",
+      title: "El vendido de Bree",
+      lore_intro:
+        "Bill Helechal escupe al suelo cuando pasas. Cobra en monedas de Isengard y no le importa a quién señale.",
+      position: { x: 26, y: 4 },
+      spriteId: "aldeano",
+      enemy: {
+        name: "Bill Helechal",
+        spriteId: "aldeano",
+        hp: 3,
+        damage: 1,
+        xp: 30,
+        taunt: "«Cuatro medianos y un montaraz. Alguien pagará bien por saberlo.»",
+        questions: [
+          {
+            question: "¿Qué hereda una clase hija de su padre?",
+            options: [
+              "Los miembros public y protected; los private no",
+              "Absolutamente todo, incluidos los private",
+              "Sólo los métodos, nunca las propiedades",
+              "Sólo lo que declares con `use`",
+            ],
+            correct: 0,
+            explanation:
+              "`private` es privado de verdad: la hija no lo ve, aunque ocupe espacio en el objeto. Si diseñas una clase para que la extiendan, lo que quieras compartir con las hijas va en `protected`.",
+          },
+          {
+            question:
+              "¿Cuántas clases puede extender una clase en PHP?",
+            options: [
+              "Una sola",
+              "Todas las que quieras, separadas por comas",
+              "Hasta tres",
+              "Ninguna: PHP no tiene herencia",
+            ],
+            correct: 0,
+            explanation:
+              "PHP tiene herencia SIMPLE: un solo `extends`. Para reunir comportamiento de varios sitios están los `interface` (contratos) y los `trait` (implementación reutilizable). Esa restricción es deliberada: la herencia múltiple genera ambigüedades difíciles de resolver.",
+          },
+          {
+            question:
+              "Al sobrescribir un método del padre, ¿qué NO puedes hacer?",
+            options: [
+              "Reducir su visibilidad (pasar de public a private)",
+              "Cambiar el cuerpo por completo",
+              "Ampliar la visibilidad (de protected a public)",
+              "Llamar a la versión del padre desde dentro",
+            ],
+            correct: 0,
+            explanation:
+              "La hija puede abrir el acceso, nunca cerrarlo: si el padre prometía un método público, quien use la hija como si fuera el padre debe poder llamarlo. Es el principio de sustitución de Liskov aplicado por el propio lenguaje.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c3_espia_nazgul",
+      kind: "battle",
+      title: "Sombra en el camino de Amon Sûl",
+      lore_intro:
+        "Uno de los Nueve se ha adelantado a los demás. Aún no ha dado la señal, y ésa es tu única ventaja.",
+      position: { x: 31, y: 15 },
+      spriteId: "nazgul",
+      enemy: {
+        name: "Nazgûl explorador",
+        spriteId: "nazgul",
+        hp: 4,
+        damage: 1,
+        xp: 40,
+        taunt: "«No hay dónde esconderse en campo abierto, mediano.»",
+        questions: [
+          {
+            question: "¿Qué hace exactamente `parent::__construct($x)`?",
+            options: [
+              "Ejecuta el constructor del padre desde el de la hija",
+              "Crea un objeto nuevo de la clase padre",
+              "Convierte el objeto en una instancia del padre",
+              "Copia las propiedades del padre",
+            ],
+            correct: 0,
+            explanation:
+              "`parent::` no crea nada: ejecuta el método del padre sobre el objeto ACTUAL. Es lo que permite ampliar el comportamiento heredado en vez de reemplazarlo — la hija hace lo suyo y delega el resto.",
+          },
+          {
+            question:
+              "Una hija sobrescribe `atacar()` y quiere hacer lo mismo que el padre MÁS algo extra. ¿Cuál es la forma correcta?",
+            options: [
+              "Llamar a parent::atacar() dentro y añadir lo suyo",
+              "Copiar y pegar el código del padre y añadirlo",
+              "Declarar el método como abstract",
+              "No se puede: hay que reescribirlo entero",
+            ],
+            correct: 0,
+            explanation:
+              "Copiar y pegar funciona hoy y se rompe el día que alguien toque al padre: tendrías dos versiones de la misma lógica divergiendo en silencio. `parent::atacar()` mantiene una sola fuente de verdad.",
+          },
+          {
+            question:
+              "`$x instanceof Personaje` con `$x = new Hobbit()` y `class Hobbit extends Personaje`. ¿Qué devuelve?",
+            options: [
+              "true: un Hobbit ES un Personaje",
+              "false: sólo compara la clase exacta",
+              "Error de tipos",
+              "true sólo si Personaje es abstracta",
+            ],
+            correct: 0,
+            explanation:
+              "`instanceof` recorre toda la cadena de herencia y también las interfaces implementadas. Es lo que hace posible el polimorfismo: puedes tratar a un Hobbit como un Personaje en cualquier sitio que espere un Personaje.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c3_jefe_reybrujo",
+      kind: "battle",
+      title: "El Rey Brujo en la cima",
+      lore_intro:
+        "Cinco sombras suben por la ladera de Amon Sûl. La del centro lleva corona. Trancos sostiene una antorcha en cada mano, pero esto lo tienes que resolver tú.",
+      position: { x: 34, y: 9 },
+      spriteId: "nazgul",
+      enemy: {
+        name: "El Rey Brujo",
+        spriteId: "nazgul",
+        hp: 5,
+        damage: 2,
+        xp: 70,
+        boss: true,
+        taunt: "«Ningún hombre vivo puede detenerme.»",
+        questions: [
+          {
+            question:
+              "```\nclass A { public function saludo() { return 'A'; } }\nclass B extends A { public function saludo() { return parent::saludo() . 'B'; } }\necho (new B())->saludo();\n```",
+            options: ["AB", "BA", "B", "A"],
+            correct: 0,
+            explanation:
+              "`parent::saludo()` devuelve 'A' y la hija le concatena su 'B'. Ése es el patrón «extender, no reemplazar»: el padre aporta su parte y la hija la enriquece.",
+          },
+          {
+            question: "¿Qué significa marcar una clase como `final`?",
+            options: [
+              "Que nadie puede extenderla",
+              "Que no se puede instanciar",
+              "Que sus métodos no se pueden llamar dos veces",
+              "Que todas sus propiedades son readonly",
+            ],
+            correct: 0,
+            explanation:
+              "`final class` cierra la herencia; `final function` cierra sólo la sobrescritura de ese método. Es una decisión de diseño: si una clase no está pensada para extenderse, decirlo evita que alguien construya sobre suposiciones que no garantizas.",
+          },
+          {
+            question:
+              "El padre declara `public function golpe(int $fuerza): int`. ¿Puede la hija declarar `public function golpe(int $fuerza, string $arma): int`?",
+            options: [
+              "No: cambiar la firma obligatoria rompe el contrato del padre",
+              "Sí, siempre",
+              "Sí, pero sólo si el padre es abstracto",
+              "Sí, si el parámetro extra va el primero",
+            ],
+            correct: 0,
+            explanation:
+              "Quien tenga un `A` y llame a `golpe(5)` debe funcionar aunque por dentro sea un `B`. Añadir un parámetro OBLIGATORIO rompe eso y PHP lo rechaza. Con valor por defecto (`string $arma = ''`) sí sería compatible.",
+          },
+          {
+            question:
+              "¿Cuándo es preferible la COMPOSICIÓN a la herencia?",
+            options: [
+              "Casi siempre: hereda sólo cuando hay un «es un» real y estable",
+              "Nunca: la herencia siempre es mejor",
+              "Sólo cuando no puedes modificar la clase padre",
+              "Sólo en lenguajes sin herencia múltiple",
+            ],
+            correct: 0,
+            explanation:
+              "La herencia ata a la hija a los detalles internos del padre para siempre. La composición («tiene un») intercambia piezas sin tocar nada. La regla práctica: si dudas de si es «es un» o «tiene un», es «tiene un».",
+          },
+        ],
+      },
+    },
     {
       node_id: "pergamino_herencia",
       kind: "scroll",

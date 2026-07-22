@@ -74,6 +74,45 @@ export interface ChallengeNode extends BaseNode {
   poo_challenge: PooChallenge;
 }
 
+/** Una pregunta de combate: corta, de opción múltiple, sobre el tema del capítulo. */
+export interface CombatQuestion {
+  question: string;
+  options: string[];
+  correct: number;
+  /** Por qué, para que fallar también enseñe. */
+  explanation: string;
+}
+
+/**
+ * Un enemigo de combate por turnos. La vida se mide en ACIERTOS: cada respuesta
+ * correcta le quita un punto. Cada fallo te quita `damage` a ti.
+ */
+export interface Enemy {
+  name: string;
+  /** id de preset LPC (ver data/presets.ts). */
+  spriteId: string;
+  /** Aciertos necesarios para derrotarlo. */
+  hp: number;
+  /** Daño que te hace cada fallo. */
+  damage: number;
+  /** Experiencia que da al vencerlo. */
+  xp: number;
+  questions: CombatQuestion[];
+  /**
+   * Jefe de capítulo. Sólo se puede desafiar con todos los retos de código
+   * resueltos, y derrotarlo desbloquea el capítulo siguiente.
+   */
+  boss?: boolean;
+  /** Frase que suelta al empezar el combate. */
+  taunt?: string;
+}
+
+/** Nodo de combate: se vence respondiendo bien antes de quedarte sin vida. */
+export interface BattleNode extends BaseNode {
+  kind: "battle";
+  enemy: Enemy;
+}
+
 /** Nodo de Pergamino: enseña el concepto; se completa al leerlo. */
 export interface ScrollNode extends BaseNode {
   kind: "scroll";
@@ -104,7 +143,7 @@ export interface QuizNode extends BaseNode {
 }
 
 /** Un nodo interactivo en el mapa (pergamino, acertijo, enigma, enemigo). */
-export type MapNode = ChallengeNode | ScrollNode | QuizNode;
+export type MapNode = ChallengeNode | ScrollNode | QuizNode | BattleNode;
 
 /** Suelos disponibles: cada capítulo elige su bioma. */
 export type GroundType =
@@ -175,6 +214,17 @@ export interface Chapter {
    * (ids de preset). Caminan sobre el rastro del jugador.
    */
   companions?: string[];
+  /**
+   * Experiencia que hay que ganar EN ESTE CAPÍTULO (venciendo a sus enemigos)
+   * antes de poder abrir sus retos de código. Sin este campo, los retos están
+   * abiertos desde el principio (así siguen los libros de práctica).
+   */
+  xpParaRetos?: number;
+  /**
+   * Capítulo cuyo jefe hay que derrotar para desbloquear éste. Sin este campo,
+   * el capítulo está siempre disponible.
+   */
+  unlockedBy?: number;
 }
 
 /** Resultado de un test individual tras ejecutar el PHP del jugador. */

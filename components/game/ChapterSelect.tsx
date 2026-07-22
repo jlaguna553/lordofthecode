@@ -1,8 +1,9 @@
 "use client";
 
-import { CAMPAIGN, getChapter } from "@/data/chapters";
+import { CAMPAIGN, CHAPTERS, getChapter } from "@/data/chapters";
 import type { Progress } from "@/lib/game/progress";
 import { completedOf } from "@/lib/game/progress";
+import { capituloDesbloqueado } from "@/lib/game/rpg";
 
 interface Props {
   progress: Progress;
@@ -44,7 +45,12 @@ export default function ChapterSelect({
             .sort((a, b) => a.chapter - b.chapter)
             .map((info) => {
             const chapter = getChapter(info.chapter);
-            const playable = Boolean(chapter);
+            // Un capítulo puede existir pero estar cerrado hasta vencer al
+            // jefe del anterior.
+            const cierre = chapter
+              ? capituloDesbloqueado(chapter, progress, CHAPTERS)
+              : { abierto: false as const, motivo: undefined };
+            const playable = Boolean(chapter) && cierre.abierto;
             const total = chapter?.nodes.length ?? 0;
             const done = chapter
               ? [...completedOf(progress, info.chapter)].filter((id) =>
@@ -74,9 +80,13 @@ export default function ChapterSelect({
                       {info.chapter}. {info.title}
                     </span>
                     <span className="shrink-0 text-xs">
-                      {!playable ? (
+                      {!chapter ? (
                         <span className="rounded bg-slate-800 px-2 py-0.5 text-slate-500">
                           🔒 Próximamente
+                        </span>
+                      ) : !playable ? (
+                        <span className="rounded bg-slate-800 px-2 py-0.5 text-orange-400/80">
+                          🔒 Bloqueado
                         </span>
                       ) : finished ? (
                         <span className="text-emerald-400">✦ Completado</span>
@@ -89,7 +99,7 @@ export default function ChapterSelect({
                   </div>
                   <p className="mt-1 text-xs text-indigo-300">{info.topic}</p>
                   <p className="mt-1 text-xs leading-relaxed opacity-80">
-                    {info.lore}
+                    {!playable && cierre.motivo ? cierre.motivo : info.lore}
                   </p>
                   {playable && total > 0 && (
                     <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-950">

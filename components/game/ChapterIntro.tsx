@@ -16,7 +16,9 @@ export default function ChapterIntro({ chapter, onStart }: Props) {
           ? n.scroll.topic
           : n.kind === "quiz"
             ? n.quiz.topic
-            : n.poo_challenge.topic,
+            : n.kind === "battle"
+              ? n.enemy.name
+              : n.poo_challenge.topic,
       ),
     ),
   ];

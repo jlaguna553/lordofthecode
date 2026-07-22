@@ -12,6 +12,35 @@ el juego.
 | `/` | **El juego** — mapa Phaser, Monaco y evaluador PHP |
 | `/studio` | **Estudio de sprites** — paperdoll LPC, exporta PNG + JSON |
 
+## Progresión RPG
+
+Los acertijos de código de un capítulo no están abiertos desde el principio:
+hay que **ganarse la experiencia** venciendo a los enemigos secundarios que
+pueblan el mapa. Cada combate es por turnos y de opción múltiple, y sus
+preguntas versan sobre lo mismo que pedirá el reto de código — pelear ES
+estudiar.
+
+| Paso | Qué desbloquea |
+|---|---|
+| Vencer enemigos normales (⚔) | Experiencia hasta llegar al `xpParaRetos` del capítulo |
+| Alcanzar ese umbral | Se abren los retos de código del capítulo |
+| Resolver todos los retos | Se abre el jefe (☠) |
+| Vencer al jefe | Se desbloquea el capítulo siguiente |
+
+En combate, cada acierto quita un punto de vida al enemigo y cada fallo te
+quita a ti `damage`. Tu vida máxima crece con el nivel (`3 + nivel`), así que
+subir de nivel se traduce en margen de error. Perder no penaliza: se reintenta.
+
+**La experiencia no se guarda**: se deriva de los nodos de combate marcados
+como completados ([lib/game/rpg.ts](lib/game/rpg.ts)). Así no puede
+desincronizarse del progreso real, no se puede farmear repitiendo un enemigo ya
+vencido, y las partidas anteriores al combate siguen siendo válidas sin
+migración — un capítulo que ya estaba terminado desbloquea el siguiente aunque
+su jefe no existiera entonces.
+
+Los libros de práctica (9–14) no tienen combate ni bloqueo: son un anexo de
+entrenamiento siempre disponible.
+
 ## Controles
 
 **Escritorio:** `WASD` o flechas para moverse, `E` para interactuar con el
@@ -134,9 +163,10 @@ escribir su `Chapter` y sumarlo a ambos.
 | **V · Calentamiento** | 14 | Los clásicos fáciles para empezar en frío |
 | **VI · Las Dos Torres** | 15, 16 | **Enums** (PHP 8.1) y máquinas de estado · **generadores e iteradores** |
 
-Cada capítulo mezcla tres tipos de nodo: **pergaminos** (📜, teoría que se lee),
-**retos** (se escribe PHP y se ejecuta contra los tests) y **enigmas** (🜛,
-opción múltiple con explicación).
+Cada capítulo mezcla cuatro tipos de nodo: **pergaminos** (📜, teoría que se
+lee), **combates** (⚔ / ☠ el jefe, por turnos y de opción múltiple), **retos**
+(se escribe PHP y se ejecuta contra los tests) y **enigmas** (🜛, opción
+múltiple con explicación).
 
 ### Escenario
 

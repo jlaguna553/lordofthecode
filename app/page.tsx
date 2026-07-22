@@ -6,6 +6,13 @@ import Link from "next/link";
 import type { LpcManifest } from "@/lib/lpc/types";
 import { buildPresetSheet, type PresetSheet } from "@/lib/game/sheet";
 import { CHAPTER_1, CHAPTERS, getChapter } from "@/data/chapters";
+import {
+  capituloDesbloqueado,
+  estadoNodo,
+  nivelDe,
+  xpDeCapitulo,
+  xpTotal,
+} from "@/lib/game/rpg";
 import { isMuted, playSfx, setMuted } from "@/lib/game/audio";
 import {
   codeFor,
@@ -44,6 +51,9 @@ const QuizModal = dynamic(() => import("@/components/game/QuizModal"), {
 const StatsPanel = dynamic(() => import("@/components/game/StatsPanel"), {
   ssr: false,
 });
+const BattleModal = dynamic(() => import("@/components/game/BattleModal"), {
+  ssr: false,
+});
 
 export default function GamePage() {
   const [progress, setProgress] = useState<Progress>(emptyProgress);
@@ -62,6 +72,7 @@ export default function GamePage() {
   // Ref para que el guardado de código no dependa del capítulo en su clausura.
   const currentChapterRef = useRef(currentChapter);
   currentChapterRef.current = currentChapter;
+  const bloqueadosRef = useRef<Record<string, string>>({});
 
   // Restaurar progreso guardado (sólo en cliente, tras hidratar).
   useEffect(() => {
@@ -127,6 +138,38 @@ export default function GamePage() {
   const activeNode = useMemo(
     () => chapter.nodes.find((n) => n.node_id === activeNodeId) ?? null,
     [chapter, activeNodeId],
+  );
+
+  // --- Progresión RPG (todo derivado del progreso: nada extra que guardar) ---
+  const xp = useMemo(() => xpTotal(progress, CHAPTERS), [progress]);
+  const nivel = useMemo(() => nivelDe(xp), [xp]);
+  const xpCapitulo = useMemo(
+    () => xpDeCapitulo(chapter, completed),
+    [chapter, completed],
+  );
+  /** Nodos cerrados y el motivo, para pintarlos con candado en el mapa. */
+  const bloqueados = useMemo(() => {
+    const m: Record<string, string> = {};
+    for (const n of chapter.nodes) {
+      const e = estadoNodo(n, chapter, completed);
+      if (!e.abierto && e.motivo) m[n.node_id] = e.motivo;
+    }
+    return m;
+  }, [chapter, completed]);
+  const [aviso, setAviso] = useState<string | null>(null);
+  bloqueadosRef.current = bloqueados;
+
+  /** Un nodo cerrado no abre su modal: avisa de qué falta. */
+  const handleEnterNode = useCallback(
+    (nodeId: string) => {
+      const motivo = bloqueadosRef.current[nodeId];
+      if (motivo) {
+        setAviso(motivo);
+        return;
+      }
+      setActiveNodeId(nodeId);
+    },
+    [],
   );
 
   function handleSolved(
@@ -224,6 +267,31 @@ export default function GamePage() {
           <p className="ml-auto text-xs text-slate-400 sm:ml-0 sm:text-sm">
             Runas {done}/{total}
           </p>
+          <div className="flex w-full items-center gap-2 sm:w-44">
+            <span
+              className="shrink-0 rounded-md bg-amber-500/20 px-1.5 py-0.5 text-[11px] font-bold text-amber-200 ring-1 ring-amber-500/40"
+              title={`${xp} puntos de experiencia en total`}
+            >
+              Nv {nivel.nivel}
+            </span>
+            <div
+              className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-800"
+              title={
+                nivel.paraSubir
+                  ? `${nivel.enNivel}/${nivel.paraSubir} para el nivel ${nivel.nivel + 1}`
+                  : "Nivel máximo"
+              }
+            >
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all"
+                style={{
+                  width: nivel.paraSubir
+                    ? `${Math.round((nivel.enNivel / nivel.paraSubir) * 100)}%`
+                    : "100%",
+                }}
+              />
+            </div>
+          </div>
           <Link
             href="/studio"
             className="hidden text-xs text-indigo-300 underline-offset-2 hover:underline sm:block"
@@ -243,6 +311,37 @@ export default function GamePage() {
         para enfrentar el acertijo de POO.
       </p>
 
+      {chapter.xpParaRetos ? (
+        <div
+          className={
+            "mb-3 flex items-center gap-3 rounded-xl px-3 py-2 text-xs ring-1 " +
+            (xpCapitulo >= chapter.xpParaRetos
+              ? "bg-emerald-500/10 text-emerald-200 ring-emerald-500/30"
+              : "bg-orange-500/10 text-orange-200 ring-orange-500/30")
+          }
+        >
+          <span className="shrink-0 font-bold">
+            {xpCapitulo >= chapter.xpParaRetos ? "✓ Estás listo" : "⚔ Entrenamiento"}
+          </span>
+          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-800">
+            <div
+              className={
+                "h-full rounded-full transition-all " +
+                (xpCapitulo >= chapter.xpParaRetos
+                  ? "bg-emerald-400"
+                  : "bg-orange-400")
+              }
+              style={{
+                width: `${Math.min(100, Math.round((xpCapitulo / chapter.xpParaRetos) * 100))}%`,
+              }}
+            />
+          </div>
+          <span className="shrink-0 tabular-nums opacity-80">
+            {Math.min(xpCapitulo, chapter.xpParaRetos)}/{chapter.xpParaRetos} XP
+          </span>
+        </div>
+      ) : null}
+
       {error ? (
         <div className="rounded-xl bg-slate-900 p-6 text-center ring-1 ring-white/10">
           <p className="mb-2 font-semibold text-rose-300">
@@ -260,8 +359,15 @@ export default function GamePage() {
           frameSize={frodo.frameSize}
           nodeSheets={nodeSheets}
           completed={completed}
-          locked={activeNodeId !== null || showChapters || showIntro || showStats}
-          onEnterNode={setActiveNodeId}
+          lockedNodes={bloqueados}
+          locked={
+            activeNodeId !== null ||
+            showChapters ||
+            showIntro ||
+            showStats ||
+            aviso !== null
+          }
+          onEnterNode={handleEnterNode}
         />
       )}
 
@@ -287,7 +393,16 @@ export default function GamePage() {
       )}
 
       {activeNode &&
-        (activeNode.kind === "scroll" ? (
+        (activeNode.kind === "battle" ? (
+          <BattleModal
+            key={activeNode.node_id}
+            node={activeNode}
+            enemySheet={nodeSheets[activeNode.enemy.spriteId]}
+            nivel={nivel.nivel}
+            onWin={handleSolved}
+            onClose={() => setActiveNodeId(null)}
+          />
+        ) : activeNode.kind === "scroll" ? (
           <ScrollModal
             node={activeNode}
             onRead={handleSolved}
@@ -314,6 +429,21 @@ export default function GamePage() {
 
       {showIntro && frodo && !showChapters && (
         <ChapterIntro chapter={chapter} onStart={() => setShowIntro(false)} />
+      )}
+
+      {aviso && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl bg-slate-900 p-6 text-center shadow-2xl ring-1 ring-orange-500/30">
+            <p className="text-4xl">🔒</p>
+            <p className="mt-3 text-sm leading-relaxed text-slate-300">{aviso}</p>
+            <button
+              onClick={() => setAviso(null)}
+              className="mt-5 rounded-lg bg-amber-500 px-5 py-2 text-sm font-bold text-slate-900 hover:bg-amber-400"
+            >
+              Entendido
+            </button>
+          </div>
+        </div>
       )}
 
       {showStats && (

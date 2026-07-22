@@ -1,0 +1,172 @@
+/**
+ * Progresión RPG: experiencia, niveles y qué está desbloqueado.
+ *
+ * La experiencia NO se guarda: se deriva de los nodos de combate que constan
+ * como completados. Así el dato no puede desincronizarse del progreso real, no
+ * se puede farmear repitiendo un enemigo ya vencido, y las partidas guardadas
+ * de antes de existir el combate siguen siendo válidas sin migración.
+ */
+
+import type { BattleNode, Chapter, MapNode } from "./types";
+import { completedOf, type Progress } from "./progress";
+
+/**
+ * Experiencia total necesaria para alcanzar cada nivel (el índice ES el nivel).
+ * Tabla explícita y no fórmula: se toca a mano al equilibrar los capítulos.
+ */
+const UMBRALES = [
+  0, // (nivel 0 no existe)
+  0, // 1 — recién salido de Bolsón Cerrado
+  60, // 2
+  160, // 3
+  300, // 4
+  480, // 5
+  700, // 6
+  960, // 7
+  1260, // 8
+  1600, // 9
+  1980, // 10
+  2400, // 11
+  2860, // 12
+  3360, // 13
+  3900, // 14
+  4480, // 15
+  5100, // 16
+];
+
+export const NIVEL_MAXIMO = UMBRALES.length - 1;
+
+export interface NivelInfo {
+  nivel: number;
+  /** Experiencia acumulada dentro del nivel actual. */
+  enNivel: number;
+  /** Experiencia que pide el nivel actual para completarse (0 si es el máximo). */
+  paraSubir: number;
+}
+
+/** Nivel y avance dentro de él a partir de la experiencia total. */
+export function nivelDe(xp: number): NivelInfo {
+  let nivel = 1;
+  while (nivel < NIVEL_MAXIMO && xp >= UMBRALES[nivel + 1]) nivel++;
+  const base = UMBRALES[nivel];
+  const techo = nivel < NIVEL_MAXIMO ? UMBRALES[nivel + 1] : base;
+  return { nivel, enNivel: xp - base, paraSubir: techo - base };
+}
+
+/** Vida con la que entras a un combate: subir de nivel te da margen de error. */
+export function vidaMaxima(nivel: number): number {
+  return 3 + nivel;
+}
+
+export function esBatalla(n: MapNode): n is BattleNode {
+  return n.kind === "battle";
+}
+
+/** Enemigos de un capítulo, en orden de aparición. */
+export function batallasDe(chapter: Chapter): BattleNode[] {
+  return chapter.nodes.filter(esBatalla);
+}
+
+/** El jefe del capítulo, si lo tiene. */
+export function jefeDe(chapter: Chapter): BattleNode | undefined {
+  return batallasDe(chapter).find((b) => b.enemy.boss);
+}
+
+/** Experiencia ganada en un capítulo concreto. */
+export function xpDeCapitulo(chapter: Chapter, completados: Set<string>): number {
+  return batallasDe(chapter)
+    .filter((b) => completados.has(b.node_id))
+    .reduce((suma, b) => suma + b.enemy.xp, 0);
+}
+
+/** Experiencia total de la partida, sumando todos los capítulos. */
+export function xpTotal(progress: Progress, capitulos: Chapter[]): number {
+  return capitulos.reduce(
+    (suma, c) => suma + xpDeCapitulo(c, completedOf(progress, c.chapter)),
+    0,
+  );
+}
+
+/** ¿Se puede abrir ya un nodo? Y si no, por qué. */
+export interface Bloqueo {
+  abierto: boolean;
+  /** Explicación para la interfaz cuando está cerrado. */
+  motivo?: string;
+}
+
+/**
+ * Reglas de acceso a un nodo:
+ * - Los retos de código piden experiencia ganada en el propio capítulo.
+ * - El jefe pide tener resueltos todos los retos de código del capítulo.
+ * - Pergaminos, enigmas y enemigos normales están siempre abiertos: son
+ *   justamente la forma de conseguir lo que piden los otros dos.
+ */
+export function estadoNodo(
+  node: MapNode,
+  chapter: Chapter,
+  completados: Set<string>,
+): Bloqueo {
+  const kind = node.kind ?? "challenge";
+
+  if (kind === "challenge" && chapter.xpParaRetos) {
+    const xp = xpDeCapitulo(chapter, completados);
+    if (xp < chapter.xpParaRetos) {
+      return {
+        abierto: false,
+        motivo:
+          `Te faltan ${chapter.xpParaRetos - xp} puntos de experiencia para ` +
+          `enfrentar este acertijo. Vence a los enemigos del capítulo.`,
+      };
+    }
+  }
+
+  if (kind === "battle" && (node as BattleNode).enemy.boss) {
+    const retos = chapter.nodes.filter((n) => (n.kind ?? "challenge") === "challenge");
+    const pendientes = retos.filter((r) => !completados.has(r.node_id));
+    if (pendientes.length) {
+      return {
+        abierto: false,
+        motivo:
+          `No estás listo. Resuelve los ${pendientes.length} acertijo(s) de ` +
+          `código que quedan antes de enfrentarte a ${(node as BattleNode).enemy.name}.`,
+      };
+    }
+  }
+
+  return { abierto: true };
+}
+
+/**
+ * ¿Está desbloqueado el capítulo? Requiere haber derrotado al jefe del capítulo
+ * que lo precede.
+ *
+ * La segunda condición existe por compatibilidad: quien ya se había terminado un
+ * capítulo antes de que existieran los jefes no debe encontrárselo bloqueado.
+ */
+export function capituloDesbloqueado(
+  chapter: Chapter,
+  progress: Progress,
+  capitulos: Chapter[],
+): Bloqueo {
+  if (!chapter.unlockedBy) return { abierto: true };
+
+  const previo = capitulos.find((c) => c.chapter === chapter.unlockedBy);
+  if (!previo) return { abierto: true };
+
+  const hechos = completedOf(progress, previo.chapter);
+  const jefe = jefeDe(previo);
+  if (jefe && hechos.has(jefe.node_id)) return { abierto: true };
+
+  // Partidas anteriores al combate: valió con resolver todo lo que había.
+  const sinCombate = previo.nodes.filter((n) => !esBatalla(n));
+  if (sinCombate.length && sinCombate.every((n) => hechos.has(n.node_id))) {
+    return { abierto: true };
+  }
+
+  return {
+    abierto: false,
+    motivo: jefe
+      ? `Derrota a ${jefe.enemy.name} en el capítulo ${previo.chapter} para abrir este camino.`
+      : `Completa el capítulo ${previo.chapter} primero.`,
+  };
+}

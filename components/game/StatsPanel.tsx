@@ -19,7 +19,9 @@ function topicOf(n: MapNode): string {
     ? n.scroll.topic
     : n.kind === "quiz"
       ? n.quiz.topic
-      : n.poo_challenge.topic;
+      : n.kind === "battle"
+        ? n.enemy.name
+        : n.poo_challenge.topic;
 }
 
 /** Área de preparación a la que pertenece cada capítulo. */
@@ -34,7 +36,7 @@ function areaOf(chapter: number): string {
 function targetOf(n: MapNode): number | undefined {
   return n.kind === "quiz"
     ? n.quiz.timeLimitSec
-    : n.kind === "scroll"
+    : n.kind === "scroll" || n.kind === "battle"
       ? undefined
       : n.poo_challenge.timeLimitSec;
 }
@@ -47,6 +49,7 @@ export default function StatsPanel({ progress, onClose }: Props) {
     challenge: { total: 0, done: 0 },
     scroll: { total: 0, done: 0 },
     quiz: { total: 0, done: 0 },
+    battle: { total: 0, done: 0 },
   };
   const porCapitulo: {
     cap: number;
@@ -165,6 +168,7 @@ export default function StatsPanel({ progress, onClose }: Props) {
                 ["Retos", porTipo.challenge, "text-amber-300"],
                 ["Pergaminos", porTipo.scroll, "text-sky-300"],
                 ["Enigmas", porTipo.quiz, "text-violet-300"],
+                ["Combates", porTipo.battle, "text-orange-300"],
               ].map(([label, v, color]) => {
                 const val = v as { total: number; done: number };
                 return (
