@@ -20,6 +20,12 @@ export interface Progress {
   code?: Record<string, string>;
   /** Métricas al resolver cada nodo, para la pantalla de estadísticas. */
   stats?: Record<string, NodeStats>;
+  /**
+   * Personaje con el que se juega. Los desbloqueados se derivan de los jefes
+   * vencidos; esto sólo guarda CUÁL está elegido. Campo opcional: las partidas
+   * anteriores simplemente juegan con Frodo.
+   */
+  hero?: string;
 }
 
 /** Cómo te fue en un nodo concreto. */
@@ -51,6 +57,7 @@ export function loadProgress(): Progress {
       lastChapter: parsed.lastChapter ?? 1,
       code: parsed.code ?? {}, // partidas anteriores no traían estos campos
       stats: parsed.stats ?? {},
+      hero: parsed.hero,
     };
   } catch {
     return EMPTY; // localStorage bloqueado o JSON corrupto
@@ -84,6 +91,11 @@ export function withNodeCompleted(
     ...progress,
     completed: { ...progress.completed, [key]: [...prev, nodeId] },
   };
+}
+
+/** Devuelve un progreso nuevo con otro personaje elegido. */
+export function withHero(progress: Progress, hero: string): Progress {
+  return { ...progress, hero };
 }
 
 /** Devuelve un progreso nuevo con el capítulo actual actualizado. */

@@ -7,7 +7,7 @@
  * de antes de existir el combate siguen siendo válidas sin migración.
  */
 
-import type { BattleNode, Chapter, MapNode } from "./types";
+import type { BattleNode, Chapter, MapNode, Reward } from "./types";
 import { completedOf, type Progress } from "./progress";
 
 /**
@@ -169,4 +169,40 @@ export function capituloDesbloqueado(
       ? `Derrota a ${jefe.enemy.name} en el capítulo ${previo.chapter} para abrir este camino.`
       : `Completa el capítulo ${previo.chapter} primero.`,
   };
+}
+
+/**
+ * Personajes jugables desbloqueados. Como la experiencia, se derivan de los
+ * jefes vencidos en vez de guardarse: no hay nada que migrar ni que pueda
+ * quedar desincronizado. Frodo va siempre el primero.
+ */
+export function heroesDesbloqueados(
+  progress: Progress,
+  capitulos: Chapter[],
+): Reward[] {
+  const base: Reward = {
+    hero: "frodo",
+    name: "Frodo",
+    blurb: "El Portador del Anillo. Con quien empieza todo.",
+  };
+  const ganados: Reward[] = [];
+  for (const c of capitulos) {
+    const hechos = completedOf(progress, c.chapter);
+    for (const b of batallasDe(c)) {
+      if (b.enemy.reward && hechos.has(b.node_id)) ganados.push(b.enemy.reward);
+    }
+  }
+  // Sin repetidos, por si dos jefes premiaran al mismo personaje.
+  const vistos = new Set<string>();
+  return [base, ...ganados].filter((r) =>
+    vistos.has(r.hero) ? false : (vistos.add(r.hero), true),
+  );
+}
+
+/** El personaje elegido, si sigue desbloqueado; si no, Frodo. */
+export function heroActivo(progress: Progress, capitulos: Chapter[]): string {
+  const abiertos = heroesDesbloqueados(progress, capitulos);
+  return abiertos.some((h) => h.hero === progress.hero)
+    ? (progress.hero as string)
+    : "frodo";
 }

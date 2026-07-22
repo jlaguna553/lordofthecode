@@ -25,11 +25,16 @@ estudiar.
 | Vencer enemigos normales (⚔) | Experiencia hasta llegar al `xpParaRetos` del capítulo |
 | Alcanzar ese umbral | Se abren los retos de código del capítulo |
 | Resolver todos los retos | Se abre el jefe (☠) |
-| Vencer al jefe | Se desbloquea el capítulo siguiente |
+| Vencer al jefe | Recompensa (un aliado jugable) + salto automático al capítulo siguiente |
 
 En combate, cada acierto quita un punto de vida al enemigo y cada fallo te
 quita a ti `damage`. Tu vida máxima crece con el nivel (`3 + nivel`), así que
 subir de nivel se traduce en margen de error. Perder no penaliza: se reintenta.
+
+Al caer un jefe aparece una pantalla de **recompensa**: un personaje secundario
+del episodio (Sam, Merry, Aragorn, Pippin…) se suma a la Comunidad como **héroe
+jugable**, y el botón continúa directo al capítulo siguiente. Los héroes
+desbloqueados se eligen desde 🦸 Héroe y con ellos se recorre el mapa.
 
 **La experiencia no se guarda**: se deriva de los nodos de combate marcados
 como completados ([lib/game/rpg.ts](lib/game/rpg.ts)). Así no puede
@@ -52,8 +57,9 @@ TypeScript ni el build detectan — deja el capítulo encallado — y ya cazó u
 **Escritorio:** `WASD` o flechas para moverse, `E` para interactuar con el
 marcador que tengas al lado.
 
-**Móvil:** cruceta y botón `E` en pantalla, que aparecen solos en dispositivos
-de puntero grueso.
+**Móvil:** un **joystick analógico** y el botón `E`, que aparecen solos en
+dispositivos de puntero grueso. El joystick es de dirección libre y la velocidad
+es proporcional a cuánto inclines el pomo, con zona muerta central.
 
 La ventana de juego se mide en TILES, no en píxeles: en un móvil el lienzo baja
 a unos 370 px, así que mostrar los 22×14 tiles del escritorio dejaría cada tile

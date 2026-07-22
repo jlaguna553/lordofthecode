@@ -11,9 +11,9 @@ export const CHAPTER_1: Chapter = {
   lore: "Frodo debe abandonar Bolsón Cerrado y cruzar la Comarca hacia Los Gamos, evadiendo a los Jinetes Negros que buscan el Anillo.",
   // El mapa desborda la pantalla a propósito: hay que recorrerlo para dar con
   // los enemigos que dan la experiencia necesaria para los acertijos.
-  mapSize: { cols: 34, rows: 20 },
+  mapSize: { cols: 44, rows: 26 },
   spawn: { x: 2, y: 9 },
-  xpParaRetos: 40,
+  xpParaRetos: 65,
   scenery: {
     pathRows: [9],
     pond: { x: 16, y: 10, w: 5, h: 3 },
@@ -54,6 +54,17 @@ export const CHAPTER_1: Chapter = {
       { type: "rock", x: 32, y: 11 },
       { type: "rock", x: 19, y: 15 },
       { type: "rock", x: 12, y: 18 },
+      { type: "tree", x: 5, y: 21 },
+      { type: "tree", x: 11, y: 23 },
+      { type: "tree", x: 17, y: 22 },
+      { type: "tree", x: 24, y: 21 },
+      { type: "tree", x: 30, y: 23 },
+      { type: "tree", x: 38, y: 20 },
+      { type: "tree", x: 41, y: 14 },
+      { type: "rock", x: 20, y: 23 },
+      { type: "rock", x: 35, y: 17 },
+      { type: "rock", x: 40, y: 22 },
+      { type: "rock", x: 27, y: 19 },
     ],
   },
   companions: ["sam"],
@@ -72,7 +83,7 @@ export const CHAPTER_1: Chapter = {
         spriteId: "aldeano",
         hp: 2,
         damage: 1,
-        xp: 20,
+        xp: 25,
         taunt: "«¿Bolsón, dice? Conozco a alguien muy interesado en ese apellido…»",
         questions: [
           {
@@ -190,6 +201,12 @@ export const CHAPTER_1: Chapter = {
         xp: 45,
         boss: true,
         taunt: "«El Anillo… ¡el Anillo va a Mordor, y tú con él!»",
+        reward: {
+          hero: "sam",
+          name: "Samsagaz Gamyi",
+          blurb:
+            "El jardinero leal que juró no dejarte solo. Desde ahora puedes jugar con Sam.",
+        },
         questions: [
           {
             question:
@@ -242,6 +259,53 @@ export const CHAPTER_1: Chapter = {
             correct: 0,
             explanation:
               "Se ejecuta solo al hacer `new` y es tu única oportunidad de exigir lo imprescindible. Si un Hobbit no puede existir sin nombre, pídelo en el constructor: así es imposible construir uno inválido, y te ahorras validar en todos los demás métodos.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c1_perro_negro",
+      kind: "battle",
+      title: "Perro entre los setos",
+      lore_intro:
+        "En los campos del sur de Los Gamos, un perro grande y flaco gruñe desde la maleza. No es de ninguna granja de por aquí.",
+      position: { x: 8, y: 22 },
+      spriteId: "orco",
+      enemy: {
+        name: "Can del Nazgûl",
+        spriteId: "orco",
+        hp: 3,
+        damage: 1,
+        xp: 25,
+        taunt: "El animal husmea el aire buscando el olor del Anillo.",
+        questions: [
+          {
+            question:
+              "¿Qué visibilidad usarías para una propiedad que sólo debe tocar la propia clase?",
+            options: ["private", "public", "protected", "final"],
+            correct: 0,
+            explanation:
+              "`private` es el cerrojo más estricto: ni las clases hijas la ven. Es el punto de partida recomendado — abres a `protected` o `public` sólo cuando aparece una necesidad real.",
+          },
+          {
+            question:
+              "Declaras `public function __construct(public string $nombre) {}`. ¿Qué visibilidad tendrá la propiedad `$nombre`?",
+            options: ["public", "private", "protected", "ninguna: es sólo un parámetro"],
+            correct: 0,
+            explanation:
+              "La promoción de propiedades usa la visibilidad que pongas ANTES del parámetro. Aquí `public`, así que `$obj->nombre` se lee desde fuera. Es azúcar sintáctico de PHP 8 que declara, recibe y asigna en un solo sitio.",
+          },
+          {
+            question: "¿Qué es una instancia?",
+            options: [
+              "Un objeto concreto creado a partir de una clase",
+              "El nombre técnico de una clase",
+              "Un método que devuelve un objeto",
+              "Una propiedad estática",
+            ],
+            correct: 0,
+            explanation:
+              "La clase es el molde; la instancia es cada objeto fabricado con ese molde por `new`. Dos instancias de la misma clase tienen las mismas propiedades pero valores independientes.",
           },
         ],
       },
@@ -395,15 +459,24 @@ export const CHAPTER_2: Chapter = {
   chapter: 2,
   title: "El Bosque Viejo y los Túmulos",
   lore: "Más allá de la Cerca, los árboles del Bosque Viejo tienen voluntad propia y las nieblas de los Túmulos guardan a los muertos. Sólo el canto de Tom Bombadil deshace sus hechizos.",
-  mapSize: { cols: 34, rows: 20 },
+  mapSize: { cols: 44, rows: 26 },
   spawn: { x: 2, y: 7 },
-  xpParaRetos: 55,
+  xpParaRetos: 85,
   unlockedBy: 1,
   scenery: {
     ground: "grassDark", // el Bosque Viejo es sombrío
     pathRows: [7],
     pond: { x: 3, y: 11, w: 6, h: 3 }, // el río Tornasauce
     decor: [
+      { type: "pine", x: 6, y: 22 },
+      { type: "pine", x: 13, y: 24 },
+      { type: "pine", x: 21, y: 23 },
+      { type: "pine", x: 28, y: 22 },
+      { type: "pine", x: 36, y: 24 },
+      { type: "tree", x: 41, y: 20 },
+      { type: "rock", x: 17, y: 21 },
+      { type: "rock", x: 32, y: 19 },
+      { type: "rock", x: 39, y: 15 },
       // Coníferas densas al norte
       { type: "pine", x: 4, y: 3 },
       { type: "pine", x: 7, y: 2 },
@@ -441,7 +514,7 @@ export const CHAPTER_2: Chapter = {
         spriteId: "tumulario",
         hp: 3,
         damage: 1,
-        xp: 25,
+        xp: 30,
         taunt: "El sendero que acabas de cruzar ya no está donde lo dejaste.",
         questions: [
           {
@@ -556,6 +629,12 @@ export const CHAPTER_2: Chapter = {
         xp: 55,
         boss: true,
         taunt: "«Aquí yaceréis hasta que el sol se apague y la luna muera.»",
+        reward: {
+          hero: "merry",
+          name: "Meriadoc Brandigamo",
+          blurb:
+            "Espabilado y valiente bajo la broma. Merry se une a tus personajes jugables.",
+        },
         questions: [
           {
             question:
@@ -603,6 +682,57 @@ export const CHAPTER_2: Chapter = {
             correct: 0,
             explanation:
               "A diferencia de otros lenguajes, PHP NO encadena constructores solo: el de la hija sustituye al del padre por completo. Si el padre inicializaba algo, tienes que llamar tú a `parent::__construct()`. Es una de las fuentes de bugs más silenciosas al heredar.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c2_sauce",
+      kind: "battle",
+      title: "El Viejo Hombre-Sauce despierta",
+      lore_intro:
+        "En la ribera del Tornasauce, un sauce enorme mece las ramas sin que sople el viento. Da sueño sólo mirarlo — y ése es su método.",
+      position: { x: 10, y: 23 },
+      spriteId: "tumulario",
+      enemy: {
+        name: "Rama del Hombre-Sauce",
+        spriteId: "tumulario",
+        hp: 4,
+        damage: 1,
+        xp: 30,
+        taunt: "«Dormíos… dormíos bajo mis raíces, pequeños…»",
+        questions: [
+          {
+            question:
+              "¿Puede un método llamar a OTRO método de la misma clase? ¿Cómo?",
+            options: [
+              "Sí, con $this->otroMetodo()",
+              "No: cada método es independiente",
+              "Sí, pero sólo si el otro es público",
+              "Sí, con self::otroMetodo() siempre",
+            ],
+            correct: 0,
+            explanation:
+              "Dentro de un objeto, $this-> te da acceso a todos sus métodos, incluidos los privados. Es lo normal: partir una tarea grande en métodos pequeños que se llaman entre sí. self:: se reserva para lo estático.",
+          },
+          {
+            question: "Un método sin `return` explícito, ¿qué devuelve?",
+            options: ["null", "false", "0", "Una cadena vacía"],
+            correct: 0,
+            explanation:
+              "Si un método termina sin return (o hace return; a secas), PHP devuelve null. Por eso conviene declarar : void cuando no debe devolver nada: documenta la intención y evita que alguien use su resultado por error.",
+          },
+          {
+            question: "¿Qué diferencia hay entre un parámetro y una propiedad?",
+            options: [
+              "El parámetro vive sólo durante la llamada; la propiedad, mientras viva el objeto",
+              "Ninguna: son dos nombres para lo mismo",
+              "La propiedad no puede cambiar de valor",
+              "El parámetro pertenece a la clase",
+            ],
+            correct: 0,
+            explanation:
+              "Un parámetro es una variable local que existe mientras se ejecuta el método y desaparece al terminar. Una propiedad es memoria del objeto: persiste entre llamadas. El constructor suele copiar parámetros a propiedades justo por eso.",
           },
         ],
       },
@@ -763,9 +893,9 @@ export const CHAPTER_3: Chapter = {
   chapter: 3,
   title: "Bree y la Cima de los Vientos",
   lore: "En El Póney Pisador aguarda un montaraz encapuchado al que llaman Trancos. Tras él, el camino asciende hasta Amon Sûl, donde cinco Jinetes Negros esperan bajo las ruinas.",
-  mapSize: { cols: 36, rows: 20 },
+  mapSize: { cols: 44, rows: 26 },
   spawn: { x: 2, y: 9 },
-  xpParaRetos: 70,
+  xpParaRetos: 105,
   unlockedBy: 2,
   scenery: {
     ground: "dry", // tierras pardas del camino del Este
@@ -783,6 +913,14 @@ export const CHAPTER_3: Chapter = {
         text: "Amon Sûl está ahí arriba. Al descubierto, y los Nueve lo saben." },
     ],
     decor: [
+      { type: "tree", x: 7, y: 22 },
+      { type: "tree", x: 15, y: 24 },
+      { type: "house", x: 22, y: 22, label: "Casa de Helechal" },
+      { type: "tree", x: 30, y: 23 },
+      { type: "tree", x: 38, y: 21 },
+      { type: "rock", x: 26, y: 20 },
+      { type: "rock", x: 34, y: 24 },
+      { type: "rock", x: 41, y: 17 },
       // Bree: el pueblo
       { type: "house", x: 4, y: 7, label: "El Póney Pisador" },
       { type: "house", x: 9, y: 7 },
@@ -819,7 +957,7 @@ export const CHAPTER_3: Chapter = {
         spriteId: "aldeano",
         hp: 3,
         damage: 1,
-        xp: 30,
+        xp: 35,
         taunt: "«Cuatro medianos y un montaraz. Alguien pagará bien por saberlo.»",
         questions: [
           {
@@ -936,6 +1074,12 @@ export const CHAPTER_3: Chapter = {
         xp: 70,
         boss: true,
         taunt: "«Ningún hombre vivo puede detenerme.»",
+        reward: {
+          hero: "aragorn",
+          name: "Aragorn",
+          blurb:
+            "El Montaraz que os guió desde Bree. Trancos pasa a estar disponible como héroe.",
+        },
         questions: [
           {
             question:
@@ -982,6 +1126,63 @@ export const CHAPTER_3: Chapter = {
             correct: 0,
             explanation:
               "La herencia ata a la hija a los detalles internos del padre para siempre. La composición («tiene un») intercambia piezas sin tocar nada. La regla práctica: si dudas de si es «es un» o «tiene un», es «tiene un».",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c3_montaraz_falso",
+      kind: "battle",
+      title: "El que dice ser guía",
+      lore_intro:
+        "Al sur de Bree, un hombre embozado ofrece llevarte «por un atajo seguro». Cobra por adelantado y su acento no es de la comarca.",
+      position: { x: 12, y: 23 },
+      spriteId: "orco",
+      enemy: {
+        name: "Espía de Isengard",
+        spriteId: "orco",
+        hp: 4,
+        damage: 1,
+        xp: 35,
+        taunt: "«El camino corto, medianos. Confiad en mí.»",
+        questions: [
+          {
+            question:
+              "`class B extends A {}`. Si `A` tiene un método protegido `paso()`, ¿puede `B` llamarlo?",
+            options: [
+              "Sí: protected es visible para las clases hijas",
+              "No: protected es como private",
+              "Sólo si B lo declara también",
+              "Sólo desde el constructor",
+            ],
+            correct: 0,
+            explanation:
+              "`protected` está pensado exactamente para esto: compartir con las hijas lo que sigue oculto para el exterior. Es el punto medio entre `private` (ni las hijas) y `public` (todo el mundo).",
+          },
+          {
+            question:
+              "Al sobrescribir un método, ¿puedes cambiar el tipo de retorno por uno más específico?",
+            options: [
+              "Sí: covarianza. Puedes devolver un subtipo del tipo original",
+              "No: debe ser idéntico",
+              "Sí, cualquier tipo distinto",
+              "Sólo si el método es estático",
+            ],
+            correct: 0,
+            explanation:
+              "PHP permite covarianza en el retorno: si el padre devuelve `Animal`, la hija puede devolver `Perro`. Al revés no — los parámetros admiten contravarianza. La regla de fondo es siempre la sustituibilidad: la hija debe poder usarse donde se esperaba al padre.",
+          },
+          {
+            question: "¿Qué es una clase base o superclase?",
+            options: [
+              "La clase de la que otra hereda (el padre)",
+              "La primera clase que se declara en el fichero",
+              "Una clase que no se puede instanciar",
+              "La clase con más métodos",
+            ],
+            correct: 0,
+            explanation:
+              "Superclase, clase base y clase padre son lo mismo: aquella de la que otra extiende. La que hereda es la subclase, clase derivada o hija. Es vocabulario que conviene reconocer en cualquier documentación.",
           },
         ],
       },
@@ -1155,9 +1356,9 @@ export const CHAPTER_4: Chapter = {
   chapter: 4,
   title: "Huida al Vado de Bruinen",
   lore: "Frodo, herido por la hoja de Morgul, huye a lomos de Asfaloth. Los Nueve galopan tras él hasta las aguas del Bruinen, donde el poder de Elrond aguarda para desbordar el río.",
-  mapSize: { cols: 36, rows: 20 },
+  mapSize: { cols: 44, rows: 26 },
   spawn: { x: 2, y: 7 },
-  xpParaRetos: 80,
+  xpParaRetos: 120,
   unlockedBy: 3,
   scenery: {
     ground: "grass",
@@ -1175,6 +1376,13 @@ export const CHAPTER_4: Chapter = {
       { type: "rock", x: 34, y: 13 },
       { type: "rock", x: 22, y: 12 },
       { type: "rock", x: 15, y: 18 },
+      { type: "tree", x: 9, y: 22 },
+      { type: "tree", x: 18, y: 24 },
+      { type: "tree", x: 27, y: 22 },
+      { type: "tree", x: 36, y: 23 },
+      { type: "rock", x: 22, y: 21 },
+      { type: "rock", x: 31, y: 24 },
+      { type: "rock", x: 40, y: 19 },
       { type: "pine", x: 5, y: 3 },
       { type: "pine", x: 9, y: 2 },
       { type: "pine", x: 13, y: 3 },
@@ -1205,7 +1413,7 @@ export const CHAPTER_4: Chapter = {
         spriteId: "nazgul",
         hp: 3,
         damage: 1,
-        xp: 35,
+        xp: 40,
         taunt: "«Somos nueve. Siempre nueve.»",
         questions: [
           {
@@ -1322,6 +1530,12 @@ export const CHAPTER_4: Chapter = {
         xp: 85,
         boss: true,
         taunt: "«Entréganos el Anillo, mediano. ¡Ahora!»",
+        reward: {
+          hero: "pippin",
+          name: "Peregrin Tuk",
+          blurb:
+            "Curioso hasta el peligro, y más resistente de lo que aparenta. Pippin se une.",
+        },
         questions: [
           {
             question:
@@ -1368,6 +1582,64 @@ export const CHAPTER_4: Chapter = {
             correct: 0,
             explanation:
               "`new static()` usa resolución estática tardía: construye la clase con la que se hizo la llamada. Con `new self()` habrías obtenido siempre el padre. Es exactamente lo que permite escribir un factory una vez en el padre y que funcione en todas las hijas.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c4_trasgo_montaraz",
+      kind: "battle",
+      title: "Emboscada junto al río",
+      lore_intro:
+        "Cerca ya del Bruinen, un trasgo montaraz salta desde las rocas. Lleva la marca del Ojo grabada en el escudo.",
+      position: { x: 14, y: 23 },
+      spriteId: "trasgo",
+      enemy: {
+        name: "Trasgo del Ojo",
+        spriteId: "trasgo",
+        hp: 4,
+        damage: 2,
+        xp: 40,
+        taunt: "«¡El río no os salvará esta vez!»",
+        questions: [
+          {
+            question:
+              "Declaras `const VELOCIDAD = 5;` en una clase. ¿Cómo la lees desde FUERA?",
+            options: [
+              "Caballo::VELOCIDAD",
+              "$caballo->VELOCIDAD",
+              "Caballo::$VELOCIDAD",
+              "$Caballo::VELOCIDAD",
+            ],
+            correct: 0,
+            explanation:
+              "Las constantes de clase se leen con `NombreClase::CONSTANTE`, sin `$` en ningún sitio. Desde dentro usarías `self::VELOCIDAD` o `static::VELOCIDAD`. Ponerle `$` la confundiría con una propiedad estática.",
+          },
+          {
+            question:
+              "¿Cuál es una ventaja de usar una constante frente a escribir el número 5 directamente en el código?",
+            options: [
+              "Un nombre explica qué significa y se cambia en un solo sitio",
+              "Es más rápida en tiempo de ejecución",
+              "Ocupa menos memoria",
+              "Permite cambiarla mientras corre el programa",
+            ],
+            correct: 0,
+            explanation:
+              "El valor 5 suelto por el código es un «número mágico»: nadie sabe qué representa ni cuántas veces aparece. `VELOCIDAD_MAXIMA` se explica solo y se ajusta en un único punto. La constante no es más rápida — es más legible y mantenible.",
+          },
+          {
+            question:
+              "Un método estático `Contador::total()`. ¿Necesitas crear un objeto para llamarlo?",
+            options: [
+              "No: los estáticos se llaman sobre la clase, sin instancia",
+              "Sí, siempre",
+              "Sí, al menos uno debe existir",
+              "Depende de si la clase es final",
+            ],
+            correct: 0,
+            explanation:
+              "Un método estático pertenece a la clase, no a ningún objeto: `Contador::total()` funciona sin haber hecho `new` nunca. Justo por eso dentro no tiene `$this`.",
           },
         ],
       },

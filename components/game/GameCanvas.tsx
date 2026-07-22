@@ -61,10 +61,13 @@ export default function GameCanvas({
   const hostRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<unknown>(null);
   /**
-   * Mando táctil: la escena lee estas banderas cada frame, igual que leería
-   * el teclado. Un ref (y no estado) para no repintar React 60 veces/segundo.
+   * Joystick táctil: vector normalizado (-1..1) que la escena lee cada frame.
+   * Va en un ref y el pomo se mueve escribiendo el estilo a mano, para no
+   * repintar React sesenta veces por segundo mientras arrastras el dedo.
    */
-  const touchRef = useRef({ up: false, down: false, left: false, right: false });
+  const touchRef = useRef({ x: 0, y: 0 });
+  const baseRef = useRef<HTMLDivElement>(null);
+  const knobRef = useRef<HTMLDivElement>(null);
   const [isTouch, setIsTouch] = useState(false);
   const enterRef = useRef(onEnterNode);
   const lockedNodesRef = useRef(lockedNodes);
@@ -650,17 +653,27 @@ export default function GameCanvas({
           const c = this.cursors;
           const k = this.keys;
           const t = touchRef.current;
-          if (c.left.isDown || k.A.isDown || t.left) vx = -speed;
-          else if (c.right.isDown || k.D.isDown || t.right) vx = speed;
-          if (c.up.isDown || k.W.isDown || t.up) vy = -speed;
-          else if (c.down.isDown || k.S.isDown || t.down) vy = speed;
+
+          if (t.x || t.y) {
+            // El joystick manda: es analógico, así que inclinarlo poco camina
+            // despacio. Se normaliza para que la diagonal no sea más rápida.
+            const mag = Math.min(1, Math.hypot(t.x, t.y));
+            const ang = Math.atan2(t.y, t.x);
+            vx = Math.cos(ang) * speed * mag;
+            vy = Math.sin(ang) * speed * mag;
+          } else {
+            if (c.left.isDown || k.A.isDown) vx = -speed;
+            else if (c.right.isDown || k.D.isDown) vx = speed;
+            if (c.up.isDown || k.W.isDown) vy = -speed;
+            else if (c.down.isDown || k.S.isDown) vy = speed;
+          }
           p.setVelocity(vx, vy);
 
+          // La fila de sprites LPC se elige por el eje dominante.
           let dir: keyof typeof DIR_ROW | null = null;
-          if (vx < 0) dir = "left";
-          else if (vx > 0) dir = "right";
-          else if (vy < 0) dir = "up";
-          else if (vy > 0) dir = "down";
+          if (Math.abs(vx) > Math.abs(vy)) dir = vx < 0 ? "left" : "right";
+          else if (vy !== 0) dir = vy < 0 ? "up" : "down";
+          if (vx === 0 && vy === 0) dir = null;
           if (dir) {
             p.anims.play(`walk-${dir}-frodo`, true);
             this.lastDir = dir;
@@ -780,35 +793,44 @@ export default function GameCanvas({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter, frodoUrl, cols, frameSize, nodeSheets]);
 
-  /** Un botón del mando: se activa al tocarlo y se suelta al levantar el dedo. */
-  const dpad = (
-    dir: "up" | "down" | "left" | "right",
-    glifo: string,
-    clase: string,
-  ) => (
-    <button
-      type="button"
-      aria-label={dir}
-      className={`${clase} flex h-12 w-12 select-none items-center justify-center rounded-lg bg-slate-700/80 text-lg font-bold text-slate-100 ring-1 ring-white/20 active:bg-amber-500 active:text-slate-900`}
-      onPointerDown={(e) => {
-        e.preventDefault();
-        e.currentTarget.setPointerCapture(e.pointerId);
-        touchRef.current[dir] = true;
-      }}
-      onPointerUp={() => {
-        touchRef.current[dir] = false;
-      }}
-      onPointerCancel={() => {
-        touchRef.current[dir] = false;
-      }}
-      onPointerLeave={() => {
-        touchRef.current[dir] = false;
-      }}
-      onContextMenu={(e) => e.preventDefault()}
-    >
-      {glifo}
-    </button>
-  );
+  // ---- Joystick analógico ----
+  const RADIO = 46; // recorrido máximo del pomo, en píxeles
+
+  /** Coloca el pomo y publica el vector que leerá la escena. */
+  const moverPomo = (dx: number, dy: number) => {
+    const dist = Math.hypot(dx, dy);
+    const factor = dist > RADIO ? RADIO / dist : 1;
+    const px = dx * factor;
+    const py = dy * factor;
+    if (knobRef.current) {
+      knobRef.current.style.transform = `translate(${px}px, ${py}px)`;
+    }
+    // Zona muerta: un dedo apoyado sin intención no debe mover a nadie.
+    const mag = Math.hypot(px, py) / RADIO;
+    if (mag < 0.18) {
+      touchRef.current.x = 0;
+      touchRef.current.y = 0;
+    } else {
+      touchRef.current.x = px / RADIO;
+      touchRef.current.y = py / RADIO;
+    }
+  };
+
+  const soltarPomo = () => {
+    touchRef.current.x = 0;
+    touchRef.current.y = 0;
+    if (knobRef.current) knobRef.current.style.transform = "translate(0px, 0px)";
+  };
+
+  /** Desplazamiento del dedo respecto al centro de la base. */
+  const desdeCentro = (e: React.PointerEvent) => {
+    const r = baseRef.current?.getBoundingClientRect();
+    if (!r) return { dx: 0, dy: 0 };
+    return {
+      dx: e.clientX - (r.left + r.width / 2),
+      dy: e.clientY - (r.top + r.height / 2),
+    };
+  };
 
   return (
     <div className="mx-auto w-full max-w-[704px]">
@@ -818,20 +840,45 @@ export default function GameCanvas({
       />
 
       {isTouch && (
-        <div className="mt-2 flex touch-none items-center justify-between gap-4 px-2 select-none">
-          {/* Cruceta */}
-          <div className="grid grid-cols-3 grid-rows-3 gap-1">
-            {dpad("up", "▲", "col-start-2 row-start-1")}
-            {dpad("left", "◀", "col-start-1 row-start-2")}
-            {dpad("right", "▶", "col-start-3 row-start-2")}
-            {dpad("down", "▼", "col-start-2 row-start-3")}
+        <div className="mt-2 flex touch-none items-center justify-between gap-4 px-3 select-none">
+          {/* Joystick: arrastra el pomo y Frodo va en esa dirección */}
+          <div
+            ref={baseRef}
+            role="application"
+            aria-label="joystick"
+            className="relative flex h-28 w-28 shrink-0 items-center justify-center rounded-full bg-slate-800/70 ring-1 ring-white/15"
+            onPointerDown={(e) => {
+              e.preventDefault();
+              e.currentTarget.setPointerCapture(e.pointerId);
+              const { dx, dy } = desdeCentro(e);
+              moverPomo(dx, dy);
+            }}
+            onPointerMove={(e) => {
+              // Sólo mientras el dedo sigue apoyado sobre este elemento.
+              if (e.buttons === 0 && e.pointerType === "mouse") return;
+              if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
+              const { dx, dy } = desdeCentro(e);
+              moverPomo(dx, dy);
+            }}
+            onPointerUp={soltarPomo}
+            onPointerCancel={soltarPomo}
+            onLostPointerCapture={soltarPomo}
+            onContextMenu={(e) => e.preventDefault()}
+          >
+            {/* guía de ejes, muy tenue */}
+            <span className="pointer-events-none absolute h-px w-16 bg-white/10" />
+            <span className="pointer-events-none absolute h-16 w-px bg-white/10" />
+            <div
+              ref={knobRef}
+              className="pointer-events-none h-12 w-12 rounded-full bg-slate-500/90 ring-2 ring-white/30 transition-[background-color]"
+            />
           </div>
 
           {/* Acción: el mismo efecto que la tecla E */}
           <button
             type="button"
             aria-label="interactuar"
-            className="h-16 w-16 select-none rounded-full bg-amber-500 text-lg font-black text-slate-900 ring-2 ring-amber-300/50 active:bg-amber-300"
+            className="h-20 w-20 select-none rounded-full bg-amber-500 text-xl font-black text-slate-900 ring-2 ring-amber-300/50 active:bg-amber-300"
             onPointerDown={(e) => {
               e.preventDefault();
               (

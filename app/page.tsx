@@ -9,10 +9,14 @@ import { CHAPTER_1, CHAPTERS, getChapter } from "@/data/chapters";
 import {
   capituloDesbloqueado,
   estadoNodo,
+  heroActivo,
+  heroesDesbloqueados,
+  jefeDe,
   nivelDe,
   xpDeCapitulo,
   xpTotal,
 } from "@/lib/game/rpg";
+import type { Reward } from "@/lib/game/types";
 import { isMuted, playSfx, setMuted } from "@/lib/game/audio";
 import {
   codeFor,
@@ -21,6 +25,7 @@ import {
   loadProgress,
   saveProgress,
   withCode,
+  withHero,
   withLastChapter,
   withStats,
   withNodeCompleted,
@@ -54,6 +59,12 @@ const StatsPanel = dynamic(() => import("@/components/game/StatsPanel"), {
 const BattleModal = dynamic(() => import("@/components/game/BattleModal"), {
   ssr: false,
 });
+const RewardModal = dynamic(() => import("@/components/game/RewardModal"), {
+  ssr: false,
+});
+const HeroPicker = dynamic(() => import("@/components/game/HeroPicker"), {
+  ssr: false,
+});
 
 export default function GamePage() {
   const [progress, setProgress] = useState<Progress>(emptyProgress);
@@ -61,6 +72,11 @@ export default function GamePage() {
   const [showChapters, setShowChapters] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [showStats, setShowStats] = useState(false);
+  const [showHeroes, setShowHeroes] = useState(false);
+  /** Recompensa a mostrar tras vencer a un jefe (con el capítulo destino). */
+  const [reward, setReward] = useState<{ data: Reward; next?: number } | null>(
+    null,
+  );
   const [mute, setMute] = useState(true); // se sincroniza tras hidratar
 
   const [frodo, setFrodo] = useState<PresetSheet | null>(null);
@@ -69,6 +85,8 @@ export default function GamePage() {
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
 
   const chapter = getChapter(currentChapter) ?? CHAPTER_1;
+  const heroes = useMemo(() => heroesDesbloqueados(progress, CHAPTERS), [progress]);
+  const heroId = useMemo(() => heroActivo(progress, CHAPTERS), [progress]);
   // Ref para que el guardado de código no dependa del capítulo en su clausura.
   const currentChapterRef = useRef(currentChapter);
   currentChapterRef.current = currentChapter;
@@ -99,6 +117,7 @@ export default function GamePage() {
               .filter((id): id is string => Boolean(id)),
             ...(chapter.scenery?.npcs ?? []).map((n) => n.spriteId),
             ...(chapter.companions ?? []),
+            ...heroes.map((h) => h.hero),
           ]),
         ];
         const sheets: Record<string, PresetSheet> = {};
@@ -109,7 +128,9 @@ export default function GamePage() {
             /* preset inexistente: el nodo se queda con su marcador */
           }
         }
-        const f = await buildPresetSheet(m, "frodo");
+        const f = await buildPresetSheet(m, heroId).catch(() =>
+          buildPresetSheet(m, "frodo"),
+        );
         if (cancelled) return;
         setNodeSheets(sheets);
         setFrodo(f);
@@ -123,7 +144,7 @@ export default function GamePage() {
     return () => {
       cancelled = true;
     };
-  }, [chapter]);
+  }, [chapter, heroId, heroes]);
 
   // Cada capítulo se abre con su tarjeta narrativa.
   useEffect(() => {
@@ -179,6 +200,39 @@ export default function GamePage() {
     setProgress((prev) => {
       let next = withNodeCompleted(prev, currentChapter, nodeId);
       if (stats) next = withStats(next, currentChapter, nodeId, stats);
+      saveProgress(next);
+      return next;
+    });
+
+    // ¿Se ha vencido al jefe? Entonces toca recompensa y salto de capítulo.
+    const jefe = jefeDe(chapter);
+    if (jefe && jefe.node_id === nodeId && jefe.enemy.reward) {
+      const siguiente = CHAPTERS.find(
+        (c) => c.unlockedBy === chapter.chapter,
+      )?.chapter;
+      setReward({ data: jefe.enemy.reward, next: siguiente });
+    }
+  }
+
+  /** Cerrar la recompensa: elegir al aliado y saltar al capítulo siguiente. */
+  function handleRewardContinue() {
+    const r = reward;
+    setReward(null);
+    setActiveNodeId(null);
+    if (!r) return;
+    // Estrena al recién desbloqueado como héroe activo.
+    setProgress((prev) => {
+      const next = withHero(prev, r.data.hero);
+      saveProgress(next);
+      return next;
+    });
+    if (r.next) handleSelectChapter(r.next);
+  }
+
+  function handleSelectHero(hero: string) {
+    setShowHeroes(false);
+    setProgress((prev) => {
+      const next = withHero(prev, hero);
       saveProgress(next);
       return next;
     });
@@ -254,6 +308,14 @@ export default function GamePage() {
           >
             📊 Estadísticas
           </button>
+          {heroes.length > 1 && (
+            <button
+              onClick={() => setShowHeroes(true)}
+              className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
+            >
+              🦸 Héroe
+            </button>
+          )}
           <button
             onClick={() => {
               const next = !mute;
@@ -368,6 +430,8 @@ export default function GamePage() {
             showChapters ||
             showIntro ||
             showStats ||
+            showHeroes ||
+            reward !== null ||
             aviso !== null
           }
           onEnterNode={handleEnterNode}
@@ -396,6 +460,7 @@ export default function GamePage() {
       )}
 
       {activeNode &&
+        !reward &&
         (activeNode.kind === "battle" ? (
           <BattleModal
             key={activeNode.node_id}
@@ -451,6 +516,29 @@ export default function GamePage() {
 
       {showStats && (
         <StatsPanel progress={progress} onClose={() => setShowStats(false)} />
+      )}
+
+      {reward && (
+        <RewardModal
+          reward={reward.data}
+          heroSheet={nodeSheets[reward.data.hero]}
+          nextChapterTitle={
+            reward.next
+              ? CHAPTERS.find((c) => c.chapter === reward.next)?.title
+              : undefined
+          }
+          onContinue={handleRewardContinue}
+        />
+      )}
+
+      {showHeroes && (
+        <HeroPicker
+          heroes={heroes}
+          current={heroId}
+          sheets={nodeSheets}
+          onSelect={handleSelectHero}
+          onClose={() => setShowHeroes(false)}
+        />
       )}
 
       {showChapters && (

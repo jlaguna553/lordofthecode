@@ -105,6 +105,18 @@ export interface Enemy {
   boss?: boolean;
   /** Frase que suelta al empezar el combate. */
   taunt?: string;
+  /** Recompensa por derrotarlo (normalmente sólo la dan los jefes). */
+  reward?: Reward;
+}
+
+/** Lo que se gana al derrotar a un jefe. */
+export interface Reward {
+  /** id de preset que pasa a ser jugable (ver data/presets.ts). */
+  hero: string;
+  /** Nombre visible del personaje desbloqueado. */
+  name: string;
+  /** Por qué se une y qué aporta, para la pantalla de recompensa. */
+  blurb: string;
 }
 
 /** Nodo de combate: se vence respondiendo bien antes de quedarte sin vida. */
