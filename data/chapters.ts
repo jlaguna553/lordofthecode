@@ -2304,8 +2304,9 @@ export const CHAPTER_6: Chapter = {
   chapter: 6,
   title: "Las Minas de Moria",
   lore: "Khazad-dûm, el reino subterráneo de los Enanos, hoy tomado por los trasgos. Bajo la montaña sólo importa una cosa: qué CONTRATO cumple cada cosa, no de qué está hecha. Y en el puente aguarda el Daño de Durin.",
-  mapSize: { cols: 24, rows: 14 },
+  mapSize: { cols: 44, rows: 26 },
   spawn: { x: 2, y: 7 },
+  xpParaRetos: 160,
   unlockedBy: 5,
   scenery: {
     ground: "darkstone", // las profundidades
@@ -2318,6 +2319,9 @@ export const CHAPTER_6: Chapter = {
       { spriteId: "esqueleto", x: 6, y: 3, label: "Enano caído" },
       { spriteId: "esqueleto", x: 16, y: 11 },
       { spriteId: "esqueleto", x: 21, y: 3 },
+      { spriteId: "esqueleto", x: 30, y: 18 },
+      { spriteId: "esqueleto", x: 37, y: 4 },
+      { spriteId: "esqueleto", x: 25, y: 9 },
     ],
     dialogues: [
       { x: 7, y: 7, speaker: "gimli", name: "Gimli",
@@ -2338,10 +2342,262 @@ export const CHAPTER_6: Chapter = {
       { type: "rock", x: 22, y: 8 },
       { type: "rock", x: 6, y: 12 },
       { type: "rock", x: 13, y: 9 },
+      // las galerías se hunden hacia el este, hacia el puente
+      { type: "rock", x: 26, y: 6 },
+      { type: "rock", x: 29, y: 11 },
+      { type: "rock", x: 32, y: 4 },
+      { type: "rock", x: 35, y: 9 },
+      { type: "rock", x: 38, y: 13 },
+      { type: "rock", x: 28, y: 16 },
+      { type: "rock", x: 34, y: 23 },
+      { type: "rock", x: 41, y: 18 },
+      { type: "rock", x: 23, y: 13 },
+      { type: "rock", x: 31, y: 24 },
     ],
   },
   companions: ["gandalf", "aragorn", "boromir", "gimli", "legolas", "sam"],
   nodes: [
+    // ---- Combates: interfaces y polimorfismo ----
+    {
+      node_id: "c6_trasgo_explorador",
+      kind: "battle",
+      title: "Trasgos en la oscuridad",
+      lore_intro:
+        "Cientos de ojos amarillos brotan de las grietas de las columnas. El primero salta hacia ti con un alarido metálico.",
+      position: { x: 27, y: 4 },
+      spriteId: "trasgo",
+      enemy: {
+        name: "Trasgo explorador",
+        spriteId: "trasgo",
+        hp: 4,
+        damage: 1,
+        xp: 50,
+        taunt: "«¡Carne! ¡Carne para los tambores!»",
+        questions: [
+          {
+            question: "¿Qué es una interfaz en PHP?",
+            options: [
+              "Un contrato de métodos que una clase se compromete a implementar",
+              "Una clase que no se puede instanciar pero tiene código",
+              "Una propiedad compartida por varias clases",
+              "Un tipo de método estático",
+            ],
+            correct: 0,
+            explanation:
+              "Una interfaz declara QUÉ métodos deben existir, sin decir CÓMO. No trae implementación (a diferencia de una clase abstracta). Quien la implementa se obliga a escribir todos sus métodos: es una promesa que el compilador hace cumplir.",
+          },
+          {
+            question:
+              "¿Con qué palabra clave una clase adopta una interfaz?",
+            options: ["implements", "extends", "uses", "interface"],
+            correct: 0,
+            explanation:
+              "`class Espada implements Arma`. `extends` es para heredar de una clase; `use` es para traits. Una clase puede `implements` varias interfaces a la vez (separadas por comas), aunque sólo pueda `extends` una clase.",
+          },
+          {
+            question:
+              "Si una clase declara `implements Arma` pero le falta un método de esa interfaz, ¿qué ocurre?",
+            options: [
+              "Error fatal: la clase no compila hasta implementarlo",
+              "Se ejecuta, pero el método devuelve null",
+              "Nada: la interfaz es sólo documentación",
+              "PHP crea el método vacío automáticamente",
+            ],
+            correct: 0,
+            explanation:
+              "La interfaz es un contrato que PHP verifica al cargar la clase: si falta un método, es error fatal inmediato. Esa garantía es justo su valor — sabes que cualquier objeto de tipo `Arma` responde a todos los métodos de `Arma`, sin excepción.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c6_trol_cavernas",
+      kind: "battle",
+      title: "El Trol de la Cámara",
+      lore_intro:
+        "La puerta de la Cámara de Mazarbul revienta y un trol de las cavernas mete el brazo, buscando a tientas. Huele mal y golpea peor.",
+      position: { x: 33, y: 21 },
+      spriteId: "troll",
+      enemy: {
+        name: "Trol de las cavernas",
+        spriteId: "troll",
+        hp: 6,
+        damage: 2,
+        xp: 55,
+        taunt: "El trol gruñe y arrastra una cadena rota por el suelo de piedra.",
+        questions: [
+          {
+            question: "¿Qué es el polimorfismo?",
+            options: [
+              "Tratar objetos de clases distintas de forma uniforme si comparten un tipo",
+              "Que una clase tenga muchos métodos",
+              "Heredar de varias clases a la vez",
+              "Cambiar el tipo de una variable en ejecución",
+            ],
+            correct: 0,
+            explanation:
+              "Poli-morfismo = «muchas formas». Si Espada, Hacha y Arco implementan `Arma`, puedes guardarlos todos en un array de `Arma` y llamar `$a->golpe()` sin saber cuál es cada uno: cada objeto responde a su manera. El código que los usa no necesita cambiar cuando añades un arma nueva.",
+          },
+          {
+            question:
+              "Tienes `function atacar(Arma $a)`. ¿Qué objetos acepta?",
+            options: [
+              "Cualquiera cuya clase implemente la interfaz Arma",
+              "Sólo objetos de una clase llamada exactamente Arma",
+              "Cualquier objeto, Arma sólo documenta",
+              "Sólo si Arma es una clase abstracta",
+            ],
+            correct: 0,
+            explanation:
+              "Declarar el parámetro con el tipo de la interfaz acepta CUALQUIER implementación: Espada, Hacha, lo que sea que cumpla el contrato `Arma`. Programas contra la interfaz, no contra la clase concreta — eso es lo que te deja añadir armas nuevas sin tocar `atacar()`.",
+          },
+          {
+            question:
+              "¿Por qué se dice «programa hacia una interfaz, no hacia una implementación»?",
+            options: [
+              "Para depender de lo que algo HACE, no de cómo está hecho: piezas intercambiables",
+              "Porque las interfaces son más rápidas",
+              "Porque así se usa menos memoria",
+              "Porque las clases concretas no se pueden testear",
+            ],
+            correct: 0,
+            explanation:
+              "Si tu código sólo conoce la interfaz `Repositorio`, puedes cambiar la implementación (MySQL por memoria, real por falsa en un test) sin tocar nada más. Depender de la clase concreta te ata a sus detalles. Es la base de la D en SOLID.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c6_capitan_trasgo",
+      kind: "battle",
+      title: "El capitán de la horda",
+      lore_intro:
+        "Un trasgo enorme, con armadura de placas robadas, ordena a los demás a golpe de látigo. Si cae él, la horda dudará.",
+      position: { x: 24, y: 22 },
+      spriteId: "orco",
+      enemy: {
+        name: "Capitán trasgo",
+        spriteId: "orco",
+        hp: 5,
+        damage: 2,
+        xp: 55,
+        taunt: "«El Portador del Anillo es MÍO. ¡Rodeadlos!»",
+        questions: [
+          {
+            question:
+              "¿Puede una clase implementar VARIAS interfaces a la vez?",
+            options: [
+              "Sí: implements A, B, C — separadas por comas",
+              "No: sólo una interfaz por clase",
+              "Sí, pero sólo dos como máximo",
+              "Sólo si las interfaces no comparten métodos",
+            ],
+            correct: 0,
+            explanation:
+              "Aquí está la diferencia clave con la herencia: `extends` admite UNA clase, pero `implements` admite tantas interfaces como quieras. Es la forma que tiene PHP de combinar contratos sin los problemas de la herencia múltiple.",
+          },
+          {
+            question:
+              "Una interfaz puede declarar constantes y firmas de métodos. ¿Puede incluir el CUERPO de un método?",
+            options: [
+              "No: sólo la firma; el cuerpo lo pone quien la implementa",
+              "Sí, como una clase normal",
+              "Sí, pero sólo métodos privados",
+              "Sólo si el método es estático",
+            ],
+            correct: 0,
+            explanation:
+              "Una interfaz define el QUÉ, nunca el CÓMO: sus métodos no tienen cuerpo. Si necesitas compartir implementación entre clases, eso es trabajo de una clase abstracta o de un trait, no de una interfaz.",
+          },
+          {
+            question:
+              "`$x instanceof Arma`: ¿cuándo devuelve true?",
+            options: [
+              "Si la clase de $x implementa Arma (directa o heredada)",
+              "Sólo si $x fue creado con new Arma",
+              "Si $x tiene un método llamado arma()",
+              "Nunca: instanceof no funciona con interfaces",
+            ],
+            correct: 0,
+            explanation:
+              "`instanceof` reconoce interfaces igual que clases: si la clase de `$x` (o algún ancestro) implementa `Arma`, es true. Por eso puedes filtrar una colección mixta quedándote sólo con lo que cumple cierto contrato.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c6_jefe_balrog",
+      kind: "battle",
+      title: "El Daño de Durin",
+      lore_intro:
+        "El puente de Khazad-dûm, estrecho sobre el abismo sin fondo. Al otro lado, una sombra de fuego y sombra alza un látigo de llamas. Gandalf se planta en medio: «¡No podéis pasar!». Lo que decidas aquí, decídelo rápido.",
+      position: { x: 40, y: 7 },
+      spriteId: "balrog",
+      enemy: {
+        name: "El Balrog de Morgoth",
+        spriteId: "balrog",
+        hp: 7,
+        damage: 3,
+        xp: 175,
+        boss: true,
+        taunt: "Una columna de fuego y sombra llena el puente. El calor te seca los ojos.",
+        reward: {
+          hero: "legolas",
+          name: "Legolas Hojaverde",
+          blurb:
+            "El arquero de la Comunidad, ojos que ven en la oscuridad de Moria. Legolas se une a tus héroes.",
+        },
+        questions: [
+          {
+            question:
+              "```\ninterface Arma { public function golpe(): int; }\nclass Espada implements Arma { public function golpe(): int { return 10; } }\nclass Hacha  implements Arma { public function golpe(): int { return 15; } }\n$armas = [new Espada(), new Hacha()];\necho array_sum(array_map(fn(Arma $a) => $a->golpe(), $armas));\n```",
+            options: ["25", "10", "15", "Error: tipos distintos en el array"],
+            correct: 0,
+            explanation:
+              "Espada y Hacha son de clases distintas, pero AMBAS son `Arma`. El array las mezcla sin problema y `array_map` llama `golpe()` en cada una: 10 + 15 = 25. Eso es polimorfismo: un mismo código opera sobre formas distintas.",
+          },
+          {
+            question:
+              "Quieres añadir una `Lanza` al juego. Con un buen diseño de interfaces, ¿qué código existente hay que tocar?",
+            options: [
+              "Ninguno: creas Lanza implements Arma y ya funciona en todas partes",
+              "Todos los sitios que reciben un Arma, para añadir el caso Lanza",
+              "La interfaz Arma, para registrar la lanza",
+              "El array de armas y cada bucle que lo recorre",
+            ],
+            correct: 0,
+            explanation:
+              "Ésa es la victoria de programar contra la interfaz: si `Lanza implements Arma`, todo lo que ya trabajaba con `Arma` la acepta sin cambios. Si tuvieras que tocar diez `switch` por tipo, tu diseño estaría pidiendo a gritos una interfaz.",
+          },
+          {
+            question:
+              "¿Cuál es la diferencia entre una interfaz y una clase abstracta?",
+            options: [
+              "La interfaz sólo declara firmas; la abstracta puede traer código y estado",
+              "No hay diferencia práctica",
+              "La interfaz puede instanciarse; la abstracta no",
+              "La abstracta sólo tiene métodos estáticos",
+            ],
+            correct: 0,
+            explanation:
+              "La interfaz es un contrato puro, sin implementación, y una clase puede cumplir muchas. La abstracta puede aportar métodos ya escritos y propiedades, pero sólo se hereda UNA. Regla práctica: interfaz para «puede hacer X», abstracta para «es un tipo de Y con base común».",
+          },
+          {
+            question:
+              "Una interfaz `Contable` exige `contar(): int`. ¿Qué garantiza sobre un objeto de tipo `Contable`?",
+            options: [
+              "Que puedes llamar $obj->contar() y recibir un int, sea cual sea su clase",
+              "Que el objeto tiene una propiedad $contador",
+              "Que el objeto es inmutable",
+              "Que hereda de una clase Contable",
+            ],
+            correct: 0,
+            explanation:
+              "El contrato garantiza el MÉTODO, no cómo lo cumpla cada clase. Uno contará elementos de un array, otro filas de una base de datos: a quien recibe el `Contable` le da igual. Confía en la firma, no en la implementación.",
+          },
+        ],
+      },
+    },
     {
       node_id: "pergamino_contratos",
       kind: "scroll",
@@ -2537,6 +2793,7 @@ export const CHAPTER_7: Chapter = {
   lore: "Bajo los mallorn dorados de Caras Galadhon, Galadriel muestra lo que fue, lo que es y lo que aún podría ser. Al partir entrega dones: distintos objetos que comparten un mismo poder élfico sin pertenecer a la misma estirpe.",
   mapSize: { cols: 24, rows: 14 },
   spawn: { x: 2, y: 8 },
+  unlockedBy: 6,
   scenery: {
     ground: "gold",
     pathRows: [8],
