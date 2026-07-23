@@ -5234,9 +5234,7 @@ export const CHAPTER_GOLLUM: Chapter = {
   chapter: 15,
   title: "El Sendero de Sméagol",
   lore:
-    "Tras la disolución, Frodo y Sam se pierden en el Emyn Muil y atrapan a la criatura que los sigue. " +
-    "Sméagol jura por el Tesoro; Gollum susurra traición. Un mismo cuerpo, dos estados, y ninguno más: " +
-    "eso, en PHP, se llama enum.",
+    "Empieza un nuevo viaje y una nueva lengua. Frodo y Sam se pierden en el Emyn Muil con Sméagol de guía; y aquí, donde la piedra es gris y el camino incierto, se aprende Python desde la primera palabra. En estas Dos Torres se pasa de cero a experto.",
   mapSize: { cols: 24, rows: 14 },
   spawn: { x: 2, y: 7 },
   companions: ["sam"],
@@ -5252,14 +5250,14 @@ export const CHAPTER_GOLLUM: Chapter = {
         y: 8,
         speaker: "sam",
         name: "Sam",
-        text: "No me fío de él. Un lado promete y el otro muerde.",
+        text: "Otra tierra, otra lengua. Dicen que ésta se lee casi como se habla.",
       },
       {
         x: 18,
         y: 8,
         speaker: "sam",
         name: "Sam",
-        text: "Hay caras en el agua… no las mire, señor Frodo.",
+        text: "Nada de llaves ni puntos y comas: aquí lo que manda es la sangría.",
       },
     ],
     decor: [
@@ -5276,351 +5274,252 @@ export const CHAPTER_GOLLUM: Chapter = {
   },
   nodes: [
     {
-      node_id: "gollum_pergamino_estados",
+      node_id: "py_pergamino_fundamentos",
       kind: "scroll",
-      title: "El Pergamino de los Estados",
+      title: "El Pergamino de la Nueva Lengua",
       lore_intro:
-        "Grabado en una losa del Emyn Muil, bajo la lluvia. Quien lo lee entiende por qué la criatura discute consigo misma.",
+        "Grabado en una losa del Emyn Muil, en signos que no son runas enanas ni tengwar élficas. Quien lo lee empieza a pensar en Python.",
       position: { x: 5, y: 5 },
       scroll: {
-        topic: "Enums (PHP 8.1): tipos con un número cerrado de valores",
+        topic: "Python desde cero: variables, tipos y f-strings",
         sections: [
           {
-            heading: "El problema que resuelven",
+            heading: "Sin ceremonias: variables",
             body:
-              "Antes de PHP 8.1 un estado se guardaba como string o int: $animo = 'gollum'. Nada impedía escribir " +
-              "'Gollum', 'golum' o 'banana'. El error no aparecía al escribirlo, sino tres capas más abajo. " +
-              "Un enum convierte ese conjunto de valores válidos en un TIPO: si no es un caso declarado, PHP lo rechaza.",
+              "En Python una variable existe en cuanto le asignas un valor: no se declara el tipo, no lleva $, no acaba en punto y coma. El nombre a la izquierda, el valor a la derecha. El tipo lo deduce Python del valor (tipado dinámico), pero cada valor SÍ tiene un tipo firme.",
             code:
-              "// Frágil: cualquier string cuela\nfunction hablar(string $animo) { /* ... */ }\nhablar('gulom'); // pasa, y falla luego\n\n// Seguro: sólo existen dos valores en todo el universo\nenum Animo { case Smeagol; case Gollum; }\nfunction hablar(Animo $animo) { /* ... */ }\nhablar(Animo::Gollum); // TypeError si le pasas otra cosa",
+              "nombre = 'Sméagol'      # str (texto)\nedad = 589              # int (entero)\npeso = 12.5             # float (decimal)\ntiene_anillo = False    # bool (True / False)\ntesoro = None           # None: la ausencia de valor\n\n# Python distingue mayúsculas: Edad y edad son variables distintas.",
           },
           {
-            heading: "Enum puro vs. enum respaldado (backed)",
+            heading: "La sangría ES la sintaxis",
             body:
-              "Un enum PURO sólo tiene casos con nombre: sirve para estados internos. Un enum RESPALDADO asocia a cada " +
-              "caso un string o int: sirve cuando el valor viaja fuera del programa (base de datos, JSON, URL). " +
-              "El respaldado añade ->value, ::from() y ::tryFrom().",
+              "Donde otros lenguajes ponen llaves { }, Python usa la SANGRÍA (la indentación). Un bloque son las líneas indentadas bajo una cabecera terminada en dos puntos. Mezclar espacios y tabulaciones, o sangrar de más, es un error de verdad (IndentationError), no un detalle de estilo. La convención es 4 espacios.",
             code:
-              "enum Animo { case Smeagol; case Gollum; }          // puro\nenum Puerta: string {                              // respaldado\n    case Morannon    = 'morannon';\n    case CirithUngol = 'cirith_ungol';\n}\n\nPuerta::CirithUngol->name;   // 'CirithUngol' (los dos lo tienen)\nPuerta::CirithUngol->value;  // 'cirith_ungol' (sólo el respaldado)",
+              "if edad > 100:\n    print('Muy viejo')      # dentro del if (4 espacios)\n    print('...y flaco')     # sigue dentro\nprint('Fuera del if')       # ya fuera\n\n# Los comentarios empiezan con # y llegan al fin de la línea.",
           },
           {
-            heading: "from() lanza, tryFrom() devuelve null",
+            heading: "f-strings: texto con valores dentro",
             body:
-              "::from('x') lanza ValueError si el valor no existe: úsalo cuando un valor inválido es un fallo del programa. " +
-              "::tryFrom('x') devuelve null: úsalo con datos de fuera (formularios, APIs) y decide tú el valor por defecto. " +
-              "::cases() te da todos los casos en orden de declaración — útil para pintar un <select>.",
+              "La forma moderna de construir texto es la f-string: una cadena precedida de f donde, entre llaves { }, metes cualquier expresión Python y se sustituye por su valor. Es legible y rápida. También puedes concatenar con +, pero exige que todo sea texto.",
             code:
-              "Puerta::from('morannon');       // Puerta::Morannon\nPuerta::from('escalera');       // ValueError\nPuerta::tryFrom('escalera');    // null\n\n// Patrón habitual con entrada del usuario\n$puerta = Puerta::tryFrom($_GET['p'] ?? '') ?? Puerta::Morannon;\n\narray_map(fn($c) => $c->value, Puerta::cases());",
+              "nombre = 'Frodo'\nedad = 50\nsaludo = f'Soy {nombre} y tengo {edad} años'\n# -> 'Soy Frodo y tengo 50 años'\n\n# Dentro de las llaves cabe una operación:\nf'El año que viene tendré {edad + 1}'\n\n# Concatenar exige convertir: 'edad: ' + str(edad)",
           },
           {
-            heading: "Un enum es una clase: puede tener métodos",
+            heading: "Tipos y conversión",
             body:
-              "Los enums admiten métodos, constantes e incluso implementar interfaces. Dentro, $this es el caso actual. " +
-              "Combinado con match() esto sustituye a cadenas enteras de if/else, y match es EXHAUSTIVO: si mañana añades " +
-              "un tercer caso y olvidas cubrirlo, PHP lanza UnhandledMatchError en vez de devolver algo silenciosamente mal.",
+              "Cada valor tiene un tipo, y a veces hay que convertir. `int('42')` pasa texto a entero; `str(42)` al revés; `float('3.14')`. Sumar un int y un str es TypeError: Python no adivina, te obliga a decidir. `type(x)` te dice el tipo; `len(x)` la longitud de un texto o una lista.",
             code:
-              "enum Animo {\n    case Smeagol;\n    case Gollum;\n\n    public function voz(): string {\n        return match ($this) {\n            Animo::Smeagol => 'Amo... Sméagol te sirve.',\n            Animo::Gollum  => '¡Nos lo robó! ¡Ladrón!',\n        };\n    }\n}\n\nAnimo::Gollum->voz();",
+              "int('42')        # 42   (texto -> entero)\nstr(42)          # '42'  (entero -> texto)\nfloat('3.14')    # 3.14\nint('42') + 8    # 50\n\n'año ' + 589     # TypeError: no se mezcla str con int\nlen('Mordor')    # 6",
           },
           {
-            heading: "Máquina de estados",
+            heading: "Operadores y condiciones",
             body:
-              "Un enum describe los estados posibles; una clase guarda el estado ACTUAL y define qué transiciones son legales. " +
-              "La regla de oro: el estado es privado y sólo cambia dentro de la clase, tras validar. Así ningún punto del " +
-              "programa puede dejar el objeto en un estado imposible.",
+              "Los aritméticos son los de siempre, con dos joyas: // es la división ENTERA y % el resto. En condiciones, los booleanos se escriben con palabras: `and`, `or`, `not` (no &&, ||, !). Y la escalera de decisión es if / elif / else — ojo, `elif`, no `else if`.",
             code:
-              "final class Smeagol {\n    private Animo $estado = Animo::Smeagol;\n\n    public function estado(): Animo { return $this->estado; }\n\n    public function escuchar(string $palabra): Animo {\n        $this->estado = match ($palabra) {\n            'amo', 'pez'      => Animo::Smeagol,\n            'tesoro', 'anillo' => Animo::Gollum,\n            default => throw new InvalidArgumentException($palabra),\n        };\n        return $this->estado;\n    }\n}",
+              "7 // 2      # 3  (división entera)\n7 % 2       # 1  (resto)\n2 ** 10     # 1024 (potencia)\n\nif peces <= 0:\n    estado = 'hambriento'\nelif peces < 3:\n    estado = 'conforme'\nelse:\n    estado = 'gordo y feliz'",
           },
         ],
         keyTakeaway:
-          "Enum = conjunto CERRADO de valores convertido en tipo. Puro para estados internos, respaldado (from/tryFrom) para datos que cruzan la frontera del programa. Con match() dentro, el compilador te obliga a cubrir todos los casos.",
+          "Python: sin declarar tipos, sin llaves, sin punto y coma. La sangría define los bloques, las f-strings arman el texto (f'…{valor}…'), y las condiciones se leen en inglés: and, or, not, if/elif/else.",
       },
     },
     {
-      node_id: "gollum_enum_animo",
-      title: "Las dos voces",
+      node_id: "py_presentarse",
+      title: "La primera palabra",
       lore_intro:
-        "La criatura discute consigo misma sobre una roca. «Sméagol lo prometió» — «¡Nos lo robó!». Sólo hay dos voces, nunca una tercera.",
+        "«Sméagol ayuda, sí, ayuda… pero antes el amo debe decir quién es.» La criatura ladea la cabeza, esperando una presentación en la lengua nueva.",
       position: { x: 9, y: 6 },
       spriteId: "gollum",
       poo_challenge: {
-        topic: "Enum puro con métodos y match",
+        lang: "python",
+        topic: "Variables y f-strings",
         instructions:
-          "Declara el enum `Animo` con exactamente dos casos: `Smeagol` y `Gollum`.\n\n" +
-          "Añádele dos métodos:\n" +
-          "• `voz(): string` — devuelve `'Amo... Sméagol te sirve.'` para Smeagol y `'¡Nos lo robó! ¡Ladrón!'` para Gollum. Usa `match ($this)`.\n" +
-          "• `opuesto(): self` — devuelve el otro caso.\n\n" +
-          "No añadas un tercer caso: el enum debe quedar cerrado en dos.",
+          "Escribe la función `presentarse(nombre, edad)` que devuelva una f-string con EXACTAMENTE este formato:\n\n" +
+          "  Soy {nombre} y tengo {edad} años\n\n" +
+          "Por ejemplo, `presentarse('Frodo', 50)` debe devolver `'Soy Frodo y tengo 50 años'`.\n\n" +
+          "Fíjate en la sangría: el cuerpo de la función va indentado 4 espacios bajo el `def`.",
         starter_code:
-          "<?php\n\nenum Animo\n{\n    // 1) Declara aquí los dos casos\n\n    public function voz(): string\n    {\n        // 2) match ($this) => ...\n    }\n\n    public function opuesto(): self\n    {\n        // 3) devuelve el otro caso\n    }\n}\n",
+          "def presentarse(nombre, edad):\n    # devuelve la f-string con el formato pedido\n    ...\n",
         hints: [
-          "Los casos de un enum puro se declaran sin valor: `case Smeagol;`",
-          "Dentro de un método del enum, `$this` ES el caso actual, así que `match ($this) { Animo::Smeagol => ..., Animo::Gollum => ... }`.",
-          "Para `opuesto()` te basta una comparación de identidad: `return $this === Animo::Smeagol ? Animo::Gollum : Animo::Smeagol;`",
+          "Una función se declara con `def nombre(parametros):` y su cuerpo va indentado debajo.",
+          "Una f-string lleva la f delante y las variables entre llaves: `f'Soy {nombre}...'`.",
+          "`return f'Soy {nombre} y tengo {edad} años'` — cuida los espacios y la palabra «años».",
         ],
         test_cases: [
           {
-            input: "Animo::Smeagol->voz()",
-            expected: "Amo... Sméagol te sirve.",
-            description: "La voz mansa de Sméagol",
+            input: "presentarse('Frodo', 50)",
+            expected: "Soy Frodo y tengo 50 años",
+            description: "El formato exacto",
             raw: true,
           },
           {
-            input: "Animo::Gollum->voz()",
-            expected: "¡Nos lo robó! ¡Ladrón!",
-            description: "La voz de Gollum",
+            input: "presentarse('Sméagol', 589)",
+            expected: "Soy Sméagol y tengo 589 años",
+            description: "Funciona con tildes y números grandes",
             raw: true,
           },
           {
-            input: "Animo::Smeagol->opuesto()->name",
-            expected: "Gollum",
-            description: "El opuesto de Sméagol es Gollum",
-            raw: true,
-          },
-          {
-            input: "Animo::Gollum->opuesto()->opuesto()->name",
-            expected: "Gollum",
-            description: "Dos veces el opuesto vuelve al origen",
-            raw: true,
-          },
-          {
-            input: "count(Animo::cases())",
-            expected: 2,
-            description: "El enum está cerrado: sólo dos casos",
-            raw: true,
-          },
-          {
-            input: "Animo::Smeagol instanceof UnitEnum",
-            expected: true,
-            description: "Es un enum de verdad, no una clase con constantes",
+            input: "presentarse('Sam', 38)",
+            expected: "Soy Sam y tengo 38 años",
+            description: "Y con cualquier otro valor",
             raw: true,
           },
         ],
       },
     },
     {
-      node_id: "gollum_enum_puerta",
-      title: "Las puertas de Mordor",
+      node_id: "py_tipos",
+      title: "Contar peces",
       lore_intro:
-        "«Hay otro camino. Más secreto. Una escalera oscura.» Sméagol conoce los nombres de las puertas; sólo tres son reales, y el resto son trampas de la Ciénaga.",
+        "«¡Peces! ¡Ricos y jugosos!» Gollum cuenta con los dedos huesudos, pero se lía con los números escritos. Necesita quien convierta y calcule.",
       position: { x: 14, y: 5 },
       spriteId: "gollum",
       poo_challenge: {
-        topic: "Enum respaldado: from, tryFrom y cases",
+        lang: "python",
+        topic: "Tipos, conversión y operadores",
         instructions:
-          "Declara el enum `Puerta` respaldado por `string` con estos tres casos y valores exactos:\n" +
-          "• `Morannon` = `'morannon'`\n" +
-          "• `CirithUngol` = `'cirith_ungol'`\n" +
-          "• `Rauros` = `'rauros'`\n\n" +
-          "Añade:\n" +
-          "• `public static function desdeSusurro(?string $s): self` — devuelve la puerta cuyo valor coincida; si el susurro es nulo o no corresponde a ninguna, devuelve `Puerta::Morannon`. Usa `tryFrom`, no un `if` por cada caso.\n" +
-          "• `public function esSecreta(): bool` — sólo Cirith Ungol es secreta.",
+          "Escribe dos funciones:\n\n" +
+          "• `es_par(n)` — devuelve True si el entero `n` es par, False si no. Usa el resto `%`.\n" +
+          "• `a_entero(texto)` — recibe un texto como `'42'` y devuelve su valor entero (un `int`), no el texto.\n\n" +
+          "Recuerda: `int('42')` convierte texto a número; `n % 2` da el resto de dividir entre 2.",
         starter_code:
-          "<?php\n\nenum Puerta: string\n{\n    // 1) los tres casos con su valor\n\n    public static function desdeSusurro(?string $s): self\n    {\n        // 2) tryFrom + valor por defecto\n    }\n\n    public function esSecreta(): bool\n    {\n        // 3)\n    }\n}\n",
+          "def es_par(n):\n    ...\n\n\ndef a_entero(texto):\n    ...\n",
         hints: [
-          "Un enum respaldado declara el tipo tras el nombre: `enum Puerta: string` y cada caso lleva valor: `case Rauros = 'rauros';`",
-          "`self::tryFrom($x)` devuelve el caso o `null`. El operador `??` encadena el valor por defecto en una línea.",
-          "Ojo con el `?string`: `tryFrom(null)` es un TypeError. Convierte antes: `self::tryFrom((string) $s) ?? self::Morannon;`",
+          "Un número es par si al dividirlo entre 2 el resto es 0: `n % 2 == 0`. Esa comparación YA es un booleano, puedes devolverla directamente.",
+          "`int(texto)` convierte un str a int. `a_entero('42')` debe devolver el número 42, no la cadena '42'.",
+          "`return n % 2 == 0` en la primera; `return int(texto)` en la segunda.",
         ],
         test_cases: [
+          { input: "es_par(4)", expected: true, description: "4 es par", raw: true },
+          { input: "es_par(7)", expected: false, description: "7 es impar", raw: true },
+          { input: "es_par(0)", expected: true, description: "0 es par", raw: true },
           {
-            input: "Puerta::from('cirith_ungol')->name",
-            expected: "CirithUngol",
-            description: "from() encuentra el caso por su valor",
+            input: "a_entero('42')",
+            expected: 42,
+            description: "Convierte texto a entero",
             raw: true,
           },
           {
-            input: "Puerta::CirithUngol->value",
-            expected: "cirith_ungol",
-            description: "El valor respaldado",
-            raw: true,
-          },
-          {
-            input: "Puerta::desdeSusurro('rauros')->name",
-            expected: "Rauros",
-            description: "Un susurro válido",
-            raw: true,
-          },
-          {
-            input: "Puerta::desdeSusurro('escalera')->name",
-            expected: "Morannon",
-            description: "Un susurro falso cae al valor por defecto",
-            raw: true,
-          },
-          {
-            input: "Puerta::desdeSusurro(null)->name",
-            expected: "Morannon",
-            description: "El silencio también cae al valor por defecto",
-            raw: true,
-          },
-          {
-            input: "Puerta::CirithUngol->esSecreta()",
-            expected: true,
-            description: "La escalera oscura es secreta",
-            raw: true,
-          },
-          {
-            input: "Puerta::Morannon->esSecreta()",
-            expected: false,
-            description: "La Puerta Negra no tiene nada de secreta",
-            raw: true,
-          },
-          {
-            input: "array_map(fn($c) => $c->value, Puerta::cases())",
-            expected: ["morannon", "cirith_ungol", "rauros"],
-            description: "cases() devuelve los tres, en orden de declaración",
+            input: "a_entero('42') + 8",
+            expected: 50,
+            description: "Y el resultado es un número de verdad (se puede sumar)",
             raw: true,
           },
         ],
       },
     },
     {
-      node_id: "gollum_maquina_estados",
-      title: "La máquina de dos voces",
+      node_id: "py_condiciones",
+      title: "El humor de la criatura",
       lore_intro:
-        "Cada palabra que oye lo empuja a un lado o al otro. «Amo» lo devuelve a Sméagol; «tesoro» despierta a Gollum. Y hay palabras que no entiende en absoluto.",
-      position: { x: 19, y: 6 },
+        "El ánimo de Sméagol cambia con el estómago. Vacío, gruñe; algo lleno, colabora; bien cebado, casi es amable. Traduce ese humor a Python.",
+      position: { x: 20, y: 6 },
       spriteId: "gollum",
       poo_challenge: {
-        topic: "Máquina de estados con enum + estado privado",
+        lang: "python",
+        topic: "Condicionales: if / elif / else",
         instructions:
-          "El enum `Animo` (Smeagol/Gollum) ya existe: no lo redeclares.\n\n" +
-          "Escribe la clase `Smeagol` con el estado GUARDADO EN PRIVADO, empezando en `Animo::Smeagol`:\n" +
-          "• `estado(): Animo` — devuelve el estado actual.\n" +
-          "• `escuchar(string $palabra): Animo` — cambia de estado y devuelve el nuevo:\n" +
-          "  · `'amo'`, `'pez'`, `'bondad'` → `Animo::Smeagol`\n" +
-          "  · `'tesoro'`, `'anillo'`, `'ladron'` → `Animo::Gollum`\n" +
-          "  · cualquier otra → lanza `InvalidArgumentException` y NO cambia el estado.\n" +
-          "• `historial(): array` — nombres de los estados por los que ha pasado, empezando por `'Smeagol'`. " +
-          "Sólo se anota cuando hay CAMBIO real: oír 'tesoro' dos veces seguidas anota una sola vez.",
+          "Escribe `clasificar(peces)` que devuelva, según cuántos peces ha comido:\n\n" +
+          "• `'hambriento'` si `peces` es 0 o menos\n" +
+          "• `'conforme'` si es 1 o 2 (menos de 3)\n" +
+          "• `'gordo y feliz'` si es 3 o más\n\n" +
+          "Usa la escalera `if` / `elif` / `else`. Recuerda: es `elif`, no `else if`, y cada rama va indentada.",
         starter_code:
-          "<?php\n\n// `enum Animo { case Smeagol; case Gollum; }` ya está declarado.\n\nfinal class Smeagol\n{\n    private Animo $estado = Animo::Smeagol;\n    private array $historial = ['Smeagol'];\n\n    public function estado(): Animo\n    {\n        //\n    }\n\n    public function escuchar(string $palabra): Animo\n    {\n        // match con default => throw ...\n    }\n\n    public function historial(): array\n    {\n        //\n    }\n}\n",
-        support_code:
-          "enum Animo {\n    case Smeagol;\n    case Gollum;\n}",
+          "def clasificar(peces):\n    if peces <= 0:\n        return 'hambriento'\n    # añade elif y else\n",
         hints: [
-          "`match` admite varias opciones por rama separadas por coma: `'amo', 'pez', 'bondad' => Animo::Smeagol,`",
-          "Desde PHP 8.0 `throw` es una expresión, así que cabe dentro del match: `default => throw new InvalidArgumentException($palabra),`",
-          "Calcula primero el estado nuevo en una variable. Sólo si `$nuevo !== $this->estado` lo asignas y añades `$nuevo->name` al historial.",
+          "Tres casos, tres ramas: `if peces <= 0:` … `elif peces < 3:` … `else:`.",
+          "Cada `return` va indentado 8 espacios (dentro de su rama, que ya está dentro de la función).",
+          "Con `<= 0` cubres el 0 y los negativos; con `< 3` cubres el 1 y el 2; el `else` recoge 3 o más.",
         ],
         test_cases: [
           {
-            input:
-              "(new Smeagol())->estado()->name",
-            expected: "Smeagol",
-            description: "Empieza siendo Sméagol",
+            input: "clasificar(0)",
+            expected: "hambriento",
+            description: "Sin peces, hambriento",
             raw: true,
           },
           {
-            input: "(new Smeagol())->escuchar('tesoro')->name",
-            expected: "Gollum",
-            description: "«tesoro» despierta a Gollum",
+            input: "clasificar(-2)",
+            expected: "hambriento",
+            description: "Números negativos también",
             raw: true,
           },
           {
-            input: "(new Smeagol())->escuchar('pez')->name",
-            expected: "Smeagol",
-            description: "«pez» lo mantiene manso",
+            input: "clasificar(2)",
+            expected: "conforme",
+            description: "Uno o dos, conforme",
             raw: true,
           },
           {
-            input:
-              "(function () { $s = new Smeagol(); $s->escuchar('anillo'); return $s->estado()->name; })()",
-            expected: "Gollum",
-            description: "El estado persiste entre llamadas",
+            input: "clasificar(3)",
+            expected: "gordo y feliz",
+            description: "Tres justos ya es festín",
             raw: true,
           },
           {
-            input:
-              "(function () { $s = new Smeagol(); $s->escuchar('tesoro'); $s->escuchar('anillo'); $s->escuchar('amo'); return $s->historial(); })()",
-            expected: ["Smeagol", "Gollum", "Smeagol"],
-            description: "Dos palabras oscuras seguidas anotan un solo cambio",
-            raw: true,
-          },
-          {
-            input:
-              "(function () { $s = new Smeagol(); try { $s->escuchar('mordor'); return 'sin excepcion'; } catch (InvalidArgumentException $e) { return 'rechazada'; } })()",
-            expected: "rechazada",
-            description: "Una palabra desconocida se rechaza",
-            raw: true,
-          },
-          {
-            input:
-              "(function () { $s = new Smeagol(); $s->escuchar('tesoro'); try { $s->escuchar('mordor'); } catch (InvalidArgumentException $e) {} return $s->estado()->name; })()",
-            expected: "Gollum",
-            description: "Tras la excepción el estado queda intacto",
-            raw: true,
-          },
-          {
-            input:
-              "(new ReflectionProperty('Smeagol', 'estado'))->isPrivate()",
-            expected: true,
-            description: "El estado no se toca desde fuera: es privado",
+            input: "clasificar(10)",
+            expected: "gordo y feliz",
+            description: "Y de ahí para arriba",
             raw: true,
           },
         ],
       },
     },
     {
-      node_id: "gollum_acertijos",
+      node_id: "py_quiz_fundamentos",
       kind: "quiz",
-      title: "El juego de los acertijos",
+      title: "Los acertijos de la ciénaga",
       lore_intro:
-        "«¿Juega con nosotros? Si gana, le enseñamos la salida. Si perdemos… nos lo comemos.» Bajo la montaña este juego ya se jugó una vez.",
-      position: { x: 20, y: 11 },
+        "«¿Juega a los acertijos, mi tesoro? Preguntas fáciles… en la lengua nueva.» Las luces de la Ciénaga de los Muertos parpadean mientras Sméagol espera respuesta.",
+      position: { x: 12, y: 11 },
       spriteId: "gollum",
       quiz: {
-        topic: "Enums en la práctica",
-        timeLimitSec: 240,
+        topic: "Fundamentos de Python",
         questions: [
           {
-            question:
-              "Los datos vienen de un formulario: `$_POST['estado']`. ¿Qué usas para convertirlo a tu enum?",
+            question: "¿Cómo se define un bloque de código en Python?",
             options: [
-              "tryFrom(), y decides el valor por defecto si devuelve null",
-              "from(), y dejas que lance ValueError",
-              "Un match con todos los strings posibles",
-              "constant('Estado::' . $_POST['estado'])",
+              "Por la sangría (indentación) bajo una cabecera terminada en :",
+              "Con llaves { }",
+              "Con begin / end",
+              "Con paréntesis ( )",
             ],
             correct: 0,
             explanation:
-              "Los datos de fuera son hostiles por definición: un valor inválido es NORMAL, no un fallo del programa. tryFrom() devuelve null y tú decides qué hacer. from() reserva su ValueError para valores que ya deberían ser válidos (los que salen de tu propia base de datos, por ejemplo). La cuarta opción es directamente un agujero de seguridad.",
+              "Python no usa llaves: el bloque son las líneas indentadas bajo una línea que acaba en dos puntos (`if ...:`, `def ...:`). La sangría no es estética, es sintaxis: sangrar mal es un IndentationError.",
+          },
+          {
+            question: "¿Qué devuelve `7 // 2` en Python?",
+            options: ["3", "3.5", "1", "'3.5'"],
+            correct: 0,
+            explanation:
+              "`//` es la división ENTERA: descarta la parte decimal y devuelve 3. La división normal `/` daría 3.5 (un float). Y `%` daría el resto, 1.",
           },
           {
             question:
-              "Tienes `enum Estado { case A; case B; }` y un `match ($this)` que cubre ambos. Mañana añades `case C` y olvidas tocar el match. ¿Qué pasa?",
+              "¿Cuál es la forma correcta de encadenar tres condiciones?",
             options: [
-              "UnhandledMatchError en tiempo de ejecución, en cuanto llega un C",
-              "Devuelve null silenciosamente",
-              "Error fatal al declarar el enum",
-              "Devuelve el primer caso del match",
+              "if … : / elif … : / else :",
+              "if … { } else if … { }",
+              "if … : / else if … : / else :",
+              "switch … case",
             ],
             correct: 0,
             explanation:
-              "match es estricto y exhaustivo: si ningún brazo coincide y no hay default, lanza UnhandledMatchError. Es exactamente lo que quieres — un fallo ruidoso en vez de un null que se propaga en silencio. Por eso, en un match sobre un enum, añadir `default` suele ser un error: te quita justo esa red de seguridad.",
-          },
-          {
-            question: "¿Cuál de estas cosas NO puede hacer un enum en PHP?",
-            options: [
-              "Tener propiedades de estado (`public int $veces;`)",
-              "Implementar una interfaz",
-              "Declarar constantes",
-              "Definir métodos estáticos",
-            ],
-            correct: 0,
-            explanation:
-              "Un enum es inmutable por diseño: sus casos son singletons compartidos por todo el programa, así que no admite propiedades de estado. Sí admite métodos (de instancia y estáticos), constantes, interfaces y traits. Si necesitas guardar algo que cambia, ese algo va en una clase que TIENE un enum, no dentro del enum.",
+              "En Python la rama intermedia es `elif` (no `else if` ni `elseif`), y cada cabecera termina en dos puntos. No hay `switch` clásico (desde 3.10 existe `match`, pero para esto se usa if/elif/else).",
           },
           {
             question:
-              "`Animo::Gollum === Animo::Gollum` y `Animo::Gollum == Animo::Gollum`. ¿Qué devuelven?",
+              "`edad = 50`. ¿Qué imprime `print('Tengo ' + edad + ' años')`?",
             options: [
-              "true las dos: cada caso es una única instancia en todo el programa",
-              "false la primera, true la segunda",
-              "true la primera, false la segunda",
-              "Error: los enums no se comparan",
+              "TypeError: no se puede sumar str e int",
+              "Tengo 50 años",
+              "Tengo50años",
+              "Tengo + 50 + años",
             ],
             correct: 0,
             explanation:
-              "Cada caso de un enum es un singleton: sólo existe un Animo::Gollum en toda la ejecución. Por eso === funciona y es la comparación idiomática (más rápida y más estricta que ==). Es también lo que hace seguro usar los casos como brazos de un match.",
+              "Concatenar con + exige que todo sea del mismo tipo: `str + int` es TypeError. Habría que convertir (`'Tengo ' + str(edad) + ' años'`) o, mejor, usar una f-string: `f'Tengo {edad} años'`.",
           },
         ],
       },
@@ -5628,11 +5527,6 @@ export const CHAPTER_GOLLUM: Chapter = {
   ],
 };
 
-/**
- * Capítulo 16 · El Abismo de Helm.
- * Diez mil Uruk-hai contra la Muralla. Materializar esa hueste en un array te
- * revienta la memoria; recorrerla de uno en uno, no. Eso son los generadores.
- */
 export const CHAPTER_HELM: Chapter = {
   chapter: 16,
   title: "El Abismo de Helm",
@@ -6178,12 +6072,12 @@ export const CAMPAIGN: ChapterInfo[] = [
     topic: "Calentamiento: los clásicos fáciles",
     lore: "FizzBuzz, anagramas, primer carácter único, inserción binaria, ventana fija y desbordamiento.",
   },
-  // ---- Libro VI · Las Dos Torres ----
+  // ---- Libro VI · Las Dos Torres (Python, de 0 a 100) ----
   {
     chapter: 15,
     title: "El Sendero de Sméagol",
-    topic: "Enums (PHP 8.1) y máquinas de estado",
-    lore: "Sméagol y Gollum: un cuerpo con dos estados y ninguno más. Enums puros, respaldados y transiciones validadas.",
+    topic: "Python desde cero: variables, tipos y f-strings",
+    lore: "Empieza Las Dos Torres y con ellas Python. En el Emyn Muil se aprende la nueva lengua desde la primera palabra.",
   },
   {
     chapter: 16,

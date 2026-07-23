@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
 import type { ChallengeNode, EvalResult } from "@/lib/game/types";
-import { runChallenge, warmupPhp } from "@/lib/game/evaluator";
+import { runChallenge, warmup, langOf } from "@/lib/game/runner";
 import { playSfx } from "@/lib/game/audio";
 
 interface Props {
@@ -59,8 +59,8 @@ export default function ChallengeModal({
 
   // Precargar php-wasm mientras el jugador lee el lore.
   useEffect(() => {
-    warmupPhp();
-  }, []);
+    warmup(c);
+  }, [c]);
 
   async function handleRun() {
     setRunning(true);
@@ -96,7 +96,17 @@ export default function ChallengeModal({
         {/* Cabecera */}
         <div className="flex items-start justify-between gap-4 border-b border-white/10 p-5">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-400">
+              <span
+                className={
+                  "rounded px-1.5 py-0.5 text-[10px] font-bold ring-1 " +
+                  (langOf(c) === "python"
+                    ? "bg-sky-500/15 text-sky-300 ring-sky-500/40"
+                    : "bg-violet-500/15 text-violet-300 ring-violet-500/40")
+                }
+              >
+                {langOf(c) === "python" ? "🐍 Python" : "🐘 PHP"}
+              </span>
               Capítulo · {c.topic}
             </p>
             <h2 className="text-xl font-bold text-slate-100">{node.title}</h2>
@@ -230,7 +240,8 @@ export default function ChallengeModal({
             <div className="min-h-[280px] flex-1">
               <Editor
                 height="100%"
-                defaultLanguage="php"
+                language={langOf(c)}
+                path={`reto-${node.node_id}.${langOf(c) === "python" ? "py" : "php"}`}
                 theme="vs-dark"
                 value={code}
                 onChange={(v) => setCode(v ?? "")}
@@ -239,6 +250,7 @@ export default function ChallengeModal({
                   minimap: { enabled: false },
                   scrollBeyondLastLine: false,
                   tabSize: 4,
+                  insertSpaces: true,
                 }}
               />
             </div>

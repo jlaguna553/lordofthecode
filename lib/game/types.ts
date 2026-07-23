@@ -20,6 +20,12 @@ export interface TestCase {
 }
 
 export interface PooChallenge {
+  /**
+   * Lenguaje del reto. Por defecto "php" (La Comunidad del Anillo); los
+   * capítulos de Las Dos Torres usan "python". Determina el evaluador y la
+   * sintaxis de starter_code, support_code y test_cases.
+   */
+  lang?: "php" | "python";
   topic: string;
   instructions: string;
   /** Código inicial que ve y edita el jugador. */
