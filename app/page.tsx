@@ -527,6 +527,11 @@ export default function GamePage() {
               ? CHAPTERS.find((c) => c.chapter === reward.next)?.title
               : undefined
           }
+          bookEnd={
+            !reward.next
+              ? "Así termina el Libro I: la Comunidad se disuelve. Frodo y Sam parten hacia Mordor; los caminos se separan. Tu leyenda continúa en los libros de práctica y en Las Dos Torres."
+              : undefined
+          }
           onContinue={handleRewardContinue}
         />
       )}

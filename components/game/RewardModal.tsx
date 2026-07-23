@@ -8,6 +8,8 @@ interface Props {
   heroSheet?: { url: string; cols: number; frameSize: number };
   /** Capítulo al que se pasa al continuar (undefined si no hay siguiente). */
   nextChapterTitle?: string;
+  /** Frase de cierre cuando el jefe termina un libro (no hay salto encadenado). */
+  bookEnd?: string;
   onContinue: () => void;
 }
 
@@ -19,6 +21,7 @@ export default function RewardModal({
   reward,
   heroSheet,
   nextChapterTitle,
+  bookEnd,
   onContinue,
 }: Props) {
   return (
@@ -56,12 +59,22 @@ export default function RewardModal({
           </p>
         </div>
 
+        {bookEnd && (
+          <p className="mx-6 mb-1 rounded-lg bg-amber-500/10 px-3 py-2 text-xs leading-relaxed text-amber-200 ring-1 ring-amber-500/30">
+            {bookEnd}
+          </p>
+        )}
+
         <div className="border-t border-white/10 p-4">
           <button
             onClick={onContinue}
             className="w-full rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-amber-400"
           >
-            {nextChapterTitle ? `Continuar a ${nextChapterTitle} →` : "Continuar →"}
+            {nextChapterTitle
+              ? `Continuar a ${nextChapterTitle} →`
+              : bookEnd
+                ? "Cerrar"
+                : "Continuar →"}
           </button>
         </div>
       </div>

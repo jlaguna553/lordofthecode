@@ -3266,14 +3266,15 @@ export const CHAPTER_8: Chapter = {
   chapter: 8,
   title: "La Disolución en Amon Hen",
   lore: "En Parth Galen, junto al Anduin, la Comunidad se quiebra. Boromir sucumbe al Anillo, los Uruk-hai bajan de Isengard y Frodo debe elegir. Cuando algo puede salir mal, dilo con una excepción; cuando algo hay que fabricar en serie, usa una fábrica.",
-  mapSize: { cols: 24, rows: 14 },
+  mapSize: { cols: 44, rows: 26 },
   spawn: { x: 2, y: 8 },
+  xpParaRetos: 200,
   unlockedBy: 7,
   scenery: {
     ground: "grass",
     pathRows: [4],
     pathGround: "stone", // la calzada arruinada que sube al Solio
-    pond: { x: 0, y: 11, w: 24, h: 3 }, // el Anduin
+    pond: { x: 0, y: 22, w: 44, h: 3 }, // el Anduin, de orilla a orilla
     npcs: [{ spriteId: "gollum", x: 3, y: 3, label: "¿…nos sigue?" }],
     dialogues: [
       { x: 8, y: 8, speaker: "aragorn", name: "Aragorn",
@@ -3286,18 +3287,278 @@ export const CHAPTER_8: Chapter = {
       { type: "pine", x: 10, y: 2 },
       { type: "pine", x: 16, y: 2 },
       { type: "pine", x: 22, y: 2 },
-      { type: "pine", x: 4, y: 10 },
-      { type: "pine", x: 12, y: 10 },
-      { type: "pine", x: 21, y: 10 },
+      { type: "pine", x: 4, y: 12 },
+      { type: "pine", x: 12, y: 13 },
+      { type: "pine", x: 21, y: 12 },
       { type: "rock", x: 8, y: 6 },
       { type: "rock", x: 11, y: 5 },
       { type: "rock", x: 15, y: 6 },
       { type: "rock", x: 18, y: 5 },
       { type: "rock", x: 6, y: 6 },
+      // la ladera del Solio sube hacia el este, hacia el bosque de Parth Galen
+      { type: "pine", x: 27, y: 2 },
+      { type: "pine", x: 32, y: 3 },
+      { type: "pine", x: 37, y: 2 },
+      { type: "pine", x: 41, y: 5 },
+      { type: "pine", x: 29, y: 14 },
+      { type: "pine", x: 35, y: 16 },
+      { type: "pine", x: 24, y: 17 },
+      { type: "pine", x: 39, y: 18 },
+      { type: "rock", x: 30, y: 6 },
+      { type: "rock", x: 34, y: 10 },
+      { type: "rock", x: 38, y: 12 },
+      { type: "rock", x: 26, y: 11 },
+      { type: "rock", x: 42, y: 9 },
     ],
   },
   companions: ["aragorn", "gimli", "legolas", "sam"],
   nodes: [
+    // ---- Combates: excepciones y patrón Factory ----
+    {
+      node_id: "c8_uruk_arquero",
+      kind: "battle",
+      title: "El primer disparo",
+      lore_intro:
+        "En lo alto de la ladera, un Uruk-hai tensa un arco negro. La Comunidad se dispersa entre los árboles; alguien tiene que cubrir la retirada.",
+      position: { x: 27, y: 4 },
+      spriteId: "uruk",
+      enemy: {
+        name: "Uruk-hai arquero",
+        spriteId: "uruk",
+        hp: 6,
+        damage: 2,
+        xp: 60,
+        taunt: "Encaja una flecha negra y busca un blanco entre los árboles.",
+        questions: [
+          {
+            question: "¿Qué hace `throw new RuntimeException('boom')`?",
+            options: [
+              "Lanza una excepción que interrumpe el flujo hasta que alguien la capture",
+              "Escribe 'boom' y continúa",
+              "Termina el programa en silencio",
+              "Devuelve un objeto Exception sin más efecto",
+            ],
+            correct: 0,
+            explanation:
+              "`throw` corta la ejecución en seco: la función no devuelve, sino que «tira» la excepción hacia arriba por la pila de llamadas hasta que un `catch` compatible la recoge. Si nadie la captura, el programa muere con un error fatal.",
+          },
+          {
+            question:
+              "¿Por qué lanzar una excepción es mejor que devolver `false` cuando algo falla?",
+            options: [
+              "Un false se puede ignorar por accidente; una excepción obliga a tratarla o propaga el fallo",
+              "Las excepciones son más rápidas",
+              "false ocupa más memoria",
+              "No hay diferencia real",
+            ],
+            correct: 0,
+            explanation:
+              "Un valor de error (`false`, `null`, `-1`) se pierde en cuanto quien llama olvida comprobarlo, y el fallo sigue adelante disfrazado. Una excepción no se puede ignorar sin querer: o la capturas, o detiene el programa donde está. El fallo se hace visible.",
+          },
+          {
+            question:
+              "¿De qué clase conviene que herede una excepción propia como `SigiloInsuficienteException`?",
+            options: [
+              "De Exception (o una subclase de la jerarquía estándar)",
+              "De la clase donde ocurre el error",
+              "De ninguna: basta con un string",
+              "De stdClass",
+            ],
+            correct: 0,
+            explanation:
+              "Extender `Exception` (o `RuntimeException`, `LogicException`…) hace que tu excepción encaje en el sistema `try/catch` y puedas capturarla por su tipo. Crear tipos propios permite distinguir «esto es un fallo de sigilo» de «esto es otra cosa» en el catch.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c8_orco_saqueador",
+      kind: "battle",
+      title: "Saqueadores en la ribera",
+      lore_intro:
+        "Bajan hacia los botes volcados, buscando medianos escondidos. Uno rebusca entre los petates con un hacha mellada.",
+      position: { x: 24, y: 8 },
+      spriteId: "orco",
+      enemy: {
+        name: "Orco saqueador",
+        spriteId: "orco",
+        hp: 6,
+        damage: 2,
+        xp: 70,
+        taunt: "«¿Dónde se esconde el mediano? ¡El amo lo quiere!»",
+        questions: [
+          {
+            question:
+              "En un bloque `try { ... } catch (Exception $e) { ... }`, ¿cuándo se ejecuta el catch?",
+            options: [
+              "Sólo si dentro del try se lanza una excepción compatible",
+              "Siempre, después del try",
+              "Sólo si el try termina sin errores",
+              "Nunca, si el try tiene return",
+            ],
+            correct: 0,
+            explanation:
+              "El `catch` es un plan B: sólo entra si el `try` lanza una excepción que encaje con su tipo. Si el try va bien, el catch se salta por completo. Para código que debe correr pase lo que pase (cerrar un fichero), está `finally`.",
+          },
+          {
+            question:
+              "¿Qué captura `catch (Throwable $e)` que NO captura `catch (Exception $e)`?",
+            options: [
+              "También los Error (errores internos de PHP, como TypeError)",
+              "Nada: son equivalentes",
+              "Sólo las excepciones propias",
+              "Los warnings y notices",
+            ],
+            correct: 0,
+            explanation:
+              "En PHP, `Exception` y `Error` son ramas hermanas bajo la interfaz `Throwable`. `catch (Exception)` coge tus excepciones y las de librería; `catch (Throwable)` coge además los `Error` del motor (TypeError, DivisionByZeroError…). Los warnings no son throwables: no se capturan así.",
+          },
+          {
+            question:
+              "¿Cuál es el orden correcto de los catch cuando hay varios?",
+            options: [
+              "De la excepción más específica a la más general",
+              "De la más general a la más específica",
+              "El orden da igual",
+              "Alfabético por nombre de clase",
+            ],
+            correct: 0,
+            explanation:
+              "PHP prueba los catch de arriba abajo y entra en el primero que encaje. Si pones `catch (Exception)` antes que `catch (RuntimeException)`, el general captura todo y el específico nunca se alcanza. Siempre de lo concreto a lo genérico.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c8_uruk_espadachin",
+      kind: "battle",
+      title: "El acero de Isengard",
+      lore_intro:
+        "Un Uruk-hai enorme se abre paso con una cimitarra dentada. Boromir hace sonar el Cuerno de Gondor a lo lejos: la señal de que la lucha ya es de todos.",
+      position: { x: 33, y: 9 },
+      spriteId: "uruk",
+      enemy: {
+        name: "Uruk-hai espadachín",
+        spriteId: "uruk",
+        hp: 7,
+        damage: 2,
+        xp: 70,
+        taunt: "«El Cuerno de Gondor no salvará a nadie hoy.»",
+        questions: [
+          {
+            question: "¿Qué es el patrón Factory (fábrica)?",
+            options: [
+              "Un método/clase cuya tarea es CREAR objetos, centralizando el new",
+              "Un objeto que fabrica copias de sí mismo",
+              "Una clase que sólo tiene métodos estáticos",
+              "Otro nombre para el constructor",
+            ],
+            correct: 0,
+            explanation:
+              "Una Factory encapsula la decisión de QUÉ objeto crear y CÓMO. En vez de esparcir `new EspadaOrca()` / `new EspadaElfica()` por todo el código, la fábrica decide y devuelve un `Arma`. El resto del programa pide sin saber los detalles de construcción.",
+          },
+          {
+            question:
+              "Una `ArmaFactory::crear('espada')` devuelve un objeto que implementa `Arma`. ¿Qué ventaja da?",
+            options: [
+              "Quien la usa recibe un Arma sin acoplarse a la clase concreta ni al new",
+              "Es más rápida que new",
+              "Evita tener que declarar las clases",
+              "Permite herencia múltiple",
+            ],
+            correct: 0,
+            explanation:
+              "El código cliente depende sólo de la interfaz `Arma` y de la fábrica, no de `EspadaOrca` en concreto. Añadir un arma nueva es tocar la fábrica en un sitio, no cazar `new` por todo el proyecto. Centralizas la creación y desacoplas el uso.",
+          },
+          {
+            question:
+              "Le pides a la fábrica un tipo que no conoce: `crear('bazooka')`. ¿Qué debería hacer una buena fábrica?",
+            options: [
+              "Lanzar una excepción (p. ej. InvalidArgumentException)",
+              "Devolver null y seguir",
+              "Crear un objeto vacío",
+              "Devolver el primer tipo que tenga",
+            ],
+            correct: 0,
+            explanation:
+              "Pedir algo imposible es un error del programador, y una fábrica honesta lo canta con una excepción en vez de devolver `null` (que estallará más tarde y más lejos) o un objeto cualquiera (que causará un bug silencioso). Aquí se cruzan los dos temas del capítulo: la fábrica crea, y ante lo inválido, lanza.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c8_jefe_lurtz",
+      kind: "battle",
+      title: "Lurtz, el primero de los Uruk-hai",
+      lore_intro:
+        "Cae Boromir, atravesado, y el que disparó avanza hacia ti sin prisa. Lurtz, el primer Uruk-hai nacido del barro de Isengard, criado para una sola cosa: cazar. Éste es el último aliento de la Comunidad tal como era.",
+      position: { x: 40, y: 7 },
+      spriteId: "uruk",
+      enemy: {
+        name: "Lurtz de Isengard",
+        spriteId: "uruk",
+        hp: 8,
+        damage: 3,
+        xp: 210,
+        boss: true,
+        taunt: "«Buscad a los medianos. Matad a los demás.»",
+        reward: {
+          hero: "gandalf",
+          name: "Gandalf el Blanco",
+          blurb:
+            "El que cayó en Moria y ha vuelto, ahora vestido de blanco. Con Gandalf, la Comunidad de héroes está completa.",
+        },
+        questions: [
+          {
+            question:
+              "```\ntry {\n  throw new RuntimeException('caída');\n} catch (LogicException $e) {\n  echo 'A';\n} catch (RuntimeException $e) {\n  echo 'B';\n} finally {\n  echo 'C';\n}\n```",
+            options: ["BC", "AC", "ABC", "C"],
+            correct: 0,
+            explanation:
+              "La excepción es `RuntimeException`, así que el primer catch (LogicException) no encaja y se salta; el segundo sí, imprime 'B'. Y `finally` se ejecuta SIEMPRE, imprima o no algún catch: añade 'C'. Resultado: BC.",
+          },
+          {
+            question:
+              "¿Para qué sirve el bloque `finally`?",
+            options: [
+              "Para código que debe ejecutarse haya o no excepción (limpieza, cierre)",
+              "Para capturar la excepción que los catch no cogieron",
+              "Para relanzar la excepción",
+              "Sólo se ejecuta si no hubo excepción",
+            ],
+            correct: 0,
+            explanation:
+              "`finally` es la garantía de limpieza: corre tanto si el try acaba bien como si salta una excepción (incluso si el catch relanza o hay un return). Es donde cierras el fichero, sueltas el candado o devuelves la conexión, sin duplicar ese código en cada rama.",
+          },
+          {
+            question:
+              "Una Factory decide qué crear según un parámetro. Si mañana añades un tipo nuevo, ¿qué principio SOLID te conviene respetar?",
+            options: [
+              "Abierto/Cerrado: extender la fábrica sin reescribir a quien la usa",
+              "Ninguno: las fábricas no siguen SOLID",
+              "Herencia múltiple",
+              "Que todo sea estático",
+            ],
+            correct: 0,
+            explanation:
+              "El principio Abierto/Cerrado: el código debería estar abierto a extensión pero cerrado a modificación. Una buena fábrica te deja añadir un tipo tocándola a ella (o registrando el nuevo), sin que quien pide `Arma` cambie ni una línea. Lo verás a fondo en el Libro II (SOLID).",
+          },
+          {
+            question:
+              "Capturas una excepción, registras el error, pero no puedes resolverlo aquí. ¿Qué haces?",
+            options: [
+              "Relanzarla (throw) para que un nivel superior decida, quizá envuelta en otra",
+              "Devolver null y seguir como si nada",
+              "Ignorarla: ya la registraste",
+              "Convertirla en un echo",
+            ],
+            correct: 0,
+            explanation:
+              "Tragarse una excepción que no sabes resolver esconde el fallo. El patrón correcto es registrar y RELANZAR (`throw`), o envolverla en una excepción de más alto nivel que dé contexto, para que quien pueda decidir lo haga. Capturar no obliga a resolver ahí mismo.",
+          },
+        ],
+      },
+    },
     {
       node_id: "pergamino_fallos",
       kind: "scroll",
