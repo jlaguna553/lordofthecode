@@ -2791,8 +2791,9 @@ export const CHAPTER_7: Chapter = {
   chapter: 7,
   title: "El Espejo de Lothlórien",
   lore: "Bajo los mallorn dorados de Caras Galadhon, Galadriel muestra lo que fue, lo que es y lo que aún podría ser. Al partir entrega dones: distintos objetos que comparten un mismo poder élfico sin pertenecer a la misma estirpe.",
-  mapSize: { cols: 24, rows: 14 },
+  mapSize: { cols: 44, rows: 26 },
   spawn: { x: 2, y: 8 },
+  xpParaRetos: 180,
   unlockedBy: 6,
   scenery: {
     ground: "gold",
@@ -2817,10 +2818,274 @@ export const CHAPTER_7: Chapter = {
       { type: "rock", x: 8, y: 3 },
       { type: "rock", x: 16, y: 3 },
       { type: "rock", x: 14, y: 10 },
+      // el bosque dorado se extiende hacia el Anduin, al este
+      { type: "mallorn", x: 26, y: 6 },
+      { type: "mallorn", x: 30, y: 4 },
+      { type: "mallorn", x: 34, y: 6 },
+      { type: "mallorn", x: 38, y: 5 },
+      { type: "mallorn", x: 28, y: 12 },
+      { type: "mallorn", x: 32, y: 11 },
+      { type: "mallorn", x: 27, y: 18 },
+      { type: "mallorn", x: 31, y: 24 },
+      { type: "mallorn", x: 37, y: 22 },
+      { type: "mallorn", x: 41, y: 14 },
+      { type: "rock", x: 35, y: 16 },
+      { type: "rock", x: 29, y: 9 },
+      { type: "rock", x: 39, y: 19 },
     ],
   },
   companions: ["aragorn", "boromir", "gimli", "legolas", "sam"],
   nodes: [
+    // ---- Combates: clases abstractas y traits ----
+    {
+      node_id: "c7_orco_explorador",
+      kind: "battle",
+      title: "Sombras entre los mallorn",
+      lore_intro:
+        "La luz dorada de Lórien no llega a todos los rincones. En la linde del bosque, un explorador de Isengard estudia el terreno.",
+      position: { x: 27, y: 4 },
+      spriteId: "orco",
+      enemy: {
+        name: "Explorador de Isengard",
+        spriteId: "orco",
+        hp: 5,
+        damage: 1,
+        xp: 55,
+        taunt: "«El bosque de la bruja no os protegerá al salir.»",
+        questions: [
+          {
+            question: "¿Qué es una clase `abstract`?",
+            options: [
+              "Una clase que no se puede instanciar, pensada para ser heredada",
+              "Una clase sin propiedades",
+              "Una clase que sólo tiene métodos estáticos",
+              "Otro nombre para una interfaz",
+            ],
+            correct: 0,
+            explanation:
+              "Una clase abstracta define una base común pero prohíbe crearse directamente con `new`: sólo existe a través de sus hijas concretas. Sirve para reunir lo compartido (código y estado) y dejar que cada hija complete lo que falta.",
+          },
+          {
+            question:
+              "¿Qué pasa si intentas `new Personaje()` siendo Personaje una clase abstracta?",
+            options: [
+              "Error fatal: no se puede instanciar una clase abstracta",
+              "Se crea un objeto con las propiedades a null",
+              "Se crea, pero sin métodos",
+              "PHP instancia la primera clase hija",
+            ],
+            correct: 0,
+            explanation:
+              "Instanciar una abstracta es error fatal: `Cannot instantiate abstract class Personaje`. Es intencional — la abstracta está incompleta a propósito. Instancias una hija concreta (Hobbit, Elfo) que rellene lo que la base dejó abierto.",
+          },
+          {
+            question:
+              "Un `abstract function golpe(): int;` dentro de una clase abstracta, ¿qué obliga?",
+            options: [
+              "A que toda hija concreta implemente golpe(), o será error",
+              "A que la clase tenga una propiedad golpe",
+              "A nada: es opcional",
+              "A llamar a golpe() en el constructor",
+            ],
+            correct: 0,
+            explanation:
+              "Un método abstracto declara la firma sin cuerpo y obliga a cada hija concreta a implementarlo. Es como una casilla del contrato que la base deja en blanco: si la hija no la rellena, no compila. Combina base compartida (abstracta) con obligación de completar (abstract method).",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c7_trasgo_frontera",
+      kind: "battle",
+      title: "El acecho en la frontera",
+      lore_intro:
+        "Los Guardianes élficos vigilan el interior, pero la linde es larga. Un trasgo se ha colado entre las raíces doradas.",
+      position: { x: 24, y: 22 },
+      spriteId: "trasgo",
+      enemy: {
+        name: "Trasgo merodeador",
+        spriteId: "trasgo",
+        hp: 5,
+        damage: 2,
+        xp: 60,
+        taunt: "«Oro… tantos árboles de oro… mi señor querrá todos.»",
+        questions: [
+          {
+            question: "¿Qué es un `trait`?",
+            options: [
+              "Un bloque de métodos reutilizable que varias clases pueden incorporar",
+              "Una interfaz con estado",
+              "Una clase que no se puede heredar",
+              "Una propiedad de tipo función",
+            ],
+            correct: 0,
+            explanation:
+              "Un trait es implementación reutilizable «horizontal»: métodos (y propiedades) que copias dentro de una clase con `use`. Resuelve el problema de compartir código entre clases que NO tienen una relación de herencia natural, sin recurrir a la herencia múltiple (que PHP no tiene).",
+          },
+          {
+            question: "¿Cómo incorpora una clase un trait?",
+            options: [
+              "Con la palabra clave use dentro del cuerpo de la clase",
+              "Con implements Trait",
+              "Con extends Trait",
+              "Con new Trait() en el constructor",
+            ],
+            correct: 0,
+            explanation:
+              "`use NombreTrait;` en la primera línea del cuerpo de la clase «pega» sus métodos como si estuvieran escritos ahí. No es herencia (`extends`) ni contrato (`implements`): es copia de código en tiempo de compilación.",
+          },
+          {
+            question:
+              "¿Cuántos traits puede usar una clase, y cuántas clases pueden usar el mismo trait?",
+            options: [
+              "Muchos traits por clase, y un trait en muchas clases",
+              "Un trait por clase como máximo",
+              "Un trait sólo puede usarse en una clase",
+              "Depende de si la clase es abstracta",
+            ],
+            correct: 0,
+            explanation:
+              "Los traits son de muchos-a-muchos: una clase puede `use` varios, y un trait puede repartirse por muchas clases sin relación entre sí. Eso es justo lo que los hace útiles para comportamientos transversales (registrar, comparar, serializar) que no encajan en una jerarquía.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c7_uruk_rastreador",
+      kind: "battle",
+      title: "El rastreador de Mano Blanca",
+      lore_intro:
+        "Más grande que un orco y sin miedo al sol, lleva la Mano Blanca pintada en la frente. Rastrea el olor de la Comunidad desde Moria.",
+      position: { x: 33, y: 20 },
+      spriteId: "uruk",
+      enemy: {
+        name: "Uruk-hai rastreador",
+        spriteId: "uruk",
+        hp: 6,
+        damage: 2,
+        xp: 65,
+        taunt: "«Servimos a Saruman el Sabio, la Mano Blanca.»",
+        questions: [
+          {
+            question:
+              "¿Cuál es la diferencia principal entre un trait y una clase abstracta?",
+            options: [
+              "Del trait usas VARIOS y no crea jerarquía; de la abstracta heredas UNA y sí crea jerarquía (es-un)",
+              "El trait no puede tener métodos",
+              "La abstracta se puede instanciar; el trait no",
+              "No hay diferencia",
+            ],
+            correct: 0,
+            explanation:
+              "Heredar de una abstracta afirma «es un»: un Hobbit ES un Personaje, y sólo puede tener un padre. Un trait no dice nada sobre identidad: sólo aporta métodos, y puedes combinar varios. Abstracta para el «qué es»; trait para el «qué sabe hacer, compartido».",
+          },
+          {
+            question:
+              "Dos traits que usa la misma clase definen un método con el MISMO nombre. ¿Qué ocurre?",
+            options: [
+              "Conflicto: hay que resolverlo con insteadof/as o es error fatal",
+              "Gana el último trait declarado, en silencio",
+              "Se ejecutan los dos, uno detrás de otro",
+              "PHP los fusiona automáticamente",
+            ],
+            correct: 0,
+            explanation:
+              "PHP no adivina cuál quieres: un choque de nombres entre traits es error fatal salvo que lo resuelvas explícitamente con `insteadof` (elegir uno) y `as` (renombrar el otro). Prefiere el fallo ruidoso a una elección silenciosa que podría ser la equivocada.",
+          },
+          {
+            question:
+              "¿Puede una clase abstracta usar traits e implementar interfaces a la vez?",
+            options: [
+              "Sí: puede extenderse, usar traits e implementar interfaces simultáneamente",
+              "No: abstracta y trait son incompatibles",
+              "Sólo una de las tres cosas a la vez",
+              "Sólo si no tiene métodos abstractos",
+            ],
+            correct: 0,
+            explanation:
+              "No se excluyen: una abstracta puede `extends` otra clase, `use` traits e `implements` interfaces todo junto. Cada mecanismo resuelve algo distinto — jerarquía, código compartido y contrato — y se combinan con naturalidad.",
+          },
+        ],
+      },
+    },
+    {
+      node_id: "c7_jefe_ugluk",
+      kind: "battle",
+      title: "Uglúk, capitán de Isengard",
+      lore_intro:
+        "En la última linde dorada, antes del Anduin, el capitán de la partida de caza se planta en el sendero. Trae órdenes de Saruman: coger a los medianos vivos. La Comunidad forma a tu espalda.",
+      position: { x: 40, y: 8 },
+      spriteId: "uruk",
+      enemy: {
+        name: "Uglúk de Isengard",
+        spriteId: "uruk",
+        hp: 7,
+        damage: 3,
+        xp: 190,
+        boss: true,
+        taunt: "«¡Los medianos, vivos! ¡Saruman los quiere enteros!»",
+        reward: {
+          hero: "boromir",
+          name: "Boromir de Gondor",
+          blurb:
+            "El capitán de la Ciudad Blanca, escudo de la Comunidad pese a su carga. Boromir se une a tus héroes.",
+        },
+        questions: [
+          {
+            question:
+              "```\nabstract class Personaje {\n  abstract public function nombre(): string;\n  public function saludo(): string { return 'Soy ' . $this->nombre(); }\n}\nclass Elfo extends Personaje {\n  public function nombre(): string { return 'Legolas'; }\n}\necho (new Elfo())->saludo();\n```",
+            options: [
+              "Soy Legolas",
+              "Error: Personaje es abstracta",
+              "Soy ",
+              "Soy Elfo",
+            ],
+            correct: 0,
+            explanation:
+              "La abstracta aporta `saludo()` ya escrito, que llama al método abstracto `nombre()`. La hija Elfo rellena `nombre()`, así que `saludo()` funciona y devuelve «Soy Legolas». Es el patrón «método plantilla»: la base define el esqueleto, la hija completa los huecos.",
+          },
+          {
+            question:
+              "Necesitas que Espada y Hechizo compartan un método `registrarUso()` idéntico, pero no tienen ancestro común y no quieres uno artificial. ¿Qué usas?",
+            options: [
+              "Un trait con registrarUso(), que ambas hacen use",
+              "Herencia: creo una clase padre común",
+              "Copio y pego el método en las dos",
+              "Una interfaz con el método",
+            ],
+            correct: 0,
+            explanation:
+              "El trait es exactamente para esto: compartir implementación entre clases sin parentesco, sin inventar una superclase forzada ni duplicar código. La interfaz sólo declararía la firma (tendrías que escribir el cuerpo dos veces); la herencia ataría clases que no son «la misma cosa».",
+          },
+          {
+            question:
+              "¿Puede una clase abstracta tener un constructor y propiedades con estado?",
+            options: [
+              "Sí: aporta a las hijas ese constructor y esas propiedades",
+              "No: las abstractas no tienen estado",
+              "Sólo propiedades estáticas",
+              "Sólo si no tiene métodos abstractos",
+            ],
+            correct: 0,
+            explanation:
+              "Una abstracta es una clase de pleno derecho salvo por el `new` directo: tiene constructor, propiedades, métodos concretos y abstractos. Las hijas heredan todo eso y llaman a `parent::__construct()` como con cualquier padre. Es su ventaja sobre la interfaz, que no puede aportar estado.",
+          },
+          {
+            question:
+              "Regla práctica: ¿cuándo interfaz, cuándo abstracta, cuándo trait?",
+            options: [
+              "Interfaz = contrato (puede-hacer); abstracta = base con identidad (es-un); trait = código compartido sin jerarquía",
+              "Da igual, los tres son intercambiables",
+              "Interfaz para todo; los otros dos están obsoletos",
+              "Trait para contratos, abstracta para código, interfaz para estado",
+            ],
+            correct: 0,
+            explanation:
+              "Interfaz cuando sólo importa QUE cumpla un contrato (Comparable, Contable). Abstracta cuando hay una relación «es-un» real con base común (Personaje → Hobbit). Trait cuando varias clases sin parentesco necesitan el MISMO código (registrar, serializar). No compiten: se combinan.",
+          },
+        ],
+      },
+    },
     {
       node_id: "pergamino_dones",
       kind: "scroll",
@@ -3003,6 +3268,7 @@ export const CHAPTER_8: Chapter = {
   lore: "En Parth Galen, junto al Anduin, la Comunidad se quiebra. Boromir sucumbe al Anillo, los Uruk-hai bajan de Isengard y Frodo debe elegir. Cuando algo puede salir mal, dilo con una excepción; cuando algo hay que fabricar en serie, usa una fábrica.",
   mapSize: { cols: 24, rows: 14 },
   spawn: { x: 2, y: 8 },
+  unlockedBy: 7,
   scenery: {
     ground: "grass",
     pathRows: [4],
