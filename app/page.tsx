@@ -56,6 +56,9 @@ const QuizModal = dynamic(() => import("@/components/game/QuizModal"), {
 const StatsPanel = dynamic(() => import("@/components/game/StatsPanel"), {
   ssr: false,
 });
+const Library = dynamic(() => import("@/components/game/Library"), {
+  ssr: false,
+});
 const BattleModal = dynamic(() => import("@/components/game/BattleModal"), {
   ssr: false,
 });
@@ -72,6 +75,7 @@ export default function GamePage() {
   const [showChapters, setShowChapters] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [showStats, setShowStats] = useState(false);
+  const [showLibrary, setShowLibrary] = useState(false);
   const [showHeroes, setShowHeroes] = useState(false);
   /** Recompensa a mostrar tras vencer a un jefe (con el capítulo destino). */
   const [reward, setReward] = useState<{ data: Reward; next?: number } | null>(
@@ -308,6 +312,12 @@ export default function GamePage() {
           >
             📊 Estadísticas
           </button>
+          <button
+            onClick={() => setShowLibrary(true)}
+            className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
+          >
+            📚 Biblioteca
+          </button>
           {heroes.length > 1 && (
             <button
               onClick={() => setShowHeroes(true)}
@@ -430,6 +440,7 @@ export default function GamePage() {
             showChapters ||
             showIntro ||
             showStats ||
+            showLibrary ||
             showHeroes ||
             reward !== null ||
             aviso !== null
@@ -483,7 +494,7 @@ export default function GamePage() {
             onSolved={handleSolved}
             onClose={() => setActiveNodeId(null)}
           />
-        ) : (
+        ) : activeNode.kind === "archive" ? null : ( // la biblioteca va aparte
           <ChallengeModal
             key={activeNode.node_id}
             node={activeNode}
@@ -512,6 +523,10 @@ export default function GamePage() {
             </button>
           </div>
         </div>
+      )}
+
+      {showLibrary && (
+        <Library progress={progress} onClose={() => setShowLibrary(false)} />
       )}
 
       {showStats && (

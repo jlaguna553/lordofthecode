@@ -160,8 +160,22 @@ export interface QuizNode extends BaseNode {
   quiz: QuizContent;
 }
 
+/**
+ * Estantería de la Biblioteca: al abrirla se consulta el archivo (pergaminos
+ * leídos o retos resueltos) filtrado por su pestaña. No se «completa».
+ */
+export interface ArchiveNode extends BaseNode {
+  kind: "archive";
+  tab: "scrolls" | "php" | "python";
+}
+
 /** Un nodo interactivo en el mapa (pergamino, acertijo, enigma, enemigo). */
-export type MapNode = ChallengeNode | ScrollNode | QuizNode | BattleNode;
+export type MapNode =
+  | ChallengeNode
+  | ScrollNode
+  | QuizNode
+  | BattleNode
+  | ArchiveNode;
 
 /** Suelos disponibles: cada capítulo elige su bioma. */
 export type GroundType =

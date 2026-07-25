@@ -463,6 +463,7 @@ export default function GameCanvas({
               scroll: { color: 0x8ab4ff, text: "#cfe0ff", icon: "📜 " },
               quiz: { color: 0xc084fc, text: "#e9d5ff", icon: "🜛 " },
               battle: { color: 0xfb923c, text: "#fed7aa", icon: "⚔ " },
+              archive: { color: 0x8ab4ff, text: "#cfe0ff", icon: "📚 " },
             } as const;
             const style = esJefe
               ? { color: 0xf43f5e, text: "#fecdd3", icon: "☠ " }

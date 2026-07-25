@@ -18,7 +18,9 @@ export default function ChapterIntro({ chapter, onStart }: Props) {
             ? n.quiz.topic
             : n.kind === "battle"
               ? n.enemy.name
-              : n.poo_challenge.topic,
+              : n.kind === "archive"
+                ? "Archivo"
+                : n.poo_challenge.topic,
       ),
     ),
   ];

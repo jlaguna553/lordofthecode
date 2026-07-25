@@ -1808,6 +1808,41 @@ echo RioBruinen::desbordar();`,
         ],
       },
     },
+    {
+      node_id: "c4_runas_del_vado",
+      title: "Las runas del Vado",
+      lore_intro:
+        "Grabados en la roca sobre Bruinen hay tres signos: aguas calmas, aguas crecidas, aguas desbordadas. Sólo tres estados posibles, y ni uno más — como un enum.",
+      position: { x: 18, y: 11 },
+      spriteId: "aragorn",
+      poo_challenge: {
+        topic: "Enums respaldados (const con superpoderes)",
+        instructions:
+          "Un enum es un conjunto CERRADO de valores con nombre: como las constantes de clase, pero convertidas en un tipo propio.\n\n" +
+          "Declara el enum `Vado` respaldado por `string` con tres casos y sus valores exactos:\n" +
+          "• `Calmo` = `'calmo'`\n• `Crecido` = `'crecido'`\n• `Desbordado` = `'desbordado'`\n\n" +
+          "Añade:\n" +
+          "• `esVadeable(): bool` — sólo el Vado Calmo se puede cruzar.\n" +
+          "• `public static function segunCaudal(int $caudal): self` — devuelve `Calmo` si el caudal es menor que 30, `Crecido` si es menor que 70, y `Desbordado` en los demás casos. Usa `match (true)`.",
+        starter_code:
+          "<?php\n\nenum Vado: string\n{\n    // 1) los tres casos con su valor\n\n    public function esVadeable(): bool\n    {\n        // 2)\n    }\n\n    public static function segunCaudal(int $caudal): self\n    {\n        // 3) match (true) => ...\n    }\n}\n",
+        hints: [
+          "Un enum respaldado declara el tipo tras el nombre y cada caso lleva valor: `case Calmo = 'calmo';`",
+          "`esVadeable()` es una comparación de identidad: `return $this === Vado::Calmo;`",
+          "`match (true)` evalúa condiciones: `$caudal < 30 => Vado::Calmo, $caudal < 70 => Vado::Crecido, default => Vado::Desbordado`.",
+        ],
+        test_cases: [
+          { input: "Vado::from('crecido')->name", expected: "Crecido", description: "from() encuentra el caso por su valor", raw: true },
+          { input: "Vado::Calmo->value", expected: "calmo", description: "El valor respaldado", raw: true },
+          { input: "Vado::Calmo->esVadeable()", expected: true, description: "El Vado calmo se cruza", raw: true },
+          { input: "Vado::Desbordado->esVadeable()", expected: false, description: "El desbordado, no", raw: true },
+          { input: "Vado::segunCaudal(10)->name", expected: "Calmo", description: "Caudal bajo", raw: true },
+          { input: "Vado::segunCaudal(50)->name", expected: "Crecido", description: "Caudal medio", raw: true },
+          { input: "Vado::segunCaudal(200)->name", expected: "Desbordado", description: "El río contra los Nueve", raw: true },
+          { input: "count(Vado::cases())", expected: 3, description: "El enum está cerrado en tres", raw: true },
+        ],
+      },
+    },
   ],
 };
 
@@ -2781,6 +2816,39 @@ class PuertaDurin implements Descifrable {
             expected: true,
             description: "El hechizo cumple el contrato ComandoMagico",
           },
+        ],
+      },
+    },
+    {
+      node_id: "c6_galeria_de_mazarbul",
+      title: "La galería sin fin",
+      lore_intro:
+        "Las salas de Khazad-dûm se encadenan una tras otra en la oscuridad. Quien lleve su registro debe poder recorrerlas con un simple foreach — eso es un iterador, y la interfaz que lo permite.",
+      position: { x: 16, y: 10 },
+      spriteId: "gimli",
+      poo_challenge: {
+        topic: "Generadores e IteratorAggregate",
+        instructions:
+          "Un generador produce valores de uno en uno con `yield`, sin construir la lista entera. Y un objeto se vuelve recorrible con foreach implementando la interfaz `IteratorAggregate`.\n\n" +
+          "Escribe la clase `Galeria` que implemente `IteratorAggregate` y `Countable`, con las salas en una propiedad PRIVADA:\n" +
+          "• `agregar(string $sala): static` — añade una sala y devuelve `$this` (interfaz fluida).\n" +
+          "• `getIterator(): Generator` — rinde las salas en orden con `yield from`. Una línea.\n" +
+          "• `count(): int` — cuántas salas hay.",
+        starter_code:
+          "<?php\n\nfinal class Galeria implements IteratorAggregate, Countable\n{\n    private array $salas = [];\n\n    public function agregar(string $sala): static\n    {\n        // añade y devuelve $this\n    }\n\n    public function getIterator(): Generator\n    {\n        // yield from ...\n    }\n\n    public function count(): int\n    {\n        //\n    }\n}\n",
+        hints: [
+          "La interfaz fluida es `return $this;` al final del método que modifica.",
+          "`getIterator()` puede ser un generador: `yield from $this->salas;` y ya está.",
+          "`Countable` hace que `count($objeto)` llame a tu método `count()`: devuelve `count($this->salas)`.",
+        ],
+        test_cases: [
+          { input: "iterator_to_array((new Galeria())->agregar('Mazarbul')->agregar('Puente'), false)", expected: ["Mazarbul", "Puente"], description: "Se recorre en orden", raw: true },
+          { input: "count((new Galeria())->agregar('Mazarbul')->agregar('Puente')->agregar('Escalera'))", expected: 3, description: "count() sobre el objeto", raw: true },
+          { input: "count(new Galeria())", expected: 0, description: "Una galería vacía", raw: true },
+          { input: "(new Galeria()) instanceof Traversable", expected: true, description: "Es recorrible de verdad", raw: true },
+          { input: "(new Galeria())->agregar('x') instanceof Galeria", expected: true, description: "agregar() devuelve la galería (fluida)", raw: true },
+          { input: "(new ReflectionMethod('Galeria', 'getIterator'))->isGenerator()", expected: true, description: "getIterator() es un generador, no un array", raw: true },
+          { input: "(new ReflectionProperty('Galeria', 'salas'))->isPrivate()", expected: true, description: "Las salas son privadas", raw: true },
         ],
       },
     },

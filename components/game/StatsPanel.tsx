@@ -21,7 +21,9 @@ function topicOf(n: MapNode): string {
       ? n.quiz.topic
       : n.kind === "battle"
         ? n.enemy.name
-        : n.poo_challenge.topic;
+        : n.kind === "archive"
+          ? "Archivo"
+          : n.poo_challenge.topic;
 }
 
 /** Área de preparación a la que pertenece cada capítulo. */
@@ -36,7 +38,7 @@ function areaOf(chapter: number): string {
 function targetOf(n: MapNode): number | undefined {
   return n.kind === "quiz"
     ? n.quiz.timeLimitSec
-    : n.kind === "scroll" || n.kind === "battle"
+    : n.kind === "scroll" || n.kind === "battle" || n.kind === "archive"
       ? undefined
       : n.poo_challenge.timeLimitSec;
 }
@@ -77,6 +79,7 @@ export default function StatsPanel({ progress, onClose }: Props) {
     for (const n of ch.nodes) {
       totalNodos++;
       const kind = n.kind ?? "challenge";
+      if (kind === "archive") continue; // la biblioteca no cuenta en stats
       porTipo[kind].total++;
       const resuelto = done.has(n.node_id);
       if (resuelto) {
