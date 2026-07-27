@@ -91,6 +91,16 @@ export default function GamePage() {
   const chapter = getChapter(currentChapter) ?? CHAPTER_1;
   const heroes = useMemo(() => heroesDesbloqueados(progress, CHAPTERS), [progress]);
   const heroId = useMemo(() => heroActivo(progress, CHAPTERS), [progress]);
+  /**
+   * Clave estable del conjunto de héroes desbloqueados. `heroes` es un array
+   * nuevo en cada cambio de progreso (p. ej. al guardar código con debounce),
+   * pero su CONTENIDO sólo cambia al desbloquear un aliado. Usamos esta cadena
+   * como dependencia para no recomponer los sprites —y con ellos reiniciar la
+   * escena Phaser, devolviendo a los personajes al spawn— con cada tecla.
+   */
+  const heroKey = useMemo(() => heroes.map((h) => h.hero).join(","), [heroes]);
+  const heroesRef = useRef(heroes);
+  heroesRef.current = heroes;
   // Ref para que el guardado de código no dependa del capítulo en su clausura.
   const currentChapterRef = useRef(currentChapter);
   currentChapterRef.current = currentChapter;
@@ -121,7 +131,7 @@ export default function GamePage() {
               .filter((id): id is string => Boolean(id)),
             ...(chapter.scenery?.npcs ?? []).map((n) => n.spriteId),
             ...(chapter.companions ?? []),
-            ...heroes.map((h) => h.hero),
+            ...heroesRef.current.map((h) => h.hero),
           ]),
         ];
         const sheets: Record<string, PresetSheet> = {};
@@ -148,7 +158,7 @@ export default function GamePage() {
     return () => {
       cancelled = true;
     };
-  }, [chapter, heroId, heroes]);
+  }, [chapter, heroId, heroKey]);
 
   // Cada capítulo se abre con su tarjeta narrativa.
   useEffect(() => {
