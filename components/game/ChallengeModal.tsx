@@ -32,6 +32,9 @@ export default function ChallengeModal({
   // Si el jugador ya escribió aquí, retomamos su código donde lo dejó.
   const [code, setCode] = useState(savedCode ?? c.starter_code);
   const restored = Boolean(savedCode && savedCode !== c.starter_code);
+  // Instancia del editor Monaco (para escribirle al Reiniciar; va no controlado).
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const editorRef = useRef<any>(null);
 
   // Guardado con debounce: no escribimos en localStorage en cada tecla.
   useEffect(() => {
@@ -238,12 +241,23 @@ export default function ChallengeModal({
           {/* Editor + acciones */}
           <div className="flex min-h-0 flex-col">
             <div className="min-h-[280px] flex-1">
+              {/*
+                Editor NO controlado: `defaultValue` en vez de `value`. Monaco
+                es la fuente de verdad del texto y `onChange` sólo alimenta el
+                estado que se usa al ejecutar. Con `value` controlado, los
+                re-renders del cronómetro (uno por segundo) hacían que Monaco
+                recibiera un value desfasado y reejecutara setValue, borrando lo
+                tecleado y mandando el cursor al final.
+              */}
               <Editor
                 height="100%"
                 language={langOf(c)}
                 path={`reto-${node.node_id}.${langOf(c) === "python" ? "py" : "php"}`}
                 theme="vs-dark"
-                value={code}
+                defaultValue={code}
+                onMount={(editor) => {
+                  editorRef.current = editor;
+                }}
                 onChange={(v) => setCode(v ?? "")}
                 options={{
                   fontSize: 14,
@@ -265,6 +279,8 @@ export default function ChallengeModal({
               </button>
               <button
                 onClick={() => {
+                  // Editor no controlado: hay que escribirle el texto a mano.
+                  editorRef.current?.setValue(c.starter_code);
                   setCode(c.starter_code);
                   setResult(null);
                 }}

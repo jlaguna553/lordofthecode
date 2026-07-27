@@ -5599,9 +5599,7 @@ export const CHAPTER_HELM: Chapter = {
   chapter: 16,
   title: "El Abismo de Helm",
   lore:
-    "Cae la noche sobre el Sagrario y una hueste sin fin avanza bajo la lluvia. Nadie puede contarla entera, " +
-    "pero sí enfrentarla de uno en uno. En PHP eso se llama generador: no construyes la lista, la rindes " +
-    "elemento a elemento, y sólo cuando hace falta.",
+    "Cae la noche sobre el Sagrario y una hueste sin fin avanza bajo la lluvia. Diez mil Uruk-hai que no se cuentan de un vistazo: hay que recorrerlos, uno a uno, con un bucle. Aquí Python aprende a repetir, contar y decidir dentro del combate.",
   mapSize: { cols: 24, rows: 14 },
   spawn: { x: 2, y: 7 },
   companions: ["aragorn", "legolas", "gimli"],
@@ -5621,21 +5619,21 @@ export const CHAPTER_HELM: Chapter = {
         y: 8,
         speaker: "gimli",
         name: "Gimli",
-        text: "Podría abrirme paso a hachazos, pero prefiero contarlos de uno en uno.",
+        text: "Podría abrirme paso a hachazos, pero prefiero contarlos con un for.",
       },
       {
         x: 12,
         y: 8,
         speaker: "legolas",
         name: "Legolas",
-        text: "Son demasiados para verlos a la vez. Toma sólo los que necesites.",
+        text: "Mientras queden flechas, un while. Cuando se agoten, se rompe el bucle.",
       },
       {
         x: 18,
         y: 8,
         speaker: "aragorn",
         name: "Aragorn",
-        text: "La muralla aguanta mientras no intentes cargarla entera de golpe.",
+        text: "Recorre la muralla con enumerate: sabrás en qué tramo cede.",
       },
     ],
     decor: [
@@ -5650,371 +5648,200 @@ export const CHAPTER_HELM: Chapter = {
   },
   nodes: [
     {
-      node_id: "helm_pergamino_generadores",
+      node_id: "py_pergamino_bucles",
       kind: "scroll",
-      title: "El Pergamino de la Hueste Innumerable",
+      title: "El Pergamino de las Repeticiones",
       lore_intro:
-        "Colgado en el muro del Baluarte, junto a las troneras. Lo escribió alguien que tuvo que contar un ejército sin poder verlo entero.",
-      position: { x: 10, y: 3 },
+        "Clavado en la puerta del Baluarte, bajo la lluvia. Enseña a repetir sin cansarse: la única forma de enfrentar a diez mil.",
       scroll: {
-        topic: "Generadores e iteradores: recorrer sin materializar",
+        topic: "Control de flujo: for, while, range y enumerate",
         sections: [
           {
-            heading: "El problema: la memoria",
+            heading: "for: repetir sobre una secuencia",
             body:
-              "Una función que devuelve un array lo construye ENTERO antes de que leas el primer elemento. " +
-              "Con diez mil filas te sobra memoria; con diez millones, el proceso muere. Un generador no devuelve " +
-              "la lista: devuelve una receta para producirla, y sólo avanza cuando le pides el siguiente elemento.",
+              "El bucle `for` de Python recorre los elementos de algo iterable (una lista, un texto, un rango) y ejecuta su cuerpo una vez por elemento. No hay contador manual ni condición: la variable toma cada valor directamente. Es un «para cada», no el for de C.",
             code:
-              "// Reserva memoria para 10.000.000 de enteros ANTES de devolver nada\nfunction rango(int $n): array {\n    $r = [];\n    for ($i = 1; $i <= $n; $i++) { $r[] = $i; }\n    return $r;            // ~400 MB\n}\n\n// Memoria constante: produce uno, lo entregas, lo olvidas\nfunction rango(int $n): Generator {\n    for ($i = 1; $i <= $n; $i++) { yield $i; }\n}\n\nforeach (rango(10_000_000) as $i) { /* ... */ }  // unos pocos KB",
+              "for enemigo in ['orco', 'trasgo', 'uruk']:\n    print(enemigo)     # se ejecuta 3 veces\n\n# También recorre el texto carácter a carácter:\nfor letra in 'Rohan':\n    print(letra)",
           },
           {
-            heading: "yield: la función que se pausa",
+            heading: "range: contar sin lista",
             body:
-              "Basta un `yield` en el cuerpo para que la función deje de ser una función normal: llamarla NO ejecuta " +
-              "nada, sólo devuelve un objeto Generator. El código empieza a correr en la primera iteración y se " +
-              "CONGELA en cada yield, con sus variables locales intactas, hasta que le pidas el siguiente valor.",
+              "`range(n)` produce los números 0, 1, …, n-1 (el final NO se incluye). `range(a, b)` va de a hasta b-1, y `range(a, b, paso)` salta de `paso` en `paso`. Combinado con `for`, es cómo repites algo N veces o recorres índices.",
             code:
-              "function guardia(): Generator {\n    echo 'abro la puerta';   // no se imprime al llamar\n    yield 'Aragorn';         // pausa aquí\n    echo 'la cierro';\n    yield 'Gimli';\n}\n\n$g = guardia();     // todavía no se ha impreso nada\nforeach ($g as $d) { echo $d; }\n\n// yield también rinde clave => valor\nyield 'muralla' => 'Aragorn';",
+              "for i in range(3):        # 0, 1, 2\n    print(i)\n\nrange(1, 6)               # 1, 2, 3, 4, 5\nrange(0, 10, 2)           # 0, 2, 4, 6, 8\n\n# Acumular: sumar 1..n\ntotal = 0\nfor i in range(1, n + 1):\n    total += i",
           },
           {
-            heading: "yield from y return dentro del generador",
+            heading: "while: repetir mientras se cumpla algo",
             body:
-              "`yield from` delega en otro iterable (array, generador u objeto Traversable) y rinde todos sus " +
-              "elementos como si fueran propios: es la forma limpia de componer generadores. Y sí, un generador " +
-              "puede hacer `return`: ese valor no se rinde en el bucle, se recoge después con `->getReturn()` " +
-              "(sólo cuando el generador ya ha terminado).",
+              "`while condicion:` repite el cuerpo mientras la condición sea verdadera, comprobándola antes de cada vuelta. Se usa cuando no sabes de antemano cuántas veces hay que iterar — hasta agotar las flechas, hasta que el muro caiga. Cuidado: algo dentro debe acercar la condición a falsa, o el bucle es infinito.",
             code:
-              "function defensores(): Generator {\n    yield from ['Aragorn', 'Legolas'];\n    yield 'Gimli';\n}\n\nfunction contar(array $xs): Generator {\n    $n = 0;\n    foreach ($xs as $x) { $n++; yield $x; }\n    return $n;          // no sale en el foreach\n}\n\n$g = contar(['a', 'b']);\nforeach ($g as $x) {}\n$g->getReturn();        // 2",
+              "flechas = 5\nwhile flechas > 0:\n    disparar()\n    flechas -= 1        # sin esto, bucle infinito\n\n# Contar cuántas vueltas hicieron falta\nturnos = 0\nwhile muro > 0:\n    muro -= golpe\n    turnos += 1",
           },
           {
-            heading: "Iterator vs. IteratorAggregate",
+            heading: "break y continue",
             body:
-              "Para que un objeto tuyo se pueda recorrer con foreach debe implementar Traversable, y eso se hace " +
-              "por una de dos vías. `Iterator` te obliga a escribir cinco métodos a mano (current, key, next, rewind, " +
-              "valid): control total, mucho ruido. `IteratorAggregate` sólo pide `getIterator()`, y como los " +
-              "generadores YA son iteradores, la implementación cabe en una línea. Usa IteratorAggregate salvo que " +
-              "tengas una razón concreta para no hacerlo.",
+              "`break` sale del bucle de inmediato, sin terminar las vueltas restantes. `continue` salta el resto del cuerpo y pasa a la siguiente vuelta. Sirven para cortar en cuanto encuentras lo que buscas, o para ignorar los casos que no interesan.",
             code:
-              "final class Muralla implements IteratorAggregate, Countable\n{\n    private array $defensores = [];\n\n    public function alistar(string $n): static {\n        $this->defensores[] = $n;\n        return $this;                 // interfaz fluida\n    }\n\n    public function getIterator(): Generator {\n        yield from $this->defensores;\n    }\n\n    public function count(): int {\n        return count($this->defensores);\n    }\n}\n\nforeach (new Muralla() as $d) { /* ... */ }",
+              "for i, r in enumerate(muralla):\n    if r <= 0:\n        primera_brecha = i\n        break          # ya la encontré, no sigo\n\nfor n in numeros:\n    if n < 0:\n        continue       # ignora los negativos\n    procesar(n)",
           },
           {
-            heading: "Tuberías perezosas",
+            heading: "enumerate: el índice y el valor a la vez",
             body:
-              "Como cada generador sólo avanza cuando le tiran del hilo, se pueden encadenar: filtrar(mapear(leer())) " +
-              "no recorre la fuente tres veces ni crea tres arrays intermedios — recorre UNA vez, elemento a elemento. " +
-              "Es el patrón para leer un CSV de 2 GB o una consulta enorme sin tocar la memoria. Ojo: un generador " +
-              "es de un solo uso; si necesitas recorrerlo dos veces, vuelve a llamar a la función.",
+              "Cuando necesitas SABER la posición mientras recorres, `enumerate(secuencia)` te da pares (índice, valor). Es más limpio y menos propenso a errores que llevar un contador a mano o usar `range(len(...))`.",
             code:
-              "function tomar(iterable $flujo, int $n): Generator {\n    $i = 0;\n    foreach ($flujo as $v) {\n        yield $v;\n        if (++$i >= $n) return;   // corta la fuente aquí mismo\n    }\n}\n\n// La fuente es infinita y aun así esto termina\nfunction naturales(): Generator {\n    for ($i = 1; ; $i++) { yield $i; }\n}\n\niterator_to_array(tomar(naturales(), 5), false); // [1,2,3,4,5]",
+              "for i, sala in enumerate(['Mazarbul', 'Puente']):\n    print(i, sala)     # 0 Mazarbul / 1 Puente\n\n# Recoger las posiciones que cumplen algo\ndebiles = []\nfor i, n in enumerate(enemigos):\n    if n < umbral:\n        debiles.append(i)",
           },
         ],
         keyTakeaway:
-          "Devuelve array cuando el resultado es pequeño y lo vas a recorrer varias veces; devuelve Generator cuando es grande, infinito o caro de producir. Para tus objetos: IteratorAggregate + `yield from`, una línea.",
+          "for recorre un iterable (usa range para contar); while repite mientras algo sea cierto; break corta y continue salta; enumerate te da índice y valor juntos. Con eso ya puedes repetir, contar y decidir.",
       },
+      position: { x: 4, y: 4 },
     },
     {
-      node_id: "helm_contar_flechas",
-      title: "El carcaj de Legolas",
+      node_id: "py_suma_hasta",
+      title: "Las salvas de la muralla",
       lore_intro:
-        "«¿Cuántas te quedan?» — «Las que haga falta.» Legolas no cuenta las flechas antes de disparar: las cuenta mientras dispara.",
-      position: { x: 9, y: 6 },
+        "«En la primera oleada, una salva; en la segunda, dos; y así hasta la enésima.» Cuenta cuántas flechas se disparan en total.",
       spriteId: "legolas",
       poo_challenge: {
-        topic: "yield y getReturn()",
+        lang: "python",
+        topic: "Bucle for con range y acumulador",
         instructions:
-          "Escribe la función `contarFlechas(int $desde, int $hasta): Generator`:\n\n" +
-          "• Rinde (`yield`) todos los enteros de `$desde` a `$hasta`, ambos incluidos, en orden ascendente.\n" +
-          "• Al terminar, `return` la SUMA de todo lo rendido, para que se pueda recoger con `->getReturn()`.\n\n" +
-          "Nada de construir un array intermedio: debe funcionar igual de rápido con `contarFlechas(1, 100000000)`, " +
-          "porque llamarla no ejecuta nada.",
+          "Escribe `suma_hasta(n)` que devuelva la suma de todos los enteros de 1 a `n` (ambos incluidos): 1 + 2 + … + n.\n\n" +
+          "Usa un bucle `for` con `range` y un acumulador. Con `n = 0` (o negativo) no hay nada que sumar: devuelve 0.",
         starter_code:
-          "<?php\n\nfunction contarFlechas(int $desde, int $hasta): Generator\n{\n    // 1) acumula la suma mientras recorres\n    // 2) yield en cada vuelta\n    // 3) return la suma al final\n}\n",
+          "def suma_hasta(n):\n    total = 0\n    # recorre de 1 a n y acumula\n    return total\n",
         hints: [
-          "Un `for` normal con `yield $i;` dentro del cuerpo. Con que aparezca un solo `yield`, PHP convierte la función en generador.",
-          "Lleva un acumulador: `$suma += $i;` justo antes o después del yield.",
-          "`return $suma;` dentro de un generador es legal desde PHP 7 y no rinde nada: ese valor sólo se lee con `->getReturn()`, y sólo después de agotar el generador.",
+          "`range(1, n + 1)` genera 1, 2, …, n. El `+ 1` es porque el final de range NO se incluye.",
+          "Dentro del for, acumula: `total += i`.",
+          "Si n es 0, `range(1, 1)` está vacío y el for no se ejecuta: total se queda en 0. No hace falta un caso especial.",
         ],
         test_cases: [
-          {
-            input: "iterator_to_array(contarFlechas(1, 5), false)",
-            expected: [1, 2, 3, 4, 5],
-            description: "Rinde el rango completo",
-            raw: true,
-          },
-          {
-            input: "iterator_to_array(contarFlechas(7, 7), false)",
-            expected: [7],
-            description: "Un rango de un solo elemento",
-            raw: true,
-          },
-          {
-            input: "iterator_to_array(contarFlechas(5, 1), false)",
-            expected: [],
-            description: "Rango vacío: no rinde nada",
-            raw: true,
-          },
-          {
-            input: "contarFlechas(1, 3) instanceof Generator",
-            expected: true,
-            description: "Devuelve un Generator, no un array",
-            raw: true,
-          },
-          {
-            input:
-              "(function () { $g = contarFlechas(1, 10); foreach ($g as $_) {} return $g->getReturn(); })()",
-            expected: 55,
-            description: "getReturn() recoge la suma",
-            raw: true,
-          },
-          {
-            input:
-              "(function () { $g = contarFlechas(3, 6); foreach ($g as $_) {} return $g->getReturn(); })()",
-            expected: 18,
-            description: "La suma de 3+4+5+6",
-            raw: true,
-          },
-          {
-            input: "contarFlechas(1, 100000000) instanceof Generator",
-            expected: true,
-            description: "Cien millones de flechas y ni un byte gastado: es perezoso",
-            raw: true,
-          },
+          { input: "suma_hasta(5)", expected: 15, description: "1+2+3+4+5", raw: true },
+          { input: "suma_hasta(1)", expected: 1, description: "Sólo el 1", raw: true },
+          { input: "suma_hasta(0)", expected: 0, description: "Nada que sumar", raw: true },
+          { input: "suma_hasta(10)", expected: 55, description: "Hasta diez", raw: true },
+          { input: "suma_hasta(100)", expected: 5050, description: "La suma de Gauss", raw: true },
         ],
       },
+      position: { x: 9, y: 5 },
     },
     {
-      node_id: "helm_muralla",
-      title: "La Muralla Profunda",
+      node_id: "py_aguantar",
+      title: "Cuánto aguanta el muro",
       lore_intro:
-        "Los defensores suben al adarve de uno en uno. Quien mande la muralla debe poder recorrerla con un simple foreach, sin repartir la lista entera a nadie.",
-      position: { x: 14, y: 5 },
-      spriteId: "aragorn",
-      poo_challenge: {
-        topic: "IteratorAggregate, Countable e interfaz fluida",
-        instructions:
-          "Escribe la clase `Muralla` que implemente `IteratorAggregate` y `Countable`, con los defensores en una " +
-          "propiedad PRIVADA:\n\n" +
-          "• `alistar(string $nombre): static` — añade un defensor y devuelve `$this`, para poder encadenar llamadas.\n" +
-          "• `getIterator(): Generator` — rinde los defensores en el orden en que se alistaron. Una línea con `yield from`.\n" +
-          "• `count(): int` — cuántos defensores hay, para que `count($muralla)` funcione.",
-        starter_code:
-          "<?php\n\nfinal class Muralla implements IteratorAggregate, Countable\n{\n    private array $defensores = [];\n\n    public function alistar(string $nombre): static\n    {\n        // añade y devuelve $this\n    }\n\n    public function getIterator(): Generator\n    {\n        // yield from ...\n    }\n\n    public function count(): int\n    {\n        //\n    }\n}\n",
-        hints: [
-          "La interfaz fluida es sólo `return $this;` al final del método que modifica. Eso permite `$m->alistar('a')->alistar('b')`.",
-          "`getIterator()` puede ser un generador: `yield from $this->defensores;` y ya está. PHP acepta Generator donde la interfaz declara Traversable.",
-          "`Countable` hace que la función global `count($objeto)` llame a tu método `count()`. Devuelve `count($this->defensores)`.",
-        ],
-        test_cases: [
-          {
-            input:
-              "iterator_to_array((new Muralla())->alistar('Aragorn')->alistar('Legolas')->alistar('Gimli'), false)",
-            expected: ["Aragorn", "Legolas", "Gimli"],
-            description: "Se recorre en orden de alistamiento",
-            raw: true,
-          },
-          {
-            input:
-              "count((new Muralla())->alistar('Aragorn')->alistar('Legolas'))",
-            expected: 2,
-            description: "count() sobre el objeto funciona",
-            raw: true,
-          },
-          {
-            input: "count(new Muralla())",
-            expected: 0,
-            description: "Una muralla recién levantada está vacía",
-            raw: true,
-          },
-          {
-            input:
-              "(function () { $m = new Muralla(); $r = []; foreach ($m->alistar('Éomer') as $d) { $r[] = $d; } return $r; })()",
-            expected: ["Éomer"],
-            description: "foreach directo sobre el objeto",
-            raw: true,
-          },
-          {
-            input: "(new Muralla()) instanceof Traversable",
-            expected: true,
-            description: "Es recorrible de verdad",
-            raw: true,
-          },
-          {
-            input: "(new Muralla())->alistar('Gamling') instanceof Muralla",
-            expected: true,
-            description: "alistar() devuelve la propia muralla (interfaz fluida)",
-            raw: true,
-          },
-          {
-            input:
-              "(new ReflectionProperty('Muralla', 'defensores'))->isPrivate()",
-            expected: true,
-            description: "La lista no se expone: es privada",
-            raw: true,
-          },
-          {
-            input:
-              "(new ReflectionMethod('Muralla', 'getIterator'))->isGenerator()",
-            expected: true,
-            description: "getIterator() es un generador, no devuelve un array",
-            raw: true,
-          },
-        ],
-      },
-    },
-    {
-      node_id: "helm_tuberia_perezosa",
-      title: "Contad los que caigan",
-      lore_intro:
-        "Gimli lleva la cuenta a gritos. No necesita ver el ejército entero: le basta con los que le llegan al hacha, de uno en uno.",
-      position: { x: 19, y: 6 },
+        "El Muro Profundo encaja golpe tras golpe. Gimli quiere saber cuántos embates resistirá antes de ceder.",
       spriteId: "gimli",
       poo_challenge: {
-        topic: "Tuberías perezosas: tomar y filtrar sin materializar",
+        lang: "python",
+        topic: "Bucle while con contador",
         instructions:
-          "El generador `hueste()` ya existe. Rinde Uruk-hai numerados… pero el Abismo sólo aguanta 5: al pedir el " +
-          "sexto lanza `RuntimeException`. Tus funciones deben ser PEREZOSAS y no tirar del hilo más de lo necesario.\n\n" +
-          "• `tomar(iterable $flujo, int $n): Generator` — rinde como mucho los `$n` primeros elementos y para. " +
-          "Con `$n <= 0` no rinde nada y NO debe tocar la fuente.\n" +
-          "• `filtrar(iterable $flujo, callable $ok): Generator` — rinde sólo los elementos para los que `$ok($v)` " +
-          "sea cierto.\n\n" +
-          "Si materializas el flujo con `iterator_to_array` dentro de tus funciones, el carcaj se agota y los tests " +
-          "estallan: ése es justamente el error que se está comprobando.",
+          "Escribe `aguantar(resistencia, golpe)` que devuelva cuántos golpes de fuerza `golpe` resiste un muro con `resistencia` puntos antes de caer (llegar a 0 o menos).\n\n" +
+          "Cada golpe resta `golpe` a la resistencia. Cuenta los golpes con un `while`. Si el muro ya está a 0 o menos, aguanta 0 golpes.",
         starter_code:
-          "<?php\n\n// `hueste()` ya está declarada: rinde 1, 2, 3, 4, 5 y luego revienta.\n\nfunction tomar(iterable $flujo, int $n): Generator\n{\n    // 1) si $n <= 0, return; ANTES de tocar la fuente\n    // 2) recorre y rinde, contando\n    // 3) al llegar a $n, return;\n}\n\nfunction filtrar(iterable $flujo, callable $ok): Generator\n{\n    // rinde sólo los que pasen $ok\n}\n",
-        support_code:
-          "/** Rinde Uruk-hai de uno en uno; el Abismo sólo aguanta 5. */\n" +
-          "function hueste(): Generator {\n" +
-          "    for ($i = 1; ; $i++) {\n" +
-          "        if ($i > 5) throw new RuntimeException('¡La muralla ha caído!');\n" +
-          "        yield $i;\n" +
-          "    }\n" +
-          "}",
+          "def aguantar(resistencia, golpe):\n    turnos = 0\n    # mientras el muro siga en pie, recibe golpes\n    return turnos\n",
         hints: [
-          "`tomar` lleva un contador: rinde el valor y, si ya has rendido `$n`, sal con un `return` desnudo (dentro de un generador, `return;` termina la iteración).",
-          "El orden importa: incrementa DESPUÉS de rendir (`yield $v; if (++$i >= $n) return;`). Si compruebas antes de rendir, pedirás un elemento de más a la fuente.",
-          "Para `$n <= 0` haz `return;` ANTES del foreach: si entras en el bucle ya has pedido el primer elemento a la hueste.",
+          "`while resistencia > 0:` repite mientras el muro aguante.",
+          "Dentro: resta el golpe y suma un turno: `resistencia -= golpe` y `turnos += 1`.",
+          "Si `resistencia` ya es 0 o menos, el while no entra y devuelves 0, que es lo correcto.",
         ],
         test_cases: [
-          {
-            input: "iterator_to_array(tomar(hueste(), 3), false)",
-            expected: [1, 2, 3],
-            description: "Toma tres y deja en paz al resto",
-            raw: true,
-          },
-          {
-            input: "iterator_to_array(tomar(hueste(), 5), false)",
-            expected: [1, 2, 3, 4, 5],
-            description: "Justo los cinco que aguanta la muralla",
-            raw: true,
-          },
-          {
-            input: "iterator_to_array(tomar(hueste(), 0), false)",
-            expected: [],
-            description: "Con n=0 ni se asoma a la fuente",
-            raw: true,
-          },
-          {
-            input: "iterator_to_array(tomar([10, 20, 30], 10), false)",
-            expected: [10, 20, 30],
-            description: "Si pides más de lo que hay, devuelve lo que hay",
-            raw: true,
-          },
-          {
-            input: "tomar([1, 2, 3], 2) instanceof Generator",
-            expected: true,
-            description: "tomar() es un generador",
-            raw: true,
-          },
-          {
-            input:
-              "iterator_to_array(filtrar([1, 2, 3, 4, 5, 6], fn($x) => $x % 2 === 0), false)",
-            expected: [2, 4, 6],
-            description: "filtrar() se queda con los pares",
-            raw: true,
-          },
-          {
-            input:
-              "iterator_to_array(tomar(filtrar(hueste(), fn($x) => $x % 2 === 1), 2), false)",
-            expected: [1, 3],
-            description: "Tubería encadenada sobre la hueste, sin agotarla",
-            raw: true,
-          },
-          {
-            input: "filtrar([1, 2], fn($x) => true) instanceof Generator",
-            expected: true,
-            description: "filtrar() también es perezoso",
-            raw: true,
-          },
+          { input: "aguantar(10, 3)", expected: 4, description: "10 → 7 → 4 → 1 → -2: cuatro golpes", raw: true },
+          { input: "aguantar(10, 5)", expected: 2, description: "Dos golpes justos", raw: true },
+          { input: "aguantar(7, 10)", expected: 1, description: "Un solo golpe brutal", raw: true },
+          { input: "aguantar(0, 5)", expected: 0, description: "Ya estaba caído", raw: true },
+          { input: "aguantar(100, 1)", expected: 100, description: "Cien golpes de gota", raw: true },
         ],
       },
+      position: { x: 14, y: 5 },
     },
     {
-      node_id: "helm_acertijos_generadores",
-      kind: "quiz",
-      title: "El cuerno de Helm",
+      node_id: "py_filas_debiles",
+      title: "El tramo que cede",
       lore_intro:
-        "Antes del alba, Aragorn repasa contigo lo aprendido. Son las preguntas que separan a quien ha leído sobre generadores de quien los ha usado.",
-      position: { x: 16, y: 11 },
+        "Aragorn recorre la muralla contando defensores por tramo. Necesita los tramos flojos, con menos hombres de los que el umbral exige — y su número exacto de tramo.",
+      spriteId: "aragorn",
+      poo_challenge: {
+        lang: "python",
+        topic: "for + enumerate + condicional",
+        instructions:
+          "Escribe `filas_debiles(enemigos, umbral)` que reciba una lista de números (defensores por tramo) y devuelva una LISTA con los ÍNDICES de los tramos cuyo valor es MENOR que `umbral`.\n\n" +
+          "Por ejemplo, `filas_debiles([12, 3, 8, 20, 1], 10)` → `[1, 2, 4]` (los tramos 1, 2 y 4 tienen menos de 10).\n\n" +
+          "Usa `enumerate` para tener el índice y el valor a la vez.",
+        starter_code:
+          "def filas_debiles(enemigos, umbral):\n    debiles = []\n    # recorre con enumerate y guarda los índices flojos\n    return debiles\n",
+        hints: [
+          "`for i, n in enumerate(enemigos):` te da el índice `i` y el valor `n` en cada vuelta.",
+          "Si `n < umbral`, añade el índice: `debiles.append(i)`.",
+          "Empieza con `debiles = []` y devuélvela al final. Si nada cumple, se devuelve la lista vacía.",
+        ],
+        test_cases: [
+          { input: "filas_debiles([12, 3, 8, 20, 1], 10)", expected: [1, 2, 4], description: "Índices con menos de 10", raw: true },
+          { input: "filas_debiles([5, 5, 5], 5)", expected: [], description: "Ninguno es MENOR que 5", raw: true },
+          { input: "filas_debiles([5, 5, 5], 6)", expected: [0, 1, 2], description: "Ahora todos son débiles", raw: true },
+          { input: "filas_debiles([], 3)", expected: [], description: "Muralla vacía", raw: true },
+          { input: "filas_debiles([0, 100, 2], 3)", expected: [0, 2], description: "El primero y el último", raw: true },
+        ],
+      },
+      position: { x: 19, y: 5 },
+    },
+    {
+      node_id: "py_quiz_bucles",
+      kind: "quiz",
+      title: "El recuento del alba",
+      lore_intro:
+        "Antes de que salga el sol y llegue Gandalf, Aragorn repasa contigo lo aprendido sobre repetir y contar.",
       spriteId: "aragorn",
       quiz: {
-        topic: "Generadores en la práctica",
-        timeLimitSec: 300,
+        topic: "Control de flujo en Python",
         questions: [
           {
-            question:
-              "`function f(): Generator { echo 'hola'; yield 1; }` y luego `$g = f();`. ¿Qué se ha impreso?",
+            question: "¿Qué imprime `for i in range(3): print(i)`?",
+            options: ["0, 1, 2", "1, 2, 3", "0, 1, 2, 3", "1, 2"],
+            correct: 0,
+            explanation:
+              "`range(3)` empieza en 0 y llega hasta 3-1 = 2: produce 0, 1, 2. El final nunca se incluye. Para obtener 1, 2, 3 usarías `range(1, 4)`.",
+          },
+          {
+            question: "¿Cuándo conviene un `while` en vez de un `for`?",
             options: [
-              "Nada: el cuerpo no corre hasta la primera iteración",
-              "'hola', al llamar a f()",
-              "'hola', dos veces",
-              "Error: un generador no puede hacer echo",
+              "Cuando no sabes de antemano cuántas vueltas hará falta",
+              "Cuando recorres una lista",
+              "Siempre: while es más rápido",
+              "Cuando quieres el índice y el valor",
             ],
             correct: 0,
             explanation:
-              "Llamar a una función generadora sólo construye el objeto Generator; ni una línea del cuerpo se ejecuta. El código arranca cuando pides el primer valor (foreach, ->current(), ->rewind()...). Es la causa habitual de que una validación colocada al principio de un generador «no salte»: si nadie itera, nunca se ejecuta. Si necesitas validar los argumentos de inmediato, sepáralo en una función normal que devuelva el generador.",
+              "`for` brilla cuando recorres algo o repites un número conocido de veces. `while` es para cuando la parada depende de una condición que evoluciona: hasta agotar las flechas, hasta que el usuario acierte. Para recorrer una lista con índice, lo idiomático es `enumerate`.",
+          },
+          {
+            question: "¿Qué diferencia hay entre `break` y `continue`?",
+            options: [
+              "break sale del bucle; continue salta a la siguiente vuelta",
+              "Son sinónimos",
+              "break salta una vuelta; continue termina el bucle",
+              "continue sale del programa",
+            ],
+            correct: 0,
+            explanation:
+              "`break` abandona el bucle por completo (útil al encontrar lo que buscabas). `continue` sólo se salta lo que queda del cuerpo y sigue con la próxima iteración (útil para ignorar ciertos casos). Confundirlos cambia por completo el resultado.",
           },
           {
             question:
-              "Recorres un generador con foreach y luego vuelves a hacer foreach sobre la MISMA variable. ¿Qué pasa?",
+              "Quieres el índice y el valor al recorrer una lista. ¿Qué es más idiomático?",
             options: [
-              "Exception: no se puede rebobinar un generador ya consumido",
-              "Se repite la iteración desde el principio",
-              "Itera pero no rinde nada, en silencio",
-              "Continúa donde lo dejó",
+              "for i, v in enumerate(lista):",
+              "for i in range(len(lista)): v = lista[i]",
+              "for v in lista: i = lista.index(v)",
+              "while con un contador manual",
             ],
             correct: 0,
             explanation:
-              "Los generadores son de un solo uso: rebobinar uno que ya ha avanzado lanza «Cannot rewind a generator that was already run». Si necesitas varias pasadas, llama otra vez a la función (barato: se reconstruye la receta) o materializa con iterator_to_array cuando de verdad quepa en memoria. Este es el motivo por el que una API pública suele devolver array o un IteratorAggregate — recorrible tantas veces como quieras — en vez de un Generator suelto.",
-          },
-          {
-            question:
-              "¿Cuándo es MEJOR devolver un array que un generador?",
-            options: [
-              "Cuando el resultado es pequeño y quien lo recibe lo va a recorrer o indexar varias veces",
-              "Siempre: los arrays son más rápidos",
-              "Cuando el resultado viene de la base de datos",
-              "Nunca: un generador siempre es preferible",
-            ],
-            correct: 0,
-            explanation:
-              "Un generador no es gratis: no se puede contar sin recorrerlo, no admite acceso por índice y sólo sirve una vez. Para veinte elementos que el que llama va a usar de varias formas, el array es más simple y más rápido. El generador gana cuando el conjunto es grande, infinito, o cada elemento cuesta de producir (I/O, red) y puede que ni llegues a necesitarlos todos.",
-          },
-          {
-            question:
-              "¿Qué diferencia real hay entre `yield from $otroGenerador;` y `foreach ($otroGenerador as $v) { yield $v; }`?",
-            options: [
-              "yield from conserva las claves originales y propaga el getReturn() del delegado",
-              "Ninguna: son exactamente equivalentes",
-              "yield from es más lento porque copia el generador",
-              "foreach es la única forma válida dentro de un generador",
-            ],
-            correct: 0,
-            explanation:
-              "yield from delega de verdad: preserva las claves del iterable interno (el foreach manual las descarta y renumera) y su valor de expresión es el getReturn() del generador delegado, lo que permite componer generadores que devuelven un resultado final. Cuidado con las claves duplicadas al delegar en varios arrays: si luego haces iterator_to_array sin pasar `false` como segundo argumento, unos elementos pisan a otros.",
+              "`enumerate` es la forma pythónica: clara y sin errores. `range(len(...))` funciona pero es más ruidoso, y `lista.index(v)` es un error sutil — devuelve el índice del PRIMER v igual, que falla si hay repetidos y además es lento.",
           },
         ],
       },
+      position: { x: 12, y: 11 },
     },
   ],
 };
@@ -6150,7 +5977,7 @@ export const CAMPAIGN: ChapterInfo[] = [
   {
     chapter: 16,
     title: "El Abismo de Helm",
-    topic: "Generadores e iteradores (yield, IteratorAggregate)",
-    lore: "Diez mil Uruk-hai que no caben en memoria: se recorren de uno en uno, perezosamente.",
+    topic: "Python: control de flujo (for, while, enumerate)",
+    lore: "Diez mil Uruk-hai que no se cuentan de un vistazo: se recorren con bucles. Repetir, contar y decidir en Python.",
   },
 ];
