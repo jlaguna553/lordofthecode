@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { QuizNode } from "@/lib/game/types";
 import { playSfx } from "@/lib/game/audio";
+import { shuffleQuestion } from "@/lib/game/quiz";
 
 interface Props {
   node: QuizNode;
@@ -39,7 +40,12 @@ export default function QuizModal({ node, onSolved, onClose }: Props) {
     `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
   const overtime = q.timeLimitSec ? elapsed > q.timeLimitSec : false;
 
-  const pregunta = q.questions[index];
+  // Opciones mezcladas: estables mientras estás en esta pregunta, se rebarajan
+  // al pasar a la siguiente o al reintentar la tanda.
+  const pregunta = useMemo(
+    () => shuffleQuestion(q.questions[index]),
+    [q.questions, index, intentos],
+  );
   const acerto = checked && picked === pregunta.correct;
 
   function comprobar() {
@@ -147,6 +153,12 @@ export default function QuizModal({ node, onSolved, onClose }: Props) {
                       <button
                         type="button"
                         disabled={checked}
+                        data-correct={
+                          process.env.NODE_ENV !== "production" &&
+                          i === pregunta.correct
+                            ? "1"
+                            : undefined
+                        }
                         onClick={() => setPicked(i)}
                         className={
                           "w-full rounded-xl px-4 py-3 text-left text-sm transition ring-1 disabled:cursor-default " +

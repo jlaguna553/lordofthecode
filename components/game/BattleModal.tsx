@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { BattleNode } from "@/lib/game/types";
 import { playSfx } from "@/lib/game/audio";
 import { vidaMaxima } from "@/lib/game/rpg";
+import { shuffleQuestion } from "@/lib/game/quiz";
 
 interface Props {
   node: BattleNode;
@@ -82,7 +83,12 @@ export default function BattleModal({
     // Rebarajar al reintentar (`intentos` cambia).
   }, [enemigo.questions, intentos]);
 
-  const pregunta = enemigo.questions[orden[turno % orden.length]];
+  // Opciones mezcladas por turno: estables durante el turno (aunque el
+  // cronómetro/estado re-renderice), se rebarajan al avanzar o al reintentar.
+  const pregunta = useMemo(
+    () => shuffleQuestion(enemigo.questions[orden[turno % orden.length]]),
+    [enemigo.questions, orden, turno, intentos],
+  );
   const acerto = checked && picked === pregunta.correct;
   const ganado = vidaEnemigo <= 0;
   const perdido = vidaJugador <= 0;
@@ -241,6 +247,12 @@ export default function BattleModal({
                       <button
                         type="button"
                         disabled={checked}
+                        data-correct={
+                          process.env.NODE_ENV !== "production" &&
+                          i === pregunta.correct
+                            ? "1"
+                            : undefined
+                        }
                         onClick={() => setPicked(i)}
                         className={
                           "w-full rounded-xl px-4 py-3 text-left text-sm transition ring-1 disabled:cursor-default " +
