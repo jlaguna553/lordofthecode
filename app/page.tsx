@@ -294,65 +294,56 @@ export default function GamePage() {
   return (
     <main className="mx-auto max-w-5xl px-3 py-3 sm:px-4 sm:py-6">
       {/*
-        En móvil la cabecera va apretada y en una sola fila de botones: el
-        objetivo es que el mapa y el mando quepan sin tener que desplazarse.
+        Barra de controles en una sola fila horizontal (se envuelve en pantallas
+        muy estrechas). Antes se apilaban en columna a la derecha y empujaban el
+        mapa hacia abajo, desperdiciando espacio vertical.
       */}
-      <header className="mb-2 flex flex-col gap-1.5 sm:mb-4 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-        <div className="flex min-w-0 items-baseline gap-2 sm:block">
-          <p className="hidden text-[10px] font-semibold uppercase tracking-wider text-amber-400 sm:block sm:text-xs">
-            Capítulo {chapter.chapter} · La Sintaxis Ancestral
-          </p>
-          <span className="shrink-0 text-sm font-black text-amber-400 sm:hidden">
-            {chapter.chapter}.
-          </span>
-          <h1 className="truncate bg-gradient-to-r from-amber-200 to-emerald-300 bg-clip-text text-base font-black text-transparent sm:text-2xl">
-            {chapter.title}
-          </h1>
-        </div>
-        <div className="flex flex-wrap items-center gap-1.5 sm:flex-col sm:items-end">
+      <div className="mb-3 flex flex-wrap items-center gap-1.5">
+        <button
+          onClick={() => setShowChapters(true)}
+          className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
+        >
+          📖 <span className="hidden sm:inline">Capítulos</span>
+        </button>
+        <button
+          onClick={() => setShowStats(true)}
+          className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
+        >
+          📊 <span className="hidden sm:inline">Estadísticas</span>
+        </button>
+        <button
+          onClick={() => setShowLibrary(true)}
+          className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
+        >
+          📚 <span className="hidden sm:inline">Biblioteca</span>
+        </button>
+        {heroes.length > 1 && (
           <button
-            onClick={() => setShowChapters(true)}
+            onClick={() => setShowHeroes(true)}
             className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
           >
-            📖 Capítulos
+            🦸 <span className="hidden sm:inline">Héroe</span>
           </button>
-          <button
-            onClick={() => setShowStats(true)}
-            className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
-          >
-            📊 Estadísticas
-          </button>
-          <button
-            onClick={() => setShowLibrary(true)}
-            className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
-          >
-            📚 Biblioteca
-          </button>
-          {heroes.length > 1 && (
-            <button
-              onClick={() => setShowHeroes(true)}
-              className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
-            >
-              🦸 Héroe
-            </button>
-          )}
-          <button
-            onClick={() => {
-              const next = !mute;
-              setMuted(next);
-              setMute(next);
-              if (!next) playSfx("interact"); // confirmación audible
-            }}
-            className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
-            title={mute ? "Activar sonido" : "Silenciar"}
-          >
-            {mute ? "🔇" : "🔊"}
-            <span className="hidden sm:inline"> Sonido</span>
-          </button>
-          <p className="ml-auto text-xs text-slate-400 sm:ml-0 sm:text-sm">
+        )}
+        <button
+          onClick={() => {
+            const next = !mute;
+            setMuted(next);
+            setMute(next);
+            if (!next) playSfx("interact"); // confirmación audible
+          }}
+          className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
+          title={mute ? "Activar sonido" : "Silenciar"}
+        >
+          {mute ? "🔇" : "🔊"}
+        </button>
+
+        {/* A la derecha: runas del capítulo y nivel global */}
+        <div className="ml-auto flex items-center gap-2 sm:gap-3">
+          <span className="text-xs text-slate-400 sm:text-sm">
             Runas {done}/{total}
-          </p>
-          <div className="flex w-full items-center gap-2 sm:w-44">
+          </span>
+          <div className="flex w-28 items-center gap-2 sm:w-44">
             <span
               className="shrink-0 rounded-md bg-amber-500/20 px-1.5 py-0.5 text-[11px] font-bold text-amber-200 ring-1 ring-amber-500/40"
               title={`${xp} puntos de experiencia en total`}
@@ -377,13 +368,26 @@ export default function GamePage() {
               />
             </div>
           </div>
-          <Link
-            href="/studio"
-            className="hidden text-xs text-indigo-300 underline-offset-2 hover:underline sm:block"
-          >
-            → Estudio de sprites LPC
-          </Link>
         </div>
+      </div>
+
+      {/* Título del capítulo */}
+      <header className="mb-2 flex items-baseline gap-2 sm:mb-3">
+        <p className="hidden text-[10px] font-semibold uppercase tracking-wider text-amber-400 sm:block sm:text-xs">
+          Capítulo {chapter.chapter} · La Sintaxis Ancestral ·
+        </p>
+        <span className="shrink-0 text-sm font-black text-amber-400 sm:hidden">
+          {chapter.chapter}.
+        </span>
+        <h1 className="min-w-0 truncate bg-gradient-to-r from-amber-200 to-emerald-300 bg-clip-text text-base font-black text-transparent sm:text-xl">
+          {chapter.title}
+        </h1>
+        <Link
+          href="/studio"
+          className="ml-auto hidden shrink-0 text-xs text-indigo-300 underline-offset-2 hover:underline sm:block"
+        >
+          → Estudio de sprites LPC
+        </Link>
       </header>
 
       {/* El lore ya se cuenta en la tarjeta de entrada; en móvil sobra aquí. */}
