@@ -5595,9 +5595,11 @@ export const CHAPTER_CALENTAMIENTO: Chapter = {
  */
 export const CHAPTER_GOLLUM: Chapter = {
   chapter: 15,
-  title: "El Sendero de Sméagol",
-  lore:
-    "Empieza un nuevo viaje y una nueva lengua. Frodo y Sam se pierden en el Emyn Muil con Sméagol de guía; y aquí, donde la piedra es gris y el camino incierto, se aprende Python desde la primera palabra. En estas Dos Torres se pasa de cero a experto.",
+  title: { es: "El Sendero de Sméagol", en: "Sméagol's Path" },
+  lore: {
+    es: "Empieza un nuevo viaje y una nueva lengua. Frodo y Sam se pierden en el Emyn Muil con Sméagol de guía; y aquí, donde la piedra es gris y el camino incierto, se aprende Python desde la primera palabra. En estas Dos Torres se pasa de cero a experto.",
+    en: "A new journey and a new language begin. Frodo and Sam are lost in the Emyn Muil with Sméagol as guide; and here, where the stone is grey and the path uncertain, Python is learned from the very first word. In these Two Towers you go from zero to expert.",
+  },
   mapSize: { cols: 24, rows: 14 },
   spawn: { x: 2, y: 7 },
   companions: ["sam"],
@@ -5606,21 +5608,27 @@ export const CHAPTER_GOLLUM: Chapter = {
     pathRows: [7],
     pathGround: "path",
     pond: { x: 9, y: 9, w: 8, h: 4 }, // la Ciénaga de los Muertos
-    npcs: [{ spriteId: "gollum", x: 4, y: 10, label: "…nos sigue" }],
+    npcs: [{ spriteId: "gollum", x: 4, y: 10, label: { es: "…nos sigue", en: "…it follows us" } }],
     dialogues: [
       {
         x: 7,
         y: 8,
         speaker: "sam",
-        name: "Sam",
-        text: "Otra tierra, otra lengua. Dicen que ésta se lee casi como se habla.",
+        name: { es: "Sam", en: "Sam" },
+        text: {
+          es: "Otra tierra, otra lengua. Dicen que ésta se lee casi como se habla.",
+          en: "Another land, another language. They say this one reads almost like it's spoken.",
+        },
       },
       {
         x: 18,
         y: 8,
         speaker: "sam",
-        name: "Sam",
-        text: "Nada de llaves ni puntos y comas: aquí lo que manda es la sangría.",
+        name: { es: "Sam", en: "Sam" },
+        text: {
+          es: "Nada de llaves ni puntos y comas: aquí lo que manda es la sangría.",
+          en: "No braces, no semicolons: here it's the indentation that rules.",
+        },
       },
     ],
     decor: [
@@ -5639,92 +5647,115 @@ export const CHAPTER_GOLLUM: Chapter = {
     {
       node_id: "py_pergamino_fundamentos",
       kind: "scroll",
-      title: "El Pergamino de la Nueva Lengua",
-      lore_intro:
-        "Grabado en una losa del Emyn Muil, en signos que no son runas enanas ni tengwar élficas. Quien lo lee empieza a pensar en Python.",
+      title: { es: "El Pergamino de la Nueva Lengua", en: "The Scroll of the New Tongue" },
+      lore_intro: {
+        es: "Grabado en una losa del Emyn Muil, en signos que no son runas enanas ni tengwar élficas. Quien lo lee empieza a pensar en Python.",
+        en: "Carved on a slab in the Emyn Muil, in signs that are neither dwarven runes nor Elvish tengwar. Whoever reads it starts thinking in Python.",
+      },
       position: { x: 5, y: 5 },
       scroll: {
         topic: "Python desde cero: variables, tipos y f-strings",
         sections: [
           {
-            heading: "Sin ceremonias: variables",
-            body:
-              "En Python una variable existe en cuanto le asignas un valor: no se declara el tipo, no lleva $, no acaba en punto y coma. El nombre a la izquierda, el valor a la derecha. El tipo lo deduce Python del valor (tipado dinámico), pero cada valor SÍ tiene un tipo firme.",
+            heading: { es: "Sin ceremonias: variables", en: "No ceremony: variables" },
+            body: {
+              es: "En Python una variable existe en cuanto le asignas un valor: no se declara el tipo, no lleva $, no acaba en punto y coma. El nombre a la izquierda, el valor a la derecha. El tipo lo deduce Python del valor (tipado dinámico), pero cada valor SÍ tiene un tipo firme.",
+              en: "In Python a variable exists as soon as you assign it a value: no type declaration, no $, no trailing semicolon. Name on the left, value on the right. Python infers the type from the value (dynamic typing), but each value DOES have a firm type.",
+            },
             code:
               "nombre = 'Sméagol'      # str (texto)\nedad = 589              # int (entero)\npeso = 12.5             # float (decimal)\ntiene_anillo = False    # bool (True / False)\ntesoro = None           # None: la ausencia de valor\n\n# Python distingue mayúsculas: Edad y edad son variables distintas.",
           },
           {
-            heading: "La sangría ES la sintaxis",
-            body:
-              "Donde otros lenguajes ponen llaves { }, Python usa la SANGRÍA (la indentación). Un bloque son las líneas indentadas bajo una cabecera terminada en dos puntos. Mezclar espacios y tabulaciones, o sangrar de más, es un error de verdad (IndentationError), no un detalle de estilo. La convención es 4 espacios.",
+            heading: { es: "La sangría ES la sintaxis", en: "Indentation IS the syntax" },
+            body: {
+              es: "Donde otros lenguajes ponen llaves { }, Python usa la SANGRÍA (la indentación). Un bloque son las líneas indentadas bajo una cabecera terminada en dos puntos. Mezclar espacios y tabulaciones, o sangrar de más, es un error de verdad (IndentationError), no un detalle de estilo. La convención es 4 espacios.",
+              en: "Where other languages put braces { }, Python uses INDENTATION. A block is the lines indented under a header ending in a colon. Mixing spaces and tabs, or over-indenting, is a real error (IndentationError), not a style detail. The convention is 4 spaces.",
+            },
             code:
               "if edad > 100:\n    print('Muy viejo')      # dentro del if (4 espacios)\n    print('...y flaco')     # sigue dentro\nprint('Fuera del if')       # ya fuera\n\n# Los comentarios empiezan con # y llegan al fin de la línea.",
           },
           {
-            heading: "f-strings: texto con valores dentro",
-            body:
-              "La forma moderna de construir texto es la f-string: una cadena precedida de f donde, entre llaves { }, metes cualquier expresión Python y se sustituye por su valor. Es legible y rápida. También puedes concatenar con +, pero exige que todo sea texto.",
+            heading: { es: "f-strings: texto con valores dentro", en: "f-strings: text with values inside" },
+            body: {
+              es: "La forma moderna de construir texto es la f-string: una cadena precedida de f donde, entre llaves { }, metes cualquier expresión Python y se sustituye por su valor. Es legible y rápida. También puedes concatenar con +, pero exige que todo sea texto.",
+              en: "The modern way to build text is the f-string: a string prefixed with f where, inside braces { }, you put any Python expression and it's replaced by its value. It's readable and fast. You can also concatenate with +, but that requires everything to be text.",
+            },
             code:
               "nombre = 'Frodo'\nedad = 50\nsaludo = f'Soy {nombre} y tengo {edad} años'\n# -> 'Soy Frodo y tengo 50 años'\n\n# Dentro de las llaves cabe una operación:\nf'El año que viene tendré {edad + 1}'\n\n# Concatenar exige convertir: 'edad: ' + str(edad)",
           },
           {
-            heading: "Tipos y conversión",
-            body:
-              "Cada valor tiene un tipo, y a veces hay que convertir. `int('42')` pasa texto a entero; `str(42)` al revés; `float('3.14')`. Sumar un int y un str es TypeError: Python no adivina, te obliga a decidir. `type(x)` te dice el tipo; `len(x)` la longitud de un texto o una lista.",
+            heading: { es: "Tipos y conversión", en: "Types and conversion" },
+            body: {
+              es: "Cada valor tiene un tipo, y a veces hay que convertir. `int('42')` pasa texto a entero; `str(42)` al revés; `float('3.14')`. Sumar un int y un str es TypeError: Python no adivina, te obliga a decidir. `type(x)` te dice el tipo; `len(x)` la longitud de un texto o una lista.",
+              en: "Every value has a type, and sometimes you must convert. `int('42')` turns text into an integer; `str(42)` the other way; `float('3.14')`. Adding an int and a str is a TypeError: Python doesn't guess, it forces you to decide. `type(x)` tells you the type; `len(x)` the length of a text or a list.",
+            },
             code:
               "int('42')        # 42   (texto -> entero)\nstr(42)          # '42'  (entero -> texto)\nfloat('3.14')    # 3.14\nint('42') + 8    # 50\n\n'año ' + 589     # TypeError: no se mezcla str con int\nlen('Mordor')    # 6",
           },
           {
-            heading: "Operadores y condiciones",
-            body:
-              "Los aritméticos son los de siempre, con dos joyas: // es la división ENTERA y % el resto. En condiciones, los booleanos se escriben con palabras: `and`, `or`, `not` (no &&, ||, !). Y la escalera de decisión es if / elif / else — ojo, `elif`, no `else if`.",
+            heading: { es: "Operadores y condiciones", en: "Operators and conditions" },
+            body: {
+              es: "Los aritméticos son los de siempre, con dos joyas: // es la división ENTERA y % el resto. En condiciones, los booleanos se escriben con palabras: `and`, `or`, `not` (no &&, ||, !). Y la escalera de decisión es if / elif / else — ojo, `elif`, no `else if`.",
+              en: "The arithmetic ones are the usual, with two gems: // is INTEGER division and % the remainder. In conditions, the booleans are written as words: `and`, `or`, `not` (not &&, ||, !). And the decision ladder is if / elif / else — careful, it's `elif`, not `else if`.",
+            },
             code:
               "7 // 2      # 3  (división entera)\n7 % 2       # 1  (resto)\n2 ** 10     # 1024 (potencia)\n\nif peces <= 0:\n    estado = 'hambriento'\nelif peces < 3:\n    estado = 'conforme'\nelse:\n    estado = 'gordo y feliz'",
           },
         ],
-        keyTakeaway:
-          "Python: sin declarar tipos, sin llaves, sin punto y coma. La sangría define los bloques, las f-strings arman el texto (f'…{valor}…'), y las condiciones se leen en inglés: and, or, not, if/elif/else.",
+        keyTakeaway: {
+          es: "Python: sin declarar tipos, sin llaves, sin punto y coma. La sangría define los bloques, las f-strings arman el texto (f'…{valor}…'), y las condiciones se leen en inglés: and, or, not, if/elif/else.",
+          en: "Python: no type declarations, no braces, no semicolons. Indentation defines the blocks, f-strings build the text (f'…{value}…'), and conditions read like English: and, or, not, if/elif/else.",
+        },
       },
     },
     {
       node_id: "py_presentarse",
-      title: "La primera palabra",
-      lore_intro:
-        "«Sméagol ayuda, sí, ayuda… pero antes el amo debe decir quién es.» La criatura ladea la cabeza, esperando una presentación en la lengua nueva.",
+      title: { es: "La primera palabra", en: "The first word" },
+      lore_intro: {
+        es: "«Sméagol ayuda, sí, ayuda… pero antes el amo debe decir quién es.» La criatura ladea la cabeza, esperando una presentación en la lengua nueva.",
+        en: "\"Sméagol helps, yes, helps… but first master must say who he is.\" The creature tilts its head, waiting for an introduction in the new tongue.",
+      },
       position: { x: 9, y: 6 },
       spriteId: "gollum",
       poo_challenge: {
         lang: "python",
         topic: "Variables y f-strings",
-        instructions:
-          "Escribe la función `presentarse(nombre, edad)` que devuelva una f-string con EXACTAMENTE este formato:\n\n" +
-          "  Soy {nombre} y tengo {edad} años\n\n" +
-          "Por ejemplo, `presentarse('Frodo', 50)` debe devolver `'Soy Frodo y tengo 50 años'`.\n\n" +
-          "Fíjate en la sangría: el cuerpo de la función va indentado 4 espacios bajo el `def`.",
+        instructions: {
+          es:
+            "Escribe la función `presentarse(nombre, edad)` que devuelva una f-string con EXACTAMENTE este formato:\n\n" +
+            "  Soy {nombre} y tengo {edad} años\n\n" +
+            "Por ejemplo, `presentarse('Frodo', 50)` debe devolver `'Soy Frodo y tengo 50 años'`.\n\n" +
+            "Fíjate en la sangría: el cuerpo de la función va indentado 4 espacios bajo el `def`.",
+          en:
+            "Write the function `presentarse(nombre, edad)` that returns an f-string with EXACTLY this format:\n\n" +
+            "  Soy {nombre} y tengo {edad} años\n\n" +
+            "For example, `presentarse('Frodo', 50)` must return `'Soy Frodo y tengo 50 años'`.\n\n" +
+            "Mind the indentation: the function body is indented 4 spaces under the `def`.",
+        },
         starter_code:
           "def presentarse(nombre, edad):\n    # devuelve la f-string con el formato pedido\n    ...\n",
         hints: [
-          "Una función se declara con `def nombre(parametros):` y su cuerpo va indentado debajo.",
-          "Una f-string lleva la f delante y las variables entre llaves: `f'Soy {nombre}...'`.",
-          "`return f'Soy {nombre} y tengo {edad} años'` — cuida los espacios y la palabra «años».",
+          { es: "Una función se declara con `def nombre(parametros):` y su cuerpo va indentado debajo.", en: "A function is declared with `def name(params):` and its body is indented below." },
+          { es: "Una f-string lleva la f delante y las variables entre llaves: `f'Soy {nombre}...'`.", en: "An f-string has the f in front and variables inside braces: `f'Soy {nombre}...'`." },
+          { es: "`return f'Soy {nombre} y tengo {edad} años'` — cuida los espacios y la palabra «años».", en: "`return f'Soy {nombre} y tengo {edad} años'` — mind the spaces and the word «años»." },
         ],
         test_cases: [
           {
             input: "presentarse('Frodo', 50)",
             expected: "Soy Frodo y tengo 50 años",
-            description: "El formato exacto",
+            description: { es: "El formato exacto", en: "The exact format" },
             raw: true,
           },
           {
             input: "presentarse('Sméagol', 589)",
             expected: "Soy Sméagol y tengo 589 años",
-            description: "Funciona con tildes y números grandes",
+            description: { es: "Funciona con tildes y números grandes", en: "Works with accents and big numbers" },
             raw: true,
           },
           {
             input: "presentarse('Sam', 38)",
             expected: "Soy Sam y tengo 38 años",
-            description: "Y con cualquier otro valor",
+            description: { es: "Y con cualquier otro valor", en: "And with any other value" },
             raw: true,
           },
         ],
@@ -5732,40 +5763,49 @@ export const CHAPTER_GOLLUM: Chapter = {
     },
     {
       node_id: "py_tipos",
-      title: "Contar peces",
-      lore_intro:
-        "«¡Peces! ¡Ricos y jugosos!» Gollum cuenta con los dedos huesudos, pero se lía con los números escritos. Necesita quien convierta y calcule.",
+      title: { es: "Contar peces", en: "Counting fish" },
+      lore_intro: {
+        es: "«¡Peces! ¡Ricos y jugosos!» Gollum cuenta con los dedos huesudos, pero se lía con los números escritos. Necesita quien convierta y calcule.",
+        en: "\"Fish! Juicy sweet ones!\" Gollum counts on his bony fingers, but gets muddled with written numbers. He needs someone to convert and calculate.",
+      },
       position: { x: 14, y: 5 },
       spriteId: "gollum",
       poo_challenge: {
         lang: "python",
         topic: "Tipos, conversión y operadores",
-        instructions:
-          "Escribe dos funciones:\n\n" +
-          "• `es_par(n)` — devuelve True si el entero `n` es par, False si no. Usa el resto `%`.\n" +
-          "• `a_entero(texto)` — recibe un texto como `'42'` y devuelve su valor entero (un `int`), no el texto.\n\n" +
-          "Recuerda: `int('42')` convierte texto a número; `n % 2` da el resto de dividir entre 2.",
+        instructions: {
+          es:
+            "Escribe dos funciones:\n\n" +
+            "• `es_par(n)` — devuelve True si el entero `n` es par, False si no. Usa el resto `%`.\n" +
+            "• `a_entero(texto)` — recibe un texto como `'42'` y devuelve su valor entero (un `int`), no el texto.\n\n" +
+            "Recuerda: `int('42')` convierte texto a número; `n % 2` da el resto de dividir entre 2.",
+          en:
+            "Write two functions:\n\n" +
+            "• `es_par(n)` — returns True if the integer `n` is even, False otherwise. Use the remainder `%`.\n" +
+            "• `a_entero(texto)` — takes a text like `'42'` and returns its integer value (an `int`), not the text.\n\n" +
+            "Remember: `int('42')` converts text to a number; `n % 2` gives the remainder of dividing by 2.",
+        },
         starter_code:
           "def es_par(n):\n    ...\n\n\ndef a_entero(texto):\n    ...\n",
         hints: [
-          "Un número es par si al dividirlo entre 2 el resto es 0: `n % 2 == 0`. Esa comparación YA es un booleano, puedes devolverla directamente.",
-          "`int(texto)` convierte un str a int. `a_entero('42')` debe devolver el número 42, no la cadena '42'.",
-          "`return n % 2 == 0` en la primera; `return int(texto)` en la segunda.",
+          { es: "Un número es par si al dividirlo entre 2 el resto es 0: `n % 2 == 0`. Esa comparación YA es un booleano, puedes devolverla directamente.", en: "A number is even if dividing by 2 leaves remainder 0: `n % 2 == 0`. That comparison is ALREADY a boolean, you can return it directly." },
+          { es: "`int(texto)` convierte un str a int. `a_entero('42')` debe devolver el número 42, no la cadena '42'.", en: "`int(texto)` converts a str to int. `a_entero('42')` must return the number 42, not the string '42'." },
+          { es: "`return n % 2 == 0` en la primera; `return int(texto)` en la segunda.", en: "`return n % 2 == 0` in the first; `return int(texto)` in the second." },
         ],
         test_cases: [
-          { input: "es_par(4)", expected: true, description: "4 es par", raw: true },
-          { input: "es_par(7)", expected: false, description: "7 es impar", raw: true },
-          { input: "es_par(0)", expected: true, description: "0 es par", raw: true },
+          { input: "es_par(4)", expected: true, description: { es: "4 es par", en: "4 is even" }, raw: true },
+          { input: "es_par(7)", expected: false, description: { es: "7 es impar", en: "7 is odd" }, raw: true },
+          { input: "es_par(0)", expected: true, description: { es: "0 es par", en: "0 is even" }, raw: true },
           {
             input: "a_entero('42')",
             expected: 42,
-            description: "Convierte texto a entero",
+            description: { es: "Convierte texto a entero", en: "Converts text to integer" },
             raw: true,
           },
           {
             input: "a_entero('42') + 8",
             expected: 50,
-            description: "Y el resultado es un número de verdad (se puede sumar)",
+            description: { es: "Y el resultado es un número de verdad (se puede sumar)", en: "And the result is a real number (you can add to it)" },
             raw: true,
           },
         ],
@@ -5773,56 +5813,66 @@ export const CHAPTER_GOLLUM: Chapter = {
     },
     {
       node_id: "py_condiciones",
-      title: "El humor de la criatura",
-      lore_intro:
-        "El ánimo de Sméagol cambia con el estómago. Vacío, gruñe; algo lleno, colabora; bien cebado, casi es amable. Traduce ese humor a Python.",
+      title: { es: "El humor de la criatura", en: "The creature's mood" },
+      lore_intro: {
+        es: "El ánimo de Sméagol cambia con el estómago. Vacío, gruñe; algo lleno, colabora; bien cebado, casi es amable. Traduce ese humor a Python.",
+        en: "Sméagol's mood shifts with his stomach. Empty, he snarls; somewhat full, he cooperates; well fed, he's almost kind. Translate that mood into Python.",
+      },
       position: { x: 20, y: 6 },
       spriteId: "gollum",
       poo_challenge: {
         lang: "python",
         topic: "Condicionales: if / elif / else",
-        instructions:
-          "Escribe `clasificar(peces)` que devuelva, según cuántos peces ha comido:\n\n" +
-          "• `'hambriento'` si `peces` es 0 o menos\n" +
-          "• `'conforme'` si es 1 o 2 (menos de 3)\n" +
-          "• `'gordo y feliz'` si es 3 o más\n\n" +
-          "Usa la escalera `if` / `elif` / `else`. Recuerda: es `elif`, no `else if`, y cada rama va indentada.",
+        instructions: {
+          es:
+            "Escribe `clasificar(peces)` que devuelva, según cuántos peces ha comido:\n\n" +
+            "• `'hambriento'` si `peces` es 0 o menos\n" +
+            "• `'conforme'` si es 1 o 2 (menos de 3)\n" +
+            "• `'gordo y feliz'` si es 3 o más\n\n" +
+            "Usa la escalera `if` / `elif` / `else`. Recuerda: es `elif`, no `else if`, y cada rama va indentada.",
+          en:
+            "Write `clasificar(peces)` that returns, based on how many fish it has eaten:\n\n" +
+            "• `'hambriento'` if `peces` is 0 or less\n" +
+            "• `'conforme'` if it's 1 or 2 (less than 3)\n" +
+            "• `'gordo y feliz'` if it's 3 or more\n\n" +
+            "Use the `if` / `elif` / `else` ladder. Remember: it's `elif`, not `else if`, and each branch is indented.",
+        },
         starter_code:
           "def clasificar(peces):\n    if peces <= 0:\n        return 'hambriento'\n    # añade elif y else\n",
         hints: [
-          "Tres casos, tres ramas: `if peces <= 0:` … `elif peces < 3:` … `else:`.",
-          "Cada `return` va indentado 8 espacios (dentro de su rama, que ya está dentro de la función).",
-          "Con `<= 0` cubres el 0 y los negativos; con `< 3` cubres el 1 y el 2; el `else` recoge 3 o más.",
+          { es: "Tres casos, tres ramas: `if peces <= 0:` … `elif peces < 3:` … `else:`.", en: "Three cases, three branches: `if peces <= 0:` … `elif peces < 3:` … `else:`." },
+          { es: "Cada `return` va indentado 8 espacios (dentro de su rama, que ya está dentro de la función).", en: "Each `return` is indented 8 spaces (inside its branch, which is already inside the function)." },
+          { es: "Con `<= 0` cubres el 0 y los negativos; con `< 3` cubres el 1 y el 2; el `else` recoge 3 o más.", en: "With `<= 0` you cover 0 and negatives; with `< 3` you cover 1 and 2; the `else` catches 3 or more." },
         ],
         test_cases: [
           {
             input: "clasificar(0)",
             expected: "hambriento",
-            description: "Sin peces, hambriento",
+            description: { es: "Sin peces, hambriento", en: "No fish, hungry" },
             raw: true,
           },
           {
             input: "clasificar(-2)",
             expected: "hambriento",
-            description: "Números negativos también",
+            description: { es: "Números negativos también", en: "Negative numbers too" },
             raw: true,
           },
           {
             input: "clasificar(2)",
             expected: "conforme",
-            description: "Uno o dos, conforme",
+            description: { es: "Uno o dos, conforme", en: "One or two, content" },
             raw: true,
           },
           {
             input: "clasificar(3)",
             expected: "gordo y feliz",
-            description: "Tres justos ya es festín",
+            description: { es: "Tres justos ya es festín", en: "Exactly three is already a feast" },
             raw: true,
           },
           {
             input: "clasificar(10)",
             expected: "gordo y feliz",
-            description: "Y de ahí para arriba",
+            description: { es: "Y de ahí para arriba", en: "And upward from there" },
             raw: true,
           },
         ],
@@ -5831,36 +5881,41 @@ export const CHAPTER_GOLLUM: Chapter = {
     {
       node_id: "py_quiz_fundamentos",
       kind: "quiz",
-      title: "Los acertijos de la ciénaga",
-      lore_intro:
-        "«¿Juega a los acertijos, mi tesoro? Preguntas fáciles… en la lengua nueva.» Las luces de la Ciénaga de los Muertos parpadean mientras Sméagol espera respuesta.",
+      title: { es: "Los acertijos de la ciénaga", en: "The riddles of the marsh" },
+      lore_intro: {
+        es: "«¿Juega a los acertijos, mi tesoro? Preguntas fáciles… en la lengua nueva.» Las luces de la Ciénaga de los Muertos parpadean mientras Sméagol espera respuesta.",
+        en: "\"Does it play riddles, precious? Easy questions… in the new tongue.\" The lights of the Dead Marshes flicker while Sméagol waits for an answer.",
+      },
       position: { x: 12, y: 11 },
       spriteId: "gollum",
       quiz: {
         topic: "Fundamentos de Python",
         questions: [
           {
-            question: "¿Cómo se define un bloque de código en Python?",
+            question: { es: "¿Cómo se define un bloque de código en Python?", en: "How is a code block defined in Python?" },
             options: [
-              "Por la sangría (indentación) bajo una cabecera terminada en :",
-              "Con llaves { }",
-              "Con begin / end",
-              "Con paréntesis ( )",
+              { es: "Por la sangría (indentación) bajo una cabecera terminada en :", en: "By the indentation under a header ending in :" },
+              { es: "Con llaves { }", en: "With braces { }" },
+              { es: "Con begin / end", en: "With begin / end" },
+              { es: "Con paréntesis ( )", en: "With parentheses ( )" },
             ],
             correct: 0,
-            explanation:
-              "Python no usa llaves: el bloque son las líneas indentadas bajo una línea que acaba en dos puntos (`if ...:`, `def ...:`). La sangría no es estética, es sintaxis: sangrar mal es un IndentationError.",
+            explanation: {
+              es: "Python no usa llaves: el bloque son las líneas indentadas bajo una línea que acaba en dos puntos (`if ...:`, `def ...:`). La sangría no es estética, es sintaxis: sangrar mal es un IndentationError.",
+              en: "Python doesn't use braces: the block is the lines indented under a line ending in a colon (`if ...:`, `def ...:`). Indentation isn't cosmetic, it's syntax: indenting wrong is an IndentationError.",
+            },
           },
           {
-            question: "¿Qué devuelve `7 // 2` en Python?",
+            question: { es: "¿Qué devuelve `7 // 2` en Python?", en: "What does `7 // 2` return in Python?" },
             options: ["3", "3.5", "1", "'3.5'"],
             correct: 0,
-            explanation:
-              "`//` es la división ENTERA: descarta la parte decimal y devuelve 3. La división normal `/` daría 3.5 (un float). Y `%` daría el resto, 1.",
+            explanation: {
+              es: "`//` es la división ENTERA: descarta la parte decimal y devuelve 3. La división normal `/` daría 3.5 (un float). Y `%` daría el resto, 1.",
+              en: "`//` is INTEGER division: it drops the decimal part and returns 3. Regular division `/` would give 3.5 (a float). And `%` would give the remainder, 1.",
+            },
           },
           {
-            question:
-              "¿Cuál es la forma correcta de encadenar tres condiciones?",
+            question: { es: "¿Cuál es la forma correcta de encadenar tres condiciones?", en: "What's the correct way to chain three conditions?" },
             options: [
               "if … : / elif … : / else :",
               "if … { } else if … { }",
@@ -5868,21 +5923,27 @@ export const CHAPTER_GOLLUM: Chapter = {
               "switch … case",
             ],
             correct: 0,
-            explanation:
-              "En Python la rama intermedia es `elif` (no `else if` ni `elseif`), y cada cabecera termina en dos puntos. No hay `switch` clásico (desde 3.10 existe `match`, pero para esto se usa if/elif/else).",
+            explanation: {
+              es: "En Python la rama intermedia es `elif` (no `else if` ni `elseif`), y cada cabecera termina en dos puntos. No hay `switch` clásico (desde 3.10 existe `match`, pero para esto se usa if/elif/else).",
+              en: "In Python the middle branch is `elif` (not `else if` or `elseif`), and each header ends in a colon. There's no classic `switch` (since 3.10 there's `match`, but for this you use if/elif/else).",
+            },
           },
           {
-            question:
-              "`edad = 50`. ¿Qué imprime `print('Tengo ' + edad + ' años')`?",
+            question: {
+              es: "`edad = 50`. ¿Qué imprime `print('Tengo ' + edad + ' años')`?",
+              en: "`edad = 50`. What does `print('Tengo ' + edad + ' años')` print?",
+            },
             options: [
-              "TypeError: no se puede sumar str e int",
-              "Tengo 50 años",
-              "Tengo50años",
-              "Tengo + 50 + años",
+              { es: "TypeError: no se puede sumar str e int", en: "TypeError: can't add str and int" },
+              { es: "Tengo 50 años", en: "Tengo 50 años" },
+              { es: "Tengo50años", en: "Tengo50años" },
+              { es: "Tengo + 50 + años", en: "Tengo + 50 + años" },
             ],
             correct: 0,
-            explanation:
-              "Concatenar con + exige que todo sea del mismo tipo: `str + int` es TypeError. Habría que convertir (`'Tengo ' + str(edad) + ' años'`) o, mejor, usar una f-string: `f'Tengo {edad} años'`.",
+            explanation: {
+              es: "Concatenar con + exige que todo sea del mismo tipo: `str + int` es TypeError. Habría que convertir (`'Tengo ' + str(edad) + ' años'`) o, mejor, usar una f-string: `f'Tengo {edad} años'`.",
+              en: "Concatenating with + requires everything to be the same type: `str + int` is a TypeError. You'd need to convert (`'Tengo ' + str(edad) + ' años'`) or, better, use an f-string: `f'Tengo {edad} años'`.",
+            },
           },
         ],
       },
