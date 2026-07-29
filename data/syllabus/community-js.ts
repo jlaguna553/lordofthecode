@@ -678,3 +678,242 @@ export const SYL_JS_COMMUNITY_3: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre objetos y métodos de array. */
+const Q_OBJ = {
+  question: P("¿Cómo se crea un objeto literal en JS?", "How do you create an object literal in JS?"),
+  options: [
+    P("{ nombre: 'Frodo', edad: 50 }", "{ nombre: 'Frodo', edad: 50 }"),
+    P("[ nombre: 'Frodo' ]", "[ nombre: 'Frodo' ]"),
+    P("new Object[nombre = 'Frodo']", "new Object[nombre = 'Frodo']"),
+    P("( nombre = 'Frodo' )", "( nombre = 'Frodo' )"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un objeto agrupa pares clave: valor entre llaves `{ }`, separados por comas. Los corchetes `[ ]` son para arrays.",
+    "An object groups key: value pairs inside braces `{ }`, separated by commas. Brackets `[ ]` are for arrays.",
+  ),
+};
+const Q_PROP = {
+  question: P("Con `const h = { nombre: 'Sam' }`, ¿cómo lees el nombre?", "With `const h = { nombre: 'Sam' }`, how do you read the name?"),
+  options: [
+    P("h.nombre  (o h['nombre'])", "h.nombre  (or h['nombre'])"),
+    P("h->nombre", "h->nombre"),
+    P("h::nombre", "h::nombre"),
+    P("nombre(h)", "nombre(h)"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Se accede con punto (`h.nombre`) o con corchetes y la clave como texto (`h['nombre']`). La flecha `->` es de PHP.",
+    "Access it with a dot (`h.nombre`) or brackets with the key as text (`h['nombre']`). The `->` arrow is PHP.",
+  ),
+};
+const Q_METHOD = {
+  question: P("Dentro de un método de objeto, ¿a qué apunta `this`?", "Inside an object method, what does `this` point to?"),
+  options: [
+    P("Al propio objeto que contiene el método", "To the object that contains the method"),
+    P("Al primer argumento", "To the first argument"),
+    P("Siempre a undefined", "Always to undefined"),
+    P("A la función global", "To the global function"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En un método llamado como `obj.metodo()`, `this` es `obj`: así el método lee las propiedades de su propio objeto (`this.velocidad`).",
+    "In a method called as `obj.method()`, `this` is `obj`: so the method reads its own object's properties (`this.velocidad`).",
+  ),
+};
+const Q_MAP = {
+  question: P("¿Qué devuelve `[1, 2, 3].map(n => n * 2)`?", "What does `[1, 2, 3].map(n => n * 2)` return?"),
+  options: [
+    P("[2, 4, 6]", "[2, 4, 6]"),
+    P("6", "6"),
+    P("[1, 2, 3]", "[1, 2, 3]"),
+    P("12", "12"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`map` crea un array NUEVO aplicando la función a cada elemento. No modifica el original y siempre devuelve un array del mismo tamaño.",
+    "`map` builds a NEW array applying the function to each element. It doesn't change the original and always returns an array of the same length.",
+  ),
+};
+const Q_FILTER = {
+  question: P("¿Qué devuelve `[10, 20, 80].filter(n => n < 50)`?", "What does `[10, 20, 80].filter(n => n < 50)` return?"),
+  options: [
+    P("[10, 20]", "[10, 20]"),
+    P("2", "2"),
+    P("[80]", "[80]"),
+    P("true", "true"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`filter` devuelve un array con SÓLO los elementos para los que la función da `true`. Para contarlos, añade `.length`.",
+    "`filter` returns an array with ONLY the elements for which the function returns `true`. To count them, add `.length`.",
+  ),
+};
+const Q_REDUCE = {
+  question: P("¿Qué hace `[5, 4].reduce((a, b) => a + b, 0)`?", "What does `[5, 4].reduce((a, b) => a + b, 0)` do?"),
+  options: [
+    P("Suma todo el array a un solo valor: 9", "Reduces the whole array to one value: 9"),
+    P("Devuelve [5, 4]", "Returns [5, 4]"),
+    P("Devuelve el mayor: 5", "Returns the largest: 5"),
+    P("Da error sin tercer argumento", "Errors without a third argument"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`reduce` combina el array en un único valor. El `0` es el acumulador inicial; en cada paso `a` es lo acumulado y `b` el elemento actual.",
+    "`reduce` combines the array into a single value. The `0` is the initial accumulator; each step `a` is the running total and `b` the current element.",
+  ),
+};
+
+/** Capítulo 4 · Objetos, métodos (this) y arrays (map, filter, reduce). */
+export const SYL_JS_COMMUNITY_4: Syllabus = {
+  c4_jinete_rezagado: { kind: "battle", questions: [Q_OBJ, Q_PROP, Q_MAP] },
+  c4_lobo: { kind: "battle", questions: [Q_METHOD, Q_FILTER, Q_OBJ] },
+  c4_jefe_nueve: { kind: "battle", questions: [Q_FILTER, Q_REDUCE, Q_MAP, Q_METHOD] },
+  c4_trasgo_montaraz: { kind: "battle", questions: [Q_PROP, Q_REDUCE, Q_MAP] },
+  pergamino_estatico: {
+    kind: "scroll",
+    title: P("El Pergamino del Cartógrafo", "The Cartographer's Scroll"),
+    lore_intro: P(
+      "Antes del Vado, un pergamino enseña a agrupar datos con nombre (objetos) y a transformar listas enteras de un golpe (map, filter, reduce).",
+      "Before the Ford, a scroll teaches how to group named data (objects) and transform whole lists at once (map, filter, reduce).",
+    ),
+    scroll: {
+      topic: P("Objetos y métodos de array", "Objects and array methods"),
+      sections: [
+        {
+          heading: P("Objetos: datos con nombre", "Objects: named data"),
+          body: P(
+            "Un objeto agrupa valores bajo claves. Se leen con punto (`jinete.nombre`). Un método es una función guardada en el objeto: dentro, `this` es el propio objeto.",
+            "An object groups values under keys. Read them with a dot (`jinete.nombre`). A method is a function stored on the object: inside it, `this` is the object itself.",
+          ),
+          code: "const montura = {\n  velocidadMaxima: 120,\n  galopar(deseada) {\n    return Math.min(this.velocidadMaxima, deseada);\n  },\n};\nmontura.galopar(200); // 120",
+        },
+        {
+          heading: P("map y filter", "map and filter"),
+          body: P(
+            "`map` transforma cada elemento y devuelve un array nuevo del mismo tamaño. `filter` se queda sólo con los que cumplen una condición. Ninguno modifica el original.",
+            "`map` transforms each element and returns a new array of the same length. `filter` keeps only those matching a condition. Neither changes the original.",
+          ),
+          code: "const jinetes = [{ fuerza: 10 }, { fuerza: 80 }];\njinetes.map(j => j.fuerza);          // [10, 80]\njinetes.filter(j => j.fuerza < 50);  // [{ fuerza: 10 }]",
+        },
+        {
+          heading: P("reduce: plegar a un solo valor", "reduce: fold to a single value"),
+          body: P(
+            "`reduce` combina todo el array en un único resultado. Recibe el acumulador y el elemento actual, y un valor inicial (aquí, 0).",
+            "`reduce` combines the whole array into one result. It receives the accumulator and the current element, plus an initial value (here, 0).",
+          ),
+          code: "[5, 4].reduce((total, f) => total + f, 0); // 9",
+        },
+      ],
+      keyTakeaway: P(
+        "Los objetos agrupan datos con nombre y `this` apunta al objeto dentro de sus métodos. Para listas: map transforma, filter selecciona, reduce resume — y ninguno toca el array original.",
+        "Objects group named data and `this` points to the object inside its methods. For lists: map transforms, filter selects, reduce summarizes — and none of them mutate the original array.",
+      ),
+    },
+  },
+  montura_asfaloth: {
+    kind: "challenge",
+    title: P("Asfaloth, el Corcel Élfico", "Asfaloth, the Elven Steed"),
+    lore_intro: P(
+      "Ningún corcel supera su límite. Crea una montura que se conozca a sí misma con this.",
+      "No steed exceeds its limit. Build a mount that knows itself through this.",
+    ),
+    challenge: {
+      topic: P("Objetos y this", "Objects and this"),
+      instructions: P(
+        "Escribe `crearMontura(velocidadMaxima)` que DEVUELVA un objeto con:\n• la propiedad `velocidadMaxima`,\n• el método `galopar(deseada)` que devuelva la velocidad deseada sin superar nunca `this.velocidadMaxima`.\n\nEjemplo: `crearMontura(120).galopar(200)` → `120`.",
+        "Write `crearMontura(velocidadMaxima)` that RETURNS an object with:\n• the property `velocidadMaxima`,\n• the method `galopar(deseada)` returning the wanted speed never above `this.velocidadMaxima`.\n\nExample: `crearMontura(120).galopar(200)` → `120`.",
+      ),
+      starter_code:
+        "function crearMontura(velocidadMaxima) {\n  // devuelve un objeto con velocidadMaxima y galopar(deseada)\n}\n",
+      hints: [
+        P("Devuelve un objeto literal: `return { velocidadMaxima, galopar(deseada) { ... } };`.", "Return an object literal: `return { velocidadMaxima, galopar(deseada) { ... } };`."),
+        P("Dentro del método usa `this.velocidadMaxima` y `Math.min(...)`.", "Inside the method use `this.velocidadMaxima` and `Math.min(...)`."),
+      ],
+      test_cases: [
+        { input: "crearMontura(120).galopar(90)", expected: 90, description: P("Por debajo del límite", "Below the limit"), raw: true },
+        { input: "crearMontura(120).galopar(200)", expected: 120, description: P("Nunca supera el máximo", "Never above the max"), raw: true },
+        { input: "crearMontura(120).velocidadMaxima", expected: 120, description: P("Expone su propiedad", "Exposes its property"), raw: true },
+      ],
+    },
+  },
+  recuento_de_los_nueve: {
+    kind: "challenge",
+    title: P("El Recuento de los Nueve", "The Reckoning of the Nine"),
+    lore_intro: P(
+      "Suma la fuerza de todos los jinetes en un solo número. Eso es reduce.",
+      "Add up the strength of every rider into a single number. That's reduce.",
+    ),
+    challenge: {
+      topic: P("Arrays: reduce", "Arrays: reduce"),
+      instructions: P(
+        "Escribe `fuerzaTotal(fuerzas)` que reciba un array de números y devuelva su SUMA usando `reduce`. Con un array vacío, devuelve `0`.\n\nEjemplo: `fuerzaTotal([5, 4])` → `9`.",
+        "Write `fuerzaTotal(fuerzas)` taking an array of numbers and returning their SUM using `reduce`. For an empty array, return `0`.\n\nExample: `fuerzaTotal([5, 4])` → `9`.",
+      ),
+      starter_code:
+        "function fuerzaTotal(fuerzas) {\n  // suma el array con reduce, empezando en 0\n}\n",
+      hints: [
+        P("`reduce` recibe un acumulador y el elemento actual: `(a, b) => a + b`.", "`reduce` takes an accumulator and the current element: `(a, b) => a + b`."),
+        P("No olvides el valor inicial: `fuerzas.reduce((a, b) => a + b, 0)`.", "Don't forget the initial value: `fuerzas.reduce((a, b) => a + b, 0)`."),
+      ],
+      test_cases: [
+        { input: "fuerzaTotal([5, 4])", expected: 9, description: P("Cinco más cuatro", "Five plus four"), raw: true },
+        { input: "fuerzaTotal([1, 2, 3])", expected: 6, description: P("Varios sumandos", "Several addends"), raw: true },
+        { input: "fuerzaTotal([])", expected: 0, description: P("Array vacío: el inicial", "Empty array: the initial value"), raw: true },
+      ],
+    },
+  },
+  vado_de_bruinen: {
+    kind: "challenge",
+    title: P("El Vado de Bruinen", "The Ford of Bruinen"),
+    lore_intro: P(
+      "La crecida arrastra a los jinetes más débiles. Quédate sólo con ellos: filter.",
+      "The flood sweeps away the weakest riders. Keep only those: filter.",
+    ),
+    challenge: {
+      topic: P("Arrays: filter + length", "Arrays: filter + length"),
+      instructions: P(
+        "La crecida tiene fuerza 50. Escribe `arrastrados(fuerzas)` que reciba un array con la fuerza de cada jinete y devuelva CUÁNTOS son arrastrados: los que tengan fuerza MENOR que 50.\n\nEjemplo: `arrastrados([10, 20, 80])` → `2`.",
+        "The flood has strength 50. Write `arrastrados(fuerzas)` taking an array of each rider's strength and returning HOW MANY are swept away: those with strength LESS than 50.\n\nExample: `arrastrados([10, 20, 80])` → `2`.",
+      ),
+      starter_code:
+        "function arrastrados(fuerzas) {\n  // cuenta los que tienen fuerza menor que 50\n}\n",
+      hints: [
+        P("Primero selecciona: `fuerzas.filter(f => f < 50)`.", "First select: `fuerzas.filter(f => f < 50)`."),
+        P("Luego cuenta con `.length`.", "Then count with `.length`."),
+      ],
+      test_cases: [
+        { input: "arrastrados([10, 20, 80])", expected: 2, description: P("Dos débiles caen; el fuerte resiste", "Two weak ones fall; the strong resists"), raw: true },
+        { input: "arrastrados([60, 70])", expected: 0, description: P("Ninguno cede", "None gives in"), raw: true },
+        { input: "arrastrados([5, 5, 5, 5, 5, 5, 5, 5, 5])", expected: 9, description: P("Los Nueve son barridos", "The Nine are swept away"), raw: true },
+      ],
+    },
+  },
+  c4_runas_del_vado: {
+    kind: "challenge",
+    title: P("Las runas del Vado", "The runes of the Ford"),
+    lore_intro: P(
+      "De la lista de jinetes, extrae sólo sus nombres. Transformar cada elemento es map.",
+      "From the list of riders, pull out only their names. Transforming each element is map.",
+    ),
+    challenge: {
+      topic: P("Arrays: map sobre objetos", "Arrays: map over objects"),
+      instructions: P(
+        "Escribe `nombres(jinetes)` que reciba un array de objetos `{ nombre, fuerza }` y devuelva un array SÓLO con los `nombre`, en el mismo orden.\n\nEjemplo: `nombres([{ nombre: 'Khamûl', fuerza: 8 }])` → `['Khamûl']`.",
+        "Write `nombres(jinetes)` taking an array of objects `{ nombre, fuerza }` and returning an array with ONLY the `nombre`s, in the same order.\n\nExample: `nombres([{ nombre: 'Khamûl', fuerza: 8 }])` → `['Khamûl']`.",
+      ),
+      starter_code:
+        "function nombres(jinetes) {\n  // devuelve un array con el nombre de cada jinete\n}\n",
+      hints: [
+        P("`map` transforma cada elemento: `jinetes.map(j => ...)`.", "`map` transforms each element: `jinetes.map(j => ...)`."),
+        P("De cada jinete quieres su nombre: `j => j.nombre`.", "From each rider you want its name: `j => j.nombre`."),
+      ],
+      test_cases: [
+        { input: "nombres([{ nombre: 'Khamul', fuerza: 8 }, { nombre: 'Rey Brujo', fuerza: 9 }])", expected: ["Khamul", "Rey Brujo"], description: P("Extrae los nombres en orden", "Pulls the names in order"), raw: true },
+        { input: "nombres([])", expected: [], description: P("Lista vacía → array vacío", "Empty list → empty array"), raw: true },
+        { input: "nombres([{ nombre: 'Nazgul', fuerza: 5 }]).length", expected: 1, description: P("Mismo tamaño que la entrada", "Same length as the input"), raw: true },
+      ],
+    },
+  },
+};

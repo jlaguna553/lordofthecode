@@ -827,3 +827,309 @@ class Montaraz extends Viajero {
     },
   },
 };
+
+/** Capítulo 4 · static, self::, constantes de clase y enums. */
+export const SYL_PHP_COMMUNITY_4: Syllabus = {
+  c4_jinete_rezagado: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿A quién pertenece una propiedad `static`?",
+        options: [
+          "A la clase: la comparten todas sus instancias",
+          "A cada objeto, como cualquier otra propiedad",
+          "Al primer objeto que se cree",
+          "Al fichero donde está la clase",
+        ],
+        correct: 0,
+        explanation:
+          "Sólo hay UNA copia, viva mientras dure el script, y todos los objetos ven la misma. Por eso sirve para contar instancias o llevar un registro común — y por eso también es peligrosa: es estado global disfrazado.",
+      },
+      {
+        question:
+          "¿Cómo se lee una propiedad estática desde dentro de la propia clase?",
+        options: ["self::$contador", "$this->contador", "self->contador", "static.contador"],
+        correct: 0,
+        explanation:
+          "Se accede con `::` y CONSERVANDO el `$`: `self::$contador`. Es justo al revés que en las propiedades normales, donde el `$` desaparece (`$this->contador`). Confundirlo es el error de sintaxis más habitual con estáticos.",
+      },
+      {
+        question: "¿Y una constante de clase?",
+        options: ["self::NOMBRE, sin signo dólar", "self::$NOMBRE", "$this->NOMBRE", "const::NOMBRE"],
+        correct: 0,
+        explanation:
+          "Las constantes no llevan `$` nunca, ni al declararlas (`const NUEVE = 9;`) ni al leerlas (`self::NUEVE`). Desde fuera se leen con el nombre de la clase: `Nazgul::NUEVE`.",
+      },
+    ],
+  },
+  c4_lobo: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Cuál es la diferencia entre `self::` y `static::`?",
+        options: [
+          "self:: apunta a la clase donde está escrito; static:: a la clase real del objeto",
+          "Son sinónimos",
+          "self:: sólo funciona con constantes",
+          "static:: sólo funciona en métodos estáticos",
+        ],
+        correct: 0,
+        explanation:
+          "`static::` es «resolución estática tardía»: mira la clase con la que REALMENTE se llamó, no dónde está el código. Si una hija sobrescribe un método y el padre usa `self::`, se ejecutará el del padre; con `static::`, el de la hija. Es lo que hace funcionar patrones como los factory heredables.",
+      },
+      {
+        question: "Dentro de un método `static`, ¿puedes usar `$this`?",
+        options: [
+          "No: un método estático se llama sin objeto, así que no hay $this",
+          "Sí, apunta al último objeto creado",
+          "Sí, pero sólo para leer",
+          "Sí, si la clase tiene al menos una instancia",
+        ],
+        correct: 0,
+        explanation:
+          "`Clase::metodo()` se llama sin ningún objeto de por medio, así que `$this` no existe y usarlo es error fatal. Si un método necesita el estado del objeto, no debería ser estático.",
+      },
+      {
+        question: "¿Por qué se dice que abusar de los estáticos complica las pruebas?",
+        options: [
+          "Porque son estado global: no se pueden sustituir por un doble ni se reinician entre pruebas",
+          "Porque son más lentos",
+          "Porque no se pueden llamar desde otra clase",
+          "Porque PHP los ejecuta en otro hilo",
+        ],
+        correct: 0,
+        explanation:
+          "Una dependencia que recibes por constructor la puedes cambiar por una falsa en un test. Una llamada estática está soldada al código: no hay dónde meter la mano. Además el valor sobrevive de un test al siguiente y aparecen fallos fantasma según el orden.",
+      },
+    ],
+  },
+  c4_jefe_nueve: {
+    kind: "battle",
+    questions: [
+      {
+        question:
+          "```\nclass N { public static int $vistos = 0;\n  public function __construct() { self::$vistos++; } }\nnew N(); new N(); new N();\necho N::$vistos;\n```",
+        options: ["3", "1", "0", "Error: no se puede leer desde fuera"],
+        correct: 0,
+        explanation:
+          "La propiedad estática es una sola para toda la clase, así que los tres constructores incrementan el MISMO contador. Es el uso clásico y legítimo de un estático: contar instancias. Y siendo `public` se lee desde fuera con `N::$vistos`.",
+      },
+      {
+        question: "¿Se puede cambiar el valor de una `const` en tiempo de ejecución?",
+        options: [
+          "No: se fija al declararla y es inmutable",
+          "Sí, con self::CONST = nuevo",
+          "Sí, sólo dentro de la clase",
+          "Sí, si la clase no es final",
+        ],
+        correct: 0,
+        explanation:
+          "Una constante de clase es inmutable por definición. Si el valor tiene que poder cambiar, no es una constante: usa una propiedad estática, o mejor una normal inyectada por constructor.",
+      },
+      {
+        question: "¿Cuál es un buen uso de un método estático?",
+        options: [
+          "Un constructor con nombre: Fecha::desdeTexto('2026-07-22')",
+          "Guardar la conexión a la base de datos para todo el programa",
+          "Cualquier método que no use $this",
+          "Reemplazar a las funciones sueltas",
+        ],
+        correct: 0,
+        explanation:
+          "Los constructores con nombre son ideales: crean y devuelven una instancia, expresan la intención mejor que un `new` con cinco argumentos, y no guardan estado global. Lo contrario es el singleton de conexión: estado compartido escondido, imposible de sustituir en un test.",
+      },
+      {
+        question:
+          "Una clase padre tiene `public static function crear(): static { return new static(); }`. ¿Qué devuelve `Hija::crear()`?",
+        options: ["Una instancia de Hija", "Una instancia del padre", "Error: new static no existe", "null"],
+        correct: 0,
+        explanation:
+          "`new static()` usa resolución estática tardía: construye la clase con la que se hizo la llamada. Con `new self()` habrías obtenido siempre el padre. Es exactamente lo que permite escribir un factory una vez en el padre y que funcione en todas las hijas.",
+      },
+    ],
+  },
+  c4_trasgo_montaraz: {
+    kind: "battle",
+    questions: [
+      {
+        question:
+          "Declaras `const VELOCIDAD = 5;` en una clase. ¿Cómo la lees desde FUERA?",
+        options: ["Caballo::VELOCIDAD", "$caballo->VELOCIDAD", "Caballo::$VELOCIDAD", "$Caballo::VELOCIDAD"],
+        correct: 0,
+        explanation:
+          "Las constantes de clase se leen con `NombreClase::CONSTANTE`, sin `$` en ningún sitio. Desde dentro usarías `self::VELOCIDAD` o `static::VELOCIDAD`. Ponerle `$` la confundiría con una propiedad estática.",
+      },
+      {
+        question:
+          "¿Cuál es una ventaja de usar una constante frente a escribir el número 5 directamente en el código?",
+        options: [
+          "Un nombre explica qué significa y se cambia en un solo sitio",
+          "Es más rápida en tiempo de ejecución",
+          "Ocupa menos memoria",
+          "Permite cambiarla mientras corre el programa",
+        ],
+        correct: 0,
+        explanation:
+          "El valor 5 suelto por el código es un «número mágico»: nadie sabe qué representa ni cuántas veces aparece. `VELOCIDAD_MAXIMA` se explica solo y se ajusta en un único punto. La constante no es más rápida — es más legible y mantenible.",
+      },
+      {
+        question:
+          "Un método estático `Contador::total()`. ¿Necesitas crear un objeto para llamarlo?",
+        options: [
+          "No: los estáticos se llaman sobre la clase, sin instancia",
+          "Sí, siempre",
+          "Sí, al menos uno debe existir",
+          "Depende de si la clase es final",
+        ],
+        correct: 0,
+        explanation:
+          "Un método estático pertenece a la clase, no a ningún objeto: `Contador::total()` funciona sin haber hecho `new` nunca. Justo por eso dentro no tiene `$this`.",
+      },
+    ],
+  },
+  pergamino_estatico: {
+    kind: "scroll",
+    title: "El Poder Compartido",
+    lore_intro:
+      "Antes de partir, Elrond te entrega un pergamino: «No siempre hace falta crear una cosa para usar su poder. Algunos poderes pertenecen a la estirpe entera, no a un solo individuo.»",
+    scroll: {
+      topic: "static, self:: y constantes de clase",
+      sections: [
+        {
+          heading: "Lo que pertenece a la CLASE, no al objeto",
+          body: "Una propiedad o método `static` pertenece a la clase entera, no a cada instancia. Se llama con `Clase::metodo()` — sin necesidad de hacer `new`.\n\nÚsalo para utilidades sin estado propio, contadores globales y fábricas.",
+          code: `class RioBruinen {
+    public static function desbordar(): string {
+        return 'las aguas se alzan';
+    }
+}
+
+// No hace falta instanciar un río:
+echo RioBruinen::desbordar();`,
+        },
+        {
+          heading: "Constantes de clase",
+          body: "Un valor que nunca cambia y pertenece al concepto, no a un objeto. Se declara con `const` y se lee con `Clase::NOMBRE` o, desde dentro, con `self::NOMBRE`.",
+          code: `class Montura {
+    public const VELOCIDAD_MAXIMA = 120;
+
+    public function galopar(int $deseada): int {
+        return min(self::VELOCIDAD_MAXIMA, $deseada);
+    }
+}`,
+        },
+        {
+          heading: "self:: frente a $this->",
+          body: "`$this->` accede al objeto actual; `self::` accede a la clase. Dentro de un método estático NO existe `$this`, así que sólo puedes usar `self::` (o `static::`, que respeta la subclase — se llama late static binding).",
+        },
+      ],
+      keyTakeaway:
+        "Si el método no usa ningún dato del objeto, probablemente debería ser static. Ojo: el estado estático es global y complica los tests — úsalo con cabeza.",
+    },
+  },
+  montura_asfaloth: {
+    kind: "challenge",
+    title: "Asfaloth, el Corcel Élfico",
+    lore_intro:
+      "Glorfindel pone a Frodo sobre su caballo blanco. «¡Noro lim, Asfaloth!» Ningún corcel, por élfico que sea, supera su límite: eso es una constante.",
+    challenge: {
+      topic: "Constantes de clase (const, self::)",
+      instructions:
+        "Crea la clase Asfaloth con una constante pública VELOCIDAD_MAXIMA = 120 y el método galopar(int $deseada): int, que devuelva la velocidad deseada SIN superar nunca la constante. Léela desde dentro con self::.",
+      sut: "new Asfaloth()",
+      starter_code:
+        "<?php\n\nclass Asfaloth {\n    // 1) Constante pública VELOCIDAD_MAXIMA = 120\n\n    // 2) galopar(int $deseada): int  — nunca por encima de la constante\n}\n",
+      hints: [
+        "Una constante de clase se declara así: public const VELOCIDAD_MAXIMA = 120;",
+        "Desde dentro de la clase se lee con self::VELOCIDAD_MAXIMA (nunca con $this->).",
+        "Para no pasarte del límite: return min(self::VELOCIDAD_MAXIMA, $deseada);",
+      ],
+      test_cases: [
+        { input: "galopar(90)", expected: 90, description: "Por debajo del límite, galopa a lo pedido" },
+        { input: "galopar(200)", expected: 120, description: "Nunca supera VELOCIDAD_MAXIMA" },
+        { input: "Asfaloth::VELOCIDAD_MAXIMA", raw: true, expected: 120, description: "La constante es pública y se lee sin instanciar" },
+      ],
+    },
+  },
+  recuento_de_los_nueve: {
+    kind: "challenge",
+    title: "El Recuento de los Nueve",
+    lore_intro:
+      "Los Jinetes Negros son nueve, y el recuento no pertenece a ninguno en particular: pertenece a la Sombra entera. Un contador que viven todas las instancias a la vez es estado estático.",
+    challenge: {
+      topic: "Propiedades estáticas (self::$prop)",
+      instructions:
+        "Crea la clase Caceria con una propiedad estática privada $jinetes que empiece en 0, y dos métodos ESTÁTICOS: sumar(int $n): void, que la incremente, y total(): int, que la devuelva. Todo se llama con Caceria::… sin instanciar.",
+      starter_code:
+        "<?php\n\nclass Caceria {\n    // 1) private static int $jinetes = 0;\n\n    // 2) public static function sumar(int $n): void\n\n    // 3) public static function total(): int\n}\n",
+      hints: [
+        "Declara el estado compartido: private static int $jinetes = 0;",
+        "Dentro de un método estático no hay $this: usa self::$jinetes += $n;",
+        "Los métodos también deben ser static para poder llamarlos con Caceria::sumar(5).",
+      ],
+      test_cases: [
+        { input: "Caceria::total()", raw: true, expected: 0, description: "La cacería empieza sin jinetes contados" },
+        { input: "Caceria::sumar(5)", raw: true, expected: null, description: "Cinco jinetes en la Cima de los Vientos…" },
+        { input: "Caceria::sumar(4)", raw: true, expected: null, description: "…y los cuatro restantes se unen" },
+        { input: "Caceria::total()", raw: true, expected: 9, description: "El estado es compartido: son los Nueve" },
+      ],
+    },
+  },
+  vado_de_bruinen: {
+    kind: "challenge",
+    title: "El Vado de Bruinen",
+    lore_intro:
+      "«¡Volved a la tierra de Mordor y no me sigáis!» Las aguas se alzan en caballos de espuma. No hace falta crear un río nuevo para desatar su furia: el poder es de la clase, no del objeto.",
+    challenge: {
+      topic: "Métodos estáticos (Clase::metodo)",
+      instructions:
+        "Crea la clase RioBruinen con la constante FUERZA_CRECIDA = 50 y el método ESTÁTICO desbordar(array $jinetes): int. Recibe un array con la fuerza de cada jinete y devuelve cuántos son arrastrados: los que tengan fuerza MENOR que la crecida. No debe hacer falta instanciar la clase.",
+      starter_code:
+        "<?php\n\nclass RioBruinen {\n    // 1) const FUERZA_CRECIDA = 50\n\n    // 2) public static function desbordar(array $jinetes): int\n}\n",
+      hints: [
+        "El método debe ser estático: public static function desbordar(array $jinetes): int",
+        "Dentro usa self::FUERZA_CRECIDA para comparar.",
+        "Cuenta los que no resisten: return count(array_filter($jinetes, fn(int $f) => $f < self::FUERZA_CRECIDA));",
+      ],
+      test_cases: [
+        { input: "RioBruinen::FUERZA_CRECIDA", raw: true, expected: 50, description: "La fuerza de la crecida es una constante de clase" },
+        { input: "RioBruinen::desbordar([10, 20, 80])", raw: true, expected: 2, description: "Dos jinetes débiles son arrastrados; el fuerte resiste" },
+        { input: "RioBruinen::desbordar([60, 70])", raw: true, expected: 0, description: "Ninguno cede ante la crecida" },
+        { input: "RioBruinen::desbordar([5, 5, 5, 5, 5, 5, 5, 5, 5])", raw: true, expected: 9, description: "Los Nueve caballos son barridos por las aguas" },
+      ],
+    },
+  },
+  c4_runas_del_vado: {
+    kind: "challenge",
+    title: "Las runas del Vado",
+    lore_intro:
+      "Grabados en la roca sobre Bruinen hay tres signos: aguas calmas, aguas crecidas, aguas desbordadas. Sólo tres estados posibles, y ni uno más — como un enum.",
+    challenge: {
+      topic: "Enums respaldados (const con superpoderes)",
+      instructions:
+        "Un enum es un conjunto CERRADO de valores con nombre: como las constantes de clase, pero convertidas en un tipo propio.\n\n" +
+        "Declara el enum `Vado` respaldado por `string` con tres casos y sus valores exactos:\n" +
+        "• `Calmo` = `'calmo'`\n• `Crecido` = `'crecido'`\n• `Desbordado` = `'desbordado'`\n\n" +
+        "Añade:\n" +
+        "• `esVadeable(): bool` — sólo el Vado Calmo se puede cruzar.\n" +
+        "• `public static function segunCaudal(int $caudal): self` — devuelve `Calmo` si el caudal es menor que 30, `Crecido` si es menor que 70, y `Desbordado` en los demás casos. Usa `match (true)`.",
+      starter_code:
+        "<?php\n\nenum Vado: string\n{\n    // 1) los tres casos con su valor\n\n    public function esVadeable(): bool\n    {\n        // 2)\n    }\n\n    public static function segunCaudal(int $caudal): self\n    {\n        // 3) match (true) => ...\n    }\n}\n",
+      hints: [
+        "Un enum respaldado declara el tipo tras el nombre y cada caso lleva valor: `case Calmo = 'calmo';`",
+        "`esVadeable()` es una comparación de identidad: `return $this === Vado::Calmo;`",
+        "`match (true)` evalúa condiciones: `$caudal < 30 => Vado::Calmo, $caudal < 70 => Vado::Crecido, default => Vado::Desbordado`.",
+      ],
+      test_cases: [
+        { input: "Vado::from('crecido')->name", expected: "Crecido", description: "from() encuentra el caso por su valor", raw: true },
+        { input: "Vado::Calmo->value", expected: "calmo", description: "El valor respaldado", raw: true },
+        { input: "Vado::Calmo->esVadeable()", expected: true, description: "El Vado calmo se cruza", raw: true },
+        { input: "Vado::Desbordado->esVadeable()", expected: false, description: "El desbordado, no", raw: true },
+        { input: "Vado::segunCaudal(10)->name", expected: "Calmo", description: "Caudal bajo", raw: true },
+        { input: "Vado::segunCaudal(50)->name", expected: "Crecido", description: "Caudal medio", raw: true },
+        { input: "Vado::segunCaudal(200)->name", expected: "Desbordado", description: "El río contra los Nueve", raw: true },
+        { input: "count(Vado::cases())", expected: 3, description: "El enum está cerrado en tres", raw: true },
+      ],
+    },
+  },
+};

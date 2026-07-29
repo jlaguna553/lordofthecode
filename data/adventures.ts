@@ -6,7 +6,6 @@ import {
   BOOK_APPENDICES,
 } from "@/lib/game/book";
 import {
-  CHAPTER_4,
   CHAPTER_5,
   CHAPTER_6,
   CHAPTER_7,
@@ -25,16 +24,19 @@ import {
   NARR_COMMUNITY_1,
   NARR_COMMUNITY_2,
   NARR_COMMUNITY_3,
+  NARR_COMMUNITY_4,
 } from "./narrative/community";
 import {
   SYL_PHP_COMMUNITY_1,
   SYL_PHP_COMMUNITY_2,
   SYL_PHP_COMMUNITY_3,
+  SYL_PHP_COMMUNITY_4,
 } from "./syllabus/community-php";
 import {
   SYL_JS_COMMUNITY_1,
   SYL_JS_COMMUNITY_2,
   SYL_JS_COMMUNITY_3,
+  SYL_JS_COMMUNITY_4,
 } from "./syllabus/community-js";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
@@ -61,6 +63,8 @@ const JS_COMMUNITY_2 = buildChapter(
 );
 const PHP_COMMUNITY_3 = buildChapter(NARR_COMMUNITY_3, SYL_PHP_COMMUNITY_3, "php");
 const JS_COMMUNITY_3 = buildChapter(NARR_COMMUNITY_3, SYL_JS_COMMUNITY_3, "javascript");
+const PHP_COMMUNITY_4 = buildChapter(NARR_COMMUNITY_4, SYL_PHP_COMMUNITY_4, "php");
+const JS_COMMUNITY_4 = buildChapter(NARR_COMMUNITY_4, SYL_JS_COMMUNITY_4, "javascript");
 
 /**
  * Catálogo de aventuras. Las `available` son jugables; las `soon` aparecen en
@@ -86,7 +90,7 @@ export const ADVENTURES: Adventure[] = [
           PHP_COMMUNITY_1,
           PHP_COMMUNITY_2,
           PHP_COMMUNITY_3,
-          CHAPTER_4,
+          PHP_COMMUNITY_4,
           CHAPTER_5,
           CHAPTER_6,
           CHAPTER_7,
@@ -132,7 +136,12 @@ export const ADVENTURES: Adventure[] = [
       es: "El lenguaje de la web, ejecutándose de verdad en tu navegador. Bilingüe.",
       en: "The language of the web, running for real in your browser. Bilingual.",
     },
-    books: [{ book: BOOK_FELLOWSHIP, chapters: [JS_COMMUNITY_1, JS_COMMUNITY_2, JS_COMMUNITY_3] }],
+    books: [
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [JS_COMMUNITY_1, JS_COMMUNITY_2, JS_COMMUNITY_3, JS_COMMUNITY_4],
+      },
+    ],
   },
   {
     id: "typescript",
