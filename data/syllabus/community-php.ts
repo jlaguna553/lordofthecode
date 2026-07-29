@@ -1133,3 +1133,346 @@ echo RioBruinen::desbordar();`,
     },
   },
 };
+
+/** Capítulo 5 · Encapsulamiento avanzado, readonly, invariantes y value objects. */
+export const SYL_PHP_COMMUNITY_5: Syllabus = {
+  c5_crebain: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Qué garantiza una propiedad `readonly`?",
+        options: [
+          "Que se asigna una vez y ya no puede cambiar",
+          "Que nadie de fuera puede leerla",
+          "Que su valor es siempre null hasta el constructor",
+          "Que es compartida por todas las instancias",
+        ],
+        correct: 0,
+        explanation:
+          "`readonly` (PHP 8.1) permite UNA asignación —normalmente en el constructor— y después cualquier intento de escribir lanza error. No afecta a la lectura: sirve para objetos inmutables, no para ocultar. Ocultar sigue siendo cosa de la visibilidad.",
+      },
+      {
+        question: "¿Dónde se puede asignar por primera vez una propiedad readonly?",
+        options: [
+          "Desde dentro de la clase, típicamente en el constructor",
+          "Desde cualquier parte, una sola vez",
+          "Sólo en la declaración, con un valor literal",
+          "En cualquier método público",
+        ],
+        correct: 0,
+        explanation:
+          "La primera asignación debe hacerse desde el ámbito de la propia clase (el constructor es lo habitual). Intentar `$obj->prop = x` desde fuera falla aunque nunca se hubiera asignado: readonly no es «write-once desde donde sea», es «write-once desde dentro».",
+      },
+      {
+        question: "¿Puede una propiedad `readonly` tener también un tipo declarado?",
+        options: [
+          "Sí, y de hecho DEBE tenerlo",
+          "No, son incompatibles",
+          "Sólo si el tipo es un objeto",
+          "Sólo si además es private",
+        ],
+        correct: 0,
+        explanation:
+          "readonly EXIGE un tipo: `public readonly int $edad;`. Una propiedad sin tipo no puede ser readonly. Combina bien con la promoción en el constructor: `public function __construct(public readonly int $edad) {}`.",
+      },
+    ],
+  },
+  c5_lobo_nieve: {
+    kind: "battle",
+    questions: [
+      {
+        question: "Un `setEdad($n)` que rechaza edades negativas protege una…",
+        options: [
+          "invariante: una condición que el objeto mantiene siempre cierta",
+          "constante de clase",
+          "propiedad estática",
+          "interfaz",
+        ],
+        correct: 0,
+        explanation:
+          "Una invariante es una regla que el objeto se compromete a no romper nunca: «la edad nunca es negativa», «el saldo nunca baja de cero». Validar en el setter (o en el constructor) es cómo se hace cumplir. Con la propiedad pública, esa promesa no existe.",
+      },
+      {
+        question: "¿Por qué un setter con validación es mejor que una propiedad pública?",
+        options: [
+          "Centraliza la comprobación: es imposible dejar el objeto en un estado inválido",
+          "Es más rápido de ejecutar",
+          "Ocupa menos memoria",
+          "Permite herencia múltiple",
+        ],
+        correct: 0,
+        explanation:
+          "Si el ÚNICO camino para cambiar el valor pasa por tu setter, ahí validas una vez y queda garantizado para siempre. Con la propiedad pública, cada punto del programa que la toque tendría que recordar validar — y alguno se olvidará.",
+      },
+      {
+        question: "Quieres cambiar un dato de un objeto `readonly`. ¿Cuál es el patrón idiomático?",
+        options: [
+          "Devolver una copia nueva con el cambio (with...), sin tocar el original",
+          "Quitar el readonly temporalmente",
+          "Usar reflexión para forzar la escritura",
+          "Convertirlo en propiedad estática",
+        ],
+        correct: 0,
+        explanation:
+          "Los objetos inmutables no se modifican: se crea otro. Un método `conEdad(int $n): static { return new static($n, ...); }` devuelve una copia con el cambio y deja intacto el original. Es el mismo patrón de `DateTimeImmutable`.",
+      },
+    ],
+  },
+  c5_jefe_caradhras: {
+    kind: "battle",
+    questions: [
+      {
+        question:
+          "```\nclass Temp {\n  public function __construct(public readonly int $grados) {}\n}\n$t = new Temp(-5);\n$t->grados = 0;\n```\n¿Qué ocurre en la última línea?",
+        options: [
+          "Error: no se puede modificar una propiedad readonly ya inicializada",
+          "Se asigna 0 sin problema",
+          "Se ignora en silencio",
+          "Error: -5 no es válido",
+        ],
+        correct: 0,
+        explanation:
+          "La promoción ya inicializó `$grados` con -5 en el constructor. Cualquier escritura posterior —incluso al mismo valor— lanza «Cannot modify readonly property». Es justo la garantía que buscas: una vez creado, el objeto no cambia.",
+      },
+      {
+        question:
+          "Un constructor recibe un porcentaje y hace `if ($p < 0 || $p > 100) throw new InvalidArgumentException();`. ¿Qué consigue?",
+        options: [
+          "Que no exista ningún objeto con un porcentaje fuera de rango",
+          "Que el porcentaje se ajuste solo al rango válido",
+          "Que la propiedad sea readonly",
+          "Que el método sea más rápido",
+        ],
+        correct: 0,
+        explanation:
+          "Validar en el constructor y lanzar si algo no cuadra hace IMPOSIBLE construir un objeto inválido: el error salta en el punto exacto del fallo, no tres capas más abajo. Es la base de los objetos de valor: si existe, es válido.",
+      },
+      {
+        question: "¿Qué es un «objeto de valor» (value object)?",
+        options: [
+          "Un objeto pequeño e inmutable que representa un valor (Dinero, Fecha, Coordenada)",
+          "Cualquier objeto con propiedades públicas",
+          "Un objeto que sólo tiene métodos estáticos",
+          "El objeto principal de la aplicación",
+        ],
+        correct: 0,
+        explanation:
+          "Un value object encapsula un concepto (un Dinero, un Email, una Temperatura) validándolo al crearlo y sin permitir cambios después. Dos son iguales si sus valores coinciden, no por identidad. `readonly` + validación en el constructor es exactamente la receta.",
+      },
+      {
+        question: "¿Cuál es la diferencia entre `private` y `readonly`?",
+        options: [
+          "private controla QUIÉN accede; readonly controla CUÁNDO se puede escribir",
+          "Son sinónimos",
+          "readonly impide la lectura; private no",
+          "private sólo aplica a métodos",
+        ],
+        correct: 0,
+        explanation:
+          "Son ejes distintos y combinables. `private` es visibilidad: desde dónde se ve. `readonly` es mutabilidad: cuántas veces se escribe. Una propiedad puede ser `private readonly` (oculta e inmutable) o `public readonly` (visible pero inmutable).",
+      },
+    ],
+  },
+  c5_trasgo_montanes: {
+    kind: "battle",
+    questions: [
+      {
+        question:
+          "Declaras `public readonly array $items;` y en el constructor haces `$this->items = [];`. Luego `$this->items[] = 'x';` desde un método. ¿Funciona?",
+        options: [
+          "No: readonly impide modificar el array tras asignarlo, incluso añadir elementos",
+          "Sí: readonly sólo protege la reasignación completa",
+          "Sí, pero sólo desde el constructor",
+          "Sí, siempre",
+        ],
+        correct: 0,
+        explanation:
+          "readonly protege la propiedad ENTERA: una vez asignado el array, no puedes reasignarlo ni mutarlo (ni `[]=`, ni `unset` de una clave). Para «cambiar» un array readonly creas uno nuevo y devuelves una copia del objeto. Es la inmutabilidad llevada al contenido, no sólo a la referencia.",
+      },
+      {
+        question: "¿Qué pasa si un método intenta LEER una propiedad readonly?",
+        options: [
+          "Nada: leer siempre está permitido",
+          "Error: readonly bloquea la lectura",
+          "Devuelve null",
+          "Sólo se puede leer una vez",
+        ],
+        correct: 0,
+        explanation:
+          "readonly no tiene nada que ver con la lectura, que es libre y tantas veces como quieras. Sólo limita la ESCRITURA a una vez, desde dentro de la clase. Quien confunde readonly con private busca la herramienta equivocada.",
+      },
+      {
+        question: "¿Cuál es la ventaja de un objeto inmutable a la hora de razonar sobre el código?",
+        options: [
+          "Si lo pasas a otra función, sabes que no te lo van a cambiar por detrás",
+          "Ocupa la mitad de memoria",
+          "Se ejecuta en paralelo",
+          "No necesita constructor",
+        ],
+        correct: 0,
+        explanation:
+          "Con un objeto mutable, cualquiera que reciba una referencia puede alterarlo y provocarte un bug a distancia. Uno inmutable es un dato de confianza: una vez creado, vale lo mismo para siempre y en todas partes. Menos cosas que vigilar.",
+      },
+    ],
+  },
+  pergamino_hielo: {
+    kind: "scroll",
+    title: "El Pergamino del Hielo",
+    lore_intro:
+      "Gandalf resguarda un pergamino bajo su capa antes de que la ventisca lo arranque. «Lo que no debe cambiar, protégelo. Lo que cambia, vigílalo en la puerta.»",
+    scroll: {
+      topic: "Encapsulamiento avanzado e inmutabilidad",
+      sections: [
+        {
+          heading: "El setter es la puerta, no un buzón",
+          body: "Encapsular no es «poner la propiedad private y añadir un get/set para todo». Un setter existe para PROTEGER una invariante: si un valor no puede ser negativo, el setter lo rechaza.\n\nSi tu setter sólo asigna sin validar, la propiedad podría ser pública y daría igual.",
+          code: `class Resistencia {
+    private int $calor = 100;
+
+    public function enfriar(int $grados): void {
+        if ($grados < 0) {
+            throw new InvalidArgumentException('El frío no puede ser negativo');
+        }
+        $this->calor = max(0, $this->calor - $grados);
+    }
+}`,
+        },
+        {
+          heading: "readonly: lo que nace y no cambia (PHP 8.1)",
+          body: "Una propiedad `readonly` sólo puede escribirse una vez, dentro del constructor. Después, cualquier intento de modificarla lanza un `Error`.\n\nEs la forma más limpia de crear objetos de valor seguros.",
+          code: `class Provision {
+    public function __construct(
+        public readonly string $nombre,
+        public readonly int $peso,
+    ) {}
+}
+
+$p = new Provision('lembas', 5);
+$p->peso = 99; // ❌ Error: Cannot modify readonly property`,
+        },
+        {
+          heading: "Objetos inmutables: cambiar = crear otro",
+          body: "Si un objeto no puede mutar, un «cambio» devuelve una instancia NUEVA y deja intacta la original. Es el patrón `with…()` y evita errores por estado compartido.",
+          code: `public function conMas(int $grados): Temperatura {
+    return new Temperatura($this->grados + $grados); // otra instancia
+}`,
+        },
+      ],
+      keyTakeaway:
+        "Valida en la puerta (setters con invariantes) y usa readonly para lo que nunca debe cambiar. Un objeto que no puede quedar en estado inválido no necesita defensas por todas partes.",
+    },
+  },
+  carga_de_bill: {
+    kind: "challenge",
+    title: "La Carga de Bill el Poney",
+    lore_intro:
+      "Sam repasa los fardos que carga Bill. Una provisión es lo que es: su nombre y su peso no cambian a mitad del camino. Eso, en PHP, se llama readonly.",
+    challenge: {
+      topic: "Propiedades readonly",
+      instructions:
+        "Crea la clase Provision con dos propiedades públicas de sólo lectura: $nombre (string) y $peso (int), asignadas en el constructor. Una vez creada, nadie debe poder modificarlas.",
+      sut: "new Provision('lembas', 5)",
+      starter_code:
+        "<?php\n\nclass Provision {\n    // Constructor con $nombre (string) y $peso (int), ambos readonly\n}\n",
+      hints: [
+        "Puedes promover y marcar de sólo lectura a la vez: public readonly string $nombre",
+        "El constructor completo: __construct(public readonly string $nombre, public readonly int $peso) {}",
+        "Una propiedad readonly sólo se escribe dentro del constructor; después lanza un Error.",
+      ],
+      test_cases: [
+        { input: "nombre", expected: "lembas", description: "El nombre se lee sin problema" },
+        { input: "peso", expected: 5, description: "El peso se lee sin problema" },
+        {
+          input:
+            "(function() { $p = new Provision('cuerda', 2); try { $p->peso = 99; return false; } catch (\\Throwable $e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: "Modificarla después lanza un Error: es readonly",
+        },
+      ],
+    },
+  },
+  resistencia_comunidad: {
+    kind: "challenge",
+    title: "La Resistencia de la Comunidad",
+    lore_intro:
+      "El viento arrecia. Boromir abre paso entre la nieve, pero las fuerzas menguan. Vigila el calor de la Comunidad: que nadie pueda alterarlo desde fuera y que nunca caiga por debajo de cero.",
+    challenge: {
+      topic: "Setters con validación e invariantes",
+      instructions:
+        "Crea ResistenciaComunidad con la constante UMBRAL = 20 y la propiedad PRIVADA $calor iniciada en 100. Añade: getCalor(): int; enfriar(int $grados): void, que reste sin bajar nunca de 0 y lance InvalidArgumentException si le pasan un número negativo; y estaCongelada(): bool, true cuando el calor sea menor o igual al UMBRAL.",
+      sut: "new ResistenciaComunidad()",
+      starter_code:
+        "<?php\n\nclass ResistenciaComunidad {\n    public const UMBRAL = 20;\n    // 1) private int $calor = 100;\n\n    // 2) getCalor(): int\n\n    // 3) enfriar(int $grados): void  — valida y nunca baja de 0\n\n    // 4) estaCongelada(): bool\n}\n",
+      hints: [
+        "Guard clause al principio: if ($grados < 0) throw new InvalidArgumentException('...');",
+        "Para no bajar de cero: $this->calor = max(0, $this->calor - $grados);",
+        "estaCongelada() compara con la constante: return $this->calor <= self::UMBRAL;",
+      ],
+      test_cases: [
+        { input: "getCalor()", expected: 100, description: "La Comunidad parte con el calor intacto" },
+        { input: "estaCongelada()", expected: false, description: "Al principio nadie está congelado" },
+        { input: "enfriar(50)", expected: null, description: "La ventisca muerde…" },
+        { input: "getCalor()", expected: 50, description: "…y el calor baja a 50" },
+        { input: "enfriar(40)", expected: null, description: "Sigue nevando…" },
+        { input: "estaCongelada()", expected: true, description: "Con 10 de calor (≤ 20) la Comunidad se congela" },
+        {
+          input:
+            "(function() { $r = new ResistenciaComunidad(); $r->enfriar(500); return $r->getCalor(); })()",
+          raw: true,
+          expected: 0,
+          description: "El calor nunca baja de 0",
+        },
+        {
+          input:
+            "(function() { $r = new ResistenciaComunidad(); try { $r->enfriar(-5); return false; } catch (\\InvalidArgumentException $e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: "Un frío negativo es inválido: el setter lo rechaza",
+        },
+      ],
+    },
+  },
+  temperatura_montana: {
+    kind: "challenge",
+    title: "El Umbral de la Nieve",
+    lore_intro:
+      "«La montaña no negocia», murmura Aragorn mirando el termómetro de escarcha. Una medida no se altera: si el frío cambia, lo que tienes es OTRA medida.",
+    challenge: {
+      topic: "Objetos de valor inmutables",
+      instructions:
+        "Crea la clase Temperatura con $grados readonly. El constructor debe lanzar InvalidArgumentException si los grados están fuera del rango -40..40. Añade conMas(int $g): Temperatura, que devuelva una INSTANCIA NUEVA con los grados sumados, dejando la original intacta.",
+      sut: "new Temperatura(-10)",
+      starter_code:
+        "<?php\n\nclass Temperatura {\n    // 1) Constructor con public readonly int $grados y validación -40..40\n\n    // 2) conMas(int $g): Temperatura  — devuelve OTRA instancia\n}\n",
+      hints: [
+        "Valida dentro del constructor antes de nada: if ($grados < -40 || $grados > 40) throw new InvalidArgumentException('...');",
+        "Como es readonly, conMas() no puede modificar: return new Temperatura($this->grados + $g);",
+        "Ese patrón (devolver una instancia nueva) es lo que hace inmutable al objeto.",
+      ],
+      test_cases: [
+        { input: "grados", expected: -10, description: "La temperatura de partida" },
+        {
+          input: "(new Temperatura(-10))->conMas(-5)->grados",
+          raw: true,
+          expected: -15,
+          description: "conMas() devuelve una temperatura más fría",
+        },
+        {
+          input:
+            "(function() { $t = new Temperatura(-10); $t->conMas(-5); return $t->grados; })()",
+          raw: true,
+          expected: -10,
+          description: "La ORIGINAL no cambia: eso es inmutabilidad",
+        },
+        {
+          input:
+            "(function() { try { new Temperatura(-100); return false; } catch (\\InvalidArgumentException $e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: "El constructor rechaza valores fuera de rango",
+        },
+      ],
+    },
+  },
+};

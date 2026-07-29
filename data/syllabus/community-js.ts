@@ -917,3 +917,257 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre clases en JS. */
+const Q_CLASS = {
+  question: P("¿Cómo se declara una clase en JS?", "How do you declare a class in JS?"),
+  options: [
+    P("class Hobbit { ... }", "class Hobbit { ... }"),
+    P("function class Hobbit { ... }", "function class Hobbit { ... }"),
+    P("def Hobbit: ...", "def Hobbit: ..."),
+    P("new class = Hobbit", "new class = Hobbit"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`class Nombre { ... }` declara una clase. Dentro van el `constructor` y los métodos, sin comas entre ellos.",
+    "`class Name { ... }` declares a class. Inside go the `constructor` and methods, with no commas between them.",
+  ),
+};
+const Q_CTOR = {
+  question: P("¿Para qué sirve el `constructor` de una clase?", "What is a class `constructor` for?"),
+  options: [
+    P("Inicializa el objeto al hacer `new`, recibiendo los datos iniciales", "It initializes the object on `new`, receiving the initial data"),
+    P("Destruye el objeto al terminar", "It destroys the object at the end"),
+    P("Es un método estático obligatorio", "It's a required static method"),
+    P("Compara dos objetos", "It compares two objects"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`constructor(...)` se ejecuta una vez, cuando haces `new Clase(...)`. Ahí asignas el estado inicial con `this.x = ...`.",
+    "`constructor(...)` runs once, when you do `new Class(...)`. That's where you set the initial state with `this.x = ...`.",
+  ),
+};
+const Q_THIS_CLASS = {
+  question: P("Dentro de un método de clase, ¿qué es `this`?", "Inside a class method, what is `this`?"),
+  options: [
+    P("La instancia sobre la que se llamó el método", "The instance the method was called on"),
+    P("La clase en sí", "The class itself"),
+    P("El constructor", "The constructor"),
+    P("Siempre el objeto global", "Always the global object"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`this` es el objeto concreto: `frodo.saludar()` hace que dentro `this` sea `frodo`. Así cada instancia trabaja con sus propios datos.",
+    "`this` is the concrete object: `frodo.greet()` makes `this` be `frodo` inside. So each instance works with its own data.",
+  ),
+};
+const Q_PRIVATE = {
+  question: P("¿Qué hace un campo privado `#calor` en una clase?", "What does a private field `#calor` do in a class?"),
+  options: [
+    P("Sólo es accesible desde dentro de la clase; fuera da error", "It's only accessible inside the class; outside it errors"),
+    P("Lo hace de sólo lectura", "It makes it read-only"),
+    P("Lo comparte entre todas las instancias", "It shares it across all instances"),
+    P("Es un comentario", "It's a comment"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El prefijo `#` declara un campo privado real: `obj.#calor` desde fuera lanza error de sintaxis. Es el encapsulamiento de JS, equivalente a `private` en PHP.",
+    "The `#` prefix declares a truly private field: `obj.#calor` from outside throws a syntax error. It's JS encapsulation, equivalent to PHP's `private`.",
+  ),
+};
+const Q_STATIC_JS = {
+  question: P("Con `static UMBRAL = 20` en la clase Nieve, ¿cómo lo lees?", "With `static UMBRAL = 20` in class Nieve, how do you read it?"),
+  options: [
+    P("Nieve.UMBRAL", "Nieve.UMBRAL"),
+    P("this.UMBRAL", "this.UMBRAL"),
+    P("new Nieve().UMBRAL", "new Nieve().UMBRAL"),
+    P("#UMBRAL", "#UMBRAL"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un miembro `static` pertenece a la clase, no a la instancia: se lee con `Nieve.UMBRAL`. Desde dentro puedes usar `Nieve.UMBRAL` (o `this.constructor.UMBRAL`).",
+    "A `static` member belongs to the class, not the instance: read it as `Nieve.UMBRAL`. Inside you can use `Nieve.UMBRAL` (or `this.constructor.UMBRAL`).",
+  ),
+};
+const Q_FREEZE = {
+  question: P("¿Qué consigue `Object.freeze(this)` en el constructor?", "What does `Object.freeze(this)` achieve in the constructor?"),
+  options: [
+    P("Hace el objeto inmutable: reasignar sus propiedades falla", "It makes the object immutable: reassigning its properties fails"),
+    P("Borra el objeto", "It deletes the object"),
+    P("Lo copia", "It copies it"),
+    P("Oculta sus propiedades", "It hides its properties"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`Object.freeze` congela el objeto: en modo estricto, cualquier `obj.prop = ...` posterior lanza `TypeError`. Es la forma de crear objetos de valor inmutables en JS, como `readonly` en PHP.",
+    "`Object.freeze` freezes the object: in strict mode any later `obj.prop = ...` throws a `TypeError`. It's how you build immutable value objects in JS, like `readonly` in PHP.",
+  ),
+};
+
+/** Capítulo 5 · Clases: constructor, campos privados (#) e inmutabilidad. */
+export const SYL_JS_COMMUNITY_5: Syllabus = {
+  c5_crebain: { kind: "battle", questions: [Q_CLASS, Q_CTOR, Q_THIS_CLASS] },
+  c5_lobo_nieve: { kind: "battle", questions: [Q_PRIVATE, Q_FREEZE, Q_CTOR] },
+  c5_jefe_caradhras: { kind: "battle", questions: [Q_FREEZE, Q_PRIVATE, Q_STATIC_JS, Q_CLASS] },
+  c5_trasgo_montanes: { kind: "battle", questions: [Q_THIS_CLASS, Q_STATIC_JS, Q_PRIVATE] },
+  pergamino_hielo: {
+    kind: "scroll",
+    title: P("El Pergamino del Hielo", "The Scroll of Ice"),
+    lore_intro: P(
+      "Gandalf resguarda un pergamino bajo su capa. «Lo que no debe cambiar, congélalo. Lo que sí, guárdalo tras una puerta con guardia.»",
+      "Gandalf shelters a scroll under his cloak. \"What must not change, freeze it. What may, keep it behind a guarded door.\"",
+    ),
+    scroll: {
+      topic: P("Clases: constructor, campos privados e inmutabilidad", "Classes: constructor, private fields and immutability"),
+      sections: [
+        {
+          heading: P("class y constructor", "class and constructor"),
+          body: P(
+            "Una clase es un molde para objetos. El `constructor` recibe los datos iniciales y los guarda en la instancia con `this`.",
+            "A class is a mold for objects. The `constructor` takes the initial data and stores it on the instance with `this`.",
+          ),
+          code: "class Provision {\n  constructor(nombre, peso) {\n    this.nombre = nombre;\n    this.peso = peso;\n  }\n}\nconst p = new Provision('lembas', 5);",
+        },
+        {
+          heading: P("Campos privados (#) y métodos", "Private fields (#) and methods"),
+          body: P(
+            "Un campo con `#` sólo se ve dentro de la clase. Los métodos son la puerta: validan antes de tocar el estado.",
+            "A field with `#` is only visible inside the class. Methods are the door: they validate before touching the state.",
+          ),
+          code: "class Resistencia {\n  #calor = 100;\n  enfriar(g) {\n    if (g < 0) throw new Error('frío negativo');\n    this.#calor = Math.max(0, this.#calor - g);\n  }\n  getCalor() { return this.#calor; }\n}",
+        },
+        {
+          heading: P("Inmutabilidad: Object.freeze", "Immutability: Object.freeze"),
+          body: P(
+            "`Object.freeze(this)` en el constructor deja el objeto de sólo lectura. Para «cambiarlo», devuelves una instancia nueva.",
+            "`Object.freeze(this)` in the constructor leaves the object read-only. To \"change\" it, you return a new instance.",
+          ),
+          code: "class Temperatura {\n  constructor(grados) {\n    this.grados = grados;\n    Object.freeze(this);\n  }\n  conMas(g) { return new Temperatura(this.grados + g); }\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "class + constructor crean objetos; `this` guarda su estado. Los campos `#` lo esconden y los métodos lo validan en la puerta; `Object.freeze` lo vuelve inmutable, y entonces «cambiar» es crear otra instancia.",
+        "class + constructor create objects; `this` holds their state. `#` fields hide it and methods validate it at the door; `Object.freeze` makes it immutable, and then \"changing\" means creating another instance.",
+      ),
+    },
+  },
+  carga_de_bill: {
+    kind: "challenge",
+    title: P("La Carga de Bill el Poney", "Bill the Pony's Load"),
+    lore_intro: P(
+      "Una provisión es lo que es: su nombre y su peso no cambian a mitad del camino. Congela el objeto al crearlo.",
+      "A provision is what it is: its name and weight don't change mid-journey. Freeze the object when you create it.",
+    ),
+    challenge: {
+      topic: P("Clases e inmutabilidad (Object.freeze)", "Classes and immutability (Object.freeze)"),
+      instructions: P(
+        "Crea la clase `Provision` con un `constructor(nombre, peso)` que guarde ambos en `this` y llame a `Object.freeze(this)` para que no puedan cambiarse después.\n\nTras crearla, `p.nombre` y `p.peso` se leen; asignarlos lanza error.",
+        "Create class `Provision` with a `constructor(nombre, peso)` that stores both on `this` and calls `Object.freeze(this)` so they can't change afterwards.\n\nOnce created, `p.nombre` and `p.peso` read fine; assigning them throws.",
+      ),
+      sut: "new Provision('lembas', 5)",
+      starter_code:
+        "class Provision {\n  constructor(nombre, peso) {\n    // guarda nombre y peso en this, y congela el objeto\n  }\n}\n",
+      hints: [
+        P("Asigna con `this.nombre = nombre;` y `this.peso = peso;`.", "Assign with `this.nombre = nombre;` and `this.peso = peso;`."),
+        P("Al final del constructor: `Object.freeze(this);`.", "At the end of the constructor: `Object.freeze(this);`."),
+      ],
+      test_cases: [
+        { input: "nombre", expected: "lembas", description: P("El nombre se lee", "The name reads") },
+        { input: "peso", expected: 5, description: P("El peso se lee", "The weight reads") },
+        {
+          input: "(() => { const p = new Provision('cuerda', 2); try { p.peso = 99; return false; } catch (e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: P("Modificarla después lanza error: está congelada", "Modifying it later throws: it's frozen"),
+        },
+      ],
+    },
+  },
+  resistencia_comunidad: {
+    kind: "challenge",
+    title: P("La Resistencia de la Comunidad", "The Fellowship's Endurance"),
+    lore_intro: P(
+      "Vigila el calor de la Comunidad: que nadie lo toque desde fuera y que nunca baje de cero. Un campo privado y un método que valida.",
+      "Guard the Fellowship's warmth: no one touches it from outside and it never drops below zero. A private field and a method that validates.",
+    ),
+    challenge: {
+      topic: P("Campos privados (#) y validación", "Private fields (#) and validation"),
+      instructions: P(
+        "Crea la clase `ResistenciaComunidad` con un `static UMBRAL = 20` y un campo privado `#calor = 100`. Añade:\n• `getCalor()` que lo devuelva,\n• `enfriar(grados)` que reste sin bajar de 0 y lance un `Error` si `grados` es negativo,\n• `estaCongelada()` que devuelva `true` cuando el calor sea ≤ UMBRAL.",
+        "Create class `ResistenciaComunidad` with a `static UMBRAL = 20` and a private field `#calor = 100`. Add:\n• `getCalor()` returning it,\n• `enfriar(grados)` that subtracts without going below 0 and throws an `Error` if `grados` is negative,\n• `estaCongelada()` returning `true` when warmth is ≤ UMBRAL.",
+      ),
+      sut: "new ResistenciaComunidad()",
+      starter_code:
+        "class ResistenciaComunidad {\n  static UMBRAL = 20;\n  #calor = 100;\n\n  getCalor() {\n    // devuelve #calor\n  }\n  enfriar(grados) {\n    // valida (>= 0) y resta sin bajar de 0\n  }\n  estaCongelada() {\n    // true si #calor <= UMBRAL\n  }\n}\n",
+      hints: [
+        P("Guard clause: `if (grados < 0) throw new Error('...');`.", "Guard clause: `if (grados < 0) throw new Error('...');`."),
+        P("Sin bajar de 0: `this.#calor = Math.max(0, this.#calor - grados);`.", "No below 0: `this.#calor = Math.max(0, this.#calor - grados);`."),
+        P("Compara con la estática: `this.#calor <= ResistenciaComunidad.UMBRAL`.", "Compare with the static: `this.#calor <= ResistenciaComunidad.UMBRAL`."),
+      ],
+      test_cases: [
+        { input: "getCalor()", expected: 100, description: P("Parte con el calor intacto", "Starts with warmth intact") },
+        { input: "estaCongelada()", expected: false, description: P("Nadie congelado al principio", "No one frozen at first") },
+        { input: "enfriar(50)", expected: null, description: P("La ventisca muerde…", "The blizzard bites…") },
+        { input: "getCalor()", expected: 50, description: P("…y el calor baja a 50", "…and warmth drops to 50") },
+        { input: "enfriar(40)", expected: null, description: P("Sigue nevando…", "It keeps snowing…") },
+        { input: "estaCongelada()", expected: true, description: P("Con 10 (≤ 20) se congela", "At 10 (≤ 20) it freezes") },
+        {
+          input: "(() => { const r = new ResistenciaComunidad(); r.enfriar(500); return r.getCalor(); })()",
+          raw: true,
+          expected: 0,
+          description: P("El calor nunca baja de 0", "Warmth never goes below 0"),
+        },
+        {
+          input: "(() => { const r = new ResistenciaComunidad(); try { r.enfriar(-5); return false; } catch (e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: P("Un frío negativo se rechaza", "A negative cold is rejected"),
+        },
+      ],
+    },
+  },
+  temperatura_montana: {
+    kind: "challenge",
+    title: P("El Umbral de la Nieve", "The Snow Threshold"),
+    lore_intro: P(
+      "Una medida no se altera: si el frío cambia, lo que tienes es OTRA medida. Un objeto de valor inmutable.",
+      "A measurement isn't altered: if the cold changes, what you have is ANOTHER measurement. An immutable value object.",
+    ),
+    challenge: {
+      topic: P("Objetos de valor inmutables", "Immutable value objects"),
+      instructions: P(
+        "Crea la clase `Temperatura`. El `constructor(grados)` debe lanzar un `Error` si `grados` está fuera del rango -40..40; si es válido, guardarlo en `this.grados` y llamar a `Object.freeze(this)`. Añade `conMas(g)` que devuelva una INSTANCIA NUEVA con los grados sumados, sin tocar la original.",
+        "Create class `Temperatura`. The `constructor(grados)` must throw an `Error` if `grados` is outside -40..40; if valid, store it in `this.grados` and call `Object.freeze(this)`. Add `conMas(g)` returning a NEW INSTANCE with the added degrees, without touching the original.",
+      ),
+      sut: "new Temperatura(-10)",
+      starter_code:
+        "class Temperatura {\n  constructor(grados) {\n    // valida -40..40, guarda en this.grados y congela\n  }\n  conMas(g) {\n    // devuelve OTRA Temperatura con los grados sumados\n  }\n}\n",
+      hints: [
+        P("Valida primero: `if (grados < -40 || grados > 40) throw new Error('...');`.", "Validate first: `if (grados < -40 || grados > 40) throw new Error('...');`."),
+        P("Congela al final: `Object.freeze(this);`.", "Freeze at the end: `Object.freeze(this);`."),
+        P("`conMas` no muta: `return new Temperatura(this.grados + g);`.", "`conMas` doesn't mutate: `return new Temperatura(this.grados + g);`."),
+      ],
+      test_cases: [
+        { input: "grados", expected: -10, description: P("La temperatura de partida", "The starting temperature") },
+        {
+          input: "(new Temperatura(-10)).conMas(-5).grados",
+          raw: true,
+          expected: -15,
+          description: P("conMas() devuelve una más fría", "conMas() returns a colder one"),
+        },
+        {
+          input: "(() => { const t = new Temperatura(-10); try { t.conMas(-5); } catch (e) {} return t.grados; })()",
+          raw: true,
+          expected: -10,
+          description: P("La original no cambia: inmutabilidad", "The original doesn't change: immutability"),
+        },
+        {
+          input: "(() => { try { new Temperatura(-100); return false; } catch (e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: P("Rechaza valores fuera de rango", "Rejects out-of-range values"),
+        },
+      ],
+    },
+  },
+};
