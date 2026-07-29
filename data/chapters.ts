@@ -3815,8 +3815,11 @@ public function resistir(int $tentacion): string {
  */
 export const CHAPTER_SOLID: Chapter = {
   chapter: 9,
-  title: "La Biblioteca de Rivendel",
-  lore: "Elrond abre los archivos de Imladris. Entre pergaminos élficos se guardan los cinco principios que sostienen todo código que perdura: SOLID. Estúdialos antes de enfrentarte a las pruebas.",
+  title: { es: "La Biblioteca de Rivendel", en: "The Library of Rivendell" },
+  lore: {
+    es: "Elrond abre los archivos de Imladris. Entre pergaminos élficos se guardan los cinco principios que sostienen todo código que perdura: SOLID. Estúdialos antes de enfrentarte a las pruebas.",
+    en: "Elrond opens the archives of Imladris. Among Elvish scrolls are kept the five principles that hold up all code that endures: SOLID. Study them before you face the trials.",
+  },
   mapSize: { cols: 24, rows: 16 },
   spawn: { x: 2, y: 12 },
   scenery: {
@@ -3831,7 +3834,7 @@ export const CHAPTER_SOLID: Chapter = {
       { type: "tree", x: 19, y: 9 },
       { type: "tree", x: 2, y: 15 },
       { type: "tree", x: 11, y: 15 },
-      { type: "house", x: 21, y: 6, label: "Casa de Elrond" },
+      { type: "house", x: 21, y: 6, label: { es: "Casa de Elrond", en: "House of Elrond" } },
       { type: "rock", x: 7, y: 6 },
       { type: "rock", x: 16, y: 6 },
     ],
@@ -3841,20 +3844,28 @@ export const CHAPTER_SOLID: Chapter = {
     {
       node_id: "solid_s",
       kind: "scroll",
-      title: "Responsabilidad Única",
-      lore_intro:
-        "El primer pergamino está escrito con letra menuda y ordenada, como si su autor odiara mezclar asuntos.",
+      title: { es: "Responsabilidad Única", en: "Single Responsibility" },
+      lore_intro: {
+        es: "El primer pergamino está escrito con letra menuda y ordenada, como si su autor odiara mezclar asuntos.",
+        en: "The first scroll is written in small, orderly script, as if its author hated mixing concerns.",
+      },
       position: { x: 3, y: 12 },
       scroll: {
         topic: "S — Single Responsibility",
         sections: [
           {
-            heading: "Una clase, una razón para cambiar",
-            body: "Cada clase debe tener una sola responsabilidad. Si puedes describir lo que hace usando la palabra «y», probablemente hace demasiado.\n\nSepara la lógica de negocio, la persistencia y la presentación.",
+            heading: { es: "Una clase, una razón para cambiar", en: "One class, one reason to change" },
+            body: {
+              es: "Cada clase debe tener una sola responsabilidad. Si puedes describir lo que hace usando la palabra «y», probablemente hace demasiado.\n\nSepara la lógica de negocio, la persistencia y la presentación.",
+              en: "Each class should have a single responsibility. If you can describe what it does using the word \"and\", it probably does too much.\n\nSeparate business logic, persistence and presentation.",
+            },
           },
           {
-            heading: "En la práctica",
-            body: "Una factura no debería saber guardarse a sí misma NI enviarse por correo. Eso son tres razones para cambiar en una sola clase.",
+            heading: { es: "En la práctica", en: "In practice" },
+            body: {
+              es: "Una factura no debería saber guardarse a sí misma NI enviarse por correo. Eso son tres razones para cambiar en una sola clase.",
+              en: "An invoice shouldn't know how to save itself NOR email itself. That's three reasons to change in a single class.",
+            },
             code: `// ❌ Hace demasiado
 class Factura {
     public function calcularTotal(): int { /* … */ }
@@ -3868,27 +3879,37 @@ class FacturaRepository { public function guardar(Factura $f): void {} }
 class FacturaMailer { public function enviar(Factura $f): void {} }`,
           },
         ],
-        keyTakeaway:
-          "Si tu clase cambia por motivos distintos (negocio, base de datos, formato), divídela.",
+        keyTakeaway: {
+          es: "Si tu clase cambia por motivos distintos (negocio, base de datos, formato), divídela.",
+          en: "If your class changes for different reasons (business, database, format), split it.",
+        },
       },
     },
     {
       node_id: "solid_o",
       kind: "scroll",
-      title: "Abierto/Cerrado",
-      lore_intro:
-        "El segundo pergamino tiene los bordes gastados: muchas manos lo consultaron antes de tocar código que ya funcionaba.",
+      title: { es: "Abierto/Cerrado", en: "Open/Closed" },
+      lore_intro: {
+        es: "El segundo pergamino tiene los bordes gastados: muchas manos lo consultaron antes de tocar código que ya funcionaba.",
+        en: "The second scroll has worn edges: many hands consulted it before touching code that already worked.",
+      },
       position: { x: 7, y: 14 },
       scroll: {
         topic: "O — Open/Closed",
         sections: [
           {
-            heading: "Abierto a extensión, cerrado a modificación",
-            body: "Deberías poder añadir comportamiento nuevo SIN editar el código existente. Cada vez que añades un `if` más a un `switch` gigante, estás violando este principio.\n\nLa herramienta habitual es una interfaz + una clase nueva por cada variante.",
+            heading: { es: "Abierto a extensión, cerrado a modificación", en: "Open to extension, closed to modification" },
+            body: {
+              es: "Deberías poder añadir comportamiento nuevo SIN editar el código existente. Cada vez que añades un `if` más a un `switch` gigante, estás violando este principio.\n\nLa herramienta habitual es una interfaz + una clase nueva por cada variante.",
+              en: "You should be able to add new behavior WITHOUT editing existing code. Every time you add one more `if` to a giant `switch`, you're violating this principle.\n\nThe usual tool is an interface + a new class per variant.",
+            },
           },
           {
-            heading: "En la práctica",
-            body: "Añadir un descuento nuevo debe ser crear una clase, no tocar el carrito.",
+            heading: { es: "En la práctica", en: "In practice" },
+            body: {
+              es: "Añadir un descuento nuevo debe ser crear una clase, no tocar el carrito.",
+              en: "Adding a new discount should mean creating a class, not touching the cart.",
+            },
             code: `interface Descuento {
     public function aplicar(int $total): int;
 }
@@ -3900,27 +3921,37 @@ class ViernesNegro implements Descuento {
 // Añadir otro descuento = otra clase. El carrito NO se toca.`,
           },
         ],
-        keyTakeaway:
-          "Extiende con clases nuevas, no editando las que ya funcionan y están probadas.",
+        keyTakeaway: {
+          es: "Extiende con clases nuevas, no editando las que ya funcionan y están probadas.",
+          en: "Extend with new classes, not by editing those that already work and are tested.",
+        },
       },
     },
     {
       node_id: "solid_l",
       kind: "scroll",
-      title: "Sustitución de Liskov",
-      lore_intro:
-        "El tercer pergamino advierte sobre herencias engañosas: no todo lo que se parece puede ocupar el mismo lugar.",
+      title: { es: "Sustitución de Liskov", en: "Liskov Substitution" },
+      lore_intro: {
+        es: "El tercer pergamino advierte sobre herencias engañosas: no todo lo que se parece puede ocupar el mismo lugar.",
+        en: "The third scroll warns of deceptive inheritance: not everything that looks alike can take the same place.",
+      },
       position: { x: 11, y: 12 },
       scroll: {
         topic: "L — Liskov Substitution",
         sections: [
           {
-            heading: "Una subclase debe poder sustituir a su base",
-            body: "Si tu código espera un `Ave` y le das un `Pinguino`, no debe romperse. Cuando una subclase no puede cumplir el contrato del padre, el modelo está mal — no la subclase.",
+            heading: { es: "Una subclase debe poder sustituir a su base", en: "A subclass must be able to replace its base" },
+            body: {
+              es: "Si tu código espera un `Ave` y le das un `Pinguino`, no debe romperse. Cuando una subclase no puede cumplir el contrato del padre, el modelo está mal — no la subclase.",
+              en: "If your code expects a `Bird` and you give it a `Penguin`, it must not break. When a subclass can't fulfill the parent's contract, the model is wrong — not the subclass.",
+            },
           },
           {
-            heading: "El error clásico",
-            body: "Si `Ave` obliga a `volar()`, el pingüino te obliga a lanzar una excepción o devolver algo falso. La solución no es un parche: es corregir la abstracción.",
+            heading: { es: "El error clásico", en: "The classic mistake" },
+            body: {
+              es: "Si `Ave` obliga a `volar()`, el pingüino te obliga a lanzar una excepción o devolver algo falso. La solución no es un parche: es corregir la abstracción.",
+              en: "If `Bird` forces `fly()`, the penguin forces you to throw an exception or return something false. The fix isn't a patch: it's correcting the abstraction.",
+            },
             code: `// ❌ El pingüino no puede cumplir el contrato
 abstract class Ave { abstract public function volar(): string; }
 
@@ -3930,27 +3961,37 @@ class Aguila  extends Ave { public function moverse(): string { return 'vuela'; 
 class Pinguino extends Ave { public function moverse(): string { return 'nada'; } }`,
           },
         ],
-        keyTakeaway:
-          "Si necesitas comprobar el tipo concreto antes de usar un objeto, tu jerarquía viola Liskov.",
+        keyTakeaway: {
+          es: "Si necesitas comprobar el tipo concreto antes de usar un objeto, tu jerarquía viola Liskov.",
+          en: "If you need to check the concrete type before using an object, your hierarchy violates Liskov.",
+        },
       },
     },
     {
       node_id: "solid_i",
       kind: "scroll",
-      title: "Segregación de Interfaces",
-      lore_intro:
-        "El cuarto pergamino es en realidad varios pergaminos pequeños, atados juntos. El mensaje es el propio formato.",
+      title: { es: "Segregación de Interfaces", en: "Interface Segregation" },
+      lore_intro: {
+        es: "El cuarto pergamino es en realidad varios pergaminos pequeños, atados juntos. El mensaje es el propio formato.",
+        en: "The fourth scroll is really several small scrolls tied together. The message is the format itself.",
+      },
       position: { x: 15, y: 14 },
       scroll: {
         topic: "I — Interface Segregation",
         sections: [
           {
-            heading: "Muchas interfaces pequeñas > una gorda",
-            body: "Ningún cliente debería verse obligado a implementar métodos que no usa. Una interfaz enorme obliga a llenar clases de métodos vacíos o que lanzan excepciones.",
+            heading: { es: "Muchas interfaces pequeñas > una gorda", en: "Many small interfaces > one fat one" },
+            body: {
+              es: "Ningún cliente debería verse obligado a implementar métodos que no usa. Una interfaz enorme obliga a llenar clases de métodos vacíos o que lanzan excepciones.",
+              en: "No client should be forced to implement methods it doesn't use. A huge interface forces you to fill classes with empty methods or ones that throw exceptions.",
+            },
           },
           {
-            heading: "En la práctica",
-            body: "Divide por capacidad, no por entidad.",
+            heading: { es: "En la práctica", en: "In practice" },
+            body: {
+              es: "Divide por capacidad, no por entidad.",
+              en: "Split by capability, not by entity.",
+            },
             code: `// ❌ Interfaz gorda: un lector se ve obligado a implementar escribir()
 interface Almacen {
     public function leer(string $id): string;
@@ -3963,27 +4004,37 @@ interface Lector   { public function leer(string $id): string; }
 interface Escritor { public function escribir(string $id, string $v): void; }`,
           },
         ],
-        keyTakeaway:
-          "Si al implementar una interfaz dejas métodos vacíos, esa interfaz debería ser varias.",
+        keyTakeaway: {
+          es: "Si al implementar una interfaz dejas métodos vacíos, esa interfaz debería ser varias.",
+          en: "If implementing an interface leaves you with empty methods, that interface should be several.",
+        },
       },
     },
     {
       node_id: "solid_d",
       kind: "scroll",
-      title: "Inversión de Dependencias",
-      lore_intro:
-        "El último pergamino lleva el sello de los arquitectos. Es el que más veces citan en las entrevistas… y el corazón de Symfony.",
+      title: { es: "Inversión de Dependencias", en: "Dependency Inversion" },
+      lore_intro: {
+        es: "El último pergamino lleva el sello de los arquitectos. Es el que más veces citan en las entrevistas… y el corazón de Symfony.",
+        en: "The last scroll bears the architects' seal. It's the one most cited in interviews… and the heart of Symfony.",
+      },
       position: { x: 19, y: 12 },
       scroll: {
         topic: "D — Dependency Inversion",
         sections: [
           {
-            heading: "Depende de abstracciones, no de implementaciones",
-            body: "Una clase no debe crear sus dependencias con `new`: debe recibirlas desde fuera, tipadas como INTERFAZ. Eso reduce el acoplamiento y — lo más importante — hace el código testeable, porque puedes inyectar un mock.",
+            heading: { es: "Depende de abstracciones, no de implementaciones", en: "Depend on abstractions, not implementations" },
+            body: {
+              es: "Una clase no debe crear sus dependencias con `new`: debe recibirlas desde fuera, tipadas como INTERFAZ. Eso reduce el acoplamiento y — lo más importante — hace el código testeable, porque puedes inyectar un mock.",
+              en: "A class shouldn't create its dependencies with `new`: it should receive them from outside, typed as an INTERFACE. That reduces coupling and — most importantly — makes the code testable, because you can inject a mock.",
+            },
           },
           {
-            heading: "En la práctica",
-            body: "Inyección por constructor: la base del contenedor de servicios de Symfony.",
+            heading: { es: "En la práctica", en: "In practice" },
+            body: {
+              es: "Inyección por constructor: la base del contenedor de servicios de Symfony.",
+              en: "Constructor injection: the basis of Symfony's service container.",
+            },
             code: `// ❌ Acoplado a Stripe para siempre
 class ServicioPedido {
     public function __construct() { $this->gateway = new StripeGateway(); }
@@ -3995,127 +4046,139 @@ class ServicioPedido {
 }`,
           },
         ],
-        keyTakeaway:
-          "«Para hacerlo testeable, inyecto la dependencia en vez de instanciarla.» — dilo así en la entrevista.",
+        keyTakeaway: {
+          es: "«Para hacerlo testeable, inyecto la dependencia en vez de instanciarla.» — dilo así en la entrevista.",
+          en: "\"To make it testable, I inject the dependency instead of instantiating it.\" — say it like that in the interview.",
+        },
       },
     },
 
     // ---------- Las tres pruebas ----------
     {
       node_id: "prueba_open_closed",
-      title: "La Prueba del Herrero",
-      lore_intro:
-        "«Los enanos de Erebor no reforjan la espada cada vez que inventan una gema», dice Elrond. «Le añaden un engarce nuevo.» Extiende sin modificar.",
+      title: { es: "La Prueba del Herrero", en: "The Smith's Trial" },
+      lore_intro: {
+        es: "«Los enanos de Erebor no reforjan la espada cada vez que inventan una gema», dice Elrond. «Le añaden un engarce nuevo.» Extiende sin modificar.",
+        en: "\"The dwarves of Erebor don't reforge the sword every time they invent a gem,\" says Elrond. \"They add a new setting.\" Extend without modifying.",
+      },
       position: { x: 6, y: 5 },
       poo_challenge: {
         topic: "SOLID · Open/Closed",
-        instructions:
-          "Ya existen la interfaz Descuento y la clase Carrito (que NO debes tocar). Crea DescuentoElfico, que implemente Descuento y aplique un 30% de rebaja: devuelve el 70% del total, redondeado a entero con (int).",
+        instructions: {
+          es: "Ya existen la interfaz Descuento y la clase Carrito (que NO debes tocar). Crea DescuentoElfico, que implemente Descuento y aplique un 30% de rebaja: devuelve el 70% del total, redondeado a entero con (int).",
+          en: "The interface Descuento and the class Carrito already exist (do NOT touch them). Create DescuentoElfico, which implements Descuento and applies a 30% discount: return 70% of the total, rounded to an integer with (int).",
+        },
         sut: "new Carrito()",
         support_code:
           "interface Descuento {\n    public function aplicar(int $total): int;\n}\n\nclass Carrito {\n    public function total(int $base, Descuento $d): int {\n        return $d->aplicar($base);\n    }\n}",
         starter_code:
           "<?php\n\n// Descuento (interfaz) y Carrito ya existen y NO se tocan.\n\nclass DescuentoElfico {\n    // Implementa la interfaz Descuento con un 30% de rebaja\n}\n",
         hints: [
-          "Para implementar un contrato: class DescuentoElfico implements Descuento { … }",
-          "El método debe llamarse igual que en la interfaz: aplicar(int $total): int",
-          "70% del total, redondeado: return (int)($total * 0.7);",
+          { es: "Para implementar un contrato: class DescuentoElfico implements Descuento { … }", en: "To implement a contract: class DescuentoElfico implements Descuento { … }" },
+          { es: "El método debe llamarse igual que en la interfaz: aplicar(int $total): int", en: "The method must be named as in the interface: aplicar(int $total): int" },
+          { es: "70% del total, redondeado: return (int)($total * 0.7);", en: "70% of the total, rounded: return (int)($total * 0.7);" },
         ],
         test_cases: [
           {
             input: "total(100, new DescuentoElfico())",
             expected: 70,
-            description: "El carrito usa el descuento sin conocerlo",
+            description: { es: "El carrito usa el descuento sin conocerlo", en: "The cart uses the discount without knowing it" },
           },
           {
             input: "total(250, new DescuentoElfico())",
             expected: 175,
-            description: "Funciona con cualquier importe",
+            description: { es: "Funciona con cualquier importe", en: "Works with any amount" },
           },
           {
             input: "(new DescuentoElfico()) instanceof Descuento",
             raw: true,
             expected: true,
-            description: "Debe IMPLEMENTAR la interfaz Descuento",
+            description: { es: "Debe IMPLEMENTAR la interfaz Descuento", en: "Must IMPLEMENT the Descuento interface" },
           },
         ],
       },
     },
     {
       node_id: "prueba_liskov",
-      title: "El Aviario de Elrond",
-      lore_intro:
-        "En las jaulas hay un águila y un pingüino traído del lejano Sur. Ambos son aves… pero sólo uno vuela. Corrige la abstracción.",
+      title: { es: "El Aviario de Elrond", en: "Elrond's Aviary" },
+      lore_intro: {
+        es: "En las jaulas hay un águila y un pingüino traído del lejano Sur. Ambos son aves… pero sólo uno vuela. Corrige la abstracción.",
+        en: "In the cages are an eagle and a penguin brought from the far South. Both are birds… but only one flies. Correct the abstraction.",
+      },
       position: { x: 12, y: 5 },
       poo_challenge: {
         topic: "SOLID · Liskov Substitution",
-        instructions:
-          "La clase abstracta Ave exige moverse(): string (no volar(), que el pingüino no podría cumplir). Crea Aguila y Pinguino que hereden de Ave: el águila devuelve 'vuela' y el pingüino 'nada'. Así ambos son sustituibles donde se espera un Ave.",
+        instructions: {
+          es: "La clase abstracta Ave exige moverse(): string (no volar(), que el pingüino no podría cumplir). Crea Aguila y Pinguino que hereden de Ave: el águila devuelve 'vuela' y el pingüino 'nada'. Así ambos son sustituibles donde se espera un Ave.",
+          en: "The abstract class Ave requires moverse(): string (not volar(), which the penguin couldn't fulfill). Create Aguila and Pinguino that extend Ave: the eagle returns 'vuela' and the penguin 'nada'. That way both are substitutable where an Ave is expected.",
+        },
         support_code:
           "abstract class Ave {\n    abstract public function moverse(): string;\n}",
         starter_code:
           "<?php\n\n// Ave es abstracta y exige moverse(): string\n\nclass Aguila {\n    //\n}\n\nclass Pinguino {\n    //\n}\n",
         hints: [
-          "Ambas deben heredar: class Aguila extends Ave { … }",
-          "Implementa moverse() en cada una devolviendo 'vuela' y 'nada'.",
-          "La clave de Liskov: las dos cumplen el MISMO contrato, así que el código que recibe un Ave funciona con cualquiera.",
+          { es: "Ambas deben heredar: class Aguila extends Ave { … }", en: "Both must extend: class Aguila extends Ave { … }" },
+          { es: "Implementa moverse() en cada una devolviendo 'vuela' y 'nada'.", en: "Implement moverse() in each returning 'vuela' and 'nada'." },
+          { es: "La clave de Liskov: las dos cumplen el MISMO contrato, así que el código que recibe un Ave funciona con cualquiera.", en: "The key to Liskov: both fulfill the SAME contract, so code receiving an Ave works with either." },
         ],
         test_cases: [
           {
             input: "(new Aguila())->moverse()",
             raw: true,
             expected: "vuela",
-            description: "El águila vuela",
+            description: { es: "El águila vuela", en: "The eagle flies" },
           },
           {
             input: "(new Pinguino())->moverse()",
             raw: true,
             expected: "nada",
-            description: "El pingüino nada (y no rompe nada)",
+            description: { es: "El pingüino nada (y no rompe nada)", en: "The penguin swims (and breaks nothing)" },
           },
           {
             input:
               "array_map(fn(Ave $a) => $a->moverse(), [new Aguila(), new Pinguino()])",
             raw: true,
             expected: ["vuela", "nada"],
-            description:
-              "Ambas son sustituibles donde se espera un Ave — eso es Liskov",
+            description: { es: "Ambas son sustituibles donde se espera un Ave — eso es Liskov", en: "Both are substitutable where an Ave is expected — that's Liskov" },
           },
         ],
       },
     },
     {
       node_id: "prueba_inversion",
-      title: "El Contrato del Concilio",
-      lore_intro:
-        "«No jures lealtad a un hombre», advierte Gandalf, «sino a la causa.» No dependas de una implementación concreta: depende del contrato.",
+      title: { es: "El Contrato del Concilio", en: "The Council's Contract" },
+      lore_intro: {
+        es: "«No jures lealtad a un hombre», advierte Gandalf, «sino a la causa.» No dependas de una implementación concreta: depende del contrato.",
+        en: "\"Do not swear loyalty to a man,\" Gandalf warns, \"but to the cause.\" Don't depend on a concrete implementation: depend on the contract.",
+      },
       position: { x: 18, y: 5 },
       poo_challenge: {
         topic: "SOLID · Dependency Inversion",
-        instructions:
-          "Existen la interfaz Pasarela y una implementación PasarelaOro. Crea ServicioPedido que RECIBA una Pasarela por constructor (tipada como la interfaz, nunca con new dentro) y cuyo método pagar(int $monto): string delegue en ella.",
+        instructions: {
+          es: "Existen la interfaz Pasarela y una implementación PasarelaOro. Crea ServicioPedido que RECIBA una Pasarela por constructor (tipada como la interfaz, nunca con new dentro) y cuyo método pagar(int $monto): string delegue en ella.",
+          en: "The interface Pasarela and an implementation PasarelaOro exist. Create ServicioPedido that RECEIVES a Pasarela via its constructor (typed as the interface, never with new inside) and whose method pagar(int $monto): string delegates to it.",
+        },
         sut: "new ServicioPedido(new PasarelaOro())",
         support_code:
           "interface Pasarela {\n    public function cobrar(int $monto): string;\n}\n\nclass PasarelaOro implements Pasarela {\n    public function cobrar(int $monto): string {\n        return \"cobrado {$monto} en oro\";\n    }\n}\n\nclass PasarelaPlata implements Pasarela {\n    public function cobrar(int $monto): string {\n        return \"cobrado {$monto} en plata\";\n    }\n}",
         starter_code:
           "<?php\n\n// Pasarela (interfaz), PasarelaOro y PasarelaPlata ya existen.\n\nclass ServicioPedido {\n    // 1) Constructor que reciba una Pasarela\n\n    // 2) pagar(int $monto): string que delegue en ella\n}\n",
         hints: [
-          "Inyección por constructor: public function __construct(private Pasarela $pasarela) {}",
-          "Tipa el parámetro con la INTERFAZ (Pasarela), no con PasarelaOro.",
-          "pagar() sólo delega: return $this->pasarela->cobrar($monto);",
+          { es: "Inyección por constructor: public function __construct(private Pasarela $pasarela) {}", en: "Constructor injection: public function __construct(private Pasarela $pasarela) {}" },
+          { es: "Tipa el parámetro con la INTERFAZ (Pasarela), no con PasarelaOro.", en: "Type the parameter with the INTERFACE (Pasarela), not with PasarelaOro." },
+          { es: "pagar() sólo delega: return $this->pasarela->cobrar($monto);", en: "pagar() just delegates: return $this->pasarela->cobrar($monto);" },
         ],
         test_cases: [
           {
             input: "pagar(50)",
             expected: "cobrado 50 en oro",
-            description: "Delega en la pasarela recibida",
+            description: { es: "Delega en la pasarela recibida", en: "Delegates to the received gateway" },
           },
           {
             input: "(new ServicioPedido(new PasarelaPlata()))->pagar(20)",
             raw: true,
             expected: "cobrado 20 en plata",
-            description:
-              "La misma clase funciona con OTRA implementación: eso es invertir la dependencia",
+            description: { es: "La misma clase funciona con OTRA implementación: eso es invertir la dependencia", en: "The same class works with ANOTHER implementation: that's inverting the dependency" },
           },
         ],
       },
