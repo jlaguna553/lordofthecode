@@ -1700,3 +1700,238 @@ export const SYL_TS_COMMUNITY_7: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre narrowing, uniones discriminadas y guards. */
+const Q_NARROW = {
+  question: P(
+    "Con `v: string | number`, ¿cómo sabe TS que dentro de `if (typeof v === 'number')` v es number?",
+    "With `v: string | number`, how does TS know that inside `if (typeof v === 'number')` v is a number?",
+  ),
+  options: [
+    P("Por narrowing: el `typeof` REDUCE el tipo en esa rama", "By narrowing: the `typeof` NARROWS the type in that branch"),
+    P("Hay que hacer un cast con `as number`", "You must cast with `as number`"),
+    P("No lo sabe: da error", "It doesn't know: it errors"),
+    P("Sólo si anotas v de nuevo", "Only if you annotate v again"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El «narrowing» (reducción de tipo) es una de las mejores ideas de TS: comprobaciones como `typeof`, `===` o `in` estrechan el tipo dentro de la rama. En el `else`, v pasa a ser `string` automáticamente. Sin castings.",
+    "\"Narrowing\" is one of TS's best ideas: checks like `typeof`, `===` or `in` shrink the type inside the branch. In the `else`, v automatically becomes `string`. No casts needed.",
+  ),
+};
+const Q_DISCRIMINATED = {
+  question: P(
+    "¿Qué es una unión DISCRIMINADA como `{ tipo: 'reino'; ... } | { tipo: 'ojo'; ... }`?",
+    "What is a DISCRIMINATED union like `{ tipo: 'reino'; ... } | { tipo: 'ojo'; ... }`?",
+  ),
+  options: [
+    P("Una unión con un campo común (el discriminante) que dice qué variante es", "A union with a common field (the discriminant) telling which variant it is"),
+    P("Una unión que TS no puede reducir", "A union TS can't narrow"),
+    P("Un tipo con propiedades opcionales", "A type with optional properties"),
+    P("Una intersección de dos objetos", "An intersection of two objects"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El campo común literal (aquí `tipo`) es el DISCRIMINANTE: al comprobar `v.tipo === 'reino'`, TS sabe exactamente qué variante tienes y qué otras propiedades existen. Es el patrón más limpio para modelar «una cosa de varias formas posibles».",
+    "The common literal field (here `tipo`) is the DISCRIMINANT: checking `v.tipo === 'reino'` tells TS exactly which variant you have and what other properties exist. It's the cleanest pattern to model \"one thing of several possible shapes\".",
+  ),
+};
+const Q_UNKNOWN = {
+  question: P(
+    "¿Qué diferencia hay entre `unknown` y `any`?",
+    "What's the difference between `unknown` and `any`?",
+  ),
+  options: [
+    P("`unknown` obliga a comprobar el tipo antes de usarlo; `any` no comprueba nada", "`unknown` forces you to check the type before using it; `any` checks nothing"),
+    P("Son idénticos", "They're identical"),
+    P("`unknown` sólo admite números", "`unknown` only allows numbers"),
+    P("`any` es más seguro", "`any` is safer"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`unknown` es el `any` SEGURO: acepta cualquier valor, pero no te deja usarlo hasta que reduces su tipo (con `typeof`, un guard…). `any` desactiva toda comprobación. Para datos de origen incierto (JSON, entradas), prefiere `unknown`.",
+    "`unknown` is the SAFE `any`: it accepts any value, but won't let you use it until you narrow its type (with `typeof`, a guard…). `any` disables all checking. For data of uncertain origin (JSON, inputs), prefer `unknown`.",
+  ),
+};
+const Q_TYPE_PREDICATE = {
+  question: P(
+    "¿Qué significa el retorno `x is number` en `function esNumero(x: unknown): x is number`?",
+    "What does the return `x is number` mean in `function esNumero(x: unknown): x is number`?",
+  ),
+  options: [
+    P("Es un type guard: si devuelve true, TS trata x como number a partir de ahí", "It's a type guard: if it returns true, TS treats x as a number from then on"),
+    P("Convierte x en number", "It converts x into a number"),
+    P("Devuelve el tipo de x como texto", "It returns x's type as text"),
+    P("Es lo mismo que `: boolean`", "It's the same as `: boolean`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`x is number` es un PREDICADO DE TIPO: la función devuelve un booleano, pero además le dice a TS que, cuando es true, x es number. Así puedes escribir tus propios guards y usarlos en `if` o en `filter`, conservando el tipo.",
+    "`x is number` is a TYPE PREDICATE: the function returns a boolean, but also tells TS that, when true, x is a number. This lets you write your own guards and use them in `if` or `filter`, preserving the type.",
+  ),
+};
+const Q_IN_OPERATOR = {
+  question: P(
+    "En una unión de objetos, ¿cómo reduces el tipo con el operador `in`?",
+    "In a union of objects, how do you narrow the type with the `in` operator?",
+  ),
+  options: [
+    P("`if ('peligro' in v)` → TS sabe que v es la variante que tiene `peligro`", "`if ('peligro' in v)` → TS knows v is the variant that has `peligro`"),
+    P("`if (v.peligro)` siempre compila", "`if (v.peligro)` always compiles"),
+    P("`in` no sirve para reducir tipos", "`in` can't narrow types"),
+    P("Hay que usar `instanceof`", "You must use `instanceof`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`'prop' in v` comprueba si el objeto tiene esa propiedad, y TS lo usa para reducir la unión a la variante que la contiene. Junto a `typeof`, `===` (discriminante) e `instanceof`, es una de las formas de narrowing.",
+    "`'prop' in v` checks whether the object has that property, and TS uses it to narrow the union to the variant that contains it. Along with `typeof`, `===` (discriminant) and `instanceof`, it's one of the narrowing forms.",
+  ),
+};
+const Q_NARROW_WHY = {
+  question: P(
+    "¿Por qué conviene modelar «un resultado o un error» como una unión en vez de valores sueltos?",
+    "Why model \"a result or an error\" as a union rather than loose values?",
+  ),
+  options: [
+    P("El compilador te obliga a tratar ambos casos antes de usar el valor", "The compiler forces you to handle both cases before using the value"),
+    P("Es más rápido", "It's faster"),
+    P("Ocupa menos memoria", "It uses less memory"),
+    P("Evita escribir funciones", "It avoids writing functions"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una unión discriminada (`{ ok: true; valor } | { ok: false; error }`) hace que el compilador no te deje leer `valor` sin antes comprobar `ok`. El caso de error deja de ser algo que «se te olvida»: el tipo lo exige.",
+    "A discriminated union (`{ ok: true; valor } | { ok: false; error }`) makes the compiler refuse to read `valor` without first checking `ok`. The error case stops being something you \"forget\": the type demands it.",
+  ),
+};
+
+/** Capítulo 8 · Narrowing, uniones discriminadas y type guards. */
+export const SYL_TS_COMMUNITY_8: Syllabus = {
+  c8_uruk_arquero: { kind: "battle", questions: [Q_NARROW, Q_UNKNOWN, Q_NARROW_WHY] },
+  c8_orco_saqueador: { kind: "battle", questions: [Q_DISCRIMINATED, Q_IN_OPERATOR, Q_NARROW] },
+  c8_uruk_espadachin: { kind: "battle", questions: [Q_TYPE_PREDICATE, Q_UNKNOWN, Q_DISCRIMINATED] },
+  c8_jefe_lurtz: { kind: "battle", questions: [Q_DISCRIMINATED, Q_TYPE_PREDICATE, Q_NARROW_WHY, Q_IN_OPERATOR] },
+  pergamino_fallos: {
+    kind: "scroll",
+    title: P("El Pergamino de lo que Puede Fallar", "The Scroll of What Can Go Wrong"),
+    lore_intro: P(
+      "Aragorn deja un pergamino junto al fuego apagado: enseña a distinguir, en tiempo de tipos, entre lo que sirve y lo que engaña — narrowing y type guards.",
+      "Aragorn leaves a scroll by the dead fire: it teaches how to tell, at the type level, what's useful from what deceives — narrowing and type guards.",
+    ),
+    scroll: {
+      topic: P("Narrowing, uniones discriminadas y guards", "Narrowing, discriminated unions and guards"),
+      sections: [
+        {
+          heading: P("Narrowing: reducir un tipo por ramas", "Narrowing: shrinking a type by branch"),
+          body: P(
+            "Con un valor `string | number`, comprobaciones como `typeof`, `===` o `in` estrechan el tipo dentro de cada rama. En el `if` es number; en el `else`, string. Sin castings.",
+            "With a `string | number` value, checks like `typeof`, `===` or `in` shrink the type within each branch. In the `if` it's a number; in the `else`, a string. No casts.",
+          ),
+          code:
+            "function describir(v: string | number): string {\n  return typeof v === 'number' ? `número ${v}` : `texto ${v}`;\n}",
+        },
+        {
+          heading: P("Uniones discriminadas", "Discriminated unions"),
+          body: P(
+            "Un campo literal común (el discriminante) modela «una cosa de varias formas». Al comprobarlo, TS sabe qué variante tienes y qué propiedades existen. El caso de error deja de olvidarse.",
+            "A common literal field (the discriminant) models \"one thing of several shapes\". Checking it tells TS which variant you have and what properties exist. The error case stops being forgotten.",
+          ),
+          code:
+            "type Vision =\n  | { tipo: 'reino'; nombre: string }\n  | { tipo: 'ojo'; peligro: number };\nfunction leer(v: Vision): string {\n  return v.tipo === 'reino' ? `ves ${v.nombre}` : `el Ojo (${v.peligro})`;\n}",
+        },
+        {
+          heading: P("unknown y type guards", "unknown and type guards"),
+          body: P(
+            "`unknown` es el `any` seguro: no lo usas hasta reducir su tipo. Un guard propio con retorno `x is T` enseña a TS a reducir, y funciona hasta dentro de `filter`.",
+            "`unknown` is the safe `any`: you can't use it until you narrow its type. A custom guard returning `x is T` teaches TS to narrow, and works even inside `filter`.",
+          ),
+          code:
+            "function esNumero(x: unknown): x is number {\n  return typeof x === 'number';\n}\nconst nums = [1, 'a', 2].filter(esNumero); // number[]",
+        },
+      ],
+      keyTakeaway: P(
+        "Narrowing reduce tipos por ramas (`typeof`, `===`, `in`); las uniones discriminadas obligan a tratar cada caso; `unknown` es el `any` seguro y un guard `x is T` reduce a tu medida (incluido `filter`).",
+        "Narrowing shrinks types by branch (`typeof`, `===`, `in`); discriminated unions force handling each case; `unknown` is the safe `any` and a guard `x is T` narrows on demand (including in `filter`).",
+      ),
+    },
+  },
+  tentacion_de_boromir: {
+    kind: "challenge",
+    title: P("La Tentación de Boromir", "Boromir's Temptation"),
+    lore_intro: P(
+      "El Anillo se muestra de dos formas: como cifra de poder o como palabra tentadora. Distínguelas con narrowing.",
+      "The Ring shows itself in two forms: as a number of power or as a tempting word. Tell them apart with narrowing.",
+    ),
+    challenge: {
+      topic: P("Narrowing con typeof", "Narrowing with typeof"),
+      instructions: P(
+        "Escribe `describir(v: string | number): string` que devuelva `'número {v}'` si `v` es un number, y `'texto {v}'` si es un string. Usa `typeof`.\n\nEjemplo: `describir(5)` → `'número 5'`; `describir('oro')` → `'texto oro'`.",
+        "Write `describir(v: string | number): string` returning `'número {v}'` if `v` is a number, and `'texto {v}'` if it's a string. Use `typeof`.\n\nExample: `describir(5)` → `'número 5'`; `describir('oro')` → `'texto oro'`.",
+      ),
+      starter_code:
+        "function describir(v: string | number): string {\n  // typeof v === 'number' ? ... : ...\n}\n",
+      hints: [
+        P("`typeof v === 'number'` reduce v a number en esa rama.", "`typeof v === 'number'` narrows v to a number in that branch."),
+        P("Usa template strings: `` `número ${v}` `` y `` `texto ${v}` ``.", "Use template strings: `` `número ${v}` `` and `` `texto ${v}` ``."),
+      ],
+      test_cases: [
+        { input: "describir(5)", expected: "número 5", description: P("Rama number", "Number branch"), raw: true },
+        { input: "describir('oro')", expected: "texto oro", description: P("Rama string", "String branch"), raw: true },
+        { input: "describir(0)", expected: "número 0", description: P("El 0 también es number", "0 is a number too"), raw: true },
+      ],
+    },
+  },
+  solio_de_la_vision: {
+    kind: "challenge",
+    title: P("El Solio de la Visión", "The Seat of Seeing"),
+    lore_intro: P(
+      "Desde Amon Hen se ven reinos… o el Ojo. Modela las dos visiones con una unión discriminada y léelas según su tipo.",
+      "From Amon Hen you see kingdoms… or the Eye. Model both visions with a discriminated union and read them by their type.",
+    ),
+    challenge: {
+      topic: P("Uniones discriminadas", "Discriminated unions"),
+      instructions: P(
+        "Con `type Vision = { tipo: 'reino'; nombre: string } | { tipo: 'ojo'; peligro: number }`, escribe `leer(v: Vision): string` que devuelva `'ves {nombre}'` para un reino y `'el Ojo (peligro {peligro})'` para el ojo.\n\nEjemplos: `leer({ tipo: 'reino', nombre: 'Rohan' })` → `'ves Rohan'`; `leer({ tipo: 'ojo', peligro: 9 })` → `'el Ojo (peligro 9)'`.",
+        "With `type Vision = { tipo: 'reino'; nombre: string } | { tipo: 'ojo'; peligro: number }`, write `leer(v: Vision): string` returning `'ves {nombre}'` for a kingdom and `'el Ojo (peligro {peligro})'` for the eye.\n\nExamples: `leer({ tipo: 'reino', nombre: 'Rohan' })` → `'ves Rohan'`; `leer({ tipo: 'ojo', peligro: 9 })` → `'el Ojo (peligro 9)'`.",
+      ),
+      starter_code:
+        "type Vision =\n  | { tipo: 'reino'; nombre: string }\n  | { tipo: 'ojo'; peligro: number };\n\nfunction leer(v: Vision): string {\n  // comprueba v.tipo y usa la propiedad correspondiente\n}\n",
+      hints: [
+        P("`v.tipo === 'reino'` reduce v a la variante con `nombre`.", "`v.tipo === 'reino'` narrows v to the variant with `nombre`."),
+        P("En la otra rama, TS ya sabe que existe `v.peligro`.", "In the other branch, TS already knows `v.peligro` exists."),
+      ],
+      test_cases: [
+        { input: "leer({ tipo: 'reino', nombre: 'Rohan' })", expected: "ves Rohan", description: P("Variante reino", "Kingdom variant"), raw: true },
+        { input: "leer({ tipo: 'ojo', peligro: 9 })", expected: "el Ojo (peligro 9)", description: P("Variante ojo", "Eye variant"), raw: true },
+        { input: "leer({ tipo: 'reino', nombre: 'Gondor' })", expected: "ves Gondor", description: P("Otro reino", "Another kingdom"), raw: true },
+      ],
+    },
+  },
+  hueste_de_isengard: {
+    kind: "challenge",
+    title: P("La Hueste de Isengard", "The Host of Isengard"),
+    lore_intro: P(
+      "De un montón de cosas dudosas, quédate sólo con las que de verdad son números y súmalas. Un type guard separa el grano de la paja.",
+      "From a heap of dubious things, keep only the ones that truly are numbers and sum them. A type guard separates the wheat from the chaff.",
+    ),
+    challenge: {
+      topic: P("unknown y type guards (x is T)", "unknown and type guards (x is T)"),
+      instructions: P(
+        "Escribe un guard `esNumero(x: unknown): x is number` (true si `x` es number) y `sumarSeguros(xs: unknown[]): number` que SUME sólo los elementos que sean números, usando `filter(esNumero)`.\n\nEjemplo: `sumarSeguros([1, 'a', 2, true, 3])` → `6`.",
+        "Write a guard `esNumero(x: unknown): x is number` (true if `x` is a number) and `sumarSeguros(xs: unknown[]): number` that SUMS only the elements that are numbers, using `filter(esNumero)`.\n\nExample: `sumarSeguros([1, 'a', 2, true, 3])` → `6`.",
+      ),
+      starter_code:
+        "function esNumero(x: unknown): x is number {\n  // true si x es number\n}\n\nfunction sumarSeguros(xs: unknown[]): number {\n  // filtra con esNumero y suma\n}\n",
+      hints: [
+        P("El guard: `return typeof x === 'number';`.", "The guard: `return typeof x === 'number';`."),
+        P("`xs.filter(esNumero)` ya es `number[]`, así que puedes `reduce((a, b) => a + b, 0)`.", "`xs.filter(esNumero)` is already `number[]`, so you can `reduce((a, b) => a + b, 0)`."),
+      ],
+      test_cases: [
+        { input: "sumarSeguros([1, 'a', 2, true, 3])", expected: 6, description: P("Sólo suma los numbers", "Only sums the numbers"), raw: true },
+        { input: "sumarSeguros([])", expected: 0, description: P("Lista vacía", "Empty list"), raw: true },
+        { input: "sumarSeguros(['x', false, null])", expected: 0, description: P("Ningún number", "No numbers"), raw: true },
+        { input: "esNumero('7')", expected: false, description: P("Un string no es number", "A string isn't a number"), raw: true },
+      ],
+    },
+  },
+};

@@ -54,6 +54,7 @@ import {
   SYL_TS_COMMUNITY_5,
   SYL_TS_COMMUNITY_6,
   SYL_TS_COMMUNITY_7,
+  SYL_TS_COMMUNITY_8,
 } from "./syllabus/community-ts";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
@@ -97,6 +98,7 @@ const TS_COMMUNITY_4 = buildChapter(NARR_COMMUNITY_4, SYL_TS_COMMUNITY_4, "types
 const TS_COMMUNITY_5 = buildChapter(NARR_COMMUNITY_5, SYL_TS_COMMUNITY_5, "typescript");
 const TS_COMMUNITY_6 = buildChapter(NARR_COMMUNITY_6, SYL_TS_COMMUNITY_6, "typescript");
 const TS_COMMUNITY_7 = buildChapter(NARR_COMMUNITY_7, SYL_TS_COMMUNITY_7, "typescript");
+const TS_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_TS_COMMUNITY_8, "typescript");
 
 /**
  * Catálogo de aventuras. Las `available` son jugables; las `soon` aparecen en
@@ -206,6 +208,7 @@ export const ADVENTURES: Adventure[] = [
           TS_COMMUNITY_5,
           TS_COMMUNITY_6,
           TS_COMMUNITY_7,
+          TS_COMMUNITY_8,
         ],
       },
     ],
