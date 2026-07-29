@@ -8,10 +8,10 @@
  */
 
 export interface Question {
-  question: string;
-  options: string[];
+  question: import("@/lib/i18n/core").Localized<string>;
+  options: import("@/lib/i18n/core").Localized<string>[];
   correct: number;
-  explanation: string;
+  explanation: import("@/lib/i18n/core").Localized<string>;
 }
 
 /** Devuelve la pregunta con las opciones mezcladas y `correct` reajustado. */

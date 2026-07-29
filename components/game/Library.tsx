@@ -9,6 +9,7 @@ import type { LpcManifest } from "@/lib/lpc/types";
 import type { Progress } from "@/lib/game/progress";
 import type { ArchiveNode, Chapter } from "@/lib/game/types";
 import { heroActivo } from "@/lib/game/rpg";
+import { useLang } from "@/lib/i18n/context";
 
 const GameCanvas = dynamic(() => import("./GameCanvas"), { ssr: false });
 const ArchiveModal = dynamic(() => import("./ArchiveModal"), { ssr: false });
@@ -26,6 +27,7 @@ interface Props {
  * nodos "archive" abriendo el ArchiveModal con la pestaña correspondiente.
  */
 export default function Library({ chapters, progress, onClose }: Props) {
+  const { tc, lang } = useLang();
   const [hero, setHero] = useState<PresetSheet | null>(null);
   const [sheets, setSheets] = useState<Record<string, PresetSheet>>({});
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -89,7 +91,7 @@ export default function Library({ chapters, progress, onClose }: Props) {
         </header>
 
         <p className="mb-4 hidden max-w-3xl text-sm leading-relaxed text-slate-400 sm:block">
-          {CHAPTER_LIBRARY.lore} Acércate a una estantería y pulsa{" "}
+          {tc(CHAPTER_LIBRARY.lore)} Acércate a una estantería y pulsa{" "}
           <kbd className="rounded bg-amber-500 px-1 font-bold text-slate-900">
             E
           </kbd>{" "}
@@ -108,6 +110,7 @@ export default function Library({ chapters, progress, onClose }: Props) {
             frameSize={hero.frameSize}
             nodeSheets={sheets}
             completed={new Set()}
+            lang={lang}
             locked={activeId !== null}
             onEnterNode={setActiveId}
           />

@@ -17,6 +17,7 @@ import {
   CHAPTER_GOLLUM,
   CHAPTER_HELM,
 } from "./chapters";
+import { CHAPTER_JS_1 } from "./js-chapters";
 
 /** Capítulos de la aventura de PHP (La Comunidad del Anillo + práctica). */
 const PHP_CHAPTERS = [
@@ -82,13 +83,16 @@ export const ADVENTURES: Adventure[] = [
     tech: "JavaScript",
     icon: "🟨",
     accent: "amber",
-    status: "soon",
-    name: { es: "JavaScript", en: "JavaScript" },
-    blurb: {
-      es: "El lenguaje de la web, ejecutándose de verdad en tu navegador.",
-      en: "The language of the web, running for real in your browser.",
+    status: "available",
+    name: {
+      es: "Las Tierras del Navegador — JavaScript",
+      en: "The Lands of the Browser — JavaScript",
     },
-    chapters: [],
+    blurb: {
+      es: "El lenguaje de la web, ejecutándose de verdad en tu navegador. Bilingüe.",
+      en: "The language of the web, running for real in your browser. Bilingual.",
+    },
+    chapters: [CHAPTER_JS_1],
   },
   {
     id: "typescript",

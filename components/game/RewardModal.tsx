@@ -1,6 +1,7 @@
 "use client";
 
 import type { Reward } from "@/lib/game/types";
+import { useLang } from "@/lib/i18n/context";
 
 interface Props {
   reward: Reward;
@@ -24,6 +25,7 @@ export default function RewardModal({
   bookEnd,
   onContinue,
 }: Props) {
+  const { tc } = useLang();
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm">
       <div className="w-full max-w-md overflow-hidden rounded-2xl bg-slate-900 text-center shadow-2xl ring-1 ring-amber-400/40">
@@ -52,8 +54,8 @@ export default function RewardModal({
               }}
             />
           )}
-          <h3 className="text-xl font-bold text-amber-200">{reward.name}</h3>
-          <p className="text-sm leading-relaxed text-slate-300">{reward.blurb}</p>
+          <h3 className="text-xl font-bold text-amber-200">{tc(reward.name)}</h3>
+          <p className="text-sm leading-relaxed text-slate-300">{tc(reward.blurb)}</p>
           <p className="mt-1 rounded-lg bg-slate-800/80 px-3 py-1.5 text-xs text-emerald-300 ring-1 ring-emerald-500/30">
             ✓ Desbloqueado como personaje jugable · elígelo en 🦸 Héroe
           </p>

@@ -547,6 +547,7 @@ export default function GamePage() {
           nodeSheets={nodeSheets}
           completed={completed}
           lockedNodes={bloqueados}
+          lang={lang}
           locked={
             activeNodeId !== null ||
             showChapters ||
@@ -572,7 +573,7 @@ export default function GamePage() {
               onClick={() => handleSelectChapter(nextChapter.chapter)}
               className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-emerald-400"
             >
-              Continuar al Capítulo {nextChapter.chapter}: {nextChapter.title} →
+              Continuar al Capítulo {nextChapter.chapter}: {tc(nextChapter.title)} →
             </button>
           ) : (
             <p className="text-xs text-slate-400">

@@ -95,6 +95,33 @@ export const MESSAGES = {
     es: "¿Borrar todo el progreso guardado? Esta acción no se puede deshacer.",
     en: "Delete all saved progress? This cannot be undone.",
   },
+
+  // Tarjeta de entrada al capítulo
+  "intro.willLearn": { es: "Aprenderás", en: "You'll learn" },
+  "intro.start": { es: "Comenzar el viaje →", en: "Begin the journey →" },
+  "intro.runesLead": { es: "Hay", en: "There are" },
+  "intro.runesTail": {
+    es: "runas por descifrar.",
+    en: "runes to decipher.",
+  },
+  "intro.moveWith": { es: "Muévete con", en: "Move with" },
+  "intro.approach": {
+    es: "o las flechas. Acércate a un marcador dorado y pulsa",
+    en: "or the arrows. Approach a golden marker and press",
+  },
+  "intro.toFace": {
+    es: "para enfrentar el acertijo.",
+    en: "to face the challenge.",
+  },
+
+  // Pergamino
+  "scroll.tag": { es: "📜 Pergamino", en: "📜 Scroll" },
+  "scroll.remember": { es: "Para recordar", en: "Key takeaway" },
+  "scroll.studied": {
+    es: "He estudiado el pergamino ✦",
+    en: "I've studied the scroll ✦",
+  },
+  "scroll.closeShort": { es: "Cerrar", en: "Close" },
 } as const;
 
 export type MessageKey = keyof typeof MESSAGES;

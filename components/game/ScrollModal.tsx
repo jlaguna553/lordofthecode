@@ -2,6 +2,7 @@
 
 import type { ScrollNode } from "@/lib/game/types";
 import { playSfx } from "@/lib/game/audio";
+import { useLang } from "@/lib/i18n/context";
 
 interface Props {
   node: ScrollNode;
@@ -14,6 +15,7 @@ interface Props {
  * Se marca como completado al leerlo (no hay que escribir código).
  */
 export default function ScrollModal({ node, onRead, onClose }: Props) {
+  const { t, tc } = useLang();
   const s = node.scroll;
 
   return (
@@ -22,25 +24,25 @@ export default function ScrollModal({ node, onRead, onClose }: Props) {
         {/* Cabecera de pergamino */}
         <div className="border-b border-amber-700/30 bg-gradient-to-b from-amber-900/30 to-transparent p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-500">
-            📜 Pergamino · {s.topic}
+            {t("scroll.tag")} · {tc(s.topic)}
           </p>
-          <h2 className="mt-1 text-xl font-bold text-amber-100">{node.title}</h2>
+          <h2 className="mt-1 text-xl font-bold text-amber-100">{tc(node.title)}</h2>
         </div>
 
         <div className="flex-1 space-y-5 overflow-auto p-6">
           <blockquote className="border-l-2 border-amber-600/50 pl-3 text-sm italic text-amber-200/70">
-            {node.lore_intro}
+            {tc(node.lore_intro)}
           </blockquote>
 
           {s.sections.map((sec, i) => (
             <section key={i}>
               {sec.heading && (
                 <h3 className="mb-1.5 text-sm font-bold text-amber-300">
-                  {sec.heading}
+                  {tc(sec.heading)}
                 </h3>
               )}
               <p className="whitespace-pre-line text-sm leading-relaxed text-amber-50/90">
-                {sec.body}
+                {tc(sec.body)}
               </p>
               {sec.code && (
                 <pre className="mt-2 overflow-x-auto rounded-lg bg-black/50 p-3 text-[12px] leading-relaxed text-emerald-200 ring-1 ring-amber-700/20">
@@ -53,9 +55,9 @@ export default function ScrollModal({ node, onRead, onClose }: Props) {
           {s.keyTakeaway && (
             <div className="rounded-xl bg-amber-500/10 p-4 ring-1 ring-amber-500/30">
               <p className="mb-1 text-xs font-bold uppercase tracking-wider text-amber-400">
-                Para recordar
+                {t("scroll.remember")}
               </p>
-              <p className="text-sm italic text-amber-100">{s.keyTakeaway}</p>
+              <p className="text-sm italic text-amber-100">{tc(s.keyTakeaway)}</p>
             </div>
           )}
         </div>
@@ -65,7 +67,7 @@ export default function ScrollModal({ node, onRead, onClose }: Props) {
             onClick={onClose}
             className="rounded-lg bg-white/5 px-3 py-2 text-sm text-amber-200/70 hover:bg-white/10"
           >
-            Cerrar
+            {t("scroll.closeShort")}
           </button>
           <button
             onClick={() => {
@@ -75,7 +77,7 @@ export default function ScrollModal({ node, onRead, onClose }: Props) {
             }}
             className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-900 transition hover:bg-amber-400"
           >
-            He estudiado el pergamino ✦
+            {t("scroll.studied")}
           </button>
         </div>
       </div>

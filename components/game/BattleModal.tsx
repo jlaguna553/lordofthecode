@@ -5,6 +5,7 @@ import type { BattleNode } from "@/lib/game/types";
 import { playSfx } from "@/lib/game/audio";
 import { vidaMaxima } from "@/lib/game/rpg";
 import { shuffleQuestion } from "@/lib/game/quiz";
+import { useLang } from "@/lib/i18n/context";
 
 interface Props {
   node: BattleNode;
@@ -57,6 +58,7 @@ export default function BattleModal({
   onWin,
   onClose,
 }: Props) {
+  const { tc } = useLang();
   const enemigo = node.enemy;
   const maxJugador = vidaMaxima(nivel);
 
@@ -164,7 +166,7 @@ export default function BattleModal({
                 {enemigo.boss ? "⚔ Jefe de capítulo" : "⚔ Combate"}
               </p>
               <h2 className="truncate text-xl font-bold text-slate-100">
-                {enemigo.name}
+                {tc(enemigo.name)}
               </h2>
             </div>
             <button
@@ -194,7 +196,7 @@ export default function BattleModal({
                 />
               )}
               <div>
-                <p className="mb-1 text-xs text-slate-400">{enemigo.name}</p>
+                <p className="mb-1 text-xs text-slate-400">{tc(enemigo.name)}</p>
                 <Vida
                   actual={vidaEnemigo}
                   max={enemigo.hp}
@@ -223,11 +225,11 @@ export default function BattleModal({
                     : "border-orange-500/40 bg-orange-500/5 text-orange-100/80")
                 }
               >
-                {turno === 0 && enemigo.taunt ? enemigo.taunt : node.lore_intro}
+                {turno === 0 && enemigo.taunt ? tc(enemigo.taunt) : tc(node.lore_intro)}
               </blockquote>
 
               <p className="mb-4 whitespace-pre-line text-base font-medium leading-relaxed text-slate-100">
-                {pregunta.question}
+                {tc(pregunta.question)}
               </p>
 
               <ul className="space-y-2">
@@ -262,7 +264,7 @@ export default function BattleModal({
                         <span className="mr-2 font-bold opacity-60">
                           {String.fromCharCode(65 + i)}.
                         </span>
-                        {op}
+                        {tc(op)}
                         {checked && esCorrecta && (
                           <span className="ml-2 font-bold">✓</span>
                         )}
@@ -287,7 +289,7 @@ export default function BattleModal({
                       : `✗ Fallas, y ${enemigo.name} te alcanza (−${enemigo.damage})`}
                   </p>
                   <p className="leading-relaxed opacity-90">
-                    {pregunta.explanation}
+                    {tc(pregunta.explanation)}
                   </p>
                 </div>
               )}

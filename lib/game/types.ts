@@ -1,7 +1,11 @@
 /**
  * Tipos del RPG educativo "La Sintaxis Ancestral".
  * El esquema de desafío sigue el brief (sección 4): lore + reto POO + test_cases.
+ *
+ * Los textos de contenido son `Localized<string>`: aceptan un string (idioma
+ * base) o un objeto {es,en}. Se resuelven en la UI con `tc()`.
  */
+import type { Localized } from "@/lib/i18n/core";
 
 /** Un caso de prueba: se evalúa `$sut->{input}` y se compara con `expected`. */
 export interface TestCase {
@@ -10,7 +14,7 @@ export interface TestCase {
   /** Valor esperado (se compara vía json_encode en PHP). */
   expected: unknown;
   /** Descripción legible para la UI. */
-  description?: string;
+  description?: Localized<string>;
   /**
    * Si es true, `input` es una expresión PHP completa que se evalúa tal cual
    * (con `$__sut` disponible) en vez de anteponer `$__sut->`. Necesario para
@@ -25,9 +29,9 @@ export interface PooChallenge {
    * capítulos de Las Dos Torres usan "python". Determina el evaluador y la
    * sintaxis de starter_code, support_code y test_cases.
    */
-  lang?: "php" | "python";
-  topic: string;
-  instructions: string;
+  lang?: "php" | "python" | "javascript";
+  topic: Localized<string>;
+  instructions: Localized<string>;
   /** Código inicial que ve y edita el jugador. */
   starter_code: string;
   /**
@@ -39,7 +43,7 @@ export interface PooChallenge {
   /** Clases/funciones auxiliares inyectadas antes del código del jugador (ocultas). */
   support_code?: string;
   /** Pistas que el jugador puede pedir una a una si se atasca. */
-  hints?: string[];
+  hints?: Localized<string>[];
   /**
    * Tiempo objetivo en segundos. Muestra un cronómetro en el reto (práctica
    * cronometrada estilo test técnico). No bloquea: sólo informa.
@@ -50,24 +54,24 @@ export interface PooChallenge {
 
 /** Una sección de un Pergamino: teoría, opcionalmente con código de ejemplo. */
 export interface ScrollSection {
-  heading?: string;
-  body: string;
+  heading?: Localized<string>;
+  body: Localized<string>;
   code?: string;
 }
 
 /** Contenido didáctico de un Pergamino (se lee antes de los acertijos). */
 export interface ScrollContent {
   /** Concepto que enseña, p. ej. "Single Responsibility". */
-  topic: string;
+  topic: Localized<string>;
   sections: ScrollSection[];
   /** Frase para recordar / usar en una entrevista. */
-  keyTakeaway?: string;
+  keyTakeaway?: Localized<string>;
 }
 
 interface BaseNode {
   node_id: string;
-  title: string;
-  lore_intro: string;
+  title: Localized<string>;
+  lore_intro: Localized<string>;
   /** Posición en tiles dentro del mapa del capítulo. */
   position: { x: number; y: number };
   /** id del preset/sprite LPC asociado (opcional). */
@@ -82,11 +86,11 @@ export interface ChallengeNode extends BaseNode {
 
 /** Una pregunta de combate: corta, de opción múltiple, sobre el tema del capítulo. */
 export interface CombatQuestion {
-  question: string;
-  options: string[];
+  question: Localized<string>;
+  options: Localized<string>[];
   correct: number;
   /** Por qué, para que fallar también enseñe. */
-  explanation: string;
+  explanation: Localized<string>;
 }
 
 /**
@@ -94,7 +98,7 @@ export interface CombatQuestion {
  * correcta le quita un punto. Cada fallo te quita `damage` a ti.
  */
 export interface Enemy {
-  name: string;
+  name: Localized<string>;
   /** id de preset LPC (ver data/presets.ts). */
   spriteId: string;
   /** Aciertos necesarios para derrotarlo. */
@@ -110,7 +114,7 @@ export interface Enemy {
    */
   boss?: boolean;
   /** Frase que suelta al empezar el combate. */
-  taunt?: string;
+  taunt?: Localized<string>;
   /** Recompensa por derrotarlo (normalmente sólo la dan los jefes). */
   reward?: Reward;
 }
@@ -120,9 +124,9 @@ export interface Reward {
   /** id de preset que pasa a ser jugable (ver data/presets.ts). */
   hero: string;
   /** Nombre visible del personaje desbloqueado. */
-  name: string;
+  name: Localized<string>;
   /** Por qué se une y qué aporta, para la pantalla de recompensa. */
-  blurb: string;
+  blurb: Localized<string>;
 }
 
 /** Nodo de combate: se vence respondiendo bien antes de quedarte sin vida. */
@@ -139,16 +143,16 @@ export interface ScrollNode extends BaseNode {
 
 /** Una pregunta de opción múltiple (test de lógica/razonamiento). */
 export interface QuizQuestion {
-  question: string;
-  options: string[];
+  question: Localized<string>;
+  options: Localized<string>[];
   /** Índice de la opción correcta dentro de `options`. */
   correct: number;
   /** Por qué es esa: se muestra al responder. */
-  explanation: string;
+  explanation: Localized<string>;
 }
 
 export interface QuizContent {
-  topic: string;
+  topic: Localized<string>;
   /** Tiempo objetivo para la tanda completa (informativo). */
   timeLimitSec?: number;
   questions: QuizQuestion[];
@@ -209,7 +213,7 @@ export interface Scenery {
     spriteId: string;
     x: number;
     y: number;
-    label?: string;
+    label?: Localized<string>;
   }[];
   /** Frases que suelta un compañero al pasar por un punto del mapa. */
   dialogues?: {
@@ -218,8 +222,8 @@ export interface Scenery {
     /** id de preset del que habla (debe ir en `companions`). */
     speaker: string;
     /** Nombre visible. */
-    name: string;
-    text: string;
+    name: Localized<string>;
+    text: Localized<string>;
   }[];
   /** Objetos decorativos con ordenamiento por profundidad. */
   decor?: {
@@ -227,14 +231,14 @@ export interface Scenery {
     x: number;
     y: number;
     /** Rótulo opcional sobre el objeto (p. ej. "Bolsón Cerrado"). */
-    label?: string;
+    label?: Localized<string>;
   }[];
 }
 
 export interface Chapter {
   chapter: number;
-  title: string;
-  lore: string;
+  title: Localized<string>;
+  lore: Localized<string>;
   /** Tamaño del mapa en tiles [ancho, alto]. */
   mapSize: { cols: number; rows: number };
   /** Posición inicial del jugador (Frodo) en tiles. */
@@ -262,7 +266,7 @@ export interface Chapter {
 /** Resultado de un test individual tras ejecutar el PHP del jugador. */
 export interface TestResult {
   input: string;
-  description?: string;
+  description?: Localized<string>;
   expected: string; // json
   got: string; // json o "<sin salida>"
   pass: boolean;

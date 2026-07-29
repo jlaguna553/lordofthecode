@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { QuizNode } from "@/lib/game/types";
 import { playSfx } from "@/lib/game/audio";
 import { shuffleQuestion } from "@/lib/game/quiz";
+import { useLang } from "@/lib/i18n/context";
 
 interface Props {
   node: QuizNode;
@@ -19,6 +20,7 @@ interface Props {
  * Se completa acertando TODAS; siempre se puede reintentar.
  */
 export default function QuizModal({ node, onSolved, onClose }: Props) {
+  const { tc } = useLang();
   const q = node.quiz;
   const total = q.questions.length;
 
@@ -91,9 +93,9 @@ export default function QuizModal({ node, onSolved, onClose }: Props) {
         <div className="flex items-start justify-between gap-4 border-b border-white/10 bg-gradient-to-b from-violet-500/10 to-transparent p-5">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-violet-300">
-              🜛 Enigma · {q.topic}
+              🜛 Enigma · {tc(q.topic)}
             </p>
-            <h2 className="text-xl font-bold text-slate-100">{node.title}</h2>
+            <h2 className="text-xl font-bold text-slate-100">{tc(node.title)}</h2>
           </div>
           <div className="flex items-center gap-2">
             {q.timeLimitSec && !finished && (
@@ -129,11 +131,11 @@ export default function QuizModal({ node, onSolved, onClose }: Props) {
               </div>
 
               <blockquote className="mb-4 border-l-2 border-violet-500/40 bg-violet-500/5 p-3 text-sm italic text-violet-100/80">
-                {node.lore_intro}
+                {tc(node.lore_intro)}
               </blockquote>
 
               <p className="mb-4 whitespace-pre-line text-base font-medium leading-relaxed text-slate-100">
-                {pregunta.question}
+                {tc(pregunta.question)}
               </p>
 
               <ul className="space-y-2">
@@ -168,7 +170,7 @@ export default function QuizModal({ node, onSolved, onClose }: Props) {
                         <span className="mr-2 font-bold opacity-60">
                           {String.fromCharCode(65 + i)}.
                         </span>
-                        {op}
+                        {tc(op)}
                         {checked && esCorrecta && (
                           <span className="ml-2 font-bold">✓</span>
                         )}
@@ -191,7 +193,7 @@ export default function QuizModal({ node, onSolved, onClose }: Props) {
                     {acerto ? "✓ Correcto" : "✗ No era esa"}
                   </p>
                   <p className="leading-relaxed opacity-90">
-                    {pregunta.explanation}
+                    {tc(pregunta.explanation)}
                   </p>
                 </div>
               )}

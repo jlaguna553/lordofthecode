@@ -1,6 +1,8 @@
 "use client";
 
 import type { Chapter } from "@/lib/game/types";
+import { useLang } from "@/lib/i18n/context";
+import type { Localized } from "@/lib/i18n/core";
 import type { MapNode } from "@/lib/game/types";
 import type { Progress } from "@/lib/game/progress";
 import { completedOf, statsFor } from "@/lib/game/progress";
@@ -16,7 +18,7 @@ const mmss = (s: number) =>
   `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 
 /** Tema que enseña un nodo, sea del tipo que sea. */
-function topicOf(n: MapNode): string {
+function topicOf(n: MapNode): Localized<string> {
   return n.kind === "scroll"
     ? n.scroll.topic
     : n.kind === "quiz"
@@ -46,6 +48,7 @@ function targetOf(n: MapNode): number | undefined {
 }
 
 export default function StatsPanel({ chapters, progress, onClose }: Props) {
+  const { tc } = useLang();
   // --- Recorremos toda la campaña cruzando con el progreso ---
   let totalNodos = 0;
   let hechos = 0;
@@ -100,7 +103,7 @@ export default function StatsPanel({ chapters, progress, onClose }: Props) {
       const objetivo = targetOf(n);
       if (st && objetivo) {
         tiempos.push({
-          titulo: n.title,
+          titulo: tc(n.title),
           cap: ch.chapter,
           seg: st.timeSec,
           objetivo,
@@ -114,16 +117,16 @@ export default function StatsPanel({ chapters, progress, onClose }: Props) {
         if (st.hints >= 2) motivos.push(`${st.hints} pistas`);
         if (motivos.length)
           flojos.push({
-            titulo: n.title,
+            titulo: tc(n.title),
             cap: ch.chapter,
             motivo: motivos.join(" · "),
-            tema: topicOf(n),
+            tema: tc(topicOf(n)),
           });
       }
     }
     porCapitulo.push({
       cap: ch.chapter,
-      titulo: ch.title,
+      titulo: tc(ch.title),
       total: ch.nodes.length,
       done: capDone,
     });

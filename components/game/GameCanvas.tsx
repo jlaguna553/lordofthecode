@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Chapter } from "@/lib/game/types";
+import { loc, type Lang } from "@/lib/i18n/core";
 import { playSfx } from "@/lib/game/audio";
 
 interface Props {
@@ -15,6 +16,8 @@ interface Props {
   /** node_id -> motivo, para pintar con candado los nodos aún cerrados. */
   lockedNodes?: Record<string, string>;
   locked: boolean;
+  /** Idioma actual, para resolver los textos localizados (Phaser no usa hooks). */
+  lang: Lang;
   onEnterNode: (nodeId: string) => void;
 }
 
@@ -55,6 +58,7 @@ export default function GameCanvas({
   nodeSheets = {},
   completed,
   lockedNodes = {},
+  lang,
   locked,
   onEnterNode,
 }: Props) {
@@ -352,7 +356,7 @@ export default function GameCanvas({
 
             if (d.label) {
               this.add
-                .text(px, py - img.height - 6, d.label, {
+                .text(px, py - img.height - 6, loc(d.label, lang), {
                   fontFamily: "monospace",
                   fontSize: "11px",
                   color: "#ffe9a8",
@@ -417,7 +421,7 @@ export default function GameCanvas({
             });
             if (npc.label) {
               this.add
-                .text(px, feet - 70, npc.label, {
+                .text(px, feet - 70, loc(npc.label, lang), {
                   fontFamily: "monospace",
                   fontSize: "10px",
                   color: "#cbd5e1",
@@ -472,7 +476,7 @@ export default function GameCanvas({
             const dot = this.add.circle(0, 0, 6, style.color, 1);
             const cerrado = Boolean(lockedNodes[node.node_id]);
             const label = this.add
-              .text(0, -30, (cerrado ? "🔒 " : style.icon) + node.title, {
+              .text(0, -30, (cerrado ? "🔒 " : style.icon) + loc(node.title, lang), {
                 fontFamily: "monospace",
                 fontSize: "11px",
                 color: style.text,
@@ -758,7 +762,7 @@ export default function GameCanvas({
             const quien = this.companions.find((c) => c.id === d.speaker);
             const src = quien ? quien.sprite : p;
             this.bubbleTarget = src;
-            this.bubble.setText(`${d.name}: ${d.text}`).setVisible(true);
+            this.bubble.setText(`${loc(d.name, lang)}: ${loc(d.text, lang)}`).setVisible(true);
             this.time.delayedCall(4000, () => {
               this.bubble.setVisible(false);
               this.bubbleTarget = null;
@@ -792,7 +796,7 @@ export default function GameCanvas({
       (game as any)?.destroy(true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chapter, frodoUrl, cols, frameSize, nodeSheets]);
+  }, [chapter, frodoUrl, cols, frameSize, nodeSheets, lang]);
 
   // ---- Joystick analógico ----
   const RADIO = 46; // recorrido máximo del pomo, en píxeles

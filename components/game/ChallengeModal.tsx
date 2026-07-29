@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
 import type { ChallengeNode, EvalResult } from "@/lib/game/types";
 import { runChallenge, warmup, langOf } from "@/lib/game/runner";
+import { useLang } from "@/lib/i18n/context";
 import { playSfx } from "@/lib/game/audio";
 
 interface Props {
@@ -28,6 +29,7 @@ export default function ChallengeModal({
   onSolved,
   onClose,
 }: Props) {
+  const { tc } = useLang();
   const c = node.poo_challenge;
   // Si el jugador ya escribió aquí, retomamos su código donde lo dejó.
   const [code, setCode] = useState(savedCode ?? c.starter_code);
@@ -108,11 +110,11 @@ export default function ChallengeModal({
                     : "bg-violet-500/15 text-violet-300 ring-violet-500/40")
                 }
               >
-                {langOf(c) === "python" ? "🐍 Python" : "🐘 PHP"}
+                {langOf(c) === "python" ? "🐍 Python" : langOf(c) === "javascript" ? "🟨 JavaScript" : "🐘 PHP"}
               </span>
-              Capítulo · {c.topic}
+              Capítulo · {tc(c.topic)}
             </p>
-            <h2 className="text-xl font-bold text-slate-100">{node.title}</h2>
+            <h2 className="text-xl font-bold text-slate-100">{tc(node.title)}</h2>
           </div>
           {c.timeLimitSec && (
             <div
@@ -140,11 +142,11 @@ export default function ChallengeModal({
           {/* Panel narrativo + instrucciones */}
           <div className="overflow-auto border-r border-white/10 p-5">
             <blockquote className="mb-4 border-l-2 border-amber-500/50 bg-amber-500/5 p-3 text-sm italic text-amber-100/90">
-              {node.lore_intro}
+              {tc(node.lore_intro)}
             </blockquote>
             <h3 className="mb-1 text-sm font-bold text-slate-200">Tu misión</h3>
             <p className="mb-4 text-sm leading-relaxed text-slate-300">
-              {c.instructions}
+              {tc(c.instructions)}
             </p>
 
             {c.support_code && (
@@ -187,7 +189,7 @@ export default function ChallengeModal({
                       </code>
                     </div>
                     {t.description && (
-                      <p className="mt-0.5 pl-5 opacity-80">{t.description}</p>
+                      <p className="mt-0.5 pl-5 opacity-80">{tc(t.description)}</p>
                     )}
                     {r && !r.pass && (
                       <p className="mt-1 pl-5 font-mono text-[11px] opacity-90">
@@ -224,7 +226,7 @@ export default function ChallengeModal({
                       key={i}
                       className="rounded-lg bg-amber-500/5 px-3 py-2 text-xs text-amber-100/90 ring-1 ring-amber-500/20"
                     >
-                      <span className="font-bold">{i + 1}.</span> {h}
+                      <span className="font-bold">{i + 1}.</span> {tc(h)}
                     </li>
                   ))}
                 </ul>

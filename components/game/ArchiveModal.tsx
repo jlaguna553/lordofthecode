@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 
 import type { ChallengeNode, ScrollNode } from "@/lib/game/types";
 import { codeFor, completedOf, type Progress } from "@/lib/game/progress";
+import { useLang } from "@/lib/i18n/context";
+import type { Localized } from "@/lib/i18n/core";
 
 interface Props {
   /** Capítulos de la aventura activa. */
@@ -15,7 +17,7 @@ interface Props {
 
 interface Entry {
   chapter: number;
-  chapterTitle: string;
+  chapterTitle: Localized<string>;
   node: ScrollNode | ChallengeNode;
 }
 
@@ -31,6 +33,7 @@ const TITLES = {
  * del pergamino, o el enunciado del reto junto al código que el jugador guardó.
  */
 export default function ArchiveModal({ chapters, tab, progress, onClose }: Props) {
+  const { tc } = useLang();
   const entries = useMemo<Entry[]>(() => {
     const out: Entry[] = [];
     for (const ch of chapters) {
@@ -97,10 +100,10 @@ export default function ArchiveModal({ chapters, tab, progress, onClose }: Props
                       }
                     >
                       <span className="block truncate font-medium">
-                        {e.node.title}
+                        {tc(e.node.title)}
                       </span>
                       <span className="block text-[11px] text-slate-500">
-                        Cap. {e.chapter} · {e.chapterTitle}
+                        Cap. {e.chapter} · {tc(e.chapterTitle)}
                       </span>
                     </button>
                   </li>
@@ -120,6 +123,7 @@ export default function ArchiveModal({ chapters, tab, progress, onClose }: Props
 }
 
 function Detail({ entry, progress }: { entry: Entry; progress: Progress }) {
+  const { tc } = useLang();
   const { node } = entry;
 
   if (node.kind === "scroll") {
@@ -127,16 +131,16 @@ function Detail({ entry, progress }: { entry: Entry; progress: Progress }) {
     return (
       <div>
         <p className="text-xs font-semibold uppercase tracking-wider text-sky-300">
-          {sc.topic}
+          {tc(sc.topic)}
         </p>
-        <h3 className="mb-4 text-xl font-bold text-slate-100">{node.title}</h3>
+        <h3 className="mb-4 text-xl font-bold text-slate-100">{tc(node.title)}</h3>
         {sc.sections.map((s, i) => (
           <section key={i} className="mb-4">
             {s.heading && (
-              <h4 className="mb-1 font-semibold text-amber-200">{s.heading}</h4>
+              <h4 className="mb-1 font-semibold text-amber-200">{tc(s.heading)}</h4>
             )}
             <p className="whitespace-pre-line text-sm leading-relaxed text-slate-300">
-              {s.body}
+              {tc(s.body)}
             </p>
             {s.code && (
               <pre className="mt-2 overflow-x-auto rounded-lg bg-slate-950/70 p-3 text-[12px] leading-relaxed text-slate-200">
@@ -147,7 +151,7 @@ function Detail({ entry, progress }: { entry: Entry; progress: Progress }) {
         ))}
         {sc.keyTakeaway && (
           <p className="mt-3 rounded-lg bg-amber-500/10 p-3 text-sm text-amber-100 ring-1 ring-amber-500/30">
-            🗝 {sc.keyTakeaway}
+            🗝 {tc(sc.keyTakeaway)}
           </p>
         )}
       </div>
@@ -169,14 +173,14 @@ function Detail({ entry, progress }: { entry: Entry; progress: Progress }) {
               : "bg-violet-500/15 text-violet-300 ring-violet-500/40")
           }
         >
-          {lang === "python" ? "🐍 Python" : "🐘 PHP"}
+          {lang === "python" ? "🐍 Python" : lang === "javascript" ? "🟨 JavaScript" : "🐘 PHP"}
         </span>
-        {c.topic}
+        {tc(c.topic)}
       </p>
-      <h3 className="mb-1 text-xl font-bold text-slate-100">{node.title}</h3>
+      <h3 className="mb-1 text-xl font-bold text-slate-100">{tc(node.title)}</h3>
       <p className="mb-3 text-xs text-emerald-300">✓ Resuelto</p>
       <p className="mb-4 whitespace-pre-line text-sm leading-relaxed text-slate-300">
-        {c.instructions}
+        {tc(c.instructions)}
       </p>
       <h4 className="mb-1 text-sm font-semibold text-slate-200">
         Tu solución

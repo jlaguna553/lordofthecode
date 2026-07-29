@@ -1,6 +1,7 @@
 "use client";
 
 import type { Reward } from "@/lib/game/types";
+import { useLang } from "@/lib/i18n/context";
 
 interface Props {
   heroes: Reward[];
@@ -19,6 +20,7 @@ export default function HeroPicker({
   onSelect,
   onClose,
 }: Props) {
+  const { tc } = useLang();
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
       <div className="flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden rounded-2xl bg-slate-900 shadow-2xl ring-1 ring-white/10">
@@ -68,8 +70,8 @@ export default function HeroPicker({
                     }
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="font-bold text-slate-100">{h.name}</p>
-                    <p className="truncate text-xs text-slate-400">{h.blurb}</p>
+                    <p className="font-bold text-slate-100">{tc(h.name)}</p>
+                    <p className="truncate text-xs text-slate-400">{tc(h.blurb)}</p>
                   </div>
                   {activo && (
                     <span className="shrink-0 text-xs font-bold text-emerald-400">
