@@ -724,3 +724,247 @@ export const SYL_TS_COMMUNITY_3: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre enums y tipos literales. */
+const Q_LITERAL = {
+  question: P(
+    "¿Qué describe el tipo `'paso' | 'trote' | 'galope'`?",
+    "What does the type `'paso' | 'trote' | 'galope'` describe?",
+  ),
+  options: [
+    P("Un valor que sólo puede ser una de esas TRES cadenas exactas", "A value that can only be one of those THREE exact strings"),
+    P("Cualquier string", "Any string"),
+    P("Un array de tres strings", "An array of three strings"),
+    P("Tres variables", "Three variables"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Es una UNIÓN de tipos literales: el valor debe ser exactamente una de esas cadenas. Si intentas `'volar'`, TS lo rechaza. Es la forma más ligera de un conjunto cerrado de opciones, sin declarar un enum.",
+    "It's a UNION of literal types: the value must be exactly one of those strings. If you try `'volar'`, TS rejects it. It's the lightest form of a closed set of options, without declaring an enum.",
+  ),
+};
+const Q_ENUM = {
+  question: P(
+    "¿Qué es un `enum` en TypeScript?",
+    "What is an `enum` in TypeScript?",
+  ),
+  options: [
+    P("Un conjunto de constantes con nombre que SÍ existe en tiempo de ejecución", "A named set of constants that DOES exist at runtime"),
+    P("Un alias de tipo que desaparece al transpilar", "A type alias that vanishes on transpile"),
+    P("Una interfaz con métodos", "An interface with methods"),
+    P("Un array de números", "An array of numbers"),
+  ],
+  correct: 0,
+  explanation: P(
+    "A diferencia de los tipos (que se borran), un `enum` genera un OBJETO real en el JS transpilado. Por eso puedes recorrer sus valores en ejecución. Los enums de string (`Calmo = 'calmo'`) son los más previsibles.",
+    "Unlike types (which are erased), an `enum` generates a real OBJECT in the transpiled JS. That's why you can iterate its values at runtime. String enums (`Calmo = 'calmo'`) are the most predictable.",
+  ),
+};
+const Q_ENUM_VS_LITERAL = {
+  question: P(
+    "Para un conjunto cerrado de opciones, ¿cuándo basta una unión literal en vez de un enum?",
+    "For a closed set of options, when does a literal union suffice instead of an enum?",
+  ),
+  options: [
+    P("Casi siempre: es más ligera y no genera código", "Almost always: it's lighter and generates no code"),
+    P("Nunca: hay que usar enum", "Never: you must use an enum"),
+    P("Sólo con números", "Only with numbers"),
+    P("Sólo dentro de una clase", "Only inside a class"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La unión literal (`'a' | 'b'`) es puro tipo: cero coste en runtime y muy legible. El enum añade un objeto en ejecución — útil si necesitas iterar los valores o darles un nombre estable. Para lo demás, la unión suele ganar.",
+    "The literal union (`'a' | 'b'`) is pure type: zero runtime cost and very readable. The enum adds a runtime object — handy if you need to iterate the values or give them a stable name. Otherwise, the union usually wins.",
+  ),
+};
+const Q_EXHAUSTIVE = {
+  question: P(
+    "Con una unión literal en un `switch`, ¿qué te da cubrir TODOS los casos?",
+    "With a literal union in a `switch`, what does covering ALL cases give you?",
+  ),
+  options: [
+    P("Comprobación de exhaustividad: si añades una opción y olvidas un caso, TS avisa", "Exhaustiveness checking: if you add an option and miss a case, TS warns"),
+    P("Más velocidad", "More speed"),
+    P("Menos memoria", "Less memory"),
+    P("Nada especial", "Nothing special"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Si el tipo es una unión cerrada, TS sabe qué casos faltan. Con un `default` que asigne a una variable `never`, el compilador te avisa en cuanto amplíes la unión y olvides tratar el caso nuevo. Es una red de seguridad al refactorizar.",
+    "If the type is a closed union, TS knows which cases are missing. With a `default` assigning to a `never` variable, the compiler warns you the moment you widen the union and forget to handle the new case. It's a safety net when refactoring.",
+  ),
+};
+const Q_ENUM_NUMERIC = {
+  question: P(
+    "`enum Rango { Jinete = 1, Capitan = 3 }`. ¿Cuánto vale `Rango.Capitan`?",
+    "`enum Rango { Jinete = 1, Capitan = 3 }`. What is `Rango.Capitan`?",
+  ),
+  options: [
+    P("3", "3"),
+    P("'Capitan'", "'Capitan'"),
+    P("1", "1"),
+    P("undefined", "undefined"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un enum numérico guarda el número asignado: `Rango.Capitan` es `3`. Si no asignas valores, empiezan en 0 y suben de uno en uno. Puedes usarlos como números normales (sumarlos, compararlos).",
+    "A numeric enum stores the assigned number: `Rango.Capitan` is `3`. If you don't assign values, they start at 0 and increase by one. You can use them as regular numbers (add, compare).",
+  ),
+};
+
+/** Capítulo 4 · Enums y tipos literales. */
+export const SYL_TS_COMMUNITY_4: Syllabus = {
+  c4_jinete_rezagado: { kind: "battle", questions: [Q_LITERAL, Q_ENUM, Q_ENUM_VS_LITERAL] },
+  c4_lobo: { kind: "battle", questions: [Q_ENUM_NUMERIC, Q_EXHAUSTIVE, Q_LITERAL] },
+  c4_jefe_nueve: { kind: "battle", questions: [Q_ENUM, Q_LITERAL, Q_ENUM_VS_LITERAL, Q_ENUM_NUMERIC] },
+  c4_trasgo_montaraz: { kind: "battle", questions: [Q_EXHAUSTIVE, Q_ENUM_NUMERIC, Q_ENUM] },
+  pergamino_estatico: {
+    kind: "scroll",
+    title: P("El Pergamino de los Estados Cerrados", "The Scroll of Closed States"),
+    lore_intro: P(
+      "Antes del Vado, un pergamino enseña a nombrar un conjunto CERRADO de posibilidades: uniones literales y enums.",
+      "Before the Ford, a scroll teaches how to name a CLOSED set of possibilities: literal unions and enums.",
+    ),
+    scroll: {
+      topic: P("Enums y tipos literales", "Enums and literal types"),
+      sections: [
+        {
+          heading: P("Uniones literales: opciones sin coste", "Literal unions: options at no cost"),
+          body: P(
+            "`'paso' | 'trote' | 'galope'` es un tipo cuyo valor sólo puede ser una de esas cadenas exactas. Es puro tipo: no genera nada al transpilar y se lee de maravilla.",
+            "`'paso' | 'trote' | 'galope'` is a type whose value can only be one of those exact strings. It's pure type: it generates nothing on transpile and reads beautifully.",
+          ),
+          code:
+            "type Marcha = 'paso' | 'trote' | 'galope';\nfunction galopar(v: number): Marcha {\n  return v < 30 ? 'paso' : v < 70 ? 'trote' : 'galope';\n}",
+        },
+        {
+          heading: P("Enums: constantes con presencia en runtime", "Enums: constants present at runtime"),
+          body: P(
+            "Un `enum` SÍ existe en el JS transpilado (es un objeto). Los numéricos guardan números; los de string, cadenas. Útil cuando necesitas iterar o nombrar valores de forma estable.",
+            "An `enum` DOES exist in the transpiled JS (it's an object). Numeric ones store numbers; string ones store strings. Handy when you need to iterate or name values stably.",
+          ),
+          code:
+            "enum Vado {\n  Calmo = 'calmo',\n  Crecido = 'crecido',\n  Desbordado = 'desbordado',\n}\nVado.Calmo === 'calmo'; // true",
+        },
+        {
+          heading: P("¿Enum o unión?", "Enum or union?"),
+          body: P(
+            "Si sólo necesitas restringir valores, la unión literal gana: cero coste. Elige enum cuando quieras un objeto en runtime (iterar sus valores, un nombre estable). Y cubrir todos los casos de una unión te da chequeo de exhaustividad al refactorizar.",
+            "If you only need to restrict values, the literal union wins: zero cost. Choose an enum when you want a runtime object (iterate its values, a stable name). And covering every case of a union gives you exhaustiveness checking when refactoring.",
+          ),
+          code:
+            "enum Rango { Jinete = 1, Capitan = 3 }\nconst total = [Rango.Jinete, Rango.Capitan]\n  .reduce((a, r) => a + r, 0); // 4",
+        },
+      ],
+      keyTakeaway: P(
+        "Unión literal `'a' | 'b'` para opciones sin coste; `enum` cuando quieres el valor en runtime. Los enums de string son los más previsibles; los numéricos se usan como números.",
+        "Literal union `'a' | 'b'` for options at no cost; `enum` when you want the value at runtime. String enums are the most predictable; numeric ones are used as numbers.",
+      ),
+    },
+  },
+  montura_asfaloth: {
+    kind: "challenge",
+    title: P("Asfaloth, el Corcel Élfico", "Asfaloth, the Elven Steed"),
+    lore_intro: P(
+      "El corcel de Glorfindel tiene tres marchas, ni una más. Un tipo literal las encierra todas.",
+      "Glorfindel's steed has three gaits, not one more. A literal type encloses them all.",
+    ),
+    challenge: {
+      topic: P("Uniones literales", "Literal unions"),
+      instructions: P(
+        "Declara `type Marcha = 'paso' | 'trote' | 'galope'` y escribe `galopar(v: number): Marcha` que devuelva `'paso'` si `v < 30`, `'trote'` si `v < 70`, y `'galope'` en los demás casos.\n\nEjemplo: `galopar(50)` → `'trote'`.",
+        "Declare `type Marcha = 'paso' | 'trote' | 'galope'` and write `galopar(v: number): Marcha` returning `'paso'` if `v < 30`, `'trote'` if `v < 70`, and `'galope'` otherwise.\n\nExample: `galopar(50)` → `'trote'`.",
+      ),
+      starter_code:
+        "type Marcha = 'paso' | 'trote' | 'galope';\n\nfunction galopar(v: number): Marcha {\n  // devuelve la marcha según v\n}\n",
+      hints: [
+        P("Un ternario encadenado: `v < 30 ? 'paso' : v < 70 ? 'trote' : 'galope'`.", "A chained ternary: `v < 30 ? 'paso' : v < 70 ? 'trote' : 'galope'`."),
+        P("Sólo puedes devolver una de las tres cadenas del tipo Marcha.", "You can only return one of the three strings of the Marcha type."),
+      ],
+      test_cases: [
+        { input: "galopar(10)", expected: "paso", description: P("Lento", "Slow"), raw: true },
+        { input: "galopar(50)", expected: "trote", description: P("Medio", "Medium"), raw: true },
+        { input: "galopar(200)", expected: "galope", description: P("A todo correr", "Full gallop"), raw: true },
+      ],
+    },
+  },
+  recuento_de_los_nueve: {
+    kind: "challenge",
+    title: P("El Recuento de los Nueve", "The Reckoning of the Nine"),
+    lore_intro: P(
+      "Cada rango de la Sombra pesa distinto. Un enum numérico les pone valor, y tú sumas la hueste.",
+      "Each rank of the Shadow weighs differently. A numeric enum gives them a value, and you sum the host.",
+    ),
+    challenge: {
+      topic: P("Enums numéricos", "Numeric enums"),
+      instructions: P(
+        "Declara `enum Rango { Jinete = 1, Capitan = 3 }` y escribe `contar(rangos: Rango[]): number` que devuelva la SUMA de sus valores.\n\nEjemplo: `contar([Rango.Jinete, Rango.Capitan])` → `4`.",
+        "Declare `enum Rango { Jinete = 1, Capitan = 3 }` and write `contar(rangos: Rango[]): number` returning the SUM of their values.\n\nExample: `contar([Rango.Jinete, Rango.Capitan])` → `4`.",
+      ),
+      starter_code:
+        "enum Rango { Jinete = 1, Capitan = 3 }\n\nfunction contar(rangos: Rango[]): number {\n  // suma los valores del enum\n}\n",
+      hints: [
+        P("Los valores del enum son números: `rangos.reduce((a, r) => a + r, 0)`.", "The enum values are numbers: `rangos.reduce((a, r) => a + r, 0)`."),
+        P("`Rango.Jinete` vale 1 y `Rango.Capitan` vale 3.", "`Rango.Jinete` is 1 and `Rango.Capitan` is 3."),
+      ],
+      test_cases: [
+        { input: "contar([Rango.Jinete, Rango.Capitan])", expected: 4, description: P("1 + 3", "1 + 3"), raw: true },
+        { input: "contar([Rango.Jinete, Rango.Jinete, Rango.Jinete])", expected: 3, description: P("Tres jinetes", "Three riders"), raw: true },
+        { input: "contar([])", expected: 0, description: P("Hueste vacía", "Empty host"), raw: true },
+      ],
+    },
+  },
+  vado_de_bruinen: {
+    kind: "challenge",
+    title: P("El Vado de Bruinen", "The Ford of Bruinen"),
+    lore_intro: P(
+      "Sólo el vado en calma se puede cruzar. Una unión literal restringe los estados posibles.",
+      "Only the calm ford can be crossed. A literal union restricts the possible states.",
+    ),
+    challenge: {
+      topic: P("Parámetro de unión literal", "Literal union parameter"),
+      instructions: P(
+        "Escribe `esVadeable(estado: 'calmo' | 'crecido' | 'desbordado'): boolean` que devuelva `true` SÓLO si el estado es `'calmo'`.\n\nEjemplo: `esVadeable('calmo')` → `true`; `esVadeable('crecido')` → `false`.",
+        "Write `esVadeable(estado: 'calmo' | 'crecido' | 'desbordado'): boolean` returning `true` ONLY if the state is `'calmo'`.\n\nExample: `esVadeable('calmo')` → `true`; `esVadeable('crecido')` → `false`.",
+      ),
+      starter_code:
+        "function esVadeable(estado: 'calmo' | 'crecido' | 'desbordado'): boolean {\n  // true sólo con 'calmo'\n}\n",
+      hints: [
+        P("Una comparación ya es booleana: `return estado === 'calmo';`.", "A comparison is already boolean: `return estado === 'calmo';`."),
+        P("El parámetro sólo acepta una de las tres cadenas.", "The parameter only accepts one of the three strings."),
+      ],
+      test_cases: [
+        { input: "esVadeable('calmo')", expected: true, description: P("El vado en calma se cruza", "The calm ford is crossable"), raw: true },
+        { input: "esVadeable('crecido')", expected: false, description: P("Crecido, no", "Risen, no"), raw: true },
+        { input: "esVadeable('desbordado')", expected: false, description: P("Desbordado, tampoco", "Flooded, neither"), raw: true },
+      ],
+    },
+  },
+  c4_runas_del_vado: {
+    kind: "challenge",
+    title: P("Las runas del Vado", "The runes of the Ford"),
+    lore_intro: P(
+      "Tres runas, tres estados del agua. Un enum de string los nombra y clasifica según el caudal.",
+      "Three runes, three states of the water. A string enum names them and classifies by flow.",
+    ),
+    challenge: {
+      topic: P("Enums de string", "String enums"),
+      instructions: P(
+        "Declara `enum Vado { Calmo = 'calmo', Crecido = 'crecido', Desbordado = 'desbordado' }` y escribe `segunCaudal(caudal: number): Vado` que devuelva `Vado.Calmo` si `caudal < 30`, `Vado.Crecido` si `< 70`, y `Vado.Desbordado` en los demás casos.\n\nEjemplo: `segunCaudal(10)` → `Vado.Calmo` (valor `'calmo'`).",
+        "Declare `enum Vado { Calmo = 'calmo', Crecido = 'crecido', Desbordado = 'desbordado' }` and write `segunCaudal(caudal: number): Vado` returning `Vado.Calmo` if `caudal < 30`, `Vado.Crecido` if `< 70`, and `Vado.Desbordado` otherwise.\n\nExample: `segunCaudal(10)` → `Vado.Calmo` (value `'calmo'`).",
+      ),
+      starter_code:
+        "enum Vado {\n  Calmo = 'calmo',\n  Crecido = 'crecido',\n  Desbordado = 'desbordado',\n}\n\nfunction segunCaudal(caudal: number): Vado {\n  // devuelve el caso del enum según el caudal\n}\n",
+      hints: [
+        P("Ternario encadenado devolviendo miembros del enum: `Vado.Calmo`, `Vado.Crecido`, `Vado.Desbordado`.", "Chained ternary returning enum members: `Vado.Calmo`, `Vado.Crecido`, `Vado.Desbordado`."),
+        P("Un enum de string es igual a su valor: `Vado.Calmo === 'calmo'`.", "A string enum equals its value: `Vado.Calmo === 'calmo'`."),
+      ],
+      test_cases: [
+        { input: "segunCaudal(10)", expected: "calmo", description: P("Caudal bajo", "Low flow"), raw: true },
+        { input: "segunCaudal(50)", expected: "crecido", description: P("Caudal medio", "Medium flow"), raw: true },
+        { input: "segunCaudal(200)", expected: "desbordado", description: P("El río contra los Nueve", "The river against the Nine"), raw: true },
+        { input: "segunCaudal(10) === Vado.Calmo", expected: true, description: P("Devuelve el miembro del enum", "Returns the enum member"), raw: true },
+      ],
+    },
+  },
+};
