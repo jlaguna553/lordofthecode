@@ -107,10 +107,20 @@ export default function ChallengeModal({
                   "rounded px-1.5 py-0.5 text-[10px] font-bold ring-1 " +
                   (langOf(c) === "python"
                     ? "bg-sky-500/15 text-sky-300 ring-sky-500/40"
-                    : "bg-violet-500/15 text-violet-300 ring-violet-500/40")
+                    : langOf(c) === "javascript"
+                      ? "bg-amber-500/15 text-amber-300 ring-amber-500/40"
+                      : langOf(c) === "typescript"
+                        ? "bg-blue-500/15 text-blue-300 ring-blue-500/40"
+                        : "bg-violet-500/15 text-violet-300 ring-violet-500/40")
                 }
               >
-                {langOf(c) === "python" ? "🐍 Python" : langOf(c) === "javascript" ? "🟨 JavaScript" : "🐘 PHP"}
+                {langOf(c) === "python"
+                  ? "🐍 Python"
+                  : langOf(c) === "javascript"
+                    ? "🟨 JavaScript"
+                    : langOf(c) === "typescript"
+                      ? "🔷 TypeScript"
+                      : "🐘 PHP"}
               </span>
               Capítulo · {tc(c.topic)}
             </p>
@@ -254,7 +264,7 @@ export default function ChallengeModal({
               <Editor
                 height="100%"
                 language={langOf(c)}
-                path={`reto-${node.node_id}.${langOf(c) === "python" ? "py" : "php"}`}
+                path={`reto-${node.node_id}.${langOf(c) === "python" ? "py" : langOf(c) === "javascript" ? "js" : langOf(c) === "typescript" ? "ts" : "php"}`}
                 theme="vs-dark"
                 defaultValue={code}
                 onMount={(editor) => {
