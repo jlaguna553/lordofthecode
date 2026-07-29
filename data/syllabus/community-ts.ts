@@ -1205,3 +1205,264 @@ export const SYL_TS_COMMUNITY_5: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre genéricos. */
+const Q_GENERIC = {
+  question: P(
+    "¿Qué es `<T>` en `function primero<T>(xs: T[]): T`?",
+    "What is `<T>` in `function primero<T>(xs: T[]): T`?",
+  ),
+  options: [
+    P("Un parámetro de TIPO: la función funciona con cualquier tipo y lo conserva", "A TYPE parameter: the function works with any type and preserves it"),
+    P("Un valor por defecto", "A default value"),
+    P("Una comparación menor-que", "A less-than comparison"),
+    P("Un array vacío", "An empty array"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`<T>` declara un tipo genérico: un hueco que se rellena al llamar. Aquí liga la entrada `T[]` con la salida `T`, así que `primero([1,2])` devuelve `number` y `primero(['a'])` devuelve `string`. Es reutilización SIN perder el tipo.",
+    "`<T>` declares a generic type: a slot filled in at the call. Here it links the input `T[]` with the output `T`, so `primero([1,2])` returns `number` and `primero(['a'])` returns `string`. It's reuse WITHOUT losing the type.",
+  ),
+};
+const Q_GENERIC_INFER = {
+  question: P(
+    "Al llamar `primero([1, 2, 3])`, ¿hace falta escribir `primero<number>(...)`?",
+    "When calling `primero([1, 2, 3])`, do you need to write `primero<number>(...)`?",
+  ),
+  options: [
+    P("No: TS INFIERE T = number del argumento", "No: TS INFERS T = number from the argument"),
+    P("Sí, siempre hay que indicar el tipo", "Yes, you must always state the type"),
+    P("Sólo con strings", "Only with strings"),
+    P("Sólo dentro de una clase", "Only inside a class"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En la mayoría de los casos TS deduce el tipo genérico del argumento, así que no hace falta anotarlo. Sólo lo indicas explícitamente (`primero<number>([])`) cuando no hay de dónde inferirlo o quieres forzarlo.",
+    "In most cases TS infers the generic type from the argument, so you needn't annotate it. You only state it explicitly (`primero<number>([])`) when there's nothing to infer from or you want to force it.",
+  ),
+};
+const Q_GENERIC_CONSTRAINT = {
+  question: P(
+    "¿Qué hace `<T extends { fuerza: number }>`?",
+    "What does `<T extends { fuerza: number }>` do?",
+  ),
+  options: [
+    P("Restringe T a tipos que TENGAN una propiedad `fuerza: number`", "It constrains T to types that HAVE a `fuerza: number` property"),
+    P("Hace que T herede de una clase", "It makes T inherit from a class"),
+    P("Convierte T en number", "It turns T into number"),
+    P("Crea un array de fuerzas", "It creates an array of forces"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`extends` en un genérico es una RESTRICCIÓN: T puede ser cualquier tipo siempre que tenga (al menos) esa forma. Así dentro puedes leer `x.fuerza` con seguridad, y aun así devolver el tipo concreto que te pasaron.",
+    "`extends` in a generic is a CONSTRAINT: T can be any type as long as it has (at least) that shape. So inside you can safely read `x.fuerza`, and still return the concrete type you were given.",
+  ),
+};
+const Q_GENERIC_FN = {
+  question: P(
+    "En `function mapear<T, U>(xs: T[], fn: (x: T) => U): U[]`, ¿qué relación hay entre T y U?",
+    "In `function mapear<T, U>(xs: T[], fn: (x: T) => U): U[]`, what's the relation between T and U?",
+  ),
+  options: [
+    P("Entran T y salen U: la función transforma un array de T en uno de U", "T goes in and U comes out: it transforms an array of T into one of U"),
+    P("T y U son siempre el mismo tipo", "T and U are always the same type"),
+    P("U debe ser number", "U must be number"),
+    P("No pueden usarse dos genéricos", "You can't use two generics"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Dos parámetros de tipo modelan una transformación: recibes `T[]` y una función `T → U`, y devuelves `U[]`. Es exactamente la firma de `Array.map`. TS deduce ambos del uso.",
+    "Two type parameters model a transformation: you take `T[]` and a function `T → U`, and return `U[]`. It's exactly the signature of `Array.map`. TS infers both from usage.",
+  ),
+};
+const Q_GENERIC_CLASS = {
+  question: P(
+    "¿Qué representa `class Cofre<T>`?",
+    "What does `class Cofre<T>` represent?",
+  ),
+  options: [
+    P("Una clase genérica: un Cofre<string> guarda strings, un Cofre<number> numbers", "A generic class: a Cofre<string> holds strings, a Cofre<number> numbers"),
+    P("Una clase que hereda de T", "A class that inherits from T"),
+    P("Una clase con un método T", "A class with a method T"),
+    P("Un error: las clases no admiten <T>", "An error: classes can't take <T>"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una clase genérica parametriza su contenido: `Cofre<T>` reutiliza el mismo código para cualquier tipo, y cada instancia conserva el suyo. `new Cofre<string>()` sólo aceptará strings en sus métodos.",
+    "A generic class parametrizes its content: `Cofre<T>` reuses the same code for any type, and each instance keeps its own. `new Cofre<string>()` will only accept strings in its methods.",
+  ),
+};
+const Q_WHY_GENERIC = {
+  question: P(
+    "¿Por qué un genérico es mejor que usar `any` para una función reutilizable?",
+    "Why is a generic better than using `any` for a reusable function?",
+  ),
+  options: [
+    P("El genérico CONSERVA el tipo de entrada a la salida; `any` lo pierde", "The generic PRESERVES the input type at the output; `any` loses it"),
+    P("El genérico es más rápido", "The generic is faster"),
+    P("`any` no compila", "`any` doesn't compile"),
+    P("No hay diferencia", "There's no difference"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Con `any`, `primero(['a'])` devolvería `any` y perderías el autocompletado y los errores. Con `<T>`, devuelve `string`: mantienes toda la información de tipos a lo largo de la llamada. Genéricos = reutilización con tipos intactos.",
+    "With `any`, `primero(['a'])` would return `any` and you'd lose autocomplete and error checks. With `<T>`, it returns `string`: you keep all type information through the call. Generics = reuse with types intact.",
+  ),
+};
+
+/** Capítulo 6 · Genéricos. */
+export const SYL_TS_COMMUNITY_6: Syllabus = {
+  c6_trasgo_explorador: { kind: "battle", questions: [Q_GENERIC, Q_GENERIC_INFER, Q_WHY_GENERIC] },
+  c6_trol_cavernas: { kind: "battle", questions: [Q_GENERIC_FN, Q_GENERIC_CONSTRAINT, Q_GENERIC] },
+  c6_capitan_trasgo: { kind: "battle", questions: [Q_GENERIC_CONSTRAINT, Q_GENERIC_CLASS, Q_GENERIC_INFER] },
+  c6_jefe_balrog: { kind: "battle", questions: [Q_GENERIC_FN, Q_GENERIC_CLASS, Q_WHY_GENERIC, Q_GENERIC_CONSTRAINT] },
+  pergamino_contratos: {
+    kind: "scroll",
+    title: P("El Pergamino de los Moldes", "The Scroll of Molds"),
+    lore_intro: P(
+      "Ante las Puertas de Durin, un pergamino enseña a escribir código que sirve para CUALQUIER tipo sin perderlo: los genéricos.",
+      "Before the Doors of Durin, a scroll teaches how to write code that works for ANY type without losing it: generics.",
+    ),
+    scroll: {
+      topic: P("Genéricos: reutilización con tipos intactos", "Generics: reuse with types intact"),
+      sections: [
+        {
+          heading: P("El parámetro de tipo <T>", "The type parameter <T>"),
+          body: P(
+            "`<T>` es un hueco de tipo que se rellena al llamar. Liga entrada y salida: `primero<T>(xs: T[]): T` devuelve el mismo tipo que contiene el array. Mejor que `any`, que lo perdería.",
+            "`<T>` is a type slot filled in at the call. It links input and output: `primero<T>(xs: T[]): T` returns the same type the array holds. Better than `any`, which would lose it.",
+          ),
+          code:
+            "function primero<T>(xs: T[]): T {\n  return xs[0];\n}\nprimero([1, 2, 3]); // number\nprimero(['a', 'b']); // string",
+        },
+        {
+          heading: P("Varios tipos y restricciones", "Multiple types and constraints"),
+          body: P(
+            "Puedes usar varios (`<T, U>`) para modelar transformaciones, y restringir con `extends`: `<T extends { fuerza: number }>` exige que T tenga esa forma, para poder leer `x.fuerza` sin perder el tipo concreto.",
+            "You can use several (`<T, U>`) to model transformations, and constrain with `extends`: `<T extends { fuerza: number }>` requires T to have that shape, so you can read `x.fuerza` without losing the concrete type.",
+          ),
+          code:
+            "function mapear<T, U>(xs: T[], fn: (x: T) => U): U[] {\n  return xs.map(fn);\n}\nfunction masFuerte<T extends { fuerza: number }>(xs: T[]): T {\n  return xs.reduce((a, b) => b.fuerza > a.fuerza ? b : a);\n}",
+        },
+        {
+          heading: P("Clases genéricas", "Generic classes"),
+          body: P(
+            "Una clase también puede parametrizarse: `Cofre<T>` guarda elementos de un tipo y cada instancia conserva el suyo. TS suele INFERIR los genéricos del uso, sin que tengas que anotarlos.",
+            "A class can also be parametrized: `Cofre<T>` holds elements of a type and each instance keeps its own. TS usually INFERS the generics from usage, without you annotating them.",
+          ),
+          code:
+            "class Cofre<T> {\n  private items: T[] = [];\n  guardar(x: T): this { this.items.push(x); return this; }\n  todo(): T[] { return this.items; }\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "`<T>` reutiliza código conservando el tipo (a diferencia de `any`). `<T, U>` modela transformaciones; `<T extends ...>` restringe la forma; `Clase<T>` parametriza una clase. TS infiere el tipo del uso casi siempre.",
+        "`<T>` reuses code while keeping the type (unlike `any`). `<T, U>` models transformations; `<T extends ...>` constrains the shape; `Class<T>` parametrizes a class. TS infers the type from usage almost always.",
+      ),
+    },
+  },
+  puertas_de_durin: {
+    kind: "challenge",
+    title: P("Las Puertas de Durin", "The Doors of Durin"),
+    lore_intro: P(
+      "La puerta acepta cualquier viajero y lo deja pasar tal como es. Escribe una función genérica que conserve el tipo.",
+      "The door accepts any traveler and lets them through as they are. Write a generic function that preserves the type.",
+    ),
+    challenge: {
+      topic: P("Función genérica <T>", "Generic function <T>"),
+      instructions: P(
+        "Escribe `primero<T>(xs: T[]): T` que devuelva el PRIMER elemento del array, conservando su tipo. La lista tendrá al menos uno.\n\nEjemplo: `primero([1, 2, 3])` → `1`; `primero(['a', 'b'])` → `'a'`.",
+        "Write `primero<T>(xs: T[]): T` returning the FIRST element of the array, preserving its type. The list has at least one.\n\nExample: `primero([1, 2, 3])` → `1`; `primero(['a', 'b'])` → `'a'`.",
+      ),
+      starter_code:
+        "function primero<T>(xs: T[]): T {\n  // devuelve el primer elemento\n}\n",
+      hints: [
+        P("El primer elemento es `xs[0]`.", "The first element is `xs[0]`."),
+        P("`<T>` liga la entrada `T[]` con la salida `T`: no hace falta anotar el tipo al llamar.", "`<T>` links the input `T[]` with the output `T`: no need to annotate the type when calling."),
+      ],
+      test_cases: [
+        { input: "primero([1, 2, 3])", expected: 1, description: P("Con numbers", "With numbers"), raw: true },
+        { input: "primero(['a', 'b'])", expected: "a", description: P("Con strings", "With strings"), raw: true },
+        { input: "primero([true, false])", expected: true, description: P("Con booleans", "With booleans"), raw: true },
+      ],
+    },
+  },
+  camara_mazarbul: {
+    kind: "challenge",
+    title: P("La Cámara de Mazarbul", "The Chamber of Mazarbul"),
+    lore_intro: P(
+      "Transforma una hueste en otra cosa: un genérico de dos tipos convierte una lista de T en una de U.",
+      "Transform a host into something else: a two-type generic turns a list of T into one of U.",
+    ),
+    challenge: {
+      topic: P("Genéricos <T, U> y funciones", "Generics <T, U> and functions"),
+      instructions: P(
+        "Escribe `mapear<T, U>(xs: T[], fn: (x: T) => U): U[]` que aplique `fn` a cada elemento y devuelva el array de resultados (como `Array.map`).\n\nEjemplo: `mapear([1, 2], (n) => n * 2)` → `[2, 4]`.",
+        "Write `mapear<T, U>(xs: T[], fn: (x: T) => U): U[]` applying `fn` to each element and returning the array of results (like `Array.map`).\n\nExample: `mapear([1, 2], (n) => n * 2)` → `[2, 4]`.",
+      ),
+      starter_code:
+        "function mapear<T, U>(xs: T[], fn: (x: T) => U): U[] {\n  // aplica fn a cada elemento\n}\n",
+      hints: [
+        P("Es `xs.map(fn)`.", "It's `xs.map(fn)`."),
+        P("T es el tipo de entrada y U el de salida; TS los deduce del uso.", "T is the input type and U the output; TS infers both from usage."),
+      ],
+      test_cases: [
+        { input: "mapear([1, 2], (n) => n * 2)", expected: [2, 4], description: P("Números al doble", "Numbers doubled"), raw: true },
+        { input: "mapear(['a', 'bb'], (s) => s.length)", expected: [1, 2], description: P("String → longitud (T≠U)", "String → length (T≠U)"), raw: true },
+        { input: "mapear([], (x) => x)", expected: [], description: P("Lista vacía", "Empty list"), raw: true },
+      ],
+    },
+  },
+  puente_khazad_dum: {
+    kind: "challenge",
+    title: P("El Puente de Khazad-dûm", "The Bridge of Khazad-dûm"),
+    lore_intro: P(
+      "De todo lo que cruce el puente, quédate con lo más fuerte — sea lo que sea, mientras tenga fuerza. Restringe el genérico.",
+      "Of everything that crosses the bridge, keep the strongest — whatever it is, as long as it has strength. Constrain the generic.",
+    ),
+    challenge: {
+      topic: P("Genéricos con restricción (extends)", "Constrained generics (extends)"),
+      instructions: P(
+        "Escribe `elMasFuerte<T extends { fuerza: number }>(xs: T[]): T` que devuelva el elemento con mayor `fuerza`, conservando su tipo concreto. La lista tendrá al menos uno.\n\nEjemplo: `elMasFuerte([{ nombre: 'A', fuerza: 3 }, { nombre: 'B', fuerza: 9 }]).nombre` → `'B'`.",
+        "Write `elMasFuerte<T extends { fuerza: number }>(xs: T[]): T` returning the element with the highest `fuerza`, preserving its concrete type. The list has at least one.\n\nExample: `elMasFuerte([{ nombre: 'A', fuerza: 3 }, { nombre: 'B', fuerza: 9 }]).nombre` → `'B'`.",
+      ),
+      starter_code:
+        "function elMasFuerte<T extends { fuerza: number }>(xs: T[]): T {\n  // reduce comparando .fuerza\n}\n",
+      hints: [
+        P("`xs.reduce((a, b) => b.fuerza > a.fuerza ? b : a)` sin valor inicial.", "`xs.reduce((a, b) => b.fuerza > a.fuerza ? b : a)` with no initial value."),
+        P("La restricción `extends { fuerza: number }` te deja leer `.fuerza` con seguridad.", "The constraint `extends { fuerza: number }` lets you safely read `.fuerza`."),
+      ],
+      test_cases: [
+        { input: "elMasFuerte([{ nombre: 'A', fuerza: 3 }, { nombre: 'B', fuerza: 9 }]).nombre", expected: "B", description: P("El más fuerte, con su tipo", "The strongest, with its type"), raw: true },
+        { input: "elMasFuerte([{ nombre: 'Solo', fuerza: 1 }]).nombre", expected: "Solo", description: P("Uno solo", "Just one"), raw: true },
+        { input: "elMasFuerte([{ fuerza: 5 }, { fuerza: 2 }]).fuerza", expected: 5, description: P("Funciona con cualquier forma que tenga fuerza", "Works with any shape that has fuerza"), raw: true },
+      ],
+    },
+  },
+  c6_galeria_de_mazarbul: {
+    kind: "challenge",
+    title: P("La galería sin fin", "The endless gallery"),
+    lore_intro: P(
+      "Un cofre que guarda lo que le eches, del tipo que sea, sin mezclarlos. Una clase genérica lo consigue.",
+      "A chest that holds whatever you put in, of any type, without mixing them. A generic class achieves it.",
+    ),
+    challenge: {
+      topic: P("Clase genérica Cofre<T>", "Generic class Cofre<T>"),
+      instructions: P(
+        "Crea `class Cofre<T>` con un array privado `items: T[]`:\n• `guardar(x: T): this` — añade y devuelve `this` (fluida),\n• `todo(): T[]` — devuelve todo lo guardado.\n\nEjemplo: `new Cofre<string>().guardar('a').guardar('b').todo()` → `['a', 'b']`.",
+        "Create `class Cofre<T>` with a private array `items: T[]`:\n• `guardar(x: T): this` — adds and returns `this` (fluent),\n• `todo(): T[]` — returns everything stored.\n\nExample: `new Cofre<string>().guardar('a').guardar('b').todo()` → `['a', 'b']`.",
+      ),
+      starter_code:
+        "class Cofre<T> {\n  private items: T[] = [];\n\n  guardar(x: T): this {\n    // añade y devuelve this\n  }\n  todo(): T[] {\n    // devuelve los items\n  }\n}\n",
+      hints: [
+        P("`this.items.push(x); return this;` hace la interfaz fluida.", "`this.items.push(x); return this;` makes the fluent interface."),
+        P("`todo()` devuelve `this.items`.", "`todo()` returns `this.items`."),
+      ],
+      test_cases: [
+        { input: "new Cofre().guardar('a').guardar('b').todo()", expected: ["a", "b"], description: P("Guarda en orden", "Stores in order"), raw: true },
+        { input: "new Cofre().guardar(1).guardar(2).guardar(3).todo()", expected: [1, 2, 3], description: P("Con numbers también", "With numbers too"), raw: true },
+        { input: "new Cofre().todo()", expected: [], description: P("Cofre vacío", "Empty chest"), raw: true },
+        { input: "new Cofre().guardar('x') instanceof Cofre", expected: true, description: P("guardar() es fluida", "guardar() is fluent"), raw: true },
+      ],
+    },
+  },
+};
