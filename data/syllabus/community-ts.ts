@@ -1466,3 +1466,237 @@ export const SYL_TS_COMMUNITY_6: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre tipos utilitarios e intersecciones. */
+const Q_INTERSECTION = {
+  question: P(
+    "¿Qué describe el tipo `A & B`?",
+    "What does the type `A & B` describe?",
+  ),
+  options: [
+    P("Un valor que cumple A Y B a la vez (todas las propiedades de ambos)", "A value that satisfies A AND B at once (all properties of both)"),
+    P("Un valor que es A o B", "A value that is A or B"),
+    P("Un array de A y B", "An array of A and B"),
+    P("La parte común de A y B", "The common part of A and B"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La intersección `A & B` COMBINA: el valor debe tener todo lo de A y todo lo de B. Es el opuesto de la unión `|` (que es «uno u otro»). Útil para mezclar formas: `Don & Brillo`.",
+    "The intersection `A & B` COMBINES: the value must have everything from A and everything from B. It's the opposite of the union `|` (which is \"one or the other\"). Handy to merge shapes: `Don & Brillo`.",
+  ),
+};
+const Q_PARTIAL = {
+  question: P(
+    "¿Qué hace `Partial<Config>`?",
+    "What does `Partial<Config>` do?",
+  ),
+  options: [
+    P("Crea un tipo como Config pero con TODAS las propiedades opcionales", "It creates a type like Config but with ALL properties optional"),
+    P("Coge la mitad de las propiedades", "It takes half the properties"),
+    P("Elimina las propiedades", "It removes the properties"),
+    P("Hace Config de sólo lectura", "It makes Config read-only"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`Partial<T>` es un tipo utilitario que vuelve opcionales todas las propiedades de T. Perfecto para «un objeto de cambios» donde sólo mandas los campos que quieres modificar, como en `{ ...base, ...cambios }`.",
+    "`Partial<T>` is a utility type that makes every property of T optional. Perfect for \"a changes object\" where you only send the fields you want to modify, as in `{ ...base, ...cambios }`.",
+  ),
+};
+const Q_UTILITY = {
+  question: P(
+    "¿Qué son los tipos utilitarios como `Partial`, `Pick` o `Readonly`?",
+    "What are utility types like `Partial`, `Pick` or `Readonly`?",
+  ),
+  options: [
+    P("Tipos genéricos de la librería estándar que transforman otros tipos", "Generic types from the standard library that transform other types"),
+    P("Funciones que copian objetos", "Functions that copy objects"),
+    P("Clases base para heredar", "Base classes to inherit from"),
+    P("Métodos de los arrays", "Array methods"),
+  ],
+  correct: 0,
+  explanation: P(
+    "TypeScript trae tipos utilitarios ya hechos: `Partial<T>` (todo opcional), `Readonly<T>` (todo readonly), `Pick<T, K>` (sólo algunas claves), `Record<K, V>` (objeto de K a V). Derivan tipos nuevos a partir de otros sin reescribirlos.",
+    "TypeScript ships ready-made utility types: `Partial<T>` (all optional), `Readonly<T>` (all readonly), `Pick<T, K>` (only some keys), `Record<K, V>` (object from K to V). They derive new types from others without rewriting them.",
+  ),
+};
+const Q_PICK = {
+  question: P(
+    "¿Qué produce `Pick<Jinete, 'nombre'>` si `Jinete` tiene `nombre` y `fuerza`?",
+    "What does `Pick<Jinete, 'nombre'>` produce if `Jinete` has `nombre` and `fuerza`?",
+  ),
+  options: [
+    P("Un tipo con SÓLO la propiedad `nombre`", "A type with ONLY the `nombre` property"),
+    P("Un tipo sin `nombre`", "A type without `nombre`"),
+    P("El valor del nombre", "The name's value"),
+    P("Un array de nombres", "An array of names"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`Pick<T, K>` selecciona un subconjunto de propiedades: `Pick<Jinete, 'nombre'>` es `{ nombre: string }`. Su opuesto es `Omit<T, K>`, que quita las indicadas. Sirven para derivar vistas más pequeñas de un tipo grande.",
+    "`Pick<T, K>` selects a subset of properties: `Pick<Jinete, 'nombre'>` is `{ nombre: string }`. Its opposite is `Omit<T, K>`, which removes the given ones. They derive smaller views of a large type.",
+  ),
+};
+const Q_RECORD = {
+  question: P(
+    "¿Qué describe `Record<string, boolean>`?",
+    "What does `Record<string, boolean>` describe?",
+  ),
+  options: [
+    P("Un objeto con claves string y valores boolean", "An object with string keys and boolean values"),
+    P("Un array de booleanos", "An array of booleans"),
+    P("Una tupla [string, boolean]", "A tuple [string, boolean]"),
+    P("Un Map nativo", "A native Map"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`Record<K, V>` describe un objeto cuyas claves son de tipo K y sus valores de tipo V. `Record<string, boolean>` es un diccionario de nombre a booleano, ideal para un índice o inventario.",
+    "`Record<K, V>` describes an object whose keys are of type K and values of type V. `Record<string, boolean>` is a name-to-boolean dictionary, ideal for an index or inventory.",
+  ),
+};
+const Q_READONLY_UTIL = {
+  question: P(
+    "¿Qué hace `Readonly<Config>`?",
+    "What does `Readonly<Config>` do?",
+  ),
+  options: [
+    P("Crea un tipo como Config con todas sus propiedades readonly", "It creates a type like Config with all its properties readonly"),
+    P("Borra Config", "It deletes Config"),
+    P("Hace todas las propiedades opcionales", "It makes all properties optional"),
+    P("Convierte Config en string", "It turns Config into a string"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`Readonly<T>` marca todas las propiedades como `readonly`: el compilador impide reasignarlas. Como los demás utilitarios, es transformación de tipos en compilación; no cambia nada en runtime.",
+    "`Readonly<T>` marks every property as `readonly`: the compiler prevents reassigning them. Like the other utilities, it's a compile-time type transformation; it changes nothing at runtime.",
+  ),
+};
+
+/** Capítulo 7 · Tipos utilitarios e intersecciones. */
+export const SYL_TS_COMMUNITY_7: Syllabus = {
+  c7_orco_explorador: { kind: "battle", questions: [Q_INTERSECTION, Q_UTILITY, Q_PARTIAL] },
+  c7_trasgo_frontera: { kind: "battle", questions: [Q_RECORD, Q_PICK, Q_INTERSECTION] },
+  c7_uruk_rastreador: { kind: "battle", questions: [Q_PARTIAL, Q_READONLY_UTIL, Q_UTILITY] },
+  c7_jefe_ugluk: { kind: "battle", questions: [Q_INTERSECTION, Q_RECORD, Q_PICK, Q_PARTIAL] },
+  pergamino_dones: {
+    kind: "scroll",
+    title: P("El Pergamino de los Dones Derivados", "The Scroll of Derived Gifts"),
+    lore_intro: P(
+      "Galadriel entrega un pergamino: enseña a COMBINAR y DERIVAR tipos a partir de otros, sin reescribirlos — intersecciones y tipos utilitarios.",
+      "Galadriel hands over a scroll: it teaches how to COMBINE and DERIVE types from others, without rewriting them — intersections and utility types.",
+    ),
+    scroll: {
+      topic: P("Intersecciones y tipos utilitarios", "Intersections and utility types"),
+      sections: [
+        {
+          heading: P("Intersección: combinar formas", "Intersection: combining shapes"),
+          body: P(
+            "`A & B` exige cumplir A Y B: el valor tiene todas las propiedades de ambos. Es lo contrario de la unión `|` («uno u otro»). Útil para fusionar capacidades en un mismo objeto.",
+            "`A & B` requires satisfying A AND B: the value has all properties of both. It's the opposite of the union `|` (\"one or the other\"). Handy to merge capabilities into one object.",
+          ),
+          code:
+            "type Don = { nombre: string };\ntype Brillo = { luz: number };\nconst frasco: Don & Brillo = { nombre: 'Frasco', luz: 5 };",
+        },
+        {
+          heading: P("Tipos utilitarios: derivar sin reescribir", "Utility types: derive without rewriting"),
+          body: P(
+            "TS trae genéricos que transforman tipos: `Partial<T>` (todo opcional), `Readonly<T>`, `Pick<T, K>` (algunas claves), `Omit<T, K>`. Evitan duplicar definiciones.",
+            "TS ships generics that transform types: `Partial<T>` (all optional), `Readonly<T>`, `Pick<T, K>` (some keys), `Omit<T, K>`. They avoid duplicating definitions.",
+          ),
+          code:
+            "interface Config { camuflaje: boolean; peso: number }\nfunction conValores(base: Config, cambios: Partial<Config>): Config {\n  return { ...base, ...cambios };\n}",
+        },
+        {
+          heading: P("Record: diccionarios tipados", "Record: typed dictionaries"),
+          body: P(
+            "`Record<K, V>` describe un objeto de claves K y valores V. `Record<string, boolean>` es un índice de nombre a booleano. Ideal para inventarios y mapas de presencia.",
+            "`Record<K, V>` describes an object of keys K and values V. `Record<string, boolean>` is a name-to-boolean index. Ideal for inventories and presence maps.",
+          ),
+          code:
+            "function inventario(dones: string[]): Record<string, boolean> {\n  const r: Record<string, boolean> = {};\n  for (const d of dones) r[d] = true;\n  return r;\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "`A & B` combina formas (frente a `A | B`, que elige una). Los utilitarios derivan tipos: `Partial`/`Readonly`/`Pick`/`Omit`. `Record<K, V>` tipa diccionarios. Todo se borra al transpilar.",
+        "`A & B` combines shapes (vs `A | B`, which picks one). Utilities derive types: `Partial`/`Readonly`/`Pick`/`Omit`. `Record<K, V>` types dictionaries. All erased on transpile.",
+      ),
+    },
+  },
+  frasco_de_galadriel: {
+    kind: "challenge",
+    title: P("El Frasco de Galadriel", "The Phial of Galadriel"),
+    lore_intro: P(
+      "El frasco es un don Y una luz a la vez. Combina las dos formas con una intersección.",
+      "The phial is a gift AND a light at once. Combine both shapes with an intersection.",
+    ),
+    challenge: {
+      topic: P("Intersecciones (A & B)", "Intersections (A & B)"),
+      instructions: P(
+        "Con `type Don = { nombre: string }` y `type Brillo = { luz: number }`, escribe `forjar(nombre: string, luz: number): Don & Brillo` que devuelva un objeto con ambas propiedades.\n\nEjemplo: `forjar('Frasco', 5)` → `{ nombre: 'Frasco', luz: 5 }`.",
+        "With `type Don = { nombre: string }` and `type Brillo = { luz: number }`, write `forjar(nombre: string, luz: number): Don & Brillo` returning an object with both properties.\n\nExample: `forjar('Frasco', 5)` → `{ nombre: 'Frasco', luz: 5 }`.",
+      ),
+      starter_code:
+        "type Don = { nombre: string };\ntype Brillo = { luz: number };\n\nfunction forjar(nombre: string, luz: number): Don & Brillo {\n  // devuelve un objeto con nombre y luz\n}\n",
+      hints: [
+        P("El objeto debe tener AMBAS propiedades: `{ nombre, luz }`.", "The object must have BOTH properties: `{ nombre, luz }`."),
+        P("`Don & Brillo` exige todo lo de Don y todo lo de Brillo.", "`Don & Brillo` requires everything from Don and everything from Brillo."),
+      ],
+      test_cases: [
+        { input: "forjar('Frasco', 5).nombre", expected: "Frasco", description: P("La parte Don", "The Don part"), raw: true },
+        { input: "forjar('Frasco', 5).luz", expected: 5, description: P("La parte Brillo", "The Brillo part"), raw: true },
+        { input: "forjar('Estrella', 9).luz", expected: 9, description: P("Con otros valores", "With other values"), raw: true },
+      ],
+    },
+  },
+  capas_elficas: {
+    kind: "challenge",
+    title: P("Las Capas Élficas", "The Elven Cloaks"),
+    lore_intro: P(
+      "Ajusta una capa cambiando sólo lo que quieras, sin repetir el resto. Un objeto de cambios PARCIAL basta.",
+      "Adjust a cloak by changing only what you want, without repeating the rest. A PARTIAL changes object is enough.",
+    ),
+    challenge: {
+      topic: P("Partial<T> y spread", "Partial<T> and spread"),
+      instructions: P(
+        "Con `interface Config { camuflaje: boolean; peso: number }`, escribe `conValores(base: Config, cambios: Partial<Config>): Config` que devuelva una copia de `base` con los `cambios` aplicados encima.\n\nEjemplo: `conValores({ camuflaje: false, peso: 1 }, { camuflaje: true })` → `{ camuflaje: true, peso: 1 }`.",
+        "With `interface Config { camuflaje: boolean; peso: number }`, write `conValores(base: Config, cambios: Partial<Config>): Config` returning a copy of `base` with the `cambios` applied on top.\n\nExample: `conValores({ camuflaje: false, peso: 1 }, { camuflaje: true })` → `{ camuflaje: true, peso: 1 }`.",
+      ),
+      starter_code:
+        "interface Config { camuflaje: boolean; peso: number }\n\nfunction conValores(base: Config, cambios: Partial<Config>): Config {\n  // combina base y cambios\n}\n",
+      hints: [
+        P("El spread combina, y el segundo pisa al primero: `{ ...base, ...cambios }`.", "Spread merges, and the second overrides the first: `{ ...base, ...cambios }`."),
+        P("`Partial<Config>` hace opcionales todos los campos de `cambios`.", "`Partial<Config>` makes all fields of `cambios` optional."),
+      ],
+      test_cases: [
+        { input: "conValores({ camuflaje: false, peso: 1 }, { camuflaje: true })", expected: { camuflaje: true, peso: 1 }, description: P("Cambia un campo", "Changes one field"), raw: true },
+        { input: "conValores({ camuflaje: false, peso: 1 }, {})", expected: { camuflaje: false, peso: 1 }, description: P("Sin cambios: copia igual", "No changes: same copy"), raw: true },
+        { input: "conValores({ camuflaje: false, peso: 1 }, { peso: 9 }).peso", expected: 9, description: P("Cambia el otro", "Changes the other"), raw: true },
+      ],
+    },
+  },
+  dones_de_lorien: {
+    kind: "challenge",
+    title: P("Los Dones de la Dama", "The Lady's Gifts"),
+    lore_intro: P(
+      "Anota qué dones lleva cada uno en un índice de nombre a presencia. Un Record tipado lo describe.",
+      "Note which gifts each one carries in a name-to-presence index. A typed Record describes it.",
+    ),
+    challenge: {
+      topic: P("Record<K, V>", "Record<K, V>"),
+      instructions: P(
+        "Escribe `inventario(dones: string[]): Record<string, boolean>` que devuelva un objeto con cada nombre de la lista como clave y `true` como valor.\n\nEjemplo: `inventario(['frasco', 'capa'])` → `{ frasco: true, capa: true }`.",
+        "Write `inventario(dones: string[]): Record<string, boolean>` returning an object with each name in the list as a key and `true` as its value.\n\nExample: `inventario(['frasco', 'capa'])` → `{ frasco: true, capa: true }`.",
+      ),
+      starter_code:
+        "function inventario(dones: string[]): Record<string, boolean> {\n  const r: Record<string, boolean> = {};\n  // rellena r con cada don en true\n  return r;\n}\n",
+      hints: [
+        P("Recorre con `for (const d of dones)` y asigna `r[d] = true;`.", "Iterate with `for (const d of dones)` and assign `r[d] = true;`."),
+        P("`Record<string, boolean>` es un objeto de clave string a valor boolean.", "`Record<string, boolean>` is an object from string key to boolean value."),
+      ],
+      test_cases: [
+        { input: "inventario(['frasco', 'capa'])", expected: { frasco: true, capa: true }, description: P("Índice de presencia", "Presence index"), raw: true },
+        { input: "inventario([])", expected: {}, description: P("Sin dones", "No gifts"), raw: true },
+        { input: "inventario(['luz']).luz", expected: true, description: P("Cada don en true", "Each gift set to true"), raw: true },
+      ],
+    },
+  },
+};
