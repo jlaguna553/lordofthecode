@@ -4193,8 +4193,11 @@ class ServicioPedido {
  */
 export const CHAPTER_ALGOS: Chapter = {
   chapter: 10,
-  title: "La Cámara de los Enigmas",
-  lore: "Bajo las raíces del mundo, los Enanos labraron una sala donde cada puerta guarda un acertijo distinto. Aquí no valen los conjuros: sólo el algoritmo correcto, y el reloj corre.",
+  title: { es: "La Cámara de los Enigmas", en: "The Chamber of Riddles" },
+  lore: {
+    es: "Bajo las raíces del mundo, los Enanos labraron una sala donde cada puerta guarda un acertijo distinto. Aquí no valen los conjuros: sólo el algoritmo correcto, y el reloj corre.",
+    en: "Beneath the roots of the world, the Dwarves carved a hall where each door holds a different riddle. Spells are useless here: only the right algorithm, and the clock is ticking.",
+  },
   mapSize: { cols: 24, rows: 14 },
   spawn: { x: 2, y: 7 },
   scenery: {
@@ -4218,158 +4221,191 @@ export const CHAPTER_ALGOS: Chapter = {
     {
       node_id: "pergamino_bigo",
       kind: "scroll",
-      title: "El Pergamino de los Órdenes",
-      lore_intro:
-        "Una losa grabada en la entrada de la cámara. No dice cómo resolver los acertijos: dice cómo RECONOCERLOS.",
+      title: { es: "El Pergamino de los Órdenes", en: "The Scroll of Orders" },
+      lore_intro: {
+        es: "Una losa grabada en la entrada de la cámara. No dice cómo resolver los acertijos: dice cómo RECONOCERLOS.",
+        en: "A slab carved at the chamber's entrance. It doesn't say how to solve the riddles: it says how to RECOGNIZE them.",
+      },
       position: { x: 4, y: 10 },
       scroll: {
         topic: "Big-O y los patrones de algoritmos",
         sections: [
           {
-            heading: "Complejidad: cómo crece el coste",
-            body: "O(1) constante — acceso por índice, lookup en hash.\nO(log n) — búsqueda binaria sobre datos ordenados.\nO(n) — recorrer una vez.\nO(n log n) — ordenaciones eficientes.\nO(n²) — doble bucle anidado (evítalo si puedes).\nO(2ⁿ) — fuerza bruta recursiva.\n\nDi siempre la complejidad de TIEMPO y de ESPACIO al terminar.",
+            heading: { es: "Complejidad: cómo crece el coste", en: "Complexity: how cost grows" },
+            body: {
+              es: "O(1) constante — acceso por índice, lookup en hash.\nO(log n) — búsqueda binaria sobre datos ordenados.\nO(n) — recorrer una vez.\nO(n log n) — ordenaciones eficientes.\nO(n²) — doble bucle anidado (evítalo si puedes).\nO(2ⁿ) — fuerza bruta recursiva.\n\nDi siempre la complejidad de TIEMPO y de ESPACIO al terminar.",
+              en: "O(1) constant — index access, hash lookup.\nO(log n) — binary search over sorted data.\nO(n) — a single pass.\nO(n log n) — efficient sorts.\nO(n²) — nested double loop (avoid it if you can).\nO(2ⁿ) — recursive brute force.\n\nAlways state the TIME and SPACE complexity when you finish.",
+            },
           },
           {
-            heading: "Los 7 patrones que resuelven casi todo",
-            body: "Hash map → «¿visto antes / cuántas veces / duplicados?»\nDos punteros → array ordenado, trabajar desde los extremos.\nVentana deslizante → el mejor subarray/substring.\nBúsqueda binaria → ordenado, «encuentra el límite».\nRecursión / backtracking → combinaciones, permutaciones.\nBFS / DFS → grafo, árbol, grilla.\nProgramación dinámica → «mínimo/máximo/cuántas formas» con subproblemas.",
+            heading: { es: "Los 7 patrones que resuelven casi todo", en: "The 7 patterns that solve almost everything" },
+            body: {
+              es: "Hash map → «¿visto antes / cuántas veces / duplicados?»\nDos punteros → array ordenado, trabajar desde los extremos.\nVentana deslizante → el mejor subarray/substring.\nBúsqueda binaria → ordenado, «encuentra el límite».\nRecursión / backtracking → combinaciones, permutaciones.\nBFS / DFS → grafo, árbol, grilla.\nProgramación dinámica → «mínimo/máximo/cuántas formas» con subproblemas.",
+              en: "Hash map → \"seen before / how many times / duplicates?\"\nTwo pointers → sorted array, work from the ends.\nSliding window → the best subarray/substring.\nBinary search → sorted, \"find the boundary\".\nRecursion / backtracking → combinations, permutations.\nBFS / DFS → graph, tree, grid.\nDynamic programming → \"min/max/how many ways\" with subproblems.",
+            },
           },
           {
-            heading: "Cómo narrarlo (cuenta tanto como el código)",
-            body: "1. Reformula el enunciado y confirma los casos borde (vacío, negativos, duplicados).\n2. Di la fuerza bruta y su Big-O.\n3. Optimiza — casi siempre un hash map o dos punteros bajan de O(n²) a O(n).\n4. Codifica hablando.\n5. Prueba con un ejemplo pequeño.\n6. Cierra diciendo la complejidad final.",
+            heading: { es: "Cómo narrarlo (cuenta tanto como el código)", en: "How to narrate it (it counts as much as the code)" },
+            body: {
+              es: "1. Reformula el enunciado y confirma los casos borde (vacío, negativos, duplicados).\n2. Di la fuerza bruta y su Big-O.\n3. Optimiza — casi siempre un hash map o dos punteros bajan de O(n²) a O(n).\n4. Codifica hablando.\n5. Prueba con un ejemplo pequeño.\n6. Cierra diciendo la complejidad final.",
+              en: "1. Restate the problem and confirm the edge cases (empty, negatives, duplicates).\n2. State the brute force and its Big-O.\n3. Optimize — a hash map or two pointers almost always drops O(n²) to O(n).\n4. Code while talking.\n5. Test with a small example.\n6. Close by stating the final complexity.",
+            },
           },
         ],
-        keyTakeaway:
-          "Una solución correcta lenta vale más que una óptima sin terminar. Fuerza bruta primero si te bloqueas; optimiza después si queda tiempo.",
+        keyTakeaway: {
+          es: "Una solución correcta lenta vale más que una óptima sin terminar. Fuerza bruta primero si te bloqueas; optimiza después si queda tiempo.",
+          en: "A correct slow solution beats an optimal unfinished one. Brute force first if you're stuck; optimize later if there's time.",
+        },
       },
     },
     {
       node_id: "algo_two_sum",
-      title: "El Acertijo de los Dos Anillos",
-      lore_intro:
-        "Dos gemas de la colección suman exactamente el peso grabado en la puerta. Encuéntralas — pero sólo puedes recorrer el cofre una vez.",
+      title: { es: "El Acertijo de los Dos Anillos", en: "The Riddle of the Two Rings" },
+      lore_intro: {
+        es: "Dos gemas de la colección suman exactamente el peso grabado en la puerta. Encuéntralas — pero sólo puedes recorrer el cofre una vez.",
+        en: "Two gems from the collection add up to exactly the weight carved on the door. Find them — but you may only go through the chest once.",
+      },
       position: { x: 7, y: 7 },
       poo_challenge: {
         topic: "Hash map · O(n)",
         timeLimitSec: 600,
-        instructions:
-          "Given an array of integers and a target, return the indices of the two numbers that add up to the target. Exactly one solution; you can't use the same element twice.\n\n(ES) Implementa twoSum(array $nums, int $target): array, que devuelva los ÍNDICES de los dos números que suman el objetivo.",
+        instructions: {
+          es: "Implementa twoSum(array $nums, int $target): array, que devuelva los ÍNDICES de los dos números que suman el objetivo. Hay exactamente una solución y no puedes usar el mismo elemento dos veces.",
+          en: "Given an array of integers and a target, return the indices of the two numbers that add up to the target. Exactly one solution; you can't use the same element twice. Implement twoSum(array $nums, int $target): array.",
+        },
         starter_code:
           "<?php\n\nfunction twoSum(array $nums, int $target): array {\n    // Recorre una sola vez guardando lo ya visto\n}\n",
         hints: [
-          "Guarda cada valor visto en un hash map valor => índice.",
-          "Para cada número busca su complemento: $need = $target - $n; si ya lo viste, ahí está la pareja.",
-          "isset($seen[$need]) es O(1): por eso el total queda en O(n) tiempo y O(n) espacio.",
+          { es: "Guarda cada valor visto en un hash map valor => índice.", en: "Store each seen value in a hash map value => index." },
+          { es: "Para cada número busca su complemento: $need = $target - $n; si ya lo viste, ahí está la pareja.", en: "For each number look for its complement: $need = $target - $n; if you've seen it, there's the pair." },
+          { es: "isset($seen[$need]) es O(1): por eso el total queda en O(n) tiempo y O(n) espacio.", en: "isset($seen[$need]) is O(1): that's why the total is O(n) time and O(n) space." },
         ],
         test_cases: [
           { input: "twoSum([2, 7, 11, 15], 9)", expected: [0, 1], description: "2 + 7 = 9" },
           { input: "twoSum([3, 2, 4], 6)", expected: [1, 2], description: "2 + 4 = 6" },
-          { input: "twoSum([3, 3], 6)", expected: [0, 1], description: "Valores repetidos, índices distintos" },
+          { input: "twoSum([3, 3], 6)", expected: [0, 1], description: { es: "Valores repetidos, índices distintos", en: "Repeated values, distinct indices" } },
         ],
       },
     },
     {
       node_id: "algo_palindromo",
-      title: "La Runa que se Lee al Revés",
-      lore_intro:
-        "La inscripción dice lo mismo empezando por cualquiera de sus extremos… si ignoras los adornos y no distingues el tamaño de las letras.",
+      title: { es: "La Runa que se Lee al Revés", en: "The Rune Read Backwards" },
+      lore_intro: {
+        es: "La inscripción dice lo mismo empezando por cualquiera de sus extremos… si ignoras los adornos y no distingues el tamaño de las letras.",
+        en: "The inscription reads the same from either end… if you ignore the flourishes and don't distinguish letter case.",
+      },
       position: { x: 11, y: 7 },
       poo_challenge: {
         topic: "Dos punteros · O(n)",
         timeLimitSec: 600,
-        instructions:
-          "Return true if a string is a palindrome, considering only alphanumeric characters and ignoring case.\n\n(ES) Implementa isPalindrome(string $s): bool. Sólo cuentan los caracteres alfanuméricos y no se distinguen mayúsculas.",
+        instructions: {
+          es: "Implementa isPalindrome(string $s): bool. Devuelve true si la cadena es un palíndromo, contando sólo los caracteres alfanuméricos y sin distinguir mayúsculas.",
+          en: "Return true if a string is a palindrome, considering only alphanumeric characters and ignoring case. Implement isPalindrome(string $s): bool.",
+        },
         starter_code:
           "<?php\n\nfunction isPalindrome(string $s): bool {\n    // Normaliza y compara con su reverso\n}\n",
         hints: [
-          "Normaliza primero: pásalo a minúsculas con strtolower().",
-          "Quita todo lo que no sea alfanumérico: preg_replace('/[^a-z0-9]/', '', $s)",
-          "Y compara con su reverso: return $s === strrev($s);",
+          { es: "Normaliza primero: pásalo a minúsculas con strtolower().", en: "Normalize first: lowercase it with strtolower()." },
+          { es: "Quita todo lo que no sea alfanumérico: preg_replace('/[^a-z0-9]/', '', $s)", en: "Strip everything non-alphanumeric: preg_replace('/[^a-z0-9]/', '', $s)" },
+          { es: "Y compara con su reverso: return $s === strrev($s);", en: "And compare with its reverse: return $s === strrev($s);" },
         ],
         test_cases: [
           {
             input: "isPalindrome('A man, a plan, a canal: Panama')",
             expected: true,
-            description: "Ignorando comas, espacios y mayúsculas, sí lo es",
+            description: { es: "Ignorando comas, espacios y mayúsculas, sí lo es", en: "Ignoring commas, spaces and case, it is" },
           },
-          { input: "isPalindrome('race a car')", expected: false, description: "No lo es" },
-          { input: "isPalindrome('')", expected: true, description: "La cadena vacía es palíndromo" },
+          { input: "isPalindrome('race a car')", expected: false, description: { es: "No lo es", en: "It isn't" } },
+          { input: "isPalindrome('')", expected: true, description: { es: "La cadena vacía es palíndromo", en: "The empty string is a palindrome" } },
         ],
       },
     },
     {
       node_id: "algo_parentesis",
-      title: "Las Puertas Anidadas",
-      lore_intro:
-        "Un pasillo de arcos que se abren y se cierran. Cada arco debe cerrarse con su pareja, y en el orden correcto: el último en abrirse es el primero en cerrarse.",
+      title: { es: "Las Puertas Anidadas", en: "The Nested Gates" },
+      lore_intro: {
+        es: "Un pasillo de arcos que se abren y se cierran. Cada arco debe cerrarse con su pareja, y en el orden correcto: el último en abrirse es el primero en cerrarse.",
+        en: "A corridor of arches that open and close. Each arch must close with its match, and in the right order: the last to open is the first to close.",
+      },
       position: { x: 15, y: 7 },
       poo_challenge: {
         topic: "Pila (LIFO) · O(n)",
         timeLimitSec: 900,
-        instructions:
-          "Given a string of ()[]{} , return true if every bracket is correctly opened and closed in order.\n\n(ES) Implementa isValidParens(string $s): bool. Los símbolos deben estar bien balanceados Y bien anidados.",
+        instructions: {
+          es: "Implementa isValidParens(string $s): bool. Dada una cadena de ()[]{} , devuelve true si los símbolos están bien balanceados Y bien anidados.",
+          en: "Given a string of ()[]{} , return true if every bracket is correctly opened and closed in order. Implement isValidParens(string $s): bool.",
+        },
         starter_code:
           "<?php\n\nfunction isValidParens(string $s): bool {\n    // Una pila: apila las aperturas, desapila al cerrar\n}\n",
         hints: [
-          "Usa un array como pila: $stack[] = $c para apilar, array_pop($stack) para sacar.",
-          "Ten un mapa de cierres a aperturas: [')' => '(', ']' => '[', '}' => '{']",
-          "Al cerrar, la cima debe ser la pareja correcta; y al final la pila debe quedar VACÍA.",
+          { es: "Usa un array como pila: $stack[] = $c para apilar, array_pop($stack) para sacar.", en: "Use an array as a stack: $stack[] = $c to push, array_pop($stack) to pop." },
+          { es: "Ten un mapa de cierres a aperturas: [')' => '(', ']' => '[', '}' => '{']", en: "Keep a map of closers to openers: [')' => '(', ']' => '[', '}' => '{']" },
+          { es: "Al cerrar, la cima debe ser la pareja correcta; y al final la pila debe quedar VACÍA.", en: "On closing, the top must be the right match; and at the end the stack must be EMPTY." },
         ],
         test_cases: [
-          { input: "isValidParens('()[]{}')", expected: true, description: "Todos cierran bien" },
-          { input: "isValidParens('(]')", expected: false, description: "Pareja incorrecta" },
-          { input: "isValidParens('([{}])')", expected: true, description: "Bien anidados" },
-          { input: "isValidParens('(')", expected: false, description: "Queda uno sin cerrar" },
+          { input: "isValidParens('()[]{}')", expected: true, description: { es: "Todos cierran bien", en: "All close correctly" } },
+          { input: "isValidParens('(]')", expected: false, description: { es: "Pareja incorrecta", en: "Wrong pair" } },
+          { input: "isValidParens('([{}])')", expected: true, description: { es: "Bien anidados", en: "Properly nested" } },
+          { input: "isValidParens('(')", expected: false, description: { es: "Queda uno sin cerrar", en: "One left unclosed" } },
         ],
       },
     },
     {
       node_id: "algo_binaria",
-      title: "El Índice de Mazarbul",
-      lore_intro:
-        "El libro está ordenado. Buscar página por página sería una locura: abre por la mitad y descarta media biblioteca en cada paso.",
+      title: { es: "El Índice de Mazarbul", en: "The Index of Mazarbul" },
+      lore_intro: {
+        es: "El libro está ordenado. Buscar página por página sería una locura: abre por la mitad y descarta media biblioteca en cada paso.",
+        en: "The book is sorted. Searching page by page would be madness: open it in the middle and discard half the library each step.",
+      },
       position: { x: 19, y: 7 },
       poo_challenge: {
         topic: "Búsqueda binaria · O(log n)",
         timeLimitSec: 600,
-        instructions:
-          "Given a sorted array and a target, return its index or -1 if not present.\n\n(ES) Implementa binarySearch(array $a, int $t): int sobre un array YA ordenado. Devuelve el índice, o -1 si no está.",
+        instructions: {
+          es: "Implementa binarySearch(array $a, int $t): int sobre un array YA ordenado. Devuelve el índice, o -1 si no está.",
+          en: "Given a sorted array and a target, return its index or -1 if not present. Implement binarySearch(array $a, int $t): int over an ALREADY sorted array.",
+        },
         starter_code:
           "<?php\n\nfunction binarySearch(array $a, int $t): int {\n    // Dos límites y descarta la mitad en cada vuelta\n}\n",
         hints: [
-          "Empieza con $lo = 0 y $hi = count($a) - 1; el bucle va mientras $lo <= $hi.",
-          "El medio con división entera: $mid = intdiv($lo + $hi, 2);",
-          "Si $a[$mid] < $t mueve $lo = $mid + 1; si no, $hi = $mid - 1. Cuidado con el <= del bucle.",
+          { es: "Empieza con $lo = 0 y $hi = count($a) - 1; el bucle va mientras $lo <= $hi.", en: "Start with $lo = 0 and $hi = count($a) - 1; loop while $lo <= $hi." },
+          { es: "El medio con división entera: $mid = intdiv($lo + $hi, 2);", en: "The middle with integer division: $mid = intdiv($lo + $hi, 2);" },
+          { es: "Si $a[$mid] < $t mueve $lo = $mid + 1; si no, $hi = $mid - 1. Cuidado con el <= del bucle.", en: "If $a[$mid] < $t move $lo = $mid + 1; otherwise $hi = $mid - 1. Mind the <= in the loop." },
         ],
         test_cases: [
-          { input: "binarySearch([1, 3, 5, 7, 9], 7)", expected: 3, description: "Está en el índice 3" },
-          { input: "binarySearch([1, 3, 5, 7, 9], 4)", expected: -1, description: "No está" },
-          { input: "binarySearch([], 1)", expected: -1, description: "Array vacío: caso borde" },
-          { input: "binarySearch([5], 5)", expected: 0, description: "Un solo elemento" },
+          { input: "binarySearch([1, 3, 5, 7, 9], 7)", expected: 3, description: { es: "Está en el índice 3", en: "It's at index 3" } },
+          { input: "binarySearch([1, 3, 5, 7, 9], 4)", expected: -1, description: { es: "No está", en: "Not present" } },
+          { input: "binarySearch([], 1)", expected: -1, description: { es: "Array vacío: caso borde", en: "Empty array: edge case" } },
+          { input: "binarySearch([5], 5)", expected: 0, description: { es: "Un solo elemento", en: "A single element" } },
         ],
       },
     },
     {
       node_id: "algo_monedas",
-      title: "El Tesoro de Thrór",
-      lore_intro:
-        "Debes pagar una cifra exacta con las monedas enanas disponibles, usando las MENOS posibles. Cada monto se apoya en montos ya resueltos: no recalcules lo que ya sabes.",
+      title: { es: "El Tesoro de Thrór", en: "The Hoard of Thrór" },
+      lore_intro: {
+        es: "Debes pagar una cifra exacta con las monedas enanas disponibles, usando las MENOS posibles. Cada monto se apoya en montos ya resueltos: no recalcules lo que ya sabes.",
+        en: "You must pay an exact sum with the available dwarven coins, using AS FEW as possible. Each amount builds on amounts already solved: don't recompute what you already know.",
+      },
       position: { x: 12, y: 11 },
       poo_challenge: {
         topic: "Programación dinámica · O(monto × monedas)",
         timeLimitSec: 1500,
-        instructions:
-          "Given coin denominations and an amount, return the fewest coins needed to make that amount, or -1 if impossible.\n\n(ES) Implementa coinChange(array $coins, int $amount): int — el mínimo número de monedas para formar el monto, o -1 si no se puede.",
+        instructions: {
+          es: "Implementa coinChange(array $coins, int $amount): int — el mínimo número de monedas para formar el monto, o -1 si no se puede.",
+          en: "Given coin denominations and an amount, return the fewest coins needed to make that amount, or -1 if impossible. Implement coinChange(array $coins, int $amount): int.",
+        },
         starter_code:
           "<?php\n\nfunction coinChange(array $coins, int $amount): int {\n    // dp[a] = mínimo de monedas para el monto a\n}\n",
         hints: [
-          "Crea el array dp de tamaño $amount + 1 lleno de un valor 'infinito' ($amount + 1), y dp[0] = 0.",
-          "Para cada monto $a, prueba cada moneda $c que quepa: $dp[$a] = min($dp[$a], $dp[$a - $c] + 1);",
-          "Al final, si dp[$amount] sigue siendo mayor que $amount es que no se podía: devuelve -1.",
+          { es: "Crea el array dp de tamaño $amount + 1 lleno de un valor 'infinito' ($amount + 1), y dp[0] = 0.", en: "Create the dp array of size $amount + 1 filled with an 'infinite' value ($amount + 1), and dp[0] = 0." },
+          { es: "Para cada monto $a, prueba cada moneda $c que quepa: $dp[$a] = min($dp[$a], $dp[$a - $c] + 1);", en: "For each amount $a, try each coin $c that fits: $dp[$a] = min($dp[$a], $dp[$a - $c] + 1);" },
+          { es: "Al final, si dp[$amount] sigue siendo mayor que $amount es que no se podía: devuelve -1.", en: "At the end, if dp[$amount] is still greater than $amount it wasn't possible: return -1." },
         ],
         test_cases: [
           { input: "coinChange([1, 2, 5], 11)", expected: 3, description: "5 + 5 + 1 = 11" },
-          { input: "coinChange([2], 3)", expected: -1, description: "Imposible con monedas de 2" },
-          { input: "coinChange([1], 0)", expected: 0, description: "Monto 0: cero monedas" },
+          { input: "coinChange([2], 3)", expected: -1, description: { es: "Imposible con monedas de 2", en: "Impossible with coins of 2" } },
+          { input: "coinChange([1], 0)", expected: 0, description: { es: "Monto 0: cero monedas", en: "Amount 0: zero coins" } },
           { input: "coinChange([1, 3, 4], 6)", expected: 2, description: "3 + 3, no 4 + 1 + 1" },
         ],
       },
