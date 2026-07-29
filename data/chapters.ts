@@ -5953,9 +5953,11 @@ export const CHAPTER_GOLLUM: Chapter = {
 
 export const CHAPTER_HELM: Chapter = {
   chapter: 16,
-  title: "El Abismo de Helm",
-  lore:
-    "Cae la noche sobre el Sagrario y una hueste sin fin avanza bajo la lluvia. Diez mil Uruk-hai que no se cuentan de un vistazo: hay que recorrerlos, uno a uno, con un bucle. Aquí Python aprende a repetir, contar y decidir dentro del combate.",
+  title: { es: "El Abismo de Helm", en: "Helm's Deep" },
+  lore: {
+    es: "Cae la noche sobre el Sagrario y una hueste sin fin avanza bajo la lluvia. Diez mil Uruk-hai que no se cuentan de un vistazo: hay que recorrerlos, uno a uno, con un bucle. Aquí Python aprende a repetir, contar y decidir dentro del combate.",
+    en: "Night falls over the Hornburg and an endless host advances in the rain. Ten thousand Uruk-hai you can't count at a glance: you must go through them, one by one, with a loop. Here Python learns to repeat, count and decide in the thick of combat.",
+  },
   mapSize: { cols: 24, rows: 14 },
   spawn: { x: 2, y: 7 },
   companions: ["aragorn", "legolas", "gimli"],
@@ -5964,7 +5966,7 @@ export const CHAPTER_HELM: Chapter = {
     pathRows: [7],
     pathGround: "darkstone",
     npcs: [
-      { spriteId: "uruk", x: 20, y: 2, label: "La hueste" },
+      { spriteId: "uruk", x: 20, y: 2, label: { es: "La hueste", en: "The host" } },
       { spriteId: "uruk", x: 22, y: 4 },
       { spriteId: "uruk", x: 21, y: 12 },
       { spriteId: "uruk", x: 23, y: 10 },
@@ -5974,26 +5976,35 @@ export const CHAPTER_HELM: Chapter = {
         x: 6,
         y: 8,
         speaker: "gimli",
-        name: "Gimli",
-        text: "Podría abrirme paso a hachazos, pero prefiero contarlos con un for.",
+        name: { es: "Gimli", en: "Gimli" },
+        text: {
+          es: "Podría abrirme paso a hachazos, pero prefiero contarlos con un for.",
+          en: "I could hack my way through, but I'd rather count them with a for.",
+        },
       },
       {
         x: 12,
         y: 8,
         speaker: "legolas",
-        name: "Legolas",
-        text: "Mientras queden flechas, un while. Cuando se agoten, se rompe el bucle.",
+        name: { es: "Legolas", en: "Legolas" },
+        text: {
+          es: "Mientras queden flechas, un while. Cuando se agoten, se rompe el bucle.",
+          en: "While arrows remain, a while. When they run out, the loop breaks.",
+        },
       },
       {
         x: 18,
         y: 8,
         speaker: "aragorn",
-        name: "Aragorn",
-        text: "Recorre la muralla con enumerate: sabrás en qué tramo cede.",
+        name: { es: "Aragorn", en: "Aragorn" },
+        text: {
+          es: "Recorre la muralla con enumerate: sabrás en qué tramo cede.",
+          en: "Walk the wall with enumerate: you'll know which stretch gives way.",
+        },
       },
     ],
     decor: [
-      { type: "house", x: 4, y: 6, label: "El Baluarte" },
+      { type: "house", x: 4, y: 6, label: { es: "El Baluarte", en: "The Keep" } },
       { type: "rock", x: 9, y: 2 },
       { type: "rock", x: 13, y: 3 },
       { type: "rock", x: 17, y: 2 },
@@ -6006,137 +6017,173 @@ export const CHAPTER_HELM: Chapter = {
     {
       node_id: "py_pergamino_bucles",
       kind: "scroll",
-      title: "El Pergamino de las Repeticiones",
-      lore_intro:
-        "Clavado en la puerta del Baluarte, bajo la lluvia. Enseña a repetir sin cansarse: la única forma de enfrentar a diez mil.",
+      title: { es: "El Pergamino de las Repeticiones", en: "The Scroll of Repetitions" },
+      lore_intro: {
+        es: "Clavado en la puerta del Baluarte, bajo la lluvia. Enseña a repetir sin cansarse: la única forma de enfrentar a diez mil.",
+        en: "Nailed to the Keep's door, in the rain. It teaches how to repeat without tiring: the only way to face ten thousand.",
+      },
       scroll: {
         topic: "Control de flujo: for, while, range y enumerate",
         sections: [
           {
-            heading: "for: repetir sobre una secuencia",
-            body:
-              "El bucle `for` de Python recorre los elementos de algo iterable (una lista, un texto, un rango) y ejecuta su cuerpo una vez por elemento. No hay contador manual ni condición: la variable toma cada valor directamente. Es un «para cada», no el for de C.",
+            heading: { es: "for: repetir sobre una secuencia", en: "for: repeat over a sequence" },
+            body: {
+              es: "El bucle `for` de Python recorre los elementos de algo iterable (una lista, un texto, un rango) y ejecuta su cuerpo una vez por elemento. No hay contador manual ni condición: la variable toma cada valor directamente. Es un «para cada», no el for de C.",
+              en: "Python's `for` loop walks the elements of something iterable (a list, a text, a range) and runs its body once per element. No manual counter, no condition: the variable takes each value directly. It's a \"for each\", not the C for.",
+            },
             code:
               "for enemigo in ['orco', 'trasgo', 'uruk']:\n    print(enemigo)     # se ejecuta 3 veces\n\n# También recorre el texto carácter a carácter:\nfor letra in 'Rohan':\n    print(letra)",
           },
           {
-            heading: "range: contar sin lista",
-            body:
-              "`range(n)` produce los números 0, 1, …, n-1 (el final NO se incluye). `range(a, b)` va de a hasta b-1, y `range(a, b, paso)` salta de `paso` en `paso`. Combinado con `for`, es cómo repites algo N veces o recorres índices.",
+            heading: { es: "range: contar sin lista", en: "range: counting without a list" },
+            body: {
+              es: "`range(n)` produce los números 0, 1, …, n-1 (el final NO se incluye). `range(a, b)` va de a hasta b-1, y `range(a, b, paso)` salta de `paso` en `paso`. Combinado con `for`, es cómo repites algo N veces o recorres índices.",
+              en: "`range(n)` produces the numbers 0, 1, …, n-1 (the end is NOT included). `range(a, b)` goes from a to b-1, and `range(a, b, step)` jumps by `step`. Combined with `for`, it's how you repeat something N times or walk indices.",
+            },
             code:
               "for i in range(3):        # 0, 1, 2\n    print(i)\n\nrange(1, 6)               # 1, 2, 3, 4, 5\nrange(0, 10, 2)           # 0, 2, 4, 6, 8\n\n# Acumular: sumar 1..n\ntotal = 0\nfor i in range(1, n + 1):\n    total += i",
           },
           {
-            heading: "while: repetir mientras se cumpla algo",
-            body:
-              "`while condicion:` repite el cuerpo mientras la condición sea verdadera, comprobándola antes de cada vuelta. Se usa cuando no sabes de antemano cuántas veces hay que iterar — hasta agotar las flechas, hasta que el muro caiga. Cuidado: algo dentro debe acercar la condición a falsa, o el bucle es infinito.",
+            heading: { es: "while: repetir mientras se cumpla algo", en: "while: repeat while something holds" },
+            body: {
+              es: "`while condicion:` repite el cuerpo mientras la condición sea verdadera, comprobándola antes de cada vuelta. Se usa cuando no sabes de antemano cuántas veces hay que iterar — hasta agotar las flechas, hasta que el muro caiga. Cuidado: algo dentro debe acercar la condición a falsa, o el bucle es infinito.",
+              en: "`while condition:` repeats the body while the condition is true, checking it before each round. Use it when you don't know in advance how many times to iterate — until the arrows run out, until the wall falls. Careful: something inside must move the condition toward false, or the loop is infinite.",
+            },
             code:
               "flechas = 5\nwhile flechas > 0:\n    disparar()\n    flechas -= 1        # sin esto, bucle infinito\n\n# Contar cuántas vueltas hicieron falta\nturnos = 0\nwhile muro > 0:\n    muro -= golpe\n    turnos += 1",
           },
           {
-            heading: "break y continue",
-            body:
-              "`break` sale del bucle de inmediato, sin terminar las vueltas restantes. `continue` salta el resto del cuerpo y pasa a la siguiente vuelta. Sirven para cortar en cuanto encuentras lo que buscas, o para ignorar los casos que no interesan.",
+            heading: { es: "break y continue", en: "break and continue" },
+            body: {
+              es: "`break` sale del bucle de inmediato, sin terminar las vueltas restantes. `continue` salta el resto del cuerpo y pasa a la siguiente vuelta. Sirven para cortar en cuanto encuentras lo que buscas, o para ignorar los casos que no interesan.",
+              en: "`break` leaves the loop immediately, without finishing the remaining rounds. `continue` skips the rest of the body and moves to the next round. They're for cutting out as soon as you find what you want, or ignoring the cases you don't care about.",
+            },
             code:
               "for i, r in enumerate(muralla):\n    if r <= 0:\n        primera_brecha = i\n        break          # ya la encontré, no sigo\n\nfor n in numeros:\n    if n < 0:\n        continue       # ignora los negativos\n    procesar(n)",
           },
           {
-            heading: "enumerate: el índice y el valor a la vez",
-            body:
-              "Cuando necesitas SABER la posición mientras recorres, `enumerate(secuencia)` te da pares (índice, valor). Es más limpio y menos propenso a errores que llevar un contador a mano o usar `range(len(...))`.",
+            heading: { es: "enumerate: el índice y el valor a la vez", en: "enumerate: index and value at once" },
+            body: {
+              es: "Cuando necesitas SABER la posición mientras recorres, `enumerate(secuencia)` te da pares (índice, valor). Es más limpio y menos propenso a errores que llevar un contador a mano o usar `range(len(...))`.",
+              en: "When you need to KNOW the position while iterating, `enumerate(sequence)` gives you (index, value) pairs. It's cleaner and less error-prone than keeping a counter by hand or using `range(len(...))`.",
+            },
             code:
               "for i, sala in enumerate(['Mazarbul', 'Puente']):\n    print(i, sala)     # 0 Mazarbul / 1 Puente\n\n# Recoger las posiciones que cumplen algo\ndebiles = []\nfor i, n in enumerate(enemigos):\n    if n < umbral:\n        debiles.append(i)",
           },
         ],
-        keyTakeaway:
-          "for recorre un iterable (usa range para contar); while repite mientras algo sea cierto; break corta y continue salta; enumerate te da índice y valor juntos. Con eso ya puedes repetir, contar y decidir.",
+        keyTakeaway: {
+          es: "for recorre un iterable (usa range para contar); while repite mientras algo sea cierto; break corta y continue salta; enumerate te da índice y valor juntos. Con eso ya puedes repetir, contar y decidir.",
+          en: "for walks an iterable (use range to count); while repeats while something is true; break cuts out and continue skips; enumerate gives you index and value together. With that you can already repeat, count and decide.",
+        },
       },
       position: { x: 4, y: 4 },
     },
     {
       node_id: "py_suma_hasta",
-      title: "Las salvas de la muralla",
-      lore_intro:
-        "«En la primera oleada, una salva; en la segunda, dos; y así hasta la enésima.» Cuenta cuántas flechas se disparan en total.",
+      title: { es: "Las salvas de la muralla", en: "The volleys from the wall" },
+      lore_intro: {
+        es: "«En la primera oleada, una salva; en la segunda, dos; y así hasta la enésima.» Cuenta cuántas flechas se disparan en total.",
+        en: "\"On the first wave, one volley; on the second, two; and so on up to the nth.\" Count how many arrows are fired in total.",
+      },
       spriteId: "legolas",
       poo_challenge: {
         lang: "python",
         topic: "Bucle for con range y acumulador",
-        instructions:
-          "Escribe `suma_hasta(n)` que devuelva la suma de todos los enteros de 1 a `n` (ambos incluidos): 1 + 2 + … + n.\n\n" +
-          "Usa un bucle `for` con `range` y un acumulador. Con `n = 0` (o negativo) no hay nada que sumar: devuelve 0.",
+        instructions: {
+          es:
+            "Escribe `suma_hasta(n)` que devuelva la suma de todos los enteros de 1 a `n` (ambos incluidos): 1 + 2 + … + n.\n\n" +
+            "Usa un bucle `for` con `range` y un acumulador. Con `n = 0` (o negativo) no hay nada que sumar: devuelve 0.",
+          en:
+            "Write `suma_hasta(n)` that returns the sum of all integers from 1 to `n` (both included): 1 + 2 + … + n.\n\n" +
+            "Use a `for` loop with `range` and an accumulator. With `n = 0` (or negative) there's nothing to add: return 0.",
+        },
         starter_code:
           "def suma_hasta(n):\n    total = 0\n    # recorre de 1 a n y acumula\n    return total\n",
         hints: [
-          "`range(1, n + 1)` genera 1, 2, …, n. El `+ 1` es porque el final de range NO se incluye.",
-          "Dentro del for, acumula: `total += i`.",
-          "Si n es 0, `range(1, 1)` está vacío y el for no se ejecuta: total se queda en 0. No hace falta un caso especial.",
+          { es: "`range(1, n + 1)` genera 1, 2, …, n. El `+ 1` es porque el final de range NO se incluye.", en: "`range(1, n + 1)` yields 1, 2, …, n. The `+ 1` is because range's end is NOT included." },
+          { es: "Dentro del for, acumula: `total += i`.", en: "Inside the for, accumulate: `total += i`." },
+          { es: "Si n es 0, `range(1, 1)` está vacío y el for no se ejecuta: total se queda en 0. No hace falta un caso especial.", en: "If n is 0, `range(1, 1)` is empty and the for doesn't run: total stays 0. No special case needed." },
         ],
         test_cases: [
           { input: "suma_hasta(5)", expected: 15, description: "1+2+3+4+5", raw: true },
-          { input: "suma_hasta(1)", expected: 1, description: "Sólo el 1", raw: true },
-          { input: "suma_hasta(0)", expected: 0, description: "Nada que sumar", raw: true },
-          { input: "suma_hasta(10)", expected: 55, description: "Hasta diez", raw: true },
-          { input: "suma_hasta(100)", expected: 5050, description: "La suma de Gauss", raw: true },
+          { input: "suma_hasta(1)", expected: 1, description: { es: "Sólo el 1", en: "Just the 1" }, raw: true },
+          { input: "suma_hasta(0)", expected: 0, description: { es: "Nada que sumar", en: "Nothing to add" }, raw: true },
+          { input: "suma_hasta(10)", expected: 55, description: { es: "Hasta diez", en: "Up to ten" }, raw: true },
+          { input: "suma_hasta(100)", expected: 5050, description: { es: "La suma de Gauss", en: "Gauss's sum" }, raw: true },
         ],
       },
       position: { x: 9, y: 5 },
     },
     {
       node_id: "py_aguantar",
-      title: "Cuánto aguanta el muro",
-      lore_intro:
-        "El Muro Profundo encaja golpe tras golpe. Gimli quiere saber cuántos embates resistirá antes de ceder.",
+      title: { es: "Cuánto aguanta el muro", en: "How long the wall holds" },
+      lore_intro: {
+        es: "El Muro Profundo encaja golpe tras golpe. Gimli quiere saber cuántos embates resistirá antes de ceder.",
+        en: "The Deeping Wall takes blow after blow. Gimli wants to know how many strikes it will withstand before it gives way.",
+      },
       spriteId: "gimli",
       poo_challenge: {
         lang: "python",
         topic: "Bucle while con contador",
-        instructions:
-          "Escribe `aguantar(resistencia, golpe)` que devuelva cuántos golpes de fuerza `golpe` resiste un muro con `resistencia` puntos antes de caer (llegar a 0 o menos).\n\n" +
-          "Cada golpe resta `golpe` a la resistencia. Cuenta los golpes con un `while`. Si el muro ya está a 0 o menos, aguanta 0 golpes.",
+        instructions: {
+          es:
+            "Escribe `aguantar(resistencia, golpe)` que devuelva cuántos golpes de fuerza `golpe` resiste un muro con `resistencia` puntos antes de caer (llegar a 0 o menos).\n\n" +
+            "Cada golpe resta `golpe` a la resistencia. Cuenta los golpes con un `while`. Si el muro ya está a 0 o menos, aguanta 0 golpes.",
+          en:
+            "Write `aguantar(resistencia, golpe)` that returns how many blows of strength `golpe` a wall with `resistencia` points withstands before falling (reaching 0 or less).\n\n" +
+            "Each blow subtracts `golpe` from the resistance. Count the blows with a `while`. If the wall is already at 0 or less, it withstands 0 blows.",
+        },
         starter_code:
           "def aguantar(resistencia, golpe):\n    turnos = 0\n    # mientras el muro siga en pie, recibe golpes\n    return turnos\n",
         hints: [
-          "`while resistencia > 0:` repite mientras el muro aguante.",
-          "Dentro: resta el golpe y suma un turno: `resistencia -= golpe` y `turnos += 1`.",
-          "Si `resistencia` ya es 0 o menos, el while no entra y devuelves 0, que es lo correcto.",
+          { es: "`while resistencia > 0:` repite mientras el muro aguante.", en: "`while resistencia > 0:` repeats while the wall holds." },
+          { es: "Dentro: resta el golpe y suma un turno: `resistencia -= golpe` y `turnos += 1`.", en: "Inside: subtract the blow and add a turn: `resistencia -= golpe` and `turnos += 1`." },
+          { es: "Si `resistencia` ya es 0 o menos, el while no entra y devuelves 0, que es lo correcto.", en: "If `resistencia` is already 0 or less, the while doesn't enter and you return 0, which is correct." },
         ],
         test_cases: [
-          { input: "aguantar(10, 3)", expected: 4, description: "10 → 7 → 4 → 1 → -2: cuatro golpes", raw: true },
-          { input: "aguantar(10, 5)", expected: 2, description: "Dos golpes justos", raw: true },
-          { input: "aguantar(7, 10)", expected: 1, description: "Un solo golpe brutal", raw: true },
-          { input: "aguantar(0, 5)", expected: 0, description: "Ya estaba caído", raw: true },
-          { input: "aguantar(100, 1)", expected: 100, description: "Cien golpes de gota", raw: true },
+          { input: "aguantar(10, 3)", expected: 4, description: "10 → 7 → 4 → 1 → -2", raw: true },
+          { input: "aguantar(10, 5)", expected: 2, description: { es: "Dos golpes justos", en: "Exactly two blows" }, raw: true },
+          { input: "aguantar(7, 10)", expected: 1, description: { es: "Un solo golpe brutal", en: "A single brutal blow" }, raw: true },
+          { input: "aguantar(0, 5)", expected: 0, description: { es: "Ya estaba caído", en: "It was already down" }, raw: true },
+          { input: "aguantar(100, 1)", expected: 100, description: { es: "Cien golpes de gota", en: "A hundred dripping blows" }, raw: true },
         ],
       },
       position: { x: 14, y: 5 },
     },
     {
       node_id: "py_filas_debiles",
-      title: "El tramo que cede",
-      lore_intro:
-        "Aragorn recorre la muralla contando defensores por tramo. Necesita los tramos flojos, con menos hombres de los que el umbral exige — y su número exacto de tramo.",
+      title: { es: "El tramo que cede", en: "The stretch that gives way" },
+      lore_intro: {
+        es: "Aragorn recorre la muralla contando defensores por tramo. Necesita los tramos flojos, con menos hombres de los que el umbral exige — y su número exacto de tramo.",
+        en: "Aragorn walks the wall counting defenders per stretch. He needs the weak stretches, with fewer men than the threshold demands — and their exact stretch number.",
+      },
       spriteId: "aragorn",
       poo_challenge: {
         lang: "python",
         topic: "for + enumerate + condicional",
-        instructions:
-          "Escribe `filas_debiles(enemigos, umbral)` que reciba una lista de números (defensores por tramo) y devuelva una LISTA con los ÍNDICES de los tramos cuyo valor es MENOR que `umbral`.\n\n" +
-          "Por ejemplo, `filas_debiles([12, 3, 8, 20, 1], 10)` → `[1, 2, 4]` (los tramos 1, 2 y 4 tienen menos de 10).\n\n" +
-          "Usa `enumerate` para tener el índice y el valor a la vez.",
+        instructions: {
+          es:
+            "Escribe `filas_debiles(enemigos, umbral)` que reciba una lista de números (defensores por tramo) y devuelva una LISTA con los ÍNDICES de los tramos cuyo valor es MENOR que `umbral`.\n\n" +
+            "Por ejemplo, `filas_debiles([12, 3, 8, 20, 1], 10)` → `[1, 2, 4]` (los tramos 1, 2 y 4 tienen menos de 10).\n\n" +
+            "Usa `enumerate` para tener el índice y el valor a la vez.",
+          en:
+            "Write `filas_debiles(enemigos, umbral)` that takes a list of numbers (defenders per stretch) and returns a LIST with the INDICES of the stretches whose value is LESS than `umbral`.\n\n" +
+            "For example, `filas_debiles([12, 3, 8, 20, 1], 10)` → `[1, 2, 4]` (stretches 1, 2 and 4 have fewer than 10).\n\n" +
+            "Use `enumerate` to get the index and value at once.",
+        },
         starter_code:
           "def filas_debiles(enemigos, umbral):\n    debiles = []\n    # recorre con enumerate y guarda los índices flojos\n    return debiles\n",
         hints: [
-          "`for i, n in enumerate(enemigos):` te da el índice `i` y el valor `n` en cada vuelta.",
-          "Si `n < umbral`, añade el índice: `debiles.append(i)`.",
-          "Empieza con `debiles = []` y devuélvela al final. Si nada cumple, se devuelve la lista vacía.",
+          { es: "`for i, n in enumerate(enemigos):` te da el índice `i` y el valor `n` en cada vuelta.", en: "`for i, n in enumerate(enemigos):` gives you the index `i` and value `n` each round." },
+          { es: "Si `n < umbral`, añade el índice: `debiles.append(i)`.", en: "If `n < umbral`, add the index: `debiles.append(i)`." },
+          { es: "Empieza con `debiles = []` y devuélvela al final. Si nada cumple, se devuelve la lista vacía.", en: "Start with `debiles = []` and return it at the end. If nothing qualifies, the empty list is returned." },
         ],
         test_cases: [
-          { input: "filas_debiles([12, 3, 8, 20, 1], 10)", expected: [1, 2, 4], description: "Índices con menos de 10", raw: true },
-          { input: "filas_debiles([5, 5, 5], 5)", expected: [], description: "Ninguno es MENOR que 5", raw: true },
-          { input: "filas_debiles([5, 5, 5], 6)", expected: [0, 1, 2], description: "Ahora todos son débiles", raw: true },
-          { input: "filas_debiles([], 3)", expected: [], description: "Muralla vacía", raw: true },
-          { input: "filas_debiles([0, 100, 2], 3)", expected: [0, 2], description: "El primero y el último", raw: true },
+          { input: "filas_debiles([12, 3, 8, 20, 1], 10)", expected: [1, 2, 4], description: { es: "Índices con menos de 10", en: "Indices with fewer than 10" }, raw: true },
+          { input: "filas_debiles([5, 5, 5], 5)", expected: [], description: { es: "Ninguno es MENOR que 5", en: "None is LESS than 5" }, raw: true },
+          { input: "filas_debiles([5, 5, 5], 6)", expected: [0, 1, 2], description: { es: "Ahora todos son débiles", en: "Now all are weak" }, raw: true },
+          { input: "filas_debiles([], 3)", expected: [], description: { es: "Muralla vacía", en: "Empty wall" }, raw: true },
+          { input: "filas_debiles([0, 100, 2], 3)", expected: [0, 2], description: { es: "El primero y el último", en: "The first and the last" }, raw: true },
         ],
       },
       position: { x: 19, y: 5 },
@@ -6144,56 +6191,68 @@ export const CHAPTER_HELM: Chapter = {
     {
       node_id: "py_quiz_bucles",
       kind: "quiz",
-      title: "El recuento del alba",
-      lore_intro:
-        "Antes de que salga el sol y llegue Gandalf, Aragorn repasa contigo lo aprendido sobre repetir y contar.",
+      title: { es: "El recuento del alba", en: "The reckoning at dawn" },
+      lore_intro: {
+        es: "Antes de que salga el sol y llegue Gandalf, Aragorn repasa contigo lo aprendido sobre repetir y contar.",
+        en: "Before the sun rises and Gandalf arrives, Aragorn reviews with you what you learned about repeating and counting.",
+      },
       spriteId: "aragorn",
       quiz: {
         topic: "Control de flujo en Python",
         questions: [
           {
-            question: "¿Qué imprime `for i in range(3): print(i)`?",
+            question: { es: "¿Qué imprime `for i in range(3): print(i)`?", en: "What does `for i in range(3): print(i)` print?" },
             options: ["0, 1, 2", "1, 2, 3", "0, 1, 2, 3", "1, 2"],
             correct: 0,
-            explanation:
-              "`range(3)` empieza en 0 y llega hasta 3-1 = 2: produce 0, 1, 2. El final nunca se incluye. Para obtener 1, 2, 3 usarías `range(1, 4)`.",
+            explanation: {
+              es: "`range(3)` empieza en 0 y llega hasta 3-1 = 2: produce 0, 1, 2. El final nunca se incluye. Para obtener 1, 2, 3 usarías `range(1, 4)`.",
+              en: "`range(3)` starts at 0 and goes up to 3-1 = 2: it produces 0, 1, 2. The end is never included. To get 1, 2, 3 you'd use `range(1, 4)`.",
+            },
           },
           {
-            question: "¿Cuándo conviene un `while` en vez de un `for`?",
+            question: { es: "¿Cuándo conviene un `while` en vez de un `for`?", en: "When is a `while` better than a `for`?" },
             options: [
-              "Cuando no sabes de antemano cuántas vueltas hará falta",
-              "Cuando recorres una lista",
-              "Siempre: while es más rápido",
-              "Cuando quieres el índice y el valor",
+              { es: "Cuando no sabes de antemano cuántas vueltas hará falta", en: "When you don't know in advance how many rounds you'll need" },
+              { es: "Cuando recorres una lista", en: "When you iterate over a list" },
+              { es: "Siempre: while es más rápido", en: "Always: while is faster" },
+              { es: "Cuando quieres el índice y el valor", en: "When you want the index and the value" },
             ],
             correct: 0,
-            explanation:
-              "`for` brilla cuando recorres algo o repites un número conocido de veces. `while` es para cuando la parada depende de una condición que evoluciona: hasta agotar las flechas, hasta que el usuario acierte. Para recorrer una lista con índice, lo idiomático es `enumerate`.",
+            explanation: {
+              es: "`for` brilla cuando recorres algo o repites un número conocido de veces. `while` es para cuando la parada depende de una condición que evoluciona: hasta agotar las flechas, hasta que el usuario acierte. Para recorrer una lista con índice, lo idiomático es `enumerate`.",
+              en: "`for` shines when you iterate over something or repeat a known number of times. `while` is for when stopping depends on an evolving condition: until the arrows run out, until the user gets it right. To iterate a list with an index, the idiomatic way is `enumerate`.",
+            },
           },
           {
-            question: "¿Qué diferencia hay entre `break` y `continue`?",
+            question: { es: "¿Qué diferencia hay entre `break` y `continue`?", en: "What's the difference between `break` and `continue`?" },
             options: [
-              "break sale del bucle; continue salta a la siguiente vuelta",
-              "Son sinónimos",
-              "break salta una vuelta; continue termina el bucle",
-              "continue sale del programa",
+              { es: "break sale del bucle; continue salta a la siguiente vuelta", en: "break leaves the loop; continue jumps to the next round" },
+              { es: "Son sinónimos", en: "They're synonyms" },
+              { es: "break salta una vuelta; continue termina el bucle", en: "break skips a round; continue ends the loop" },
+              { es: "continue sale del programa", en: "continue exits the program" },
             ],
             correct: 0,
-            explanation:
-              "`break` abandona el bucle por completo (útil al encontrar lo que buscabas). `continue` sólo se salta lo que queda del cuerpo y sigue con la próxima iteración (útil para ignorar ciertos casos). Confundirlos cambia por completo el resultado.",
+            explanation: {
+              es: "`break` abandona el bucle por completo (útil al encontrar lo que buscabas). `continue` sólo se salta lo que queda del cuerpo y sigue con la próxima iteración (útil para ignorar ciertos casos). Confundirlos cambia por completo el resultado.",
+              en: "`break` abandons the loop entirely (useful when you find what you were after). `continue` only skips the rest of the body and moves on to the next iteration (useful to ignore certain cases). Confusing them completely changes the result.",
+            },
           },
           {
-            question:
-              "Quieres el índice y el valor al recorrer una lista. ¿Qué es más idiomático?",
+            question: {
+              es: "Quieres el índice y el valor al recorrer una lista. ¿Qué es más idiomático?",
+              en: "You want the index and value while iterating a list. What's more idiomatic?",
+            },
             options: [
               "for i, v in enumerate(lista):",
               "for i in range(len(lista)): v = lista[i]",
               "for v in lista: i = lista.index(v)",
-              "while con un contador manual",
+              { es: "while con un contador manual", en: "while with a manual counter" },
             ],
             correct: 0,
-            explanation:
-              "`enumerate` es la forma pythónica: clara y sin errores. `range(len(...))` funciona pero es más ruidoso, y `lista.index(v)` es un error sutil — devuelve el índice del PRIMER v igual, que falla si hay repetidos y además es lento.",
+            explanation: {
+              es: "`enumerate` es la forma pythónica: clara y sin errores. `range(len(...))` funciona pero es más ruidoso, y `lista.index(v)` es un error sutil — devuelve el índice del PRIMER v igual, que falla si hay repetidos y además es lento.",
+              en: "`enumerate` is the pythonic way: clear and error-free. `range(len(...))` works but is noisier, and `lista.index(v)` is a subtle bug — it returns the index of the FIRST matching v, which fails with duplicates and is also slow.",
+            },
           },
         ],
       },
