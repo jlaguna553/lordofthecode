@@ -5298,8 +5298,11 @@ export const CHAPTER_ALGOS_3: Chapter = {
  */
 export const CHAPTER_CALENTAMIENTO: Chapter = {
   chapter: 14,
-  title: "La Antecámara de los Novicios",
-  lore: "Antes de las galerías profundas hay una sala luminosa donde los aprendices afilaban la mano. Problemas cortos, de los que se resuelven en diez minutos — pero que separan a quien lee el enunciado de quien lo supone.",
+  title: { es: "La Antecámara de los Novicios", en: "The Novices' Antechamber" },
+  lore: {
+    es: "Antes de las galerías profundas hay una sala luminosa donde los aprendices afilaban la mano. Problemas cortos, de los que se resuelven en diez minutos — pero que separan a quien lee el enunciado de quien lo supone.",
+    en: "Before the deep galleries there's a bright hall where the apprentices sharpened their hand. Short problems, the kind solved in ten minutes — but which separate those who read the prompt from those who assume it.",
+  },
   mapSize: { cols: 22, rows: 14 },
   spawn: { x: 2, y: 7 },
   scenery: {
@@ -5322,170 +5325,206 @@ export const CHAPTER_CALENTAMIENTO: Chapter = {
     {
       node_id: "pergamino_aprendiz",
       kind: "scroll",
-      title: "El Pergamino del Aprendiz",
-      lore_intro:
-        "Colgado junto a la entrada, con la letra de un maestro paciente: no enseña a resolver, enseña a entrenar.",
+      title: { es: "El Pergamino del Aprendiz", en: "The Apprentice's Scroll" },
+      lore_intro: {
+        es: "Colgado junto a la entrada, con la letra de un maestro paciente: no enseña a resolver, enseña a entrenar.",
+        en: "Hung by the entrance, in the hand of a patient master: it doesn't teach how to solve, it teaches how to train.",
+      },
       position: { x: 4, y: 10 },
       scroll: {
         topic: "Cómo practicar de verdad",
         sections: [
           {
-            heading: "Tápate la solución y ponte el reloj",
-            body: "Leer soluciones da sensación de aprender, pero no entrena. Lee sólo el enunciado, arranca el cronómetro y escribe TU versión antes de mirar nada.\n\nLa prueba real es cronometrada: practicar sin reloj entrena algo distinto de lo que te van a medir.",
+            heading: { es: "Tápate la solución y ponte el reloj", en: "Cover the solution and start the clock" },
+            body: {
+              es: "Leer soluciones da sensación de aprender, pero no entrena. Lee sólo el enunciado, arranca el cronómetro y escribe TU versión antes de mirar nada.\n\nLa prueba real es cronometrada: practicar sin reloj entrena algo distinto de lo que te van a medir.",
+              en: "Reading solutions feels like learning, but it doesn't train you. Read only the prompt, start the timer, and write YOUR version before looking at anything.\n\nThe real test is timed: practicing without a clock trains something different from what you'll be measured on.",
+            },
           },
           {
-            heading: "Objetivo realista",
-            body: "Un problema fácil, resuelto y correcto, en 10–15 minutos.\nUno medio, en 20–30.\n\nSi te pasas mucho del tiempo, no es fracaso: es información sobre qué patrón repasar.",
+            heading: { es: "Objetivo realista", en: "A realistic target" },
+            body: {
+              es: "Un problema fácil, resuelto y correcto, en 10–15 minutos.\nUno medio, en 20–30.\n\nSi te pasas mucho del tiempo, no es fracaso: es información sobre qué patrón repasar.",
+              en: "An easy problem, solved and correct, in 10–15 minutes.\nA medium one, in 20–30.\n\nIf you go well over time, it's not failure: it's information about which pattern to review.",
+            },
           },
           {
-            heading: "Los casos borde son la mitad del examen",
-            body: "Antes de escribir la primera línea, pregúntate: ¿qué pasa con la entrada vacía? ¿Con un solo elemento? ¿Con negativos? ¿Con duplicados? ¿Con desbordamiento?\n\nUn error de lectura cuesta más caro que treinta segundos pensando.",
+            heading: { es: "Los casos borde son la mitad del examen", en: "Edge cases are half the exam" },
+            body: {
+              es: "Antes de escribir la primera línea, pregúntate: ¿qué pasa con la entrada vacía? ¿Con un solo elemento? ¿Con negativos? ¿Con duplicados? ¿Con desbordamiento?\n\nUn error de lectura cuesta más caro que treinta segundos pensando.",
+              en: "Before writing the first line, ask yourself: what about the empty input? A single element? Negatives? Duplicates? Overflow?\n\nA misreading costs more than thirty seconds of thinking.",
+            },
           },
           {
-            heading: "Narra en voz alta, y en inglés",
-            body: "Di tu razonamiento mientras resuelves. Entrenas a la vez las dos cosas que evalúan: el algoritmo y el idioma.\n\nRepite a los dos días los que fallaste — la repetición espaciada es lo que fija el patrón.",
+            heading: { es: "Narra en voz alta, y en inglés", en: "Narrate out loud, and in English" },
+            body: {
+              es: "Di tu razonamiento mientras resuelves. Entrenas a la vez las dos cosas que evalúan: el algoritmo y el idioma.\n\nRepite a los dos días los que fallaste — la repetición espaciada es lo que fija el patrón.",
+              en: "Say your reasoning as you solve. You train both things they assess at once: the algorithm and the language.\n\nRedo the ones you failed two days later — spaced repetition is what locks in the pattern.",
+            },
           },
         ],
-        keyTakeaway:
-          "Cronómetro, solución tapada y en voz alta. Repite a los dos días los que fallaste.",
+        keyTakeaway: {
+          es: "Cronómetro, solución tapada y en voz alta. Repite a los dos días los que fallaste.",
+          en: "Timer, solution covered, and out loud. Redo the ones you failed two days later.",
+        },
       },
     },
     {
       node_id: "warm_fizzbuzz",
-      title: "El Cántico de los Enanos",
-      lore_intro:
-        "Los enanos cuentan sus pasos, pero cada tres gritan «¡Fizz!», cada cinco «¡Buzz!»… y cuando toca ambos, gritan las dos cosas. El orden de las comprobaciones lo es todo.",
+      title: { es: "El Cántico de los Enanos", en: "The Dwarves' Chant" },
+      lore_intro: {
+        es: "Los enanos cuentan sus pasos, pero cada tres gritan «¡Fizz!», cada cinco «¡Buzz!»… y cuando toca ambos, gritan las dos cosas. El orden de las comprobaciones lo es todo.",
+        en: "The dwarves count their steps, but every third they shout \"Fizz!\", every fifth \"Buzz!\"… and when both apply, they shout both. The order of the checks is everything.",
+      },
       position: { x: 7, y: 7 },
       poo_challenge: {
         topic: "Condicionales · el clásico",
         timeLimitSec: 480,
-        instructions:
-          "For 1..n: 'Fizz' if divisible by 3, 'Buzz' if by 5, 'FizzBuzz' if by both, else the number (as a string).\n\n(ES) Implementa fizzBuzz(int $n): array. Devuelve TODOS los valores como cadenas.",
+        instructions: {
+          es: "Implementa fizzBuzz(int $n): array. Para 1..n: 'Fizz' si es divisible por 3, 'Buzz' si por 5, 'FizzBuzz' si por ambos, y si no, el número. Devuelve TODOS los valores como cadenas.",
+          en: "For 1..n: 'Fizz' if divisible by 3, 'Buzz' if by 5, 'FizzBuzz' if by both, else the number (as a string). Implement fizzBuzz(int $n): array. Return ALL values as strings.",
+        },
         starter_code:
           "<?php\n\nfunction fizzBuzz(int $n): array {\n    // Ojo con el orden de las comprobaciones\n}\n",
         hints: [
-          "Comprueba PRIMERO el múltiplo de 15; si no, «FizzBuzz» nunca saldría.",
-          "El número también va como cadena: (string)$i",
-          "Estructura: if (%15) … elseif (%3) … elseif (%5) … else …",
+          { es: "Comprueba PRIMERO el múltiplo de 15; si no, «FizzBuzz» nunca saldría.", en: "Check the multiple of 15 FIRST; otherwise \"FizzBuzz\" would never come out." },
+          { es: "El número también va como cadena: (string)$i", en: "The number also goes as a string: (string)$i" },
+          { es: "Estructura: if (%15) … elseif (%3) … elseif (%5) … else …", en: "Structure: if (%15) … elseif (%3) … elseif (%5) … else …" },
         ],
         test_cases: [
           {
             input: "fizzBuzz(5)",
             expected: ["1", "2", "Fizz", "4", "Buzz"],
-            description: "Los cinco primeros",
+            description: { es: "Los cinco primeros", en: "The first five" },
           },
           {
             input: "fizzBuzz(15)[14]",
             expected: "FizzBuzz",
-            description: "El 15 es múltiplo de 3 Y de 5",
+            description: { es: "El 15 es múltiplo de 3 Y de 5", en: "15 is a multiple of both 3 AND 5" },
           },
           {
             input: "count(fizzBuzz(100))",
             expected: 100,
-            description: "Devuelve exactamente n elementos",
+            description: { es: "Devuelve exactamente n elementos", en: "Returns exactly n elements" },
           },
         ],
       },
     },
     {
       node_id: "warm_anagrama",
-      title: "Las Mismas Runas",
-      lore_intro:
-        "Dos inscripciones parecen distintas, pero están grabadas con exactamente las mismas runas. ¿Lo son?",
+      title: { es: "Las Mismas Runas", en: "The Same Runes" },
+      lore_intro: {
+        es: "Dos inscripciones parecen distintas, pero están grabadas con exactamente las mismas runas. ¿Lo son?",
+        en: "Two inscriptions look different, but they're carved with exactly the same runes. Are they?",
+      },
       position: { x: 11, y: 4 },
       poo_challenge: {
         topic: "Hash map · O(n)",
         timeLimitSec: 600,
-        instructions:
-          "Return true if string t is an anagram of string s.\n\n(ES) Implementa isAnagram(string $s, string $t): bool.",
+        instructions: {
+          es: "Implementa isAnagram(string $s, string $t): bool — true si la cadena t es un anagrama de s.",
+          en: "Return true if string t is an anagram of string s. Implement isAnagram(string $s, string $t): bool.",
+        },
         starter_code:
           "<?php\n\nfunction isAnagram(string $s, string $t): bool {\n    // Cuenta letras y réstalas\n}\n",
         hints: [
-          "Atajo inmediato: si las longitudes difieren, ya es false.",
-          "Cuenta las letras de $s con array_count_values(str_split($s)).",
-          "Recorre $t restando; si una letra no existe o baja de 0, devuelve false.",
+          { es: "Atajo inmediato: si las longitudes difieren, ya es false.", en: "Immediate shortcut: if the lengths differ, it's already false." },
+          { es: "Cuenta las letras de $s con array_count_values(str_split($s)).", en: "Count the letters of $s with array_count_values(str_split($s))." },
+          { es: "Recorre $t restando; si una letra no existe o baja de 0, devuelve false.", en: "Walk $t subtracting; if a letter doesn't exist or drops below 0, return false." },
         ],
         test_cases: [
-          { input: "isAnagram('anagram', 'nagaram')", expected: true, description: "Mismas letras" },
-          { input: "isAnagram('rat', 'car')", expected: false, description: "Letras distintas" },
-          { input: "isAnagram('a', 'ab')", expected: false, description: "Longitudes distintas" },
-          { input: "isAnagram('', '')", expected: true, description: "Dos vacías: caso borde" },
+          { input: "isAnagram('anagram', 'nagaram')", expected: true, description: { es: "Mismas letras", en: "Same letters" } },
+          { input: "isAnagram('rat', 'car')", expected: false, description: { es: "Letras distintas", en: "Different letters" } },
+          { input: "isAnagram('a', 'ab')", expected: false, description: { es: "Longitudes distintas", en: "Different lengths" } },
+          { input: "isAnagram('', '')", expected: true, description: { es: "Dos vacías: caso borde", en: "Two empty: edge case" } },
         ],
       },
     },
     {
       node_id: "warm_unico",
-      title: "La Runa Solitaria",
-      lore_intro:
-        "En la hilera hay una única runa que no se repite en toda la inscripción. Encuentra su posición — la primera que cumpla.",
+      title: { es: "La Runa Solitaria", en: "The Solitary Rune" },
+      lore_intro: {
+        es: "En la hilera hay una única runa que no se repite en toda la inscripción. Encuentra su posición — la primera que cumpla.",
+        en: "In the row there's a single rune that doesn't repeat in the whole inscription. Find its position — the first one that qualifies.",
+      },
       position: { x: 12, y: 10 },
       poo_challenge: {
         topic: "Hash map · dos pasadas",
         timeLimitSec: 600,
-        instructions:
-          "Return the index of the first non-repeating character in a string, or -1 if none exists.\n\n(ES) Implementa firstUniqChar(string $s): int — el índice del primer carácter que no se repite; -1 si no hay.",
+        instructions: {
+          es: "Implementa firstUniqChar(string $s): int — el índice del primer carácter que no se repite; -1 si no hay.",
+          en: "Return the index of the first non-repeating character in a string, or -1 if none exists. Implement firstUniqChar(string $s): int.",
+        },
         starter_code:
           "<?php\n\nfunction firstUniqChar(string $s): int {\n    // Dos pasadas: contar y luego buscar\n}\n",
         hints: [
-          "Primera pasada: cuenta cuántas veces aparece cada carácter.",
-          "Segunda pasada: recorre EN ORDEN y devuelve el primer índice cuyo conteo sea 1.",
-          "Hacen falta las dos pasadas: en una sola no sabes aún si algo se repetirá más adelante.",
+          { es: "Primera pasada: cuenta cuántas veces aparece cada carácter.", en: "First pass: count how many times each character appears." },
+          { es: "Segunda pasada: recorre EN ORDEN y devuelve el primer índice cuyo conteo sea 1.", en: "Second pass: walk IN ORDER and return the first index whose count is 1." },
+          { es: "Hacen falta las dos pasadas: en una sola no sabes aún si algo se repetirá más adelante.", en: "Both passes are needed: in a single one you don't yet know if something will repeat later." },
         ],
         test_cases: [
-          { input: "firstUniqChar('leetcode')", expected: 0, description: "La 'l' es única" },
+          { input: "firstUniqChar('leetcode')", expected: 0, description: { es: "La 'l' es única", en: "The 'l' is unique" } },
           {
             input: "firstUniqChar('loveleetcode')",
             expected: 2,
-            description: "La 'v' en el índice 2",
+            description: { es: "La 'v' en el índice 2", en: "The 'v' at index 2" },
           },
-          { input: "firstUniqChar('aabb')", expected: -1, description: "Todas se repiten" },
-          { input: "firstUniqChar('')", expected: -1, description: "Cadena vacía: caso borde" },
+          { input: "firstUniqChar('aabb')", expected: -1, description: { es: "Todas se repiten", en: "All repeat" } },
+          { input: "firstUniqChar('')", expected: -1, description: { es: "Cadena vacía: caso borde", en: "Empty string: edge case" } },
         ],
       },
     },
     {
       node_id: "warm_insertar",
-      title: "El Hueco en la Fila",
-      lore_intro:
-        "Las piedras están ordenadas por tamaño. Si traes una nueva, ¿en qué posición hay que encajarla para no romper el orden?",
+      title: { es: "El Hueco en la Fila", en: "The Gap in the Row" },
+      lore_intro: {
+        es: "Las piedras están ordenadas por tamaño. Si traes una nueva, ¿en qué posición hay que encajarla para no romper el orden?",
+        en: "The stones are ordered by size. If you bring a new one, at what position must it fit to keep the order?",
+      },
       position: { x: 16, y: 7 },
       poo_challenge: {
         topic: "Búsqueda binaria (límite inferior) · O(log n)",
         timeLimitSec: 720,
-        instructions:
-          "Given a sorted array and a target, return the index where it is, or where it would be inserted to keep it sorted.\n\n(ES) Implementa searchInsert(array $a, int $t): int.",
+        instructions: {
+          es: "Implementa searchInsert(array $a, int $t): int — dado un array ordenado y un objetivo, el índice donde está, o donde se insertaría para mantenerlo ordenado.",
+          en: "Given a sorted array and a target, return the index where it is, or where it would be inserted to keep it sorted. Implement searchInsert(array $a, int $t): int.",
+        },
         starter_code:
           "<?php\n\nfunction searchInsert(array $a, int $t): int {\n    // Búsqueda binaria de límite inferior\n}\n",
         hints: [
-          "Es una binaria distinta: $hi empieza en count($a), NO en count($a)-1.",
-          "El bucle va mientras $lo < $hi (no <=), y al final $lo == $hi es la respuesta.",
-          "$a[$mid] < $t ? $lo = $mid + 1 : $hi = $mid;  — fíjate en que $hi NO resta 1.",
+          { es: "Es una binaria distinta: $hi empieza en count($a), NO en count($a)-1.", en: "It's a different binary search: $hi starts at count($a), NOT count($a)-1." },
+          { es: "El bucle va mientras $lo < $hi (no <=), y al final $lo == $hi es la respuesta.", en: "The loop runs while $lo < $hi (not <=), and at the end $lo == $hi is the answer." },
+          { es: "$a[$mid] < $t ? $lo = $mid + 1 : $hi = $mid;  — fíjate en que $hi NO resta 1.", en: "$a[$mid] < $t ? $lo = $mid + 1 : $hi = $mid;  — note that $hi does NOT subtract 1." },
         ],
         test_cases: [
-          { input: "searchInsert([1, 3, 5, 6], 5)", expected: 2, description: "Ya está: índice 2" },
-          { input: "searchInsert([1, 3, 5, 6], 2)", expected: 1, description: "Iría entre 1 y 3" },
-          { input: "searchInsert([1, 3, 5, 6], 7)", expected: 4, description: "Iría al final" },
-          { input: "searchInsert([], 5)", expected: 0, description: "Array vacío: caso borde" },
+          { input: "searchInsert([1, 3, 5, 6], 5)", expected: 2, description: { es: "Ya está: índice 2", en: "Already present: index 2" } },
+          { input: "searchInsert([1, 3, 5, 6], 2)", expected: 1, description: { es: "Iría entre 1 y 3", en: "Would go between 1 and 3" } },
+          { input: "searchInsert([1, 3, 5, 6], 7)", expected: 4, description: { es: "Iría al final", en: "Would go at the end" } },
+          { input: "searchInsert([], 5)", expected: 0, description: { es: "Array vacío: caso borde", en: "Empty array: edge case" } },
         ],
       },
     },
     {
       node_id: "warm_ventana_fija",
-      title: "La Veta más Rica",
-      lore_intro:
-        "Debes escoger k galerías CONTIGUAS y quedarte con las de mayor rendimiento total. No vuelvas a sumar lo que ya sumaste: desliza.",
+      title: { es: "La Veta más Rica", en: "The Richest Vein" },
+      lore_intro: {
+        es: "Debes escoger k galerías CONTIGUAS y quedarte con las de mayor rendimiento total. No vuelvas a sumar lo que ya sumaste: desliza.",
+        en: "You must pick k CONTIGUOUS galleries and keep the ones with the highest total yield. Don't re-add what you already added: slide.",
+      },
       position: { x: 19, y: 4 },
       poo_challenge: {
         topic: "Ventana deslizante fija · O(n)",
         timeLimitSec: 900,
-        instructions:
-          "Given an array and a number k, find the maximum sum of any contiguous subarray of size k.\n\n(ES) Implementa maxSumSubarray(array $nums, int $k): int.",
+        instructions: {
+          es: "Implementa maxSumSubarray(array $nums, int $k): int — la suma máxima de cualquier subarray contiguo de tamaño k.",
+          en: "Given an array and a number k, find the maximum sum of any contiguous subarray of size k. Implement maxSumSubarray(array $nums, int $k): int.",
+        },
         starter_code:
           "<?php\n\nfunction maxSumSubarray(array $nums, int $k): int {\n    // Calcula la primera suma y luego desliza\n}\n",
         hints: [
-          "Calcula la suma de los k primeros: array_sum(array_slice($nums, 0, $k)).",
-          "Al desplazar la ventana, suma el que entra y resta el que sale — no recalcules toda la ventana.",
-          "$sum += $nums[$i] - $nums[$i - $k];  y guarda el máximo en cada paso.",
+          { es: "Calcula la suma de los k primeros: array_sum(array_slice($nums, 0, $k)).", en: "Compute the sum of the first k: array_sum(array_slice($nums, 0, $k))." },
+          { es: "Al desplazar la ventana, suma el que entra y resta el que sale — no recalcules toda la ventana.", en: "When sliding the window, add the one entering and subtract the one leaving — don't recompute the whole window." },
+          { es: "$sum += $nums[$i] - $nums[$i - $k];  y guarda el máximo en cada paso.", en: "$sum += $nums[$i] - $nums[$i - $k];  and keep the maximum each step." },
         ],
         test_cases: [
           {
@@ -5496,46 +5535,50 @@ export const CHAPTER_CALENTAMIENTO: Chapter = {
           {
             input: "maxSumSubarray([1, 2, 3], 3)",
             expected: 6,
-            description: "La ventana ocupa todo el array",
+            description: { es: "La ventana ocupa todo el array", en: "The window spans the whole array" },
           },
-          { input: "maxSumSubarray([5], 1)", expected: 5, description: "Un solo elemento" },
+          { input: "maxSumSubarray([5], 1)", expected: 5, description: { es: "Un solo elemento", en: "A single element" } },
           {
             input: "maxSumSubarray([-1, -2, -3, -4], 2)",
             expected: -3,
-            description: "Con negativos también: -1 + -2",
+            description: { es: "Con negativos también: -1 + -2", en: "With negatives too: -1 + -2" },
           },
         ],
       },
     },
     {
       node_id: "warm_invertir",
-      title: "El Espejo de los Números",
-      lore_intro:
-        "El espejo devuelve las cifras del revés. Pero si el reflejo no cabe en la piedra rúnica de 32 bits, se desvanece en nada.",
+      title: { es: "El Espejo de los Números", en: "The Mirror of Numbers" },
+      lore_intro: {
+        es: "El espejo devuelve las cifras del revés. Pero si el reflejo no cabe en la piedra rúnica de 32 bits, se desvanece en nada.",
+        en: "The mirror returns the digits reversed. But if the reflection doesn't fit in the 32-bit rune stone, it vanishes into nothing.",
+      },
       position: { x: 20, y: 10 },
       poo_challenge: {
         topic: "Matemáticas + desbordamiento",
         timeLimitSec: 900,
-        instructions:
-          "Reverse the digits of a 32-bit signed integer. Return 0 if the result overflows the 32-bit range.\n\n(ES) Implementa reverseInt(int $x): int — invierte los dígitos; devuelve 0 si se sale del rango de 32 bits.\n\nAVISO: este PHP es de 32 bits (PHP_INT_MAX = 2147483647). Comprueba el desbordamiento ANTES de convertir a int.",
+        instructions: {
+          es: "Implementa reverseInt(int $x): int — invierte los dígitos de un entero con signo de 32 bits; devuelve 0 si el resultado se sale del rango de 32 bits.\n\nAVISO: este PHP es de 32 bits (PHP_INT_MAX = 2147483647). Comprueba el desbordamiento ANTES de convertir a int.",
+          en: "Reverse the digits of a 32-bit signed integer. Return 0 if the result overflows the 32-bit range. Implement reverseInt(int $x): int.\n\nNOTE: this PHP is 32-bit (PHP_INT_MAX = 2147483647). Check for overflow BEFORE converting to int.",
+        },
         starter_code:
           "<?php\n\nfunction reverseInt(int $x): int {\n    // Signo aparte, invierte, y valida el rango ANTES de castear a int\n}\n",
         hints: [
-          "Guarda el signo primero y trabaja con abs($x); al final multiplicas.",
-          "Invertir es más fácil como texto: strrev((string)abs($x))",
-          "Cuidado: (int)'9646324351' se SATURA a PHP_INT_MAX en 32 bits y el desbordamiento pasaría desapercibido. Conviértelo antes a float, que es exacto hasta 2^53: $rev = (float)strrev((string)abs($x));",
-          "Y sólo entonces valida: if ($rev > 2**31 - 1) return 0; return (int)$rev * $sign;",
+          { es: "Guarda el signo primero y trabaja con abs($x); al final multiplicas.", en: "Save the sign first and work with abs($x); multiply at the end." },
+          { es: "Invertir es más fácil como texto: strrev((string)abs($x))", en: "Reversing is easier as text: strrev((string)abs($x))" },
+          { es: "Cuidado: (int)'9646324351' se SATURA a PHP_INT_MAX en 32 bits y el desbordamiento pasaría desapercibido. Conviértelo antes a float, que es exacto hasta 2^53: $rev = (float)strrev((string)abs($x));", en: "Careful: (int)'9646324351' SATURATES to PHP_INT_MAX on 32-bit and the overflow would go unnoticed. Convert it first to float, exact up to 2^53: $rev = (float)strrev((string)abs($x));" },
+          { es: "Y sólo entonces valida: if ($rev > 2**31 - 1) return 0; return (int)$rev * $sign;", en: "And only then validate: if ($rev > 2**31 - 1) return 0; return (int)$rev * $sign;" },
         ],
         test_cases: [
-          { input: "reverseInt(123)", expected: 321, description: "Positivo" },
-          { input: "reverseInt(-123)", expected: -321, description: "El signo se conserva" },
-          { input: "reverseInt(120)", expected: 21, description: "Los ceros finales desaparecen" },
+          { input: "reverseInt(123)", expected: 321, description: { es: "Positivo", en: "Positive" } },
+          { input: "reverseInt(-123)", expected: -321, description: { es: "El signo se conserva", en: "The sign is preserved" } },
+          { input: "reverseInt(120)", expected: 21, description: { es: "Los ceros finales desaparecen", en: "Trailing zeroes disappear" } },
           {
             input: "reverseInt(1534236469)",
             expected: 0,
-            description: "Al invertirlo se desborda: devuelve 0",
+            description: { es: "Al invertirlo se desborda: devuelve 0", en: "Reversing it overflows: returns 0" },
           },
-          { input: "reverseInt(0)", expected: 0, description: "Caso borde" },
+          { input: "reverseInt(0)", expected: 0, description: { es: "Caso borde", en: "Edge case" } },
         ],
       },
     },
