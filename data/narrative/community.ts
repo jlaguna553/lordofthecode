@@ -1140,3 +1140,162 @@ export const NARR_COMMUNITY_7: ChapterNarrative = {
     { node_id: "dones_de_lorien", kind: "challenge", position: { x: 20, y: 8 }, spriteId: "gimli" },
   ],
 };
+
+/** Capítulo 8 · La Disolución en Amon Hen. */
+export const NARR_COMMUNITY_8: ChapterNarrative = {
+  chapter: 8,
+  title: { es: "La Disolución en Amon Hen", en: "The Breaking at Amon Hen" },
+  lore: {
+    es: "En Parth Galen, junto al Anduin, la Comunidad se quiebra. Boromir sucumbe al Anillo, los Uruk-hai bajan de Isengard y Frodo debe elegir. Cuando algo puede salir mal, dilo con una excepción; cuando algo hay que fabricar en serie, usa una fábrica.",
+    en: "At Parth Galen, beside the Anduin, the Fellowship breaks. Boromir succumbs to the Ring, the Uruk-hai come down from Isengard and Frodo must choose. When something can go wrong, say it with an exception; when something must be made in bulk, use a factory.",
+  },
+  mapSize: { cols: 44, rows: 26 },
+  spawn: { x: 2, y: 8 },
+  xpParaRetos: 200,
+  unlockedBy: 7,
+  companions: ["aragorn", "gimli", "legolas", "sam"],
+  scenery: {
+    ground: "grass",
+    pathRows: [4],
+    pathGround: "stone",
+    pond: { x: 0, y: 22, w: 44, h: 3 },
+    npcs: [{ spriteId: "gollum", x: 3, y: 3, label: { es: "¿…nos sigue?", en: "…is it following us?" } }],
+    dialogues: [
+      {
+        x: 8, y: 8, speaker: "aragorn", name: { es: "Aragorn", en: "Aragorn" },
+        text: {
+          es: "La Compañía se rompe. Ya ha empezado.",
+          en: "The Fellowship is breaking. It has already begun.",
+        },
+      },
+      {
+        x: 17, y: 8, speaker: "sam", name: { es: "Sam", en: "Sam" },
+        text: {
+          es: "Se lo prometí a Gandalf. «No lo pierdas de vista» — y no pienso hacerlo.",
+          en: "I made a promise to Gandalf. \"Don't you lose him\" — and I don't mean to.",
+        },
+      },
+    ],
+    decor: [
+      { type: "pine", x: 5, y: 2 },
+      { type: "pine", x: 10, y: 2 },
+      { type: "pine", x: 16, y: 2 },
+      { type: "pine", x: 22, y: 2 },
+      { type: "pine", x: 4, y: 12 },
+      { type: "pine", x: 12, y: 13 },
+      { type: "pine", x: 21, y: 12 },
+      { type: "rock", x: 8, y: 6 },
+      { type: "rock", x: 11, y: 5 },
+      { type: "rock", x: 15, y: 6 },
+      { type: "rock", x: 18, y: 5 },
+      { type: "rock", x: 6, y: 6 },
+      { type: "pine", x: 27, y: 2 },
+      { type: "pine", x: 32, y: 3 },
+      { type: "pine", x: 37, y: 2 },
+      { type: "pine", x: 41, y: 5 },
+      { type: "pine", x: 29, y: 14 },
+      { type: "pine", x: 35, y: 16 },
+      { type: "pine", x: 24, y: 17 },
+      { type: "pine", x: 39, y: 18 },
+      { type: "rock", x: 30, y: 6 },
+      { type: "rock", x: 34, y: 10 },
+      { type: "rock", x: 38, y: 12 },
+      { type: "rock", x: 26, y: 11 },
+      { type: "rock", x: 42, y: 9 },
+    ],
+  },
+  nodes: [
+    {
+      node_id: "c8_uruk_arquero",
+      kind: "battle",
+      title: { es: "El primer disparo", en: "The first shot" },
+      lore_intro: {
+        es: "En lo alto de la ladera, un Uruk-hai tensa un arco negro. La Comunidad se dispersa entre los árboles; alguien tiene que cubrir la retirada.",
+        en: "High on the slope, an Uruk-hai draws a black bow. The Fellowship scatters among the trees; someone must cover the retreat.",
+      },
+      position: { x: 27, y: 4 },
+      spriteId: "uruk",
+      enemy: {
+        name: { es: "Uruk-hai arquero", en: "Uruk-hai archer" },
+        spriteId: "uruk",
+        hp: 6, damage: 2, xp: 60,
+        taunt: {
+          es: "Encaja una flecha negra y busca un blanco entre los árboles.",
+          en: "It nocks a black arrow and seeks a target among the trees.",
+        },
+      },
+    },
+    {
+      node_id: "c8_orco_saqueador",
+      kind: "battle",
+      title: { es: "Saqueadores en la ribera", en: "Raiders on the shore" },
+      lore_intro: {
+        es: "Bajan hacia los botes volcados, buscando medianos escondidos. Uno rebusca entre los petates con un hacha mellada.",
+        en: "They come down toward the overturned boats, hunting hidden halflings. One rummages through the packs with a notched axe.",
+      },
+      position: { x: 24, y: 8 },
+      spriteId: "orco",
+      enemy: {
+        name: { es: "Orco saqueador", en: "Orc raider" },
+        spriteId: "orco",
+        hp: 6, damage: 2, xp: 70,
+        taunt: {
+          es: "«¿Dónde se esconde el mediano? ¡El amo lo quiere!»",
+          en: "\"Where's the halfling hiding? The master wants it!\"",
+        },
+      },
+    },
+    {
+      node_id: "c8_uruk_espadachin",
+      kind: "battle",
+      title: { es: "El acero de Isengard", en: "The steel of Isengard" },
+      lore_intro: {
+        es: "Un Uruk-hai enorme se abre paso con una cimitarra dentada. Boromir hace sonar el Cuerno de Gondor a lo lejos: la señal de que la lucha ya es de todos.",
+        en: "A huge Uruk-hai cuts through with a jagged scimitar. Boromir sounds the Horn of Gondor in the distance: the sign that the fight is now everyone's.",
+      },
+      position: { x: 33, y: 9 },
+      spriteId: "uruk",
+      enemy: {
+        name: { es: "Uruk-hai espadachín", en: "Uruk-hai swordsman" },
+        spriteId: "uruk",
+        hp: 7, damage: 2, xp: 70,
+        taunt: {
+          es: "«El Cuerno de Gondor no salvará a nadie hoy.»",
+          en: "\"The Horn of Gondor will save no one today.\"",
+        },
+      },
+    },
+    {
+      node_id: "c8_jefe_lurtz",
+      kind: "battle",
+      title: { es: "Lurtz, el primero de los Uruk-hai", en: "Lurtz, first of the Uruk-hai" },
+      lore_intro: {
+        es: "Cae Boromir, atravesado, y el que disparó avanza hacia ti sin prisa. Lurtz, el primer Uruk-hai nacido del barro de Isengard, criado para una sola cosa: cazar. Éste es el último aliento de la Comunidad tal como era.",
+        en: "Boromir falls, pierced, and the one who shot him advances on you without haste. Lurtz, the first Uruk-hai born from the mud of Isengard, bred for one thing: to hunt. This is the last breath of the Fellowship as it was.",
+      },
+      position: { x: 40, y: 7 },
+      spriteId: "uruk",
+      enemy: {
+        name: { es: "Lurtz de Isengard", en: "Lurtz of Isengard" },
+        spriteId: "uruk",
+        hp: 8, damage: 3, xp: 210, boss: true,
+        taunt: {
+          es: "«Buscad a los medianos. Matad a los demás.»",
+          en: "\"Find the halflings. Kill the rest.\"",
+        },
+        reward: {
+          hero: "gandalf",
+          name: { es: "Gandalf el Blanco", en: "Gandalf the White" },
+          blurb: {
+            es: "El que cayó en Moria y ha vuelto, ahora vestido de blanco. Con Gandalf, la Comunidad de héroes está completa.",
+            en: "The one who fell in Moria and has returned, now clad in white. With Gandalf, the Fellowship of heroes is complete.",
+          },
+        },
+      },
+    },
+    { node_id: "pergamino_fallos", kind: "scroll", position: { x: 4, y: 6 } },
+    { node_id: "tentacion_de_boromir", kind: "challenge", position: { x: 9, y: 8 }, spriteId: "boromir" },
+    { node_id: "solio_de_la_vision", kind: "challenge", position: { x: 14, y: 4 }, spriteId: "sam" },
+    { node_id: "hueste_de_isengard", kind: "challenge", position: { x: 19, y: 8 }, spriteId: "uruk" },
+  ],
+};

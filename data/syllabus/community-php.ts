@@ -2150,3 +2150,335 @@ class Barca        { use CamuflajeElfico; }  // sin parentesco alguno`,
     },
   },
 };
+
+/** Capítulo 8 · Excepciones (throw, try/catch/finally) y patrón Factory. */
+export const SYL_PHP_COMMUNITY_8: Syllabus = {
+  c8_uruk_arquero: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Qué hace `throw new RuntimeException('boom')`?",
+        options: [
+          "Lanza una excepción que interrumpe el flujo hasta que alguien la capture",
+          "Escribe 'boom' y continúa",
+          "Termina el programa en silencio",
+          "Devuelve un objeto Exception sin más efecto",
+        ],
+        correct: 0,
+        explanation:
+          "`throw` corta la ejecución en seco: la función no devuelve, sino que «tira» la excepción hacia arriba por la pila de llamadas hasta que un `catch` compatible la recoge. Si nadie la captura, el programa muere con un error fatal.",
+      },
+      {
+        question:
+          "¿Por qué lanzar una excepción es mejor que devolver `false` cuando algo falla?",
+        options: [
+          "Un false se puede ignorar por accidente; una excepción obliga a tratarla o propaga el fallo",
+          "Las excepciones son más rápidas",
+          "false ocupa más memoria",
+          "No hay diferencia real",
+        ],
+        correct: 0,
+        explanation:
+          "Un valor de error (`false`, `null`, `-1`) se pierde en cuanto quien llama olvida comprobarlo, y el fallo sigue adelante disfrazado. Una excepción no se puede ignorar sin querer: o la capturas, o detiene el programa donde está. El fallo se hace visible.",
+      },
+      {
+        question:
+          "¿De qué clase conviene que herede una excepción propia como `SigiloInsuficienteException`?",
+        options: [
+          "De Exception (o una subclase de la jerarquía estándar)",
+          "De la clase donde ocurre el error",
+          "De ninguna: basta con un string",
+          "De stdClass",
+        ],
+        correct: 0,
+        explanation:
+          "Extender `Exception` (o `RuntimeException`, `LogicException`…) hace que tu excepción encaje en el sistema `try/catch` y puedas capturarla por su tipo. Crear tipos propios permite distinguir «esto es un fallo de sigilo» de «esto es otra cosa» en el catch.",
+      },
+    ],
+  },
+  c8_orco_saqueador: {
+    kind: "battle",
+    questions: [
+      {
+        question:
+          "En un bloque `try { ... } catch (Exception $e) { ... }`, ¿cuándo se ejecuta el catch?",
+        options: [
+          "Sólo si dentro del try se lanza una excepción compatible",
+          "Siempre, después del try",
+          "Sólo si el try termina sin errores",
+          "Nunca, si el try tiene return",
+        ],
+        correct: 0,
+        explanation:
+          "El `catch` es un plan B: sólo entra si el `try` lanza una excepción que encaje con su tipo. Si el try va bien, el catch se salta por completo. Para código que debe correr pase lo que pase (cerrar un fichero), está `finally`.",
+      },
+      {
+        question:
+          "¿Qué captura `catch (Throwable $e)` que NO captura `catch (Exception $e)`?",
+        options: [
+          "También los Error (errores internos de PHP, como TypeError)",
+          "Nada: son equivalentes",
+          "Sólo las excepciones propias",
+          "Los warnings y notices",
+        ],
+        correct: 0,
+        explanation:
+          "En PHP, `Exception` y `Error` son ramas hermanas bajo la interfaz `Throwable`. `catch (Exception)` coge tus excepciones y las de librería; `catch (Throwable)` coge además los `Error` del motor (TypeError, DivisionByZeroError…). Los warnings no son throwables: no se capturan así.",
+      },
+      {
+        question:
+          "¿Cuál es el orden correcto de los catch cuando hay varios?",
+        options: [
+          "De la excepción más específica a la más general",
+          "De la más general a la más específica",
+          "El orden da igual",
+          "Alfabético por nombre de clase",
+        ],
+        correct: 0,
+        explanation:
+          "PHP prueba los catch de arriba abajo y entra en el primero que encaje. Si pones `catch (Exception)` antes que `catch (RuntimeException)`, el general captura todo y el específico nunca se alcanza. Siempre de lo concreto a lo genérico.",
+      },
+    ],
+  },
+  c8_uruk_espadachin: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Qué es el patrón Factory (fábrica)?",
+        options: [
+          "Un método/clase cuya tarea es CREAR objetos, centralizando el new",
+          "Un objeto que fabrica copias de sí mismo",
+          "Una clase que sólo tiene métodos estáticos",
+          "Otro nombre para el constructor",
+        ],
+        correct: 0,
+        explanation:
+          "Una Factory encapsula la decisión de QUÉ objeto crear y CÓMO. En vez de esparcir `new EspadaOrca()` / `new EspadaElfica()` por todo el código, la fábrica decide y devuelve un `Arma`. El resto del programa pide sin saber los detalles de construcción.",
+      },
+      {
+        question:
+          "Una `ArmaFactory::crear('espada')` devuelve un objeto que implementa `Arma`. ¿Qué ventaja da?",
+        options: [
+          "Quien la usa recibe un Arma sin acoplarse a la clase concreta ni al new",
+          "Es más rápida que new",
+          "Evita tener que declarar las clases",
+          "Permite herencia múltiple",
+        ],
+        correct: 0,
+        explanation:
+          "El código cliente depende sólo de la interfaz `Arma` y de la fábrica, no de `EspadaOrca` en concreto. Añadir un arma nueva es tocar la fábrica en un sitio, no cazar `new` por todo el proyecto. Centralizas la creación y desacoplas el uso.",
+      },
+      {
+        question:
+          "Le pides a la fábrica un tipo que no conoce: `crear('bazooka')`. ¿Qué debería hacer una buena fábrica?",
+        options: [
+          "Lanzar una excepción (p. ej. InvalidArgumentException)",
+          "Devolver null y seguir",
+          "Crear un objeto vacío",
+          "Devolver el primer tipo que tenga",
+        ],
+        correct: 0,
+        explanation:
+          "Pedir algo imposible es un error del programador, y una fábrica honesta lo canta con una excepción en vez de devolver `null` (que estallará más tarde y más lejos) o un objeto cualquiera (que causará un bug silencioso). Aquí se cruzan los dos temas del capítulo: la fábrica crea, y ante lo inválido, lanza.",
+      },
+    ],
+  },
+  c8_jefe_lurtz: {
+    kind: "battle",
+    questions: [
+      {
+        question:
+          "```\ntry {\n  throw new RuntimeException('caída');\n} catch (LogicException $e) {\n  echo 'A';\n} catch (RuntimeException $e) {\n  echo 'B';\n} finally {\n  echo 'C';\n}\n```",
+        options: ["BC", "AC", "ABC", "C"],
+        correct: 0,
+        explanation:
+          "La excepción es `RuntimeException`, así que el primer catch (LogicException) no encaja y se salta; el segundo sí, imprime 'B'. Y `finally` se ejecuta SIEMPRE, imprima o no algún catch: añade 'C'. Resultado: BC.",
+      },
+      {
+        question: "¿Para qué sirve el bloque `finally`?",
+        options: [
+          "Para código que debe ejecutarse haya o no excepción (limpieza, cierre)",
+          "Para capturar la excepción que los catch no cogieron",
+          "Para relanzar la excepción",
+          "Sólo se ejecuta si no hubo excepción",
+        ],
+        correct: 0,
+        explanation:
+          "`finally` es la garantía de limpieza: corre tanto si el try acaba bien como si salta una excepción (incluso si el catch relanza o hay un return). Es donde cierras el fichero, sueltas el candado o devuelves la conexión, sin duplicar ese código en cada rama.",
+      },
+      {
+        question:
+          "Una Factory decide qué crear según un parámetro. Si mañana añades un tipo nuevo, ¿qué principio SOLID te conviene respetar?",
+        options: [
+          "Abierto/Cerrado: extender la fábrica sin reescribir a quien la usa",
+          "Ninguno: las fábricas no siguen SOLID",
+          "Herencia múltiple",
+          "Que todo sea estático",
+        ],
+        correct: 0,
+        explanation:
+          "El principio Abierto/Cerrado: el código debería estar abierto a extensión pero cerrado a modificación. Una buena fábrica te deja añadir un tipo tocándola a ella (o registrando el nuevo), sin que quien pide `Arma` cambie ni una línea. Lo verás a fondo en el Libro II (SOLID).",
+      },
+      {
+        question:
+          "Capturas una excepción, registras el error, pero no puedes resolverlo aquí. ¿Qué haces?",
+        options: [
+          "Relanzarla (throw) para que un nivel superior decida, quizá envuelta en otra",
+          "Devolver null y seguir como si nada",
+          "Ignorarla: ya la registraste",
+          "Convertirla en un echo",
+        ],
+        correct: 0,
+        explanation:
+          "Tragarse una excepción que no sabes resolver esconde el fallo. El patrón correcto es registrar y RELANZAR (`throw`), o envolverla en una excepción de más alto nivel que dé contexto, para que quien pueda decidir lo haga. Capturar no obliga a resolver ahí mismo.",
+      },
+    ],
+  },
+  pergamino_fallos: {
+    kind: "scroll",
+    title: "El Pergamino de lo que Puede Fallar",
+    lore_intro:
+      "Aragorn deja caer un pergamino junto al fuego apagado. «Ninguna compañía sobrevive fingiendo que nada saldrá mal. Nómbralo, y podrás responder.»",
+    scroll: {
+      topic: "Excepciones y patrón Factory",
+      sections: [
+        {
+          heading: "Una excepción NO es un valor de retorno",
+          body: "Devolver `false` o `null` cuando algo falla obliga a quien llama a adivinar qué pasó. Una excepción nombra el error y lo propaga hasta quien sepa manejarlo.\n\nCrea excepciones propias extendiendo `Exception`: el tipo ya comunica el problema.",
+          code: `class CorruptionException extends Exception {}
+
+public function resistir(int $tentacion): string {
+    if ($tentacion > 80) {
+        throw new CorruptionException('El Anillo lo reclama');
+    }
+    return 'resiste';
+}`,
+        },
+        {
+          heading: "try / catch / finally",
+          body: "Captura sólo lo que sabes manejar. `finally` se ejecuta pase lo que pase — ideal para liberar recursos.\n\nRegla de oro: NO te tragues las excepciones con un catch vacío. Un error silenciado es un error que aparecerá más tarde y peor.",
+          code: `try {
+    return $solio->mirar($conAnillo);
+} catch (VisionException $e) {
+    return 'te quitas el Anillo: ' . $e->getMessage();
+} finally {
+    $solio->cerrar(); // siempre
+}`,
+        },
+        {
+          heading: "Factory: crear sin acoplarse al new",
+          body: "Una fábrica centraliza la creación de objetos. Quien la usa pide «un uruk» y recibe algo que cumple el contrato, sin conocer la clase concreta.\n\nSi mañana cambia la implementación, sólo se toca la fábrica — Open/Closed otra vez.",
+          code: `class FabricaDeHuestes {
+    public static function crear(string $tipo): Guerrero {
+        return match ($tipo) {
+            'orco' => new Orco(),
+            'uruk' => new UrukHai(),
+            default => throw new InvalidArgumentException("Tipo desconocido: $tipo"),
+        };
+    }
+}`,
+        },
+      ],
+      keyTakeaway:
+        "Lanza excepciones específicas y captúralas donde puedas hacer algo útil. Y cuando el `new` se repite por todas partes, es hora de una fábrica.",
+    },
+  },
+  tentacion_de_boromir: {
+    kind: "challenge",
+    title: "La Tentación de Boromir",
+    lore_intro:
+      "«Podríamos usarlo… ¡Dámelo!» El Anillo susurra al orgullo de Gondor. Cuando la voluntad no basta, hay que declarar el fallo por su nombre.",
+    challenge: {
+      topic: "Excepciones propias (throw)",
+      instructions:
+        "Crea la excepción CorruptionException, que extienda Exception. Después crea Boromir con resistir(int $tentacion): string, que devuelva 'resiste' si la tentación es 80 o menos, y LANCE una CorruptionException con el mensaje 'El Anillo lo reclama' si es mayor que 80.",
+      sut: "new Boromir()",
+      starter_code:
+        "<?php\n\nclass CorruptionException extends Exception {\n}\n\nclass Boromir {\n    // resistir(int $tentacion): string\n}\n",
+      hints: [
+        "Guard clause: if ($tentacion > 80) { throw new CorruptionException('El Anillo lo reclama'); }",
+        "El mensaje se pasa al constructor de la excepción y se lee con getMessage().",
+        "Si no lo lanzas, la prueba que espera la excepción fallará.",
+      ],
+      test_cases: [
+        { input: "resistir(50)", expected: "resiste", description: "Con poca tentación, Boromir aguanta" },
+        {
+          input:
+            "(function() { try { (new Boromir())->resistir(95); return false; } catch (CorruptionException $e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: "Con tentación 95 sucumbe: lanza CorruptionException",
+        },
+        {
+          input:
+            "(function() { try { (new Boromir())->resistir(95); return ''; } catch (CorruptionException $e) { return $e->getMessage(); } })()",
+          raw: true,
+          expected: "El Anillo lo reclama",
+          description: "La excepción lleva su mensaje",
+        },
+        {
+          input: "(new CorruptionException('x')) instanceof Exception",
+          raw: true,
+          expected: true,
+          description: "Debe EXTENDER Exception",
+        },
+      ],
+    },
+  },
+  solio_de_la_vision: {
+    kind: "challenge",
+    title: "El Solio de la Visión",
+    lore_intro:
+      "Frodo sube a Amon Hen y se pone el Anillo. Desde el Solio ve reinos… y también el Ojo se vuelve hacia él. Ver de más tiene un precio: hay que saber recogerlo.",
+    challenge: {
+      topic: "try / catch",
+      instructions:
+        "El Solio ya existe: mirar(bool $conAnillo) devuelve la visión, pero LANZA VisionException si miras con el Anillo puesto. Crea la función observar(Solio $s, bool $conAnillo): string, que capture esa excepción y devuelva 'te quitas el Anillo: ' seguido del mensaje de la excepción.",
+      support_code:
+        "class VisionException extends Exception {}\n\nclass Solio {\n    public function mirar(bool $conAnillo): string {\n        if ($conAnillo) {\n            throw new VisionException('El Ojo te ve');\n        }\n        return 'ves las tierras de Rohan';\n    }\n}",
+      starter_code:
+        "<?php\n\n// Solio::mirar() lanza VisionException si vas con el Anillo puesto.\n\nfunction observar(Solio $s, bool $conAnillo): string {\n    // Captura la excepción y devuelve el mensaje compuesto\n}\n",
+      hints: [
+        "Envuelve la llamada: try { return $s->mirar($conAnillo); } catch (VisionException $e) { … }",
+        "Dentro del catch, compón el texto: return 'te quitas el Anillo: ' . $e->getMessage();",
+        "Captura VisionException en concreto, no un Throwable genérico: captura sólo lo que sabes manejar.",
+      ],
+      test_cases: [
+        { input: "observar(new Solio(), false)", raw: true, expected: "ves las tierras de Rohan", description: "Sin el Anillo, la visión es segura" },
+        { input: "observar(new Solio(), true)", raw: true, expected: "te quitas el Anillo: El Ojo te ve", description: "Con el Anillo, capturas la excepción y reaccionas" },
+      ],
+    },
+  },
+  hueste_de_isengard: {
+    kind: "challenge",
+    title: "La Hueste de Isengard",
+    lore_intro:
+      "Bajan por centenares. Los orcos comunes temen el sol; los Uruk-hai de Saruman marchan bajo él sin pestañear. No los crees uno a uno: monta una fábrica.",
+    challenge: {
+      topic: "Patrón Factory",
+      instructions:
+        "Existen la interfaz Guerrero y las clases Orco (resistencia al sol 0) y UrukHai (100). Crea FabricaDeHuestes con el método ESTÁTICO crear(string $tipo): Guerrero, que devuelva un Orco para 'orco', un UrukHai para 'uruk', y lance InvalidArgumentException con cualquier otro tipo.",
+      support_code:
+        "interface Guerrero {\n    public function resistenciaSol(): int;\n}\n\nclass Orco implements Guerrero {\n    public function resistenciaSol(): int { return 0; }\n}\n\nclass UrukHai implements Guerrero {\n    public function resistenciaSol(): int { return 100; }\n}",
+      starter_code:
+        "<?php\n\n// Guerrero (interfaz), Orco y UrukHai ya existen.\n\nclass FabricaDeHuestes {\n    // public static function crear(string $tipo): Guerrero\n}\n",
+      hints: [
+        "En PHP 8 queda muy limpio con match: return match ($tipo) { 'orco' => new Orco(), … };",
+        "El caso por defecto lanza: default => throw new InvalidArgumentException(\"Tipo desconocido: $tipo\"),",
+        "Devuelve el tipo de la INTERFAZ (Guerrero): quien llama no necesita saber la clase concreta.",
+      ],
+      test_cases: [
+        { input: "FabricaDeHuestes::crear('orco')->resistenciaSol()", raw: true, expected: 0, description: "El orco común se abrasa al sol" },
+        { input: "FabricaDeHuestes::crear('uruk')->resistenciaSol()", raw: true, expected: 100, description: "El Uruk-hai marcha a plena luz del día" },
+        { input: "FabricaDeHuestes::crear('uruk') instanceof Guerrero", raw: true, expected: true, description: "La fábrica devuelve algo que cumple el contrato" },
+        {
+          input:
+            "(function() { try { FabricaDeHuestes::crear('elfo'); return false; } catch (\\InvalidArgumentException $e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: "Un tipo desconocido no se inventa: se rechaza",
+        },
+      ],
+    },
+  },
+};

@@ -1671,3 +1671,237 @@ export const SYL_JS_COMMUNITY_7: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre errores y factorías. */
+const Q_THROW = {
+  question: P("¿Qué hace `throw new Error('boom')` en JS?", "What does `throw new Error('boom')` do in JS?"),
+  options: [
+    P("Lanza el error e interrumpe el flujo hasta que un catch lo recoja", "Throws the error and interrupts the flow until a catch takes it"),
+    P("Imprime 'boom' y sigue", "Prints 'boom' and continues"),
+    P("Termina el programa en silencio", "Ends the program silently"),
+    P("Crea un Error sin ningún efecto", "Creates an Error with no effect"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`throw` corta la ejecución y propaga el error hacia arriba por la pila hasta el primer `catch` que lo recoja. Si nadie lo captura, la ejecución termina con el error sin manejar.",
+    "`throw` cuts execution and propagates the error up the stack to the first `catch` that takes it. If no one catches it, execution ends with the unhandled error.",
+  ),
+};
+const Q_TRYCATCH = {
+  question: P("En `try { ... } catch (e) { ... }`, ¿cuándo entra el catch?", "In `try { ... } catch (e) { ... }`, when does the catch run?"),
+  options: [
+    P("Sólo si el try lanza (throw) un error", "Only if the try throws an error"),
+    P("Siempre, después del try", "Always, after the try"),
+    P("Sólo si el try termina bien", "Only if the try finishes fine"),
+    P("Nunca, si el try tiene return", "Never, if the try has a return"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El `catch` es el plan B: sólo se ejecuta si dentro del `try` se lanza algo. Si el try va bien, se salta. A diferencia de PHP, en JS un solo `catch` recibe cualquier error; se distingue el tipo dentro con `instanceof`.",
+    "The `catch` is plan B: it only runs if something is thrown inside the `try`. If the try goes fine, it's skipped. Unlike PHP, in JS a single `catch` receives any error; you distinguish the type inside with `instanceof`.",
+  ),
+};
+const Q_FINALLY = {
+  question: P("¿Para qué sirve el bloque `finally`?", "What is the `finally` block for?"),
+  options: [
+    P("Para código que corre haya o no error (limpieza, cierre)", "For code that runs whether or not there's an error (cleanup, closing)"),
+    P("Para capturar lo que el catch no cogió", "To catch what the catch missed"),
+    P("Sólo corre si NO hubo error", "It only runs if there was NO error"),
+    P("Para relanzar el error", "To rethrow the error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`finally` corre siempre: acabe bien el try o salte un error (incluso con un `return` de por medio). Es donde liberas recursos —cerrar un fichero, soltar un candado— sin duplicar ese código en cada rama.",
+    "`finally` always runs: whether the try finishes fine or throws (even with a `return` in play). It's where you release resources —close a file, drop a lock— without duplicating that code in each branch.",
+  ),
+};
+const Q_CUSTOMERR = {
+  question: P("¿Cómo se crea un tipo de error propio en JS?", "How do you create a custom error type in JS?"),
+  options: [
+    P("class CorruptionError extends Error {}", "class CorruptionError extends Error {}"),
+    P("class CorruptionError implements Error {}", "class CorruptionError implements Error {}"),
+    P("throw new String('error')", "throw new String('error')"),
+    P("function Error CorruptionError() {}", "function Error CorruptionError() {}"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Extendiendo `Error` obtienes un tipo propio con `.message` y capturable por su clase con `instanceof`. Así distingues «esto es corrupción» de cualquier otro fallo dentro del catch.",
+    "Extending `Error` gives you a custom type with `.message`, catchable by its class with `instanceof`. That's how you tell \"this is corruption\" from any other failure inside the catch.",
+  ),
+};
+const Q_FACTORY = {
+  question: P("¿Qué es el patrón Factory (fábrica)?", "What is the Factory pattern?"),
+  options: [
+    P("Una función/método cuya tarea es CREAR objetos, centralizando el `new`", "A function/method whose job is to CREATE objects, centralizing `new`"),
+    P("Un objeto que se clona a sí mismo", "An object that clones itself"),
+    P("Otro nombre para el constructor", "Another name for the constructor"),
+    P("Una clase sólo de campos estáticos", "A class of only static fields"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una fábrica decide QUÉ crear y CÓMO, devolviendo algo que cumple cierta forma. Quien la usa pide por un dato ('uruk') y no se acopla a la clase concreta ni esparce `new` por todo el código.",
+    "A factory decides WHAT to create and HOW, returning something of a certain shape. The caller asks by a value ('uruk') and doesn't couple to the concrete class or spread `new` all over.",
+  ),
+};
+const Q_ERRVSRET = {
+  question: P("¿Por qué lanzar un error suele ser mejor que devolver `null` al fallar?", "Why is throwing an error often better than returning `null` on failure?"),
+  options: [
+    P("Un null se ignora por accidente; un throw obliga a tratarlo o propaga el fallo", "A null is ignored by accident; a throw forces handling or propagates the failure"),
+    P("Lanzar es más rápido", "Throwing is faster"),
+    P("null ocupa más memoria", "null uses more memory"),
+    P("No hay diferencia", "There's no difference"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un `null` de error se cuela hacia adelante disfrazado hasta estallar lejos del origen (el famoso 'cannot read property of null'). Un error lanzado se hace visible: o lo capturas, o detiene el flujo donde de verdad falló.",
+    "An error `null` slips forward disguised until it blows up far from the source (the famous 'cannot read property of null'). A thrown error is visible: either you catch it, or it stops the flow where it truly failed.",
+  ),
+};
+
+/** Capítulo 8 · Errores (throw, try/catch/finally, Error propios) y factorías. */
+export const SYL_JS_COMMUNITY_8: Syllabus = {
+  c8_uruk_arquero: { kind: "battle", questions: [Q_THROW, Q_ERRVSRET, Q_CUSTOMERR] },
+  c8_orco_saqueador: { kind: "battle", questions: [Q_TRYCATCH, Q_FINALLY, Q_CUSTOMERR] },
+  c8_uruk_espadachin: { kind: "battle", questions: [Q_FACTORY, Q_THROW, Q_TRYCATCH] },
+  c8_jefe_lurtz: { kind: "battle", questions: [Q_FINALLY, Q_FACTORY, Q_ERRVSRET, Q_CUSTOMERR] },
+  pergamino_fallos: {
+    kind: "scroll",
+    title: P("El Pergamino de lo que Puede Fallar", "The Scroll of What Can Go Wrong"),
+    lore_intro: P(
+      "Aragorn deja caer un pergamino junto al fuego apagado. «Ninguna compañía sobrevive fingiendo que nada saldrá mal. Nómbralo, y podrás responder.»",
+      "Aragorn drops a scroll beside the dead fire. \"No company survives pretending nothing will go wrong. Name it, and you can answer it.\"",
+    ),
+    scroll: {
+      topic: P("Errores y patrón Factory", "Errors and the Factory pattern"),
+      sections: [
+        {
+          heading: P("Un error NO es un valor de retorno", "An error is NOT a return value"),
+          body: P(
+            "Devolver `null` cuando algo falla obliga a quien llama a adivinar. Un error propio (`class X extends Error`) nombra el problema y se propaga con `throw` hasta quien sepa manejarlo.",
+            "Returning `null` on failure forces the caller to guess. A custom error (`class X extends Error`) names the problem and propagates with `throw` to whoever can handle it.",
+          ),
+          code: "class CorruptionError extends Error {}\n\nfunction resistir(tentacion) {\n  if (tentacion > 80) throw new CorruptionError('El Anillo lo reclama');\n  return 'resiste';\n}",
+        },
+        {
+          heading: P("try / catch / finally", "try / catch / finally"),
+          body: P(
+            "Un solo `catch` recibe cualquier error; distingues el tipo con `instanceof`. `finally` corre pase lo que pase. Regla de oro: no te tragues el error con un catch vacío.",
+            "A single `catch` receives any error; you tell the type with `instanceof`. `finally` runs no matter what. Golden rule: don't swallow the error with an empty catch.",
+          ),
+          code: "try {\n  return solio.mirar(conAnillo);\n} catch (e) {\n  if (e instanceof VisionError) return 'te quitas el Anillo: ' + e.message;\n  throw e; // lo que no sé manejar, lo relanzo\n}",
+        },
+        {
+          heading: P("Factory: crear sin acoplarse al new", "Factory: create without coupling to new"),
+          body: P(
+            "Una fábrica centraliza la creación. Quien la usa pide 'un uruk' y recibe algo con la forma esperada, sin conocer la clase concreta. Ante un tipo inválido, lanza.",
+            "A factory centralizes creation. The caller asks for 'an uruk' and gets something of the expected shape, without knowing the concrete class. On an invalid type, it throws.",
+          ),
+          code: "class FabricaDeHuestes {\n  static crear(tipo) {\n    if (tipo === 'orco') return new Orco();\n    if (tipo === 'uruk') return new UrukHai();\n    throw new Error(`Tipo desconocido: ${tipo}`);\n  }\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "Lanza errores con tipo propio y captúralos donde puedas hacer algo útil (relanza el resto); `finally` limpia siempre. Y cuando el `new` se repite por todas partes, es hora de una fábrica.",
+        "Throw typed errors and catch them where you can do something useful (rethrow the rest); `finally` always cleans up. And when `new` repeats everywhere, it's time for a factory.",
+      ),
+    },
+  },
+  tentacion_de_boromir: {
+    kind: "challenge",
+    title: P("La Tentación de Boromir", "Boromir's Temptation"),
+    lore_intro: P(
+      "«Podríamos usarlo… ¡Dámelo!» El Anillo susurra al orgullo de Gondor. Cuando la voluntad no basta, declara el fallo por su nombre.",
+      "\"We could use it… Give it to me!\" The Ring whispers to Gondor's pride. When will isn't enough, declare the failure by name.",
+    ),
+    challenge: {
+      topic: P("Errores propios (throw)", "Custom errors (throw)"),
+      instructions: P(
+        "Crea `CorruptionError` que EXTIENDA `Error`. Después crea la clase `Boromir` con `resistir(tentacion)` que devuelva 'resiste' si la tentación es 80 o menos, y LANCE un `CorruptionError` con el mensaje 'El Anillo lo reclama' si es mayor que 80.",
+        "Create `CorruptionError` EXTENDING `Error`. Then create class `Boromir` with `resistir(tentacion)` returning 'resiste' if temptation is 80 or less, and THROWING a `CorruptionError` with the message 'El Anillo lo reclama' if greater than 80.",
+      ),
+      sut: "new Boromir()",
+      starter_code:
+        "class CorruptionError extends Error {}\n\nclass Boromir {\n  resistir(tentacion) {\n    // 'resiste' si <= 80; si no, throw new CorruptionError(...)\n  }\n}\n",
+      hints: [
+        P("Guard clause: `if (tentacion > 80) throw new CorruptionError('El Anillo lo reclama');`.", "Guard clause: `if (tentacion > 80) throw new CorruptionError('El Anillo lo reclama');`."),
+        P("El mensaje se lee con `e.message`.", "The message is read with `e.message`."),
+      ],
+      test_cases: [
+        { input: "resistir(50)", expected: "resiste", description: P("Con poca tentación, aguanta", "With little temptation, he holds") },
+        {
+          input: "(() => { try { new Boromir().resistir(95); return false; } catch (e) { return e instanceof CorruptionError; } })()",
+          raw: true,
+          expected: true,
+          description: P("Con 95 sucumbe: lanza CorruptionError", "At 95 he succumbs: throws CorruptionError"),
+        },
+        {
+          input: "(() => { try { new Boromir().resistir(95); return ''; } catch (e) { return e.message; } })()",
+          raw: true,
+          expected: "El Anillo lo reclama",
+          description: P("El error lleva su mensaje", "The error carries its message"),
+        },
+        { input: "new CorruptionError('x') instanceof Error", expected: true, description: P("Debe EXTENDER Error", "Must EXTEND Error"), raw: true },
+      ],
+    },
+  },
+  solio_de_la_vision: {
+    kind: "challenge",
+    title: P("El Solio de la Visión", "The Seat of Seeing"),
+    lore_intro: P(
+      "Frodo sube a Amon Hen y se pone el Anillo. Ver de más tiene un precio: hay que saber recogerlo.",
+      "Frodo climbs Amon Hen and puts on the Ring. Seeing too much has a price: you must know how to catch it.",
+    ),
+    challenge: {
+      topic: P("try / catch", "try / catch"),
+      instructions: P(
+        "El `Solio` ya existe: `mirar(conAnillo)` devuelve la visión, pero LANZA `VisionError` si miras con el Anillo puesto. Crea `observar(solio, conAnillo)` que capture esa excepción y devuelva 'te quitas el Anillo: ' seguido del mensaje del error.",
+        "The `Solio` already exists: `mirar(conAnillo)` returns the vision, but THROWS `VisionError` if you look with the Ring on. Create `observar(solio, conAnillo)` that catches it and returns 'te quitas el Anillo: ' followed by the error's message.",
+      ),
+      support_code:
+        "class VisionError extends Error {}\n\nclass Solio {\n  mirar(conAnillo) {\n    if (conAnillo) throw new VisionError('El Ojo te ve');\n    return 'ves las tierras de Rohan';\n  }\n}",
+      starter_code:
+        "// Solio.mirar(conAnillo) lanza VisionError si vas con el Anillo puesto.\n\nfunction observar(solio, conAnillo) {\n  // captura el error y devuelve el mensaje compuesto\n}\n",
+      hints: [
+        P("Envuelve la llamada: `try { return solio.mirar(conAnillo); } catch (e) { ... }`.", "Wrap the call: `try { return solio.mirar(conAnillo); } catch (e) { ... }`."),
+        P("En el catch: `return 'te quitas el Anillo: ' + e.message;`.", "In the catch: `return 'te quitas el Anillo: ' + e.message;`."),
+      ],
+      test_cases: [
+        { input: "observar(new Solio(), false)", expected: "ves las tierras de Rohan", description: P("Sin el Anillo, la visión es segura", "Without the Ring, the vision is safe"), raw: true },
+        { input: "observar(new Solio(), true)", expected: "te quitas el Anillo: El Ojo te ve", description: P("Con el Anillo, capturas y reaccionas", "With the Ring, you catch and react"), raw: true },
+      ],
+    },
+  },
+  hueste_de_isengard: {
+    kind: "challenge",
+    title: P("La Hueste de Isengard", "The Host of Isengard"),
+    lore_intro: P(
+      "Bajan por centenares. No los crees uno a uno: monta una fábrica que decida qué crear.",
+      "They come down by the hundreds. Don't create them one by one: build a factory that decides what to make.",
+    ),
+    challenge: {
+      topic: P("Patrón Factory", "Factory pattern"),
+      instructions: P(
+        "Existen las clases `Orco` (resistenciaSol 0) y `UrukHai` (100). Crea `FabricaDeHuestes` con el método ESTÁTICO `crear(tipo)` que devuelva un `Orco` para 'orco', un `UrukHai` para 'uruk', y LANCE un `Error` con cualquier otro tipo.",
+        "The classes `Orco` (resistenciaSol 0) and `UrukHai` (100) exist. Create `FabricaDeHuestes` with a STATIC method `crear(tipo)` returning an `Orco` for 'orco', a `UrukHai` for 'uruk', and THROWING an `Error` for any other type.",
+      ),
+      support_code:
+        "class Orco {\n  resistenciaSol() { return 0; }\n}\nclass UrukHai {\n  resistenciaSol() { return 100; }\n}",
+      starter_code:
+        "// Orco y UrukHai ya existen.\n\nclass FabricaDeHuestes {\n  static crear(tipo) {\n    // 'orco' -> new Orco(); 'uruk' -> new UrukHai(); si no, throw\n  }\n}\n",
+      hints: [
+        P("Compara el tipo y devuelve la instancia: `if (tipo === 'orco') return new Orco();`.", "Compare the type and return the instance: `if (tipo === 'orco') return new Orco();`."),
+        P("Para lo desconocido: `throw new Error(`Tipo desconocido: ${tipo}`);`.", "For the unknown: `throw new Error(`Tipo desconocido: ${tipo}`);`."),
+      ],
+      test_cases: [
+        { input: "FabricaDeHuestes.crear('orco').resistenciaSol()", expected: 0, description: P("El orco común se abrasa al sol", "The common orc burns in the sun"), raw: true },
+        { input: "FabricaDeHuestes.crear('uruk').resistenciaSol()", expected: 100, description: P("El Uruk-hai marcha a plena luz", "The Uruk-hai marches in full daylight"), raw: true },
+        { input: "FabricaDeHuestes.crear('uruk') instanceof UrukHai", expected: true, description: P("La fábrica devuelve el tipo correcto", "The factory returns the right type"), raw: true },
+        {
+          input: "(() => { try { FabricaDeHuestes.crear('elfo'); return false; } catch (e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: P("Un tipo desconocido se rechaza", "An unknown type is rejected"),
+        },
+      ],
+    },
+  },
+};
