@@ -5,7 +5,12 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { LpcManifest } from "@/lib/lpc/types";
 import { buildPresetSheet, type PresetSheet } from "@/lib/game/sheet";
-import { CHAPTER_1, CHAPTERS, getChapter } from "@/data/chapters";
+import { CHAPTER_1 } from "@/data/chapters";
+import {
+  DEFAULT_ADVENTURE,
+  getAdventure,
+} from "@/data/adventures";
+import { migrateLegacyProgress } from "@/data/migrate";
 import {
   capituloDesbloqueado,
   estadoNodo,
@@ -69,11 +74,19 @@ const RewardModal = dynamic(() => import("@/components/game/RewardModal"), {
 const HeroPicker = dynamic(() => import("@/components/game/HeroPicker"), {
   ssr: false,
 });
+const AdventureSelect = dynamic(
+  () => import("@/components/game/AdventureSelect"),
+  { ssr: false },
+);
+
+const ADVENTURE_KEY = "lotc:adventure";
 
 export default function GamePage() {
   const { t, tc, lang, setLang } = useLang();
   const [progress, setProgress] = useState<Progress>(emptyProgress);
+  const [adventureId, setAdventureId] = useState(DEFAULT_ADVENTURE);
   const [currentChapter, setCurrentChapter] = useState(1);
+  const [showAdventures, setShowAdventures] = useState(false);
   const [showChapters, setShowChapters] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [showStats, setShowStats] = useState(false);
@@ -90,9 +103,25 @@ export default function GamePage() {
   const [error, setError] = useState<string | null>(null);
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
 
-  const chapter = getChapter(currentChapter) ?? CHAPTER_1;
-  const heroes = useMemo(() => heroesDesbloqueados(progress, CHAPTERS), [progress]);
-  const heroId = useMemo(() => heroActivo(progress, CHAPTERS), [progress]);
+  // Aventura activa y sus capítulos (la campaña de la tecnología elegida).
+  const adventure =
+    getAdventure(adventureId) ?? getAdventure(DEFAULT_ADVENTURE)!;
+  const chapters = adventure.chapters;
+  const chapter =
+    chapters.find((c) => c.chapter === currentChapter) ??
+    chapters[0] ??
+    CHAPTER_1;
+  const adventureIdRef = useRef(adventureId);
+  adventureIdRef.current = adventureId;
+
+  const heroes = useMemo(
+    () => heroesDesbloqueados(progress, chapters),
+    [progress, chapters],
+  );
+  const heroId = useMemo(
+    () => heroActivo(progress, chapters),
+    [progress, chapters],
+  );
   /**
    * Clave estable del conjunto de héroes desbloqueados. `heroes` es un array
    * nuevo en cada cambio de progreso (p. ej. al guardar código con debounce),
@@ -108,12 +137,35 @@ export default function GamePage() {
   currentChapterRef.current = currentChapter;
   const bloqueadosRef = useRef<Record<string, string>>({});
 
-  // Restaurar progreso guardado (sólo en cliente, tras hidratar).
+  // Restaurar progreso y aventura (sólo en cliente, tras hidratar).
   useEffect(() => {
     setMute(isMuted());
-    const saved = loadProgress();
+    // Reparte la partida antigua (PHP+Python juntos) en progresos por aventura.
+    migrateLegacyProgress();
+
+    let advId = DEFAULT_ADVENTURE;
+    try {
+      const saved = window.localStorage.getItem(ADVENTURE_KEY);
+      if (saved && getAdventure(saved)?.status === "available") {
+        advId = saved;
+      } else {
+        // Sin aventura elegida: si hay progreso migrado usamos PHP; si el
+        // jugador es totalmente nuevo, le ofrecemos elegir.
+        const phpProg = loadProgress(DEFAULT_ADVENTURE);
+        if (Object.keys(phpProg.completed).length === 0) setShowAdventures(true);
+      }
+    } catch {
+      /* localStorage bloqueado: aventura por defecto */
+    }
+
+    setAdventureId(advId);
+    const saved = loadProgress(advId);
     setProgress(saved);
-    if (getChapter(saved.lastChapter)) setCurrentChapter(saved.lastChapter);
+    const adv = getAdventure(advId)!;
+    const start = adv.chapters.some((c) => c.chapter === saved.lastChapter)
+      ? saved.lastChapter
+      : (adv.chapters[0]?.chapter ?? 1);
+    setCurrentChapter(start);
   }, []);
 
   // Componer los sprites del capítulo actual.
@@ -178,7 +230,10 @@ export default function GamePage() {
   );
 
   // --- Progresión RPG (todo derivado del progreso: nada extra que guardar) ---
-  const xp = useMemo(() => xpTotal(progress, CHAPTERS), [progress]);
+  const xp = useMemo(
+    () => xpTotal(progress, chapters),
+    [progress, chapters],
+  );
   const nivel = useMemo(() => nivelDe(xp), [xp]);
   const xpCapitulo = useMemo(
     () => xpDeCapitulo(chapter, completed),
@@ -216,14 +271,14 @@ export default function GamePage() {
     setProgress((prev) => {
       let next = withNodeCompleted(prev, currentChapter, nodeId);
       if (stats) next = withStats(next, currentChapter, nodeId, stats);
-      saveProgress(next);
+      saveProgress(adventureIdRef.current, next);
       return next;
     });
 
     // ¿Se ha vencido al jefe? Entonces toca recompensa y salto de capítulo.
     const jefe = jefeDe(chapter);
     if (jefe && jefe.node_id === nodeId && jefe.enemy.reward) {
-      const siguiente = CHAPTERS.find(
+      const siguiente = chapters.find(
         (c) => c.unlockedBy === chapter.chapter,
       )?.chapter;
       setReward({ data: jefe.enemy.reward, next: siguiente });
@@ -239,7 +294,7 @@ export default function GamePage() {
     // Estrena al recién desbloqueado como héroe activo.
     setProgress((prev) => {
       const next = withHero(prev, r.data.hero);
-      saveProgress(next);
+      saveProgress(adventureIdRef.current, next);
       return next;
     });
     if (r.next) handleSelectChapter(r.next);
@@ -249,7 +304,7 @@ export default function GamePage() {
     setShowHeroes(false);
     setProgress((prev) => {
       const next = withHero(prev, hero);
-      saveProgress(next);
+      saveProgress(adventureIdRef.current, next);
       return next;
     });
   }
@@ -257,7 +312,7 @@ export default function GamePage() {
   const handleCodeChange = useCallback((nodeId: string, code: string) => {
     setProgress((prev) => {
       const next = withCode(prev, currentChapterRef.current, nodeId, code);
-      saveProgress(next);
+      saveProgress(adventureIdRef.current, next);
       return next;
     });
   }, []);
@@ -268,17 +323,38 @@ export default function GamePage() {
     setShowChapters(false);
     setProgress((prev) => {
       const next = withLastChapter(prev, n);
-      saveProgress(next);
+      saveProgress(adventureIdRef.current, next);
       return next;
     });
   }
 
+  /** Cambiar de aventura: carga su progreso y arranca por donde iba. */
+  function handleSelectAdventure(id: string) {
+    setShowAdventures(false);
+    if (id === adventureId) return;
+    setAdventureId(id);
+    try {
+      window.localStorage.setItem(ADVENTURE_KEY, id);
+    } catch {
+      /* no persiste, pero cambia en memoria */
+    }
+    const p = loadProgress(id);
+    setProgress(p);
+    setActiveNodeId(null);
+    const adv = getAdventure(id)!;
+    const start = adv.chapters.some((c) => c.chapter === p.lastChapter)
+      ? p.lastChapter
+      : (adv.chapters[0]?.chapter ?? 1);
+    setCurrentChapter(start);
+    setShowIntro(true);
+  }
+
   function handleReset() {
     const fresh = emptyProgress();
-    saveProgress(fresh);
+    saveProgress(adventureIdRef.current, fresh);
     setProgress(fresh);
     setActiveNodeId(null);
-    setCurrentChapter(1);
+    setCurrentChapter(chapters[0]?.chapter ?? 1);
     setShowChapters(false);
   }
 
@@ -291,7 +367,9 @@ export default function GamePage() {
     if (full && !wasComplete.current) playSfx("chapter");
     wasComplete.current = full;
   }, [done, total]);
-  const nextChapter = CHAPTERS.find((c) => c.chapter === chapter.chapter + 1);
+  const nextChapter = chapters.find(
+    (c) => c.chapter === chapter.chapter + 1,
+  );
 
   return (
     <main className="mx-auto max-w-5xl px-3 py-3 sm:px-4 sm:py-6">
@@ -301,6 +379,14 @@ export default function GamePage() {
         mapa hacia abajo, desperdiciando espacio vertical.
       */}
       <div className="mb-3 flex flex-wrap items-center gap-1.5">
+        <button
+          onClick={() => setShowAdventures(true)}
+          className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
+          title={t("adventure.title")}
+        >
+          {adventure.icon}{" "}
+          <span className="hidden sm:inline">{adventure.tech}</span>
+        </button>
         <button
           onClick={() => setShowChapters(true)}
           className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
@@ -552,22 +638,29 @@ export default function GamePage() {
       )}
 
       {showLibrary && (
-        <Library progress={progress} onClose={() => setShowLibrary(false)} />
+        <Library
+          chapters={chapters}
+          progress={progress}
+          onClose={() => setShowLibrary(false)}
+        />
       )}
 
       {showStats && (
-        <StatsPanel progress={progress} onClose={() => setShowStats(false)} />
+        <StatsPanel
+          chapters={chapters}
+          progress={progress}
+          onClose={() => setShowStats(false)}
+        />
       )}
 
       {reward && (
         <RewardModal
           reward={reward.data}
           heroSheet={nodeSheets[reward.data.hero]}
-          nextChapterTitle={
-            reward.next
-              ? CHAPTERS.find((c) => c.chapter === reward.next)?.title
-              : undefined
-          }
+          nextChapterTitle={(() => {
+            const c = chapters.find((x) => x.chapter === reward.next);
+            return c ? tc(c.title) : undefined;
+          })()}
           bookEnd={
             !reward.next
               ? "Así termina el Libro I: la Comunidad se disuelve. Frodo y Sam parten hacia Mordor; los caminos se separan. Tu leyenda continúa en los libros de práctica y en Las Dos Torres."
@@ -589,11 +682,25 @@ export default function GamePage() {
 
       {showChapters && (
         <ChapterSelect
+          adventure={adventure}
           progress={progress}
           current={currentChapter}
           onSelect={handleSelectChapter}
           onReset={handleReset}
           onClose={() => setShowChapters(false)}
+        />
+      )}
+
+      {showAdventures && (
+        <AdventureSelect
+          current={adventureId}
+          onSelect={handleSelectAdventure}
+          onClose={
+            // sólo se puede cerrar sin elegir si ya hay una aventura en curso
+            Object.keys(progress.completed).length > 0 || !showAdventures
+              ? () => setShowAdventures(false)
+              : undefined
+          }
         />
       )}
     </main>

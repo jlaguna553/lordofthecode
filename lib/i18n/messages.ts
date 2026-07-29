@@ -64,6 +64,37 @@ export const MESSAGES = {
 
   // Selector de idioma
   "lang.label": { es: "Idioma", en: "Language" },
+
+  // Selección de aventura
+  "adventure.title": { es: "Elige tu aventura", en: "Choose your adventure" },
+  "adventure.subtitle": {
+    es: "Aprende una tecnología de 0 a 100 resolviendo acertijos.",
+    en: "Learn a technology from 0 to 100 by solving puzzles.",
+  },
+  "adventure.chapters": { es: "capítulos", en: "chapters" },
+  "adventure.soon": { es: "Próximamente", en: "Coming soon" },
+  "adventure.play": { es: "Jugar", en: "Play" },
+  "adventure.continue": { es: "Continuar", en: "Continue" },
+  "adventure.current": { es: "En curso", en: "In progress" },
+  "adventure.change": { es: "🧭 Aventura", en: "🧭 Adventure" },
+  "adventure.empty": {
+    es: "Sin contenido todavía",
+    en: "No content yet",
+  },
+
+  // Selector de capítulos
+  "chapters.locked": { es: "🔒 Bloqueado", en: "🔒 Locked" },
+  "chapters.completed": { es: "✦ Completado", en: "✦ Completed" },
+  "chapters.runes": { es: "runas", en: "runes" },
+  "chapters.savedHere": {
+    es: "El progreso se guarda en este navegador.",
+    en: "Progress is saved in this browser.",
+  },
+  "chapters.reset": { es: "Reiniciar progreso", en: "Reset progress" },
+  "chapters.resetConfirm": {
+    es: "¿Borrar todo el progreso guardado? Esta acción no se puede deshacer.",
+    en: "Delete all saved progress? This cannot be undone.",
+  },
 } as const;
 
 export type MessageKey = keyof typeof MESSAGES;

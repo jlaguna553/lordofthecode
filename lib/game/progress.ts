@@ -1,11 +1,16 @@
 /**
- * Persistencia del progreso de campaña en localStorage.
+ * Persistencia del progreso en localStorage.
  *
- * Se guarda qué nodos ha resuelto el jugador en cada capítulo y en cuál estaba.
- * Todo el acceso es SSR-safe: si no hay `window` devuelve un progreso vacío.
+ * El progreso es POR AVENTURA: cada campaña (php, python, javascript…) guarda el
+ * suyo bajo `lotc:progress:v1:<adventureId>`. Así los números de capítulo de dos
+ * aventuras distintas no colisionan. Todo el acceso es SSR-safe.
  */
 
-const KEY = "lotc:progress:v1";
+const PREFIX = "lotc:progress:v1";
+/** Clave de la partida antigua (una sola, sin aventura): se migra al arrancar. */
+export const LEGACY_KEY = PREFIX;
+
+const keyFor = (adventureId: string) => `${PREFIX}:${adventureId}`;
 
 export interface Progress {
   version: 1;
@@ -42,10 +47,11 @@ const EMPTY: Progress = { version: 1, completed: {}, lastChapter: 1, code: {}, s
 
 const codeKey = (chapter: number, nodeId: string) => `${chapter}:${nodeId}`;
 
-export function loadProgress(): Progress {
+/** Lee el progreso guardado bajo una clave concreta (o EMPTY si no hay). */
+function readKey(key: string): Progress {
   if (typeof window === "undefined") return EMPTY;
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(key);
     if (!raw) return EMPTY;
     const parsed = JSON.parse(raw) as Partial<Progress>;
     if (parsed?.version !== 1 || typeof parsed.completed !== "object") {
@@ -64,10 +70,39 @@ export function loadProgress(): Progress {
   }
 }
 
-export function saveProgress(progress: Progress): void {
+export function loadProgress(adventureId: string): Progress {
+  return readKey(keyFor(adventureId));
+}
+
+/** Lee una clave cualquiera (para migrar la partida antigua). */
+export function loadRaw(key: string): Progress {
+  return readKey(key);
+}
+
+/** ¿Existe algo guardado bajo esa clave? */
+export function hasKey(key: string): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(key) !== null;
+  } catch {
+    return false;
+  }
+}
+
+/** Borra una clave (para eliminar la partida antigua tras migrarla). */
+export function removeKey(key: string): void {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(progress));
+    window.localStorage.removeItem(key);
+  } catch {
+    /* ignorar */
+  }
+}
+
+export function saveProgress(adventureId: string, progress: Progress): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(keyFor(adventureId), JSON.stringify(progress));
   } catch {
     /* cuota llena o modo privado: el juego sigue funcionando en memoria */
   }

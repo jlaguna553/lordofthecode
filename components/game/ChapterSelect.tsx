@@ -1,11 +1,13 @@
 "use client";
 
-import { CAMPAIGN, CHAPTERS, getChapter } from "@/data/chapters";
+import type { Adventure } from "@/lib/game/adventure";
 import type { Progress } from "@/lib/game/progress";
 import { completedOf } from "@/lib/game/progress";
 import { capituloDesbloqueado } from "@/lib/game/rpg";
+import { useLang } from "@/lib/i18n/context";
 
 interface Props {
+  adventure: Adventure;
   progress: Progress;
   current: number;
   onSelect: (chapter: number) => void;
@@ -14,58 +16,55 @@ interface Props {
 }
 
 export default function ChapterSelect({
+  adventure,
   progress,
   current,
   onSelect,
   onReset,
   onClose,
 }: Props) {
+  const { t, tc } = useLang();
+  const chapters = [...adventure.chapters].sort((a, b) => a.chapter - b.chapter);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
       <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-slate-900 shadow-2xl ring-1 ring-white/10">
         <div className="flex items-center justify-between border-b border-white/10 p-5">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-amber-400">
-              La Sintaxis Ancestral
+              {adventure.icon} {tc(adventure.name)}
             </p>
-            <h2 className="text-xl font-bold text-slate-100">Capítulos</h2>
+            <h2 className="text-xl font-bold text-slate-100">
+              {t("header.chapters")}
+            </h2>
           </div>
           <button
             onClick={onClose}
             className="rounded-lg bg-slate-800 px-3 py-1.5 text-sm text-slate-300 hover:bg-slate-700"
           >
-            ✕ Cerrar
+            {t("common.close")}
           </button>
         </div>
 
         <ul className="flex-1 space-y-2 overflow-auto p-5">
-          {/* CAMPAIGN va agrupado por libros (el 13 cae junto a los otros de
-              algoritmos); en la lista, sin encabezados, eso parece un error. */}
-          {[...CAMPAIGN]
-            .sort((a, b) => a.chapter - b.chapter)
-            .map((info) => {
-            const chapter = getChapter(info.chapter);
+          {chapters.map((chapter) => {
             // Un capítulo puede existir pero estar cerrado hasta vencer al
             // jefe del anterior.
-            const cierre = chapter
-              ? capituloDesbloqueado(chapter, progress, CHAPTERS)
-              : { abierto: false as const, motivo: undefined };
-            const playable = Boolean(chapter) && cierre.abierto;
-            const total = chapter?.nodes.length ?? 0;
-            const done = chapter
-              ? [...completedOf(progress, info.chapter)].filter((id) =>
-                  chapter.nodes.some((n) => n.node_id === id),
-                ).length
-              : 0;
-            const isCurrent = info.chapter === current;
+            const cierre = capituloDesbloqueado(chapter, progress, chapters);
+            const playable = cierre.abierto;
+            const total = chapter.nodes.length;
+            const done = [...completedOf(progress, chapter.chapter)].filter(
+              (id) => chapter.nodes.some((n) => n.node_id === id),
+            ).length;
+            const isCurrent = chapter.chapter === current;
             const finished = playable && total > 0 && done === total;
 
             return (
-              <li key={info.chapter}>
+              <li key={chapter.chapter}>
                 <button
                   type="button"
                   disabled={!playable}
-                  onClick={() => playable && onSelect(info.chapter)}
+                  onClick={() => playable && onSelect(chapter.chapter)}
                   className={
                     "w-full rounded-xl p-4 text-left transition ring-1 " +
                     (!playable
@@ -77,29 +76,28 @@ export default function ChapterSelect({
                 >
                   <div className="flex items-baseline justify-between gap-3">
                     <span className="font-bold">
-                      {info.chapter}. {info.title}
+                      {chapter.chapter}. {tc(chapter.title)}
                     </span>
                     <span className="shrink-0 text-xs">
-                      {!chapter ? (
-                        <span className="rounded bg-slate-800 px-2 py-0.5 text-slate-500">
-                          🔒 Próximamente
-                        </span>
-                      ) : !playable ? (
+                      {!playable ? (
                         <span className="rounded bg-slate-800 px-2 py-0.5 text-orange-400/80">
-                          🔒 Bloqueado
+                          {t("chapters.locked")}
                         </span>
                       ) : finished ? (
-                        <span className="text-emerald-400">✦ Completado</span>
+                        <span className="text-emerald-400">
+                          {t("chapters.completed")}
+                        </span>
                       ) : (
                         <span className="text-amber-300">
-                          {done}/{total} runas
+                          {done}/{total} {t("chapters.runes")}
                         </span>
                       )}
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-indigo-300">{info.topic}</p>
                   <p className="mt-1 text-xs leading-relaxed opacity-80">
-                    {!playable && cierre.motivo ? cierre.motivo : info.lore}
+                    {!playable && cierre.motivo
+                      ? cierre.motivo
+                      : tc(chapter.lore)}
                   </p>
                   {playable && total > 0 && (
                     <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-950">
@@ -116,22 +114,14 @@ export default function ChapterSelect({
         </ul>
 
         <div className="flex items-center justify-between border-t border-white/10 p-4">
-          <p className="text-xs text-slate-500">
-            El progreso se guarda en este navegador.
-          </p>
+          <p className="text-xs text-slate-500">{t("chapters.savedHere")}</p>
           <button
             onClick={() => {
-              if (
-                window.confirm(
-                  "¿Borrar todo el progreso guardado? Esta acción no se puede deshacer.",
-                )
-              ) {
-                onReset();
-              }
+              if (window.confirm(t("chapters.resetConfirm"))) onReset();
             }}
             className="rounded-lg bg-rose-600/80 px-3 py-1.5 text-xs font-semibold text-white hover:bg-rose-600"
           >
-            Reiniciar progreso
+            {t("chapters.reset")}
           </button>
         </div>
       </div>

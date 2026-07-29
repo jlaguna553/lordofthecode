@@ -1,11 +1,13 @@
 "use client";
 
-import { CHAPTERS } from "@/data/chapters";
+import type { Chapter } from "@/lib/game/types";
 import type { MapNode } from "@/lib/game/types";
 import type { Progress } from "@/lib/game/progress";
 import { completedOf, statsFor } from "@/lib/game/progress";
 
 interface Props {
+  /** Capítulos de la aventura activa. */
+  chapters: Chapter[];
   progress: Progress;
   onClose: () => void;
 }
@@ -43,7 +45,7 @@ function targetOf(n: MapNode): number | undefined {
       : n.poo_challenge.timeLimitSec;
 }
 
-export default function StatsPanel({ progress, onClose }: Props) {
+export default function StatsPanel({ chapters, progress, onClose }: Props) {
   // --- Recorremos toda la campaña cruzando con el progreso ---
   let totalNodos = 0;
   let hechos = 0;
@@ -73,7 +75,7 @@ export default function StatsPanel({ progress, onClose }: Props) {
     objetivo: number;
   }[] = [];
 
-  for (const ch of CHAPTERS) {
+  for (const ch of chapters) {
     const done = completedOf(progress, ch.chapter);
     let capDone = 0;
     for (const n of ch.nodes) {

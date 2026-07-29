@@ -3,17 +3,19 @@
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { CHAPTER_LIBRARY } from "@/data/library";
-import { CHAPTERS } from "@/data/chapters";
+
 import { buildPresetSheet, type PresetSheet } from "@/lib/game/sheet";
 import type { LpcManifest } from "@/lib/lpc/types";
 import type { Progress } from "@/lib/game/progress";
-import type { ArchiveNode } from "@/lib/game/types";
+import type { ArchiveNode, Chapter } from "@/lib/game/types";
 import { heroActivo } from "@/lib/game/rpg";
 
 const GameCanvas = dynamic(() => import("./GameCanvas"), { ssr: false });
 const ArchiveModal = dynamic(() => import("./ArchiveModal"), { ssr: false });
 
 interface Props {
+  /** Capítulos de la aventura activa (para el archivo). */
+  chapters: Chapter[];
   progress: Progress;
   onClose: () => void;
 }
@@ -23,7 +25,7 @@ interface Props {
  * Compone sus propios sprites (el héroe activo + el Archivero) y trata sus
  * nodos "archive" abriendo el ArchiveModal con la pestaña correspondiente.
  */
-export default function Library({ progress, onClose }: Props) {
+export default function Library({ chapters, progress, onClose }: Props) {
   const [hero, setHero] = useState<PresetSheet | null>(null);
   const [sheets, setSheets] = useState<Record<string, PresetSheet>>({});
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export default function Library({ progress, onClose }: Props) {
     (async () => {
       try {
         const m: LpcManifest = await (await fetch("/lpc/manifest.json")).json();
-        const heroId = heroActivo(progress, CHAPTERS);
+        const heroId = heroActivo(progress, chapters);
         const h = await buildPresetSheet(m, heroId).catch(() =>
           buildPresetSheet(m, "frodo"),
         );
@@ -56,7 +58,7 @@ export default function Library({ progress, onClose }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [progress]);
+  }, [progress, chapters]);
 
   const activeNode = useMemo(
     () =>
@@ -114,6 +116,7 @@ export default function Library({ progress, onClose }: Props) {
 
       {activeNode && (
         <ArchiveModal
+          chapters={chapters}
           tab={activeNode.tab}
           progress={progress}
           onClose={() => setActiveId(null)}

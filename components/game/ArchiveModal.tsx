@@ -1,11 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CHAPTERS } from "@/data/chapters";
+
 import type { ChallengeNode, ScrollNode } from "@/lib/game/types";
 import { codeFor, completedOf, type Progress } from "@/lib/game/progress";
 
 interface Props {
+  /** Capítulos de la aventura activa. */
+  chapters: import("@/lib/game/types").Chapter[];
   tab: "scrolls" | "php" | "python";
   progress: Progress;
   onClose: () => void;
@@ -28,10 +30,10 @@ const TITLES = {
  * categoría pedida y, al elegir una entrada, muestra su contenido — la teoría
  * del pergamino, o el enunciado del reto junto al código que el jugador guardó.
  */
-export default function ArchiveModal({ tab, progress, onClose }: Props) {
+export default function ArchiveModal({ chapters, tab, progress, onClose }: Props) {
   const entries = useMemo<Entry[]>(() => {
     const out: Entry[] = [];
-    for (const ch of CHAPTERS) {
+    for (const ch of chapters) {
       const done = completedOf(progress, ch.chapter);
       for (const node of ch.nodes) {
         if (!done.has(node.node_id)) continue;
