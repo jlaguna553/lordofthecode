@@ -490,3 +490,237 @@ export const SYL_TS_COMMUNITY_2: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre interfaces y tipos de objeto. */
+const Q_INTERFACE = {
+  question: P(
+    "¿Para qué sirve una `interface` en TypeScript?",
+    "What is an `interface` for in TypeScript?",
+  ),
+  options: [
+    P("Describe la FORMA de un objeto: qué propiedades y tipos tiene", "It describes the SHAPE of an object: what properties and types it has"),
+    P("Crea un objeto con valores por defecto", "It creates an object with default values"),
+    P("Ejecuta código al instanciar", "It runs code on instantiation"),
+    P("Es lo mismo que una clase", "It's the same as a class"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una interfaz es sólo un CONTRATO de forma: dice qué campos y métodos debe tener un objeto, sin aportar código ni valores. Como todo lo de tipos, desaparece al transpilar.",
+    "An interface is only a SHAPE contract: it says what fields and methods an object must have, without providing code or values. Like everything type-related, it vanishes on transpile.",
+  ),
+};
+const Q_OBJ_TYPE = {
+  question: P(
+    "¿Cómo se anota un parámetro que es un objeto con `nombre: string` y `edad: number`?",
+    "How do you annotate a parameter that is an object with `nombre: string` and `edad: number`?",
+  ),
+  options: [
+    P("(h: { nombre: string; edad: number })", "(h: { nombre: string; edad: number })"),
+    P("(h: object)", "(h: object)"),
+    P("(h: [string, number])", "(h: [string, number])"),
+    P("(h: {string, number})", "(h: {string, number})"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Puedes escribir el tipo del objeto en línea entre llaves, con cada campo y su tipo. `object` a secas apenas dice nada (no conoce los campos); una tupla `[string, number]` es un array, no un objeto con nombres.",
+    "You can write the object type inline in braces, with each field and its type. Plain `object` says almost nothing (it doesn't know the fields); a tuple `[string, number]` is an array, not an object with names.",
+  ),
+};
+const Q_OPTIONAL = {
+  question: P(
+    "En `interface Arma { nombre: string; encantada?: boolean }`, ¿qué significa el `?`?",
+    "In `interface Arma { nombre: string; encantada?: boolean }`, what does the `?` mean?",
+  ),
+  options: [
+    P("La propiedad es OPCIONAL: puede faltar", "The property is OPTIONAL: it may be absent"),
+    P("La propiedad es booleana", "The property is boolean"),
+    P("La propiedad es privada", "The property is private"),
+    P("La propiedad es de sólo lectura", "The property is read-only"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El `?` marca la propiedad como opcional: un objeto válido puede tenerla o no. Al leerla, su tipo es `boolean | undefined`, así que conviene comprobarla antes de usarla.",
+    "The `?` marks the property as optional: a valid object may or may not have it. When you read it, its type is `boolean | undefined`, so you should check it before using it.",
+  ),
+};
+const Q_TYPE_ALIAS = {
+  question: P(
+    "¿Qué diferencia práctica hay entre `interface` y `type` para describir un objeto?",
+    "What's the practical difference between `interface` and `type` for describing an object?",
+  ),
+  options: [
+    P("Casi ninguna para objetos; type además nombra uniones y tuplas", "Almost none for objects; type also names unions and tuples"),
+    P("type no puede describir objetos", "type can't describe objects"),
+    P("interface se ejecuta y type no", "interface runs and type doesn't"),
+    P("Son incompatibles entre sí", "They're incompatible with each other"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Para la forma de un objeto son casi intercambiables. `type` es más general (nombra uniones, tuplas, primitivos: `type Id = string | number`); `interface` se especializa en objetos y admite fusión de declaraciones. Elige uno y sé consistente.",
+    "For an object's shape they're nearly interchangeable. `type` is more general (names unions, tuples, primitives: `type Id = string | number`); `interface` specializes in objects and allows declaration merging. Pick one and be consistent.",
+  ),
+};
+const Q_METHOD_SIG = {
+  question: P(
+    "¿Cómo se declara en una interfaz un método `atacar` que devuelve `number`?",
+    "How do you declare in an interface a method `atacar` that returns `number`?",
+  ),
+  options: [
+    P("atacar(): number", "atacar(): number"),
+    P("atacar: number", "atacar: number"),
+    P("function atacar(): number { }", "function atacar(): number { }"),
+    P("atacar => number", "atacar => number"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En una interfaz sólo va la FIRMA, sin cuerpo: `atacar(): number`. `atacar: number` sería una propiedad numérica, no un método. El cuerpo lo pone el objeto o la clase que cumpla la interfaz.",
+    "In an interface only the SIGNATURE goes, with no body: `atacar(): number`. `atacar: number` would be a numeric property, not a method. The body is provided by the object or class that fulfills the interface.",
+  ),
+};
+const Q_STRUCTURAL = {
+  question: P(
+    "Una función espera un `{ nombre: string }`. Le pasas `{ nombre: 'Sam', edad: 38 }`. ¿Qué ocurre?",
+    "A function expects `{ nombre: string }`. You pass `{ nombre: 'Sam', edad: 38 }`. What happens?",
+  ),
+  options: [
+    P("Vale: TS es estructural, basta con que tenga (al menos) los campos pedidos", "Fine: TS is structural, it just needs (at least) the required fields"),
+    P("Error: sobran campos", "Error: too many fields"),
+    P("Error: hay que declarar una interfaz primero", "Error: you must declare an interface first"),
+    P("Se ignoran los dos campos", "Both fields are ignored"),
+  ],
+  correct: 0,
+  explanation: P(
+    "TypeScript usa tipado ESTRUCTURAL: importa la forma, no el nombre del tipo. Si el objeto tiene todo lo que se pide, encaja aunque traiga campos de más (salvo el chequeo extra de objetos literales pasados directamente). No hace falta declarar que «implementa» nada.",
+    "TypeScript uses STRUCTURAL typing: the shape matters, not the type's name. If the object has everything required, it fits even with extra fields (except the excess-property check on object literals passed directly). No need to declare it \"implements\" anything.",
+  ),
+};
+
+/** Capítulo 3 · Interfaces y tipos de objeto. */
+export const SYL_TS_COMMUNITY_3: Syllabus = {
+  c3_ferny: { kind: "battle", questions: [Q_INTERFACE, Q_OBJ_TYPE, Q_OPTIONAL] },
+  c3_espia_nazgul: { kind: "battle", questions: [Q_STRUCTURAL, Q_METHOD_SIG, Q_INTERFACE] },
+  c3_montaraz_falso: { kind: "battle", questions: [Q_OPTIONAL, Q_TYPE_ALIAS, Q_OBJ_TYPE] },
+  c3_jefe_reybrujo: { kind: "battle", questions: [Q_STRUCTURAL, Q_TYPE_ALIAS, Q_METHOD_SIG, Q_INTERFACE] },
+  pergamino_herencia: {
+    kind: "scroll",
+    title: P("El Pergamino de las Formas", "The Scroll of Shapes"),
+    lore_intro: P(
+      "En El Póney Pisador, un pergamino enseña a describir de qué está hecho un objeto antes de crearlo: interfaces.",
+      "At the Prancing Pony, a scroll teaches how to describe what an object is made of before creating it: interfaces.",
+    ),
+    scroll: {
+      topic: P("Interfaces y tipos de objeto", "Interfaces and object types"),
+      sections: [
+        {
+          heading: P("Interfaces: la forma de un objeto", "Interfaces: the shape of an object"),
+          body: P(
+            "Una `interface` describe qué campos y de qué tipo tiene un objeto. No es código: es un contrato de forma que desaparece al transpilar.",
+            "An `interface` describes what fields an object has and of what type. It's not code: it's a shape contract that vanishes on transpile.",
+          ),
+          code:
+            "interface Montaraz {\n  nombre: string;\n  oficio: string;\n}\nconst t: Montaraz = { nombre: 'Trancos', oficio: 'montaraz' };",
+        },
+        {
+          heading: P("Propiedades opcionales y métodos", "Optional properties and methods"),
+          body: P(
+            "Un `?` marca una propiedad opcional (puede faltar; su tipo incluye `undefined`). Un método se declara con su firma, sin cuerpo: `atacar(): number`.",
+            "A `?` marks an optional property (it may be absent; its type includes `undefined`). A method is declared by its signature, with no body: `atacar(): number`.",
+          ),
+          code:
+            "interface Arma {\n  nombre: string;\n  danio: number;\n  encantada?: boolean;   // opcional\n}",
+        },
+        {
+          heading: P("Estructural: encaja por forma", "Structural: it fits by shape"),
+          body: P(
+            "TS es de tipado estructural: si un objeto tiene lo que se pide, encaja — no hace falta declarar que «implementa» la interfaz. `type` es la alternativa para nombrar también uniones y tuplas.",
+            "TS is structurally typed: if an object has what's required, it fits — no need to declare it \"implements\" the interface. `type` is the alternative to also name unions and tuples.",
+          ),
+          code:
+            "function saludar(h: { nombre: string }): string {\n  return `Hola, ${h.nombre}`;\n}\nsaludar({ nombre: 'Sam', edad: 38 }); // vale: tiene nombre\n\ntype Id = string | number;",
+        },
+      ],
+      keyTakeaway: P(
+        "`interface` describe la forma de un objeto (campos y métodos, con `?` para opcionales). TS encaja por forma, no por nombre. `type` nombra además uniones y tuplas.",
+        "`interface` describes an object's shape (fields and methods, with `?` for optional). TS fits by shape, not by name. `type` also names unions and tuples.",
+      ),
+    },
+  },
+  poney_pisador: {
+    kind: "challenge",
+    title: P("Trancos, el Montaraz", "Strider the Ranger"),
+    lore_intro: P(
+      "Un montaraz observa desde el rincón. Descríbelo con una interfaz y fabrícalo con su forma exacta.",
+      "A ranger watches from the corner. Describe him with an interface and build him in his exact shape.",
+    ),
+    challenge: {
+      topic: P("Interfaces y objetos tipados", "Interfaces and typed objects"),
+      instructions: P(
+        "Declara `interface Montaraz { nombre: string; oficio: string }` y escribe `crearMontaraz(nombre: string): Montaraz` que devuelva un objeto con ese `nombre` y `oficio` siempre `'montaraz'`.\n\nEjemplo: `crearMontaraz('Trancos')` → `{ nombre: 'Trancos', oficio: 'montaraz' }`.",
+        "Declare `interface Montaraz { nombre: string; oficio: string }` and write `crearMontaraz(nombre: string): Montaraz` returning an object with that `nombre` and `oficio` always `'montaraz'`.\n\nExample: `crearMontaraz('Trancos')` → `{ nombre: 'Trancos', oficio: 'montaraz' }`.",
+      ),
+      starter_code:
+        "interface Montaraz {\n  nombre: string;\n  oficio: string;\n}\n\nfunction crearMontaraz(nombre: string): Montaraz {\n  // devuelve un objeto con esa forma\n}\n",
+      hints: [
+        P("Devuelve un objeto literal con los dos campos: `{ nombre, oficio: 'montaraz' }`.", "Return an object literal with both fields: `{ nombre, oficio: 'montaraz' }`."),
+        P("`{ nombre }` es abreviatura de `{ nombre: nombre }`.", "`{ nombre }` is shorthand for `{ nombre: nombre }`."),
+      ],
+      test_cases: [
+        { input: "crearMontaraz('Trancos').nombre", expected: "Trancos", description: P("El nombre recibido", "The received name"), raw: true },
+        { input: "crearMontaraz('Trancos').oficio", expected: "montaraz", description: P("Oficio fijo", "Fixed occupation"), raw: true },
+        { input: "crearMontaraz('Aragorn').nombre", expected: "Aragorn", description: P("Con otro nombre", "With another name"), raw: true },
+      ],
+    },
+  },
+  hojas_de_tumulo: {
+    kind: "challenge",
+    title: P("Las Hojas de los Túmulos", "The Barrow-blades"),
+    lore_intro: P(
+      "Algunas hojas están encantadas y otras no. Descríbelas con una propiedad opcional y muéstralas según lo tengan.",
+      "Some blades are enchanted and some aren't. Describe them with an optional property and show them accordingly.",
+    ),
+    challenge: {
+      topic: P("Propiedades opcionales", "Optional properties"),
+      instructions: P(
+        "Con `interface Arma { nombre: string; danio: number; encantada?: boolean }`, escribe `describir(a: Arma): string` que devuelva `'{nombre}: {danio}'`, y si `encantada` es `true`, añada ` (encantada)` al final.\n\nEjemplos: `describir({ nombre: 'Daga', danio: 5 })` → `'Daga: 5'`; con `encantada: true` → `'Hoja: 8 (encantada)'`.",
+        "With `interface Arma { nombre: string; danio: number; encantada?: boolean }`, write `describir(a: Arma): string` returning `'{nombre}: {danio}'`, and if `encantada` is `true`, append ` (encantada)`.\n\nExamples: `describir({ nombre: 'Daga', danio: 5 })` → `'Daga: 5'`; with `encantada: true` → `'Hoja: 8 (encantada)'`.",
+      ),
+      starter_code:
+        "interface Arma {\n  nombre: string;\n  danio: number;\n  encantada?: boolean;\n}\n\nfunction describir(a: Arma): string {\n  // '{nombre}: {danio}' y ' (encantada)' si procede\n}\n",
+      hints: [
+        P("Base: `` `${a.nombre}: ${a.danio}` ``.", "Base: `` `${a.nombre}: ${a.danio}` ``."),
+        P("`a.encantada` puede ser undefined: `a.encantada ? ... : ...` lo cubre.", "`a.encantada` may be undefined: `a.encantada ? ... : ...` covers it."),
+      ],
+      test_cases: [
+        { input: "describir({ nombre: 'Daga', danio: 5 })", expected: "Daga: 5", description: P("Sin encantar", "Not enchanted"), raw: true },
+        { input: "describir({ nombre: 'Hoja', danio: 8, encantada: true })", expected: "Hoja: 8 (encantada)", description: P("Encantada", "Enchanted"), raw: true },
+        { input: "describir({ nombre: 'Espada', danio: 12, encantada: false })", expected: "Espada: 12", description: P("Opcional en false", "Optional set to false"), raw: true },
+      ],
+    },
+  },
+  cima_de_los_vientos: {
+    kind: "challenge",
+    title: P("La Cima de los Vientos", "Weathertop"),
+    lore_intro: P(
+      "Cinco Jinetes suben por Amon Sûl. De una lista de jinetes tipada, encuentra al más fuerte.",
+      "Five Riders climb Amon Sûl. From a typed list of riders, find the strongest.",
+    ),
+    challenge: {
+      topic: P("Arrays de objetos (interface[])", "Arrays of objects (interface[])"),
+      instructions: P(
+        "Con `interface Jinete { nombre: string; fuerza: number }`, escribe `masFuerte(jinetes: Jinete[]): string` que devuelva el `nombre` del jinete con mayor `fuerza`. La lista tendrá al menos uno.\n\nEjemplo: `masFuerte([{ nombre: 'A', fuerza: 3 }, { nombre: 'B', fuerza: 9 }])` → `'B'`.",
+        "With `interface Jinete { nombre: string; fuerza: number }`, write `masFuerte(jinetes: Jinete[]): string` returning the `nombre` of the rider with the highest `fuerza`. The list has at least one.\n\nExample: `masFuerte([{ nombre: 'A', fuerza: 3 }, { nombre: 'B', fuerza: 9 }])` → `'B'`.",
+      ),
+      starter_code:
+        "interface Jinete {\n  nombre: string;\n  fuerza: number;\n}\n\nfunction masFuerte(jinetes: Jinete[]): string {\n  // el nombre del de mayor fuerza\n}\n",
+      hints: [
+        P("`reduce` compara pares: `(a, b) => b.fuerza > a.fuerza ? b : a`.", "`reduce` compares pairs: `(a, b) => b.fuerza > a.fuerza ? b : a`."),
+        P("Al final, toma su `.nombre`.", "At the end, take its `.nombre`."),
+      ],
+      test_cases: [
+        { input: "masFuerte([{ nombre: 'A', fuerza: 3 }, { nombre: 'B', fuerza: 9 }])", expected: "B", description: P("El más fuerte", "The strongest"), raw: true },
+        { input: "masFuerte([{ nombre: 'Solo', fuerza: 1 }])", expected: "Solo", description: P("Uno solo", "Just one"), raw: true },
+        { input: "masFuerte([{ nombre: 'Rey Brujo', fuerza: 9 }, { nombre: 'Khamul', fuerza: 8 }])", expected: "Rey Brujo", description: P("El primero gana el empate hacia abajo", "The first keeps the lead"), raw: true },
+      ],
+    },
+  },
+};
