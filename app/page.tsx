@@ -18,6 +18,7 @@ import {
 } from "@/lib/game/rpg";
 import type { Reward } from "@/lib/game/types";
 import { isMuted, playSfx, setMuted } from "@/lib/game/audio";
+import { useLang } from "@/lib/i18n/context";
 import {
   codeFor,
   completedOf,
@@ -70,6 +71,7 @@ const HeroPicker = dynamic(() => import("@/components/game/HeroPicker"), {
 });
 
 export default function GamePage() {
+  const { t, tc, lang, setLang } = useLang();
   const [progress, setProgress] = useState<Progress>(emptyProgress);
   const [currentChapter, setCurrentChapter] = useState(1);
   const [showChapters, setShowChapters] = useState(false);
@@ -303,26 +305,26 @@ export default function GamePage() {
           onClick={() => setShowChapters(true)}
           className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
         >
-          📖 <span className="hidden sm:inline">Capítulos</span>
+          📖 <span className="hidden sm:inline">{t("header.chapters")}</span>
         </button>
         <button
           onClick={() => setShowStats(true)}
           className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
         >
-          📊 <span className="hidden sm:inline">Estadísticas</span>
+          📊 <span className="hidden sm:inline">{t("header.stats")}</span>
         </button>
         <button
           onClick={() => setShowLibrary(true)}
           className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
         >
-          📚 <span className="hidden sm:inline">Biblioteca</span>
+          📚 <span className="hidden sm:inline">{t("header.library")}</span>
         </button>
         {heroes.length > 1 && (
           <button
             onClick={() => setShowHeroes(true)}
             className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
           >
-            🦸 <span className="hidden sm:inline">Héroe</span>
+            🦸 <span className="hidden sm:inline">{t("header.hero")}</span>
           </button>
         )}
         <button
@@ -333,29 +335,37 @@ export default function GamePage() {
             if (!next) playSfx("interact"); // confirmación audible
           }}
           className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
-          title={mute ? "Activar sonido" : "Silenciar"}
+          title={mute ? t("header.soundOn") : t("header.soundOff")}
         >
           {mute ? "🔇" : "🔊"}
+        </button>
+        {/* Selector de idioma */}
+        <button
+          onClick={() => setLang(lang === "es" ? "en" : "es")}
+          className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200 transition hover:bg-slate-700 sm:px-3 sm:py-1.5 sm:text-sm"
+          title={t("lang.label")}
+        >
+          🌐 {lang.toUpperCase()}
         </button>
 
         {/* A la derecha: runas del capítulo y nivel global */}
         <div className="ml-auto flex items-center gap-2 sm:gap-3">
           <span className="text-xs text-slate-400 sm:text-sm">
-            Runas {done}/{total}
+            {t("header.runes")} {done}/{total}
           </span>
           <div className="flex w-28 items-center gap-2 sm:w-44">
             <span
               className="shrink-0 rounded-md bg-amber-500/20 px-1.5 py-0.5 text-[11px] font-bold text-amber-200 ring-1 ring-amber-500/40"
-              title={`${xp} puntos de experiencia en total`}
+              title={`${xp} ${t("header.totalXp")}`}
             >
-              Nv {nivel.nivel}
+              {t("header.level")} {nivel.nivel}
             </span>
             <div
               className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-800"
               title={
                 nivel.paraSubir
-                  ? `${nivel.enNivel}/${nivel.paraSubir} para el nivel ${nivel.nivel + 1}`
-                  : "Nivel máximo"
+                  ? `${nivel.enNivel}/${nivel.paraSubir} ${t("header.forLevel")} ${nivel.nivel + 1}`
+                  : t("header.maxLevel")
               }
             >
               <div
@@ -374,30 +384,30 @@ export default function GamePage() {
       {/* Título del capítulo */}
       <header className="mb-2 flex items-baseline gap-2 sm:mb-3">
         <p className="hidden text-[10px] font-semibold uppercase tracking-wider text-amber-400 sm:block sm:text-xs">
-          Capítulo {chapter.chapter} · La Sintaxis Ancestral ·
+          {t("header.chapter")} {chapter.chapter} · {t("app.subtitle")} ·
         </p>
         <span className="shrink-0 text-sm font-black text-amber-400 sm:hidden">
           {chapter.chapter}.
         </span>
         <h1 className="min-w-0 truncate bg-gradient-to-r from-amber-200 to-emerald-300 bg-clip-text text-base font-black text-transparent sm:text-xl">
-          {chapter.title}
+          {tc(chapter.title)}
         </h1>
         <Link
           href="/studio"
           className="ml-auto hidden shrink-0 text-xs text-indigo-300 underline-offset-2 hover:underline sm:block"
         >
-          → Estudio de sprites LPC
+          {t("header.spriteStudio")}
         </Link>
       </header>
 
       {/* El lore ya se cuenta en la tarjeta de entrada; en móvil sobra aquí. */}
       <p className="mb-4 hidden max-w-3xl text-sm leading-relaxed text-slate-400 sm:block">
-        {chapter.lore} Muévete con <kbd className="text-slate-200">WASD</kbd> o
-        las flechas, acércate a un marcador dorado y pulsa{" "}
+        {tc(chapter.lore)} {t("controls.hint")}{" "}
+        <kbd className="text-slate-200">WASD</kbd> {t("controls.orArrows")}{" "}
         <kbd className="rounded bg-amber-500 px-1 font-bold text-slate-900">
           E
         </kbd>{" "}
-        para enfrentar el acertijo de POO.
+        {t("controls.toFace")}
       </p>
 
       {chapter.xpParaRetos ? (
@@ -410,7 +420,9 @@ export default function GamePage() {
           }
         >
           <span className="shrink-0 font-bold">
-            {xpCapitulo >= chapter.xpParaRetos ? "✓ Listo" : "⚔ Entrena"}
+            {xpCapitulo >= chapter.xpParaRetos
+              ? t("training.ready")
+              : t("training.training")}
           </span>
           <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-800">
             <div

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LangProvider } from "@/lib/i18n/context";
 
 export const metadata: Metadata = {
   title: "Lord of the Code — La Sintaxis Ancestral",
   description:
-    "RPG educativo (La Comunidad del Anillo) para aprender POO en PHP resolviendo acertijos, con estudio de sprites LPC integrado.",
+    "RPG educativo para aprender a programar de 0 a 100 resolviendo acertijos, con múltiples aventuras (PHP, Python…) y estudio de sprites LPC.",
 };
 
 export default function RootLayout({
@@ -14,7 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="text-slate-100 antialiased">{children}</body>
+      <body className="text-slate-100 antialiased">
+        <LangProvider>{children}</LangProvider>
+      </body>
     </html>
   );
 }
