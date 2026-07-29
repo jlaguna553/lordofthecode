@@ -1829,3 +1829,324 @@ class PuertaDurin implements Descifrable {
     },
   },
 };
+
+/** Capítulo 7 · Clases abstractas y traits. */
+export const SYL_PHP_COMMUNITY_7: Syllabus = {
+  c7_orco_explorador: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Qué es una clase `abstract`?",
+        options: [
+          "Una clase que no se puede instanciar, pensada para ser heredada",
+          "Una clase sin propiedades",
+          "Una clase que sólo tiene métodos estáticos",
+          "Otro nombre para una interfaz",
+        ],
+        correct: 0,
+        explanation:
+          "Una clase abstracta define una base común pero prohíbe crearse directamente con `new`: sólo existe a través de sus hijas concretas. Sirve para reunir lo compartido (código y estado) y dejar que cada hija complete lo que falta.",
+      },
+      {
+        question:
+          "¿Qué pasa si intentas `new Personaje()` siendo Personaje una clase abstracta?",
+        options: [
+          "Error fatal: no se puede instanciar una clase abstracta",
+          "Se crea un objeto con las propiedades a null",
+          "Se crea, pero sin métodos",
+          "PHP instancia la primera clase hija",
+        ],
+        correct: 0,
+        explanation:
+          "Instanciar una abstracta es error fatal: `Cannot instantiate abstract class Personaje`. Es intencional — la abstracta está incompleta a propósito. Instancias una hija concreta (Hobbit, Elfo) que rellene lo que la base dejó abierto.",
+      },
+      {
+        question:
+          "Un `abstract function golpe(): int;` dentro de una clase abstracta, ¿qué obliga?",
+        options: [
+          "A que toda hija concreta implemente golpe(), o será error",
+          "A que la clase tenga una propiedad golpe",
+          "A nada: es opcional",
+          "A llamar a golpe() en el constructor",
+        ],
+        correct: 0,
+        explanation:
+          "Un método abstracto declara la firma sin cuerpo y obliga a cada hija concreta a implementarlo. Es como una casilla del contrato que la base deja en blanco: si la hija no la rellena, no compila. Combina base compartida (abstracta) con obligación de completar (abstract method).",
+      },
+    ],
+  },
+  c7_trasgo_frontera: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Qué es un `trait`?",
+        options: [
+          "Un bloque de métodos reutilizable que varias clases pueden incorporar",
+          "Una interfaz con estado",
+          "Una clase que no se puede heredar",
+          "Una propiedad de tipo función",
+        ],
+        correct: 0,
+        explanation:
+          "Un trait es implementación reutilizable «horizontal»: métodos (y propiedades) que copias dentro de una clase con `use`. Resuelve el problema de compartir código entre clases que NO tienen una relación de herencia natural, sin recurrir a la herencia múltiple (que PHP no tiene).",
+      },
+      {
+        question: "¿Cómo incorpora una clase un trait?",
+        options: [
+          "Con la palabra clave use dentro del cuerpo de la clase",
+          "Con implements Trait",
+          "Con extends Trait",
+          "Con new Trait() en el constructor",
+        ],
+        correct: 0,
+        explanation:
+          "`use NombreTrait;` en la primera línea del cuerpo de la clase «pega» sus métodos como si estuvieran escritos ahí. No es herencia (`extends`) ni contrato (`implements`): es copia de código en tiempo de compilación.",
+      },
+      {
+        question:
+          "¿Cuántos traits puede usar una clase, y cuántas clases pueden usar el mismo trait?",
+        options: [
+          "Muchos traits por clase, y un trait en muchas clases",
+          "Un trait por clase como máximo",
+          "Un trait sólo puede usarse en una clase",
+          "Depende de si la clase es abstracta",
+        ],
+        correct: 0,
+        explanation:
+          "Los traits son de muchos-a-muchos: una clase puede `use` varios, y un trait puede repartirse por muchas clases sin relación entre sí. Eso es justo lo que los hace útiles para comportamientos transversales (registrar, comparar, serializar) que no encajan en una jerarquía.",
+      },
+    ],
+  },
+  c7_uruk_rastreador: {
+    kind: "battle",
+    questions: [
+      {
+        question:
+          "¿Cuál es la diferencia principal entre un trait y una clase abstracta?",
+        options: [
+          "Del trait usas VARIOS y no crea jerarquía; de la abstracta heredas UNA y sí crea jerarquía (es-un)",
+          "El trait no puede tener métodos",
+          "La abstracta se puede instanciar; el trait no",
+          "No hay diferencia",
+        ],
+        correct: 0,
+        explanation:
+          "Heredar de una abstracta afirma «es un»: un Hobbit ES un Personaje, y sólo puede tener un padre. Un trait no dice nada sobre identidad: sólo aporta métodos, y puedes combinar varios. Abstracta para el «qué es»; trait para el «qué sabe hacer, compartido».",
+      },
+      {
+        question:
+          "Dos traits que usa la misma clase definen un método con el MISMO nombre. ¿Qué ocurre?",
+        options: [
+          "Conflicto: hay que resolverlo con insteadof/as o es error fatal",
+          "Gana el último trait declarado, en silencio",
+          "Se ejecutan los dos, uno detrás de otro",
+          "PHP los fusiona automáticamente",
+        ],
+        correct: 0,
+        explanation:
+          "PHP no adivina cuál quieres: un choque de nombres entre traits es error fatal salvo que lo resuelvas explícitamente con `insteadof` (elegir uno) y `as` (renombrar el otro). Prefiere el fallo ruidoso a una elección silenciosa que podría ser la equivocada.",
+      },
+      {
+        question:
+          "¿Puede una clase abstracta usar traits e implementar interfaces a la vez?",
+        options: [
+          "Sí: puede extenderse, usar traits e implementar interfaces simultáneamente",
+          "No: abstracta y trait son incompatibles",
+          "Sólo una de las tres cosas a la vez",
+          "Sólo si no tiene métodos abstractos",
+        ],
+        correct: 0,
+        explanation:
+          "No se excluyen: una abstracta puede `extends` otra clase, `use` traits e `implements` interfaces todo junto. Cada mecanismo resuelve algo distinto — jerarquía, código compartido y contrato — y se combinan con naturalidad.",
+      },
+    ],
+  },
+  c7_jefe_ugluk: {
+    kind: "battle",
+    questions: [
+      {
+        question:
+          "```\nabstract class Personaje {\n  abstract public function nombre(): string;\n  public function saludo(): string { return 'Soy ' . $this->nombre(); }\n}\nclass Elfo extends Personaje {\n  public function nombre(): string { return 'Legolas'; }\n}\necho (new Elfo())->saludo();\n```",
+        options: ["Soy Legolas", "Error: Personaje es abstracta", "Soy ", "Soy Elfo"],
+        correct: 0,
+        explanation:
+          "La abstracta aporta `saludo()` ya escrito, que llama al método abstracto `nombre()`. La hija Elfo rellena `nombre()`, así que `saludo()` funciona y devuelve «Soy Legolas». Es el patrón «método plantilla»: la base define el esqueleto, la hija completa los huecos.",
+      },
+      {
+        question:
+          "Necesitas que Espada y Hechizo compartan un método `registrarUso()` idéntico, pero no tienen ancestro común y no quieres uno artificial. ¿Qué usas?",
+        options: [
+          "Un trait con registrarUso(), que ambas hacen use",
+          "Herencia: creo una clase padre común",
+          "Copio y pego el método en las dos",
+          "Una interfaz con el método",
+        ],
+        correct: 0,
+        explanation:
+          "El trait es exactamente para esto: compartir implementación entre clases sin parentesco, sin inventar una superclase forzada ni duplicar código. La interfaz sólo declararía la firma (tendrías que escribir el cuerpo dos veces); la herencia ataría clases que no son «la misma cosa».",
+      },
+      {
+        question:
+          "¿Puede una clase abstracta tener un constructor y propiedades con estado?",
+        options: [
+          "Sí: aporta a las hijas ese constructor y esas propiedades",
+          "No: las abstractas no tienen estado",
+          "Sólo propiedades estáticas",
+          "Sólo si no tiene métodos abstractos",
+        ],
+        correct: 0,
+        explanation:
+          "Una abstracta es una clase de pleno derecho salvo por el `new` directo: tiene constructor, propiedades, métodos concretos y abstractos. Las hijas heredan todo eso y llaman a `parent::__construct()` como con cualquier padre. Es su ventaja sobre la interfaz, que no puede aportar estado.",
+      },
+      {
+        question:
+          "Regla práctica: ¿cuándo interfaz, cuándo abstracta, cuándo trait?",
+        options: [
+          "Interfaz = contrato (puede-hacer); abstracta = base con identidad (es-un); trait = código compartido sin jerarquía",
+          "Da igual, los tres son intercambiables",
+          "Interfaz para todo; los otros dos están obsoletos",
+          "Trait para contratos, abstracta para código, interfaz para estado",
+        ],
+        correct: 0,
+        explanation:
+          "Interfaz cuando sólo importa QUE cumpla un contrato (Comparable, Contable). Abstracta cuando hay una relación «es-un» real con base común (Personaje → Hobbit). Trait cuando varias clases sin parentesco necesitan el MISMO código (registrar, serializar). No compiten: se combinan.",
+      },
+    ],
+  },
+  pergamino_dones: {
+    kind: "scroll",
+    title: "El Pergamino de Galadriel",
+    lore_intro:
+      "«Te doy la luz de Eärendil», dice la Dama. Y con ella, un pergamino: «Hay parentesco y hay don. No los confundas: uno se hereda, el otro se comparte.»",
+    scroll: {
+      topic: "Clases abstractas y traits",
+      sections: [
+        {
+          heading: "Clase abstracta: un padre incompleto",
+          body: "No se puede instanciar: existe para ser heredada. Puede traer código y estado COMPARTIDOS, y obligar a las hijas a implementar ciertos métodos con `abstract`.\n\nSólo se hereda UNA. Úsala cuando las hijas son realmente de la misma familia y comparten implementación.",
+          code: `abstract class ObjetoMagico {
+    public function __construct(protected string $nombre) {}
+
+    abstract public function usar(): string;   // cada hija lo resuelve
+
+    public function describir(): string {      // código compartido
+        return "Don de Galadriel: {$this->nombre}";
+    }
+}
+
+new ObjetoMagico('x'); // ❌ Error: no se puede instanciar`,
+        },
+        {
+          heading: "Trait: reuso HORIZONTAL",
+          body: "Un trait es un bloque de métodos que puedes «pegar» en clases que NO tienen parentesco entre sí. Resuelve el reuso donde la herencia no llega, porque una clase puede usar muchos traits.",
+          code: `trait CamuflajeElfico {
+    public function ocultar(): string {
+        return 'te fundes con el bosque';
+    }
+}
+
+class CapaDeHobbit { use CamuflajeElfico; }
+class Barca        { use CamuflajeElfico; }  // sin parentesco alguno`,
+        },
+        {
+          heading: "¿Cuál elijo?",
+          body: "Interfaz → el CONTRATO («qué promete»).\nAbstracta → la FAMILIA («qué comparte por parentesco»).\nTrait → la CAPACIDAD («qué sabe hacer, venga de donde venga»).\n\nOjo: abusar de traits suele ser señal de que faltaba composición.",
+        },
+      ],
+      keyTakeaway:
+        "Herencia para «es un», trait para «sabe hacer», interfaz para «promete que». Si dudas entre trait y herencia, pregúntate si de verdad hay parentesco.",
+    },
+  },
+  frasco_de_galadriel: {
+    kind: "challenge",
+    title: "El Frasco de Galadriel",
+    lore_intro:
+      "«Que sea para ti una luz en los lugares oscuros, cuando todas las demás se apaguen.» Todo don comparte una forma; sólo cambia cómo se usa.",
+    challenge: {
+      topic: "Clases abstractas (abstract)",
+      instructions:
+        "La clase abstracta ObjetoMagico ya existe: guarda $nombre, comparte describir() y obliga a implementar usar(): string. Crea FrascoDeGaladriel, que la extienda y devuelva en usar() exactamente 'una luz en los lugares oscuros'.",
+      sut: "new FrascoDeGaladriel('Frasco')",
+      support_code:
+        "abstract class ObjetoMagico {\n    public function __construct(protected string $nombre) {}\n    abstract public function usar(): string;\n    public function describir(): string {\n        return \"Don de Galadriel: {$this->nombre}\";\n    }\n}",
+      starter_code:
+        "<?php\n\n// ObjetoMagico es abstracta: tiene $nombre, describir() y exige usar().\n\nclass FrascoDeGaladriel {\n    // Extiéndela e implementa usar(): string\n}\n",
+      hints: [
+        "class FrascoDeGaladriel extends ObjetoMagico { … }",
+        "Sólo tienes que implementar usar(): describir() se hereda ya resuelto.",
+        "Devuelve el texto exacto: return 'una luz en los lugares oscuros';",
+      ],
+      test_cases: [
+        { input: "usar()", expected: "una luz en los lugares oscuros", description: "Cada don se usa a su manera" },
+        {
+          input: "describir()",
+          expected: "Don de Galadriel: Frasco",
+          description: "describir() se HEREDA: una abstracta sí puede traer código compartido",
+        },
+        {
+          input:
+            "(function() { try { new ObjetoMagico('x'); return false; } catch (\\Throwable $e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: "Una clase abstracta no se puede instanciar",
+        },
+      ],
+    },
+  },
+  capas_elficas: {
+    kind: "challenge",
+    title: "Las Capas Élficas",
+    lore_intro:
+      "Las capas de Lórien no son de la misma familia que las barcas… pero ambas saben esconderse a la vista de ojos enemigos. Eso no se hereda: se comparte.",
+    challenge: {
+      topic: "Traits (reuso horizontal)",
+      instructions:
+        "Crea el trait CamuflajeElfico con el método ocultar(): string, que devuelva 'te fundes con el bosque'. Después crea DOS clases sin parentesco entre sí, CapaElfica y Barca, que USEN ese trait.",
+      starter_code:
+        "<?php\n\ntrait CamuflajeElfico {\n    // ocultar(): string\n}\n\nclass CapaElfica {\n    // usa el trait\n}\n\nclass Barca {\n    // usa el trait\n}\n",
+      hints: [
+        "Dentro de una clase, incorporas el trait con: use CamuflajeElfico;",
+        "El trait declara el método una sola vez y las dos clases lo obtienen.",
+        "No copies el método en cada clase: la última prueba comprueba que realmente usaste un trait.",
+      ],
+      test_cases: [
+        { input: "(new CapaElfica())->ocultar()", raw: true, expected: "te fundes con el bosque", description: "La capa esconde a quien la lleva" },
+        { input: "(new Barca())->ocultar()", raw: true, expected: "te fundes con el bosque", description: "La barca también, sin heredar de la capa" },
+        { input: "in_array('CamuflajeElfico', class_uses('CapaElfica'))", raw: true, expected: true, description: "La capacidad viene de un TRAIT, no de copiar y pegar" },
+        { input: "in_array('CamuflajeElfico', class_uses('Barca'))", raw: true, expected: true, description: "El mismo trait, reutilizado horizontalmente" },
+      ],
+    },
+  },
+  dones_de_lorien: {
+    kind: "challenge",
+    title: "Los Dones de la Dama",
+    lore_intro:
+      "Al alba, la Comunidad recibe sus regalos. Cada don es distinto, pero todos llevan la bendición de Lórien. Aquí se juntan las dos ideas: la familia que comparte forma, y el don que se pega a cualquiera.",
+    challenge: {
+      topic: "Abstractas + traits combinados",
+      instructions:
+        "Existen la abstracta Don (exige poder(): int), el trait Bendecido (aporta bendicion(): int = 10) y Cofre::poderTotal(). Crea Frasco y Capa: ambas EXTIENDEN Don y USAN Bendecido. poder() debe devolver su base más la bendición: 5 para el Frasco (total 15) y 2 para la Capa (total 12).",
+      support_code:
+        "abstract class Don {\n    abstract public function poder(): int;\n}\n\ntrait Bendecido {\n    public function bendicion(): int { return 10; }\n}\n\nclass Cofre {\n    /** @param Don[] $dones */\n    public static function poderTotal(array $dones): int {\n        return array_sum(array_map(fn(Don $d) => $d->poder(), $dones));\n    }\n}",
+      starter_code:
+        "<?php\n\n// Don (abstracta), Bendecido (trait) y Cofre ya existen.\n\nclass Frasco {\n    // extiende Don y usa Bendecido; poder() = 5 + bendicion()\n}\n\nclass Capa {\n    // extiende Don y usa Bendecido; poder() = 2 + bendicion()\n}\n",
+      hints: [
+        "Se combinan así: class Frasco extends Don { use Bendecido; … }",
+        "Dentro de poder() puedes llamar al método que aporta el trait: return 5 + $this->bendicion();",
+        "Cofre::poderTotal() las trata a las dos como Don: eso es polimorfismo sobre una abstracta.",
+      ],
+      test_cases: [
+        { input: "(new Frasco())->poder()", raw: true, expected: 15, description: "5 propios + 10 de bendición" },
+        { input: "(new Capa())->poder()", raw: true, expected: 12, description: "2 propios + 10 de bendición" },
+        { input: "Cofre::poderTotal([new Frasco(), new Capa()])", raw: true, expected: 27, description: "El cofre las suma a ambas como Don" },
+        {
+          input:
+            "(new Frasco()) instanceof Don && in_array('Bendecido', class_uses('Frasco'))",
+          raw: true,
+          expected: true,
+          description: "Hereda de Don Y usa el trait Bendecido",
+        },
+      ],
+    },
+  },
+};

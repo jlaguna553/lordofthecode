@@ -1439,3 +1439,235 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre bases abstractas y mixins. */
+const Q_ABSTRACT_JS = {
+  question: P("JS no tiene la palabra `abstract`. ¿Cómo se impide instanciar una clase base?", "JS has no `abstract` keyword. How do you prevent instantiating a base class?"),
+  options: [
+    P("Lanzando en el constructor si `new.target === Base`", "By throwing in the constructor if `new.target === Base`"),
+    P("Declarándola con `abstract class`", "By declaring it `abstract class`"),
+    P("Poniéndole `#` al nombre", "By prefixing its name with `#`"),
+    P("No se puede: toda clase se instancia", "You can't: every class is instantiable"),
+  ],
+  correct: 0,
+  explanation: P(
+    "JS no tiene clases abstractas nativas, pero puedes simularlas: si `new.target === Base` significa que se instanció la base directamente, así que lanzas un error. Las subclases pasan el `if` porque su `new.target` es la subclase.",
+    "JS has no native abstract classes, but you can fake them: `new.target === Base` means the base was instantiated directly, so you throw. Subclasses pass the `if` because their `new.target` is the subclass.",
+  ),
+};
+const Q_NEWTARGET = {
+  question: P("Dentro de un constructor, ¿qué es `new.target`?", "Inside a constructor, what is `new.target`?"),
+  options: [
+    P("La clase sobre la que se hizo `new` (la subclase si hubo herencia)", "The class `new` was called on (the subclass if inherited)"),
+    P("Siempre la clase base", "Always the base class"),
+    P("La instancia recién creada", "The freshly created instance"),
+    P("El último argumento", "The last argument"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`new.target` es la clase con la que se invocó `new`. En `new Frasco()`, dentro del constructor heredado de `Don` vale `Frasco`, no `Don`. Por eso sirve para detectar la instanciación directa de la base.",
+    "`new.target` is the class `new` was invoked with. In `new Frasco()`, inside `Don`'s inherited constructor it's `Frasco`, not `Don`. That's why it detects direct instantiation of the base.",
+  ),
+};
+const Q_TEMPLATE_METHOD = {
+  question: P("Una clase base define `saludo()` que llama a `this.nombre()`, sin implementar `nombre()`. ¿Qué patrón es?", "A base class defines `saludo()` calling `this.nombre()`, without implementing `nombre()`. What pattern is that?"),
+  options: [
+    P("Método plantilla: la base fija el esqueleto, la subclase rellena los huecos", "Template method: the base sets the skeleton, the subclass fills the gaps"),
+    P("Singleton", "Singleton"),
+    P("Factoría", "Factory"),
+    P("Observador", "Observer"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El método plantilla escribe el algoritmo general en la base y delega los pasos variables en métodos que la subclase implementa. `saludo()` funciona en cuanto la subclase provee `nombre()`.",
+    "The template method writes the general algorithm in the base and delegates the variable steps to methods the subclass implements. `saludo()` works as soon as the subclass provides `nombre()`.",
+  ),
+};
+const Q_MIXIN = {
+  question: P("¿Qué es un mixin en JS?", "What is a mixin in JS?"),
+  options: [
+    P("Un objeto de métodos que se copian a varias clases (p. ej. con Object.assign)", "An object of methods copied into several classes (e.g. with Object.assign)"),
+    P("Una clase que hereda de dos padres", "A class that inherits from two parents"),
+    P("Un método privado", "A private method"),
+    P("Una interfaz nativa de JS", "A native JS interface"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un mixin es el equivalente de un trait: un conjunto de métodos que «pegas» a clases sin parentesco. `Object.assign(Clase.prototype, mixin)` los añade al prototipo de la clase, y todas sus instancias los ganan.",
+    "A mixin is the equivalent of a trait: a set of methods you \"paste\" onto unrelated classes. `Object.assign(Class.prototype, mixin)` adds them to the class prototype, and all its instances gain them.",
+  ),
+};
+const Q_MIXIN_VS = {
+  question: P("¿Cuándo eliges un mixin en vez de herencia (extends)?", "When do you pick a mixin over inheritance (extends)?"),
+  options: [
+    P("Cuando clases SIN parentesco necesitan el mismo comportamiento", "When UNRELATED classes need the same behavior"),
+    P("Cuando quieres una relación es-un clara", "When you want a clear is-a relationship"),
+    P("Siempre: la herencia está obsoleta", "Always: inheritance is obsolete"),
+    P("Sólo para métodos estáticos", "Only for static methods"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La herencia expresa «es un» y sólo admite un padre. El mixin comparte una capacidad («sabe hacer X») entre clases dispares sin forzar una jerarquía común, y puedes aplicar varios. Es reuso horizontal.",
+    "Inheritance expresses \"is a\" and allows only one parent. A mixin shares a capability (\"can do X\") across disparate classes without forcing a common hierarchy, and you can apply several. It's horizontal reuse.",
+  ),
+};
+const Q_PROTO = {
+  question: P("¿Qué hace `Object.assign(CapaElfica.prototype, mixin)`?", "What does `Object.assign(CapaElfica.prototype, mixin)` do?"),
+  options: [
+    P("Copia los métodos del mixin al prototipo: todas las instancias los tendrán", "Copies the mixin's methods to the prototype: all instances will have them"),
+    P("Crea una instancia de CapaElfica", "Creates an instance of CapaElfica"),
+    P("Borra el prototipo", "Deletes the prototype"),
+    P("Hace CapaElfica inmutable", "Makes CapaElfica immutable"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los métodos compartidos de una clase viven en su `prototype`. Copiar el mixin ahí hace que cada `new CapaElfica()` los herede, igual que un `use Trait;` en PHP.",
+    "A class's shared methods live on its `prototype`. Copying the mixin there makes every `new CapaElfica()` inherit them, just like `use Trait;` in PHP.",
+  ),
+};
+
+/** Capítulo 7 · Bases abstractas (new.target, método plantilla) y mixins. */
+export const SYL_JS_COMMUNITY_7: Syllabus = {
+  c7_orco_explorador: { kind: "battle", questions: [Q_ABSTRACT_JS, Q_NEWTARGET, Q_TEMPLATE_METHOD] },
+  c7_trasgo_frontera: { kind: "battle", questions: [Q_MIXIN, Q_PROTO, Q_MIXIN_VS] },
+  c7_uruk_rastreador: { kind: "battle", questions: [Q_MIXIN_VS, Q_ABSTRACT_JS, Q_MIXIN] },
+  c7_jefe_ugluk: { kind: "battle", questions: [Q_TEMPLATE_METHOD, Q_NEWTARGET, Q_MIXIN, Q_PROTO] },
+  pergamino_dones: {
+    kind: "scroll",
+    title: P("El Pergamino de Galadriel", "Galadriel's Scroll"),
+    lore_intro: P(
+      "La Dama entrega un pergamino con la luz de Eärendil. «Hay parentesco y hay don. Uno se hereda; el otro se pega a cualquiera.»",
+      "The Lady hands over a scroll bearing the light of Eärendil. \"There is kinship and there is gift. One is inherited; the other clings to anyone.\"",
+    ),
+    scroll: {
+      topic: P("Bases abstractas y mixins", "Abstract bases and mixins"),
+      sections: [
+        {
+          heading: P("Base «abstracta» con new.target", "\"Abstract\" base with new.target"),
+          body: P(
+            "JS no tiene `abstract`, pero una base puede prohibir su instanciación directa comprobando `new.target`, y dejar métodos que la subclase debe implementar.",
+            "JS has no `abstract`, but a base can forbid direct instantiation by checking `new.target`, and leave methods the subclass must implement.",
+          ),
+          code: "class ObjetoMagico {\n  constructor(nombre) {\n    if (new.target === ObjetoMagico) throw new Error('abstracta');\n    this.nombre = nombre;\n  }\n  usar() { throw new Error('no implementado'); }\n  describir() { return `Don de Galadriel: ${this.nombre}`; }\n}",
+        },
+        {
+          heading: P("Método plantilla", "Template method"),
+          body: P(
+            "La base escribe el algoritmo y delega los pasos variables en métodos que la subclase completa. `describir()` ya funciona; sólo falta que la hija provea `usar()`.",
+            "The base writes the algorithm and delegates the variable steps to methods the subclass fills. `describir()` already works; the child just needs to provide `usar()`.",
+          ),
+          code: "class FrascoDeGaladriel extends ObjetoMagico {\n  usar() { return 'una luz en los lugares oscuros'; }\n}",
+        },
+        {
+          heading: P("Mixins: el trait de JS", "Mixins: JS's trait"),
+          body: P(
+            "Un mixin es un objeto de métodos que copias al prototipo de clases sin parentesco con `Object.assign`. Reuso horizontal, como los traits de PHP.",
+            "A mixin is an object of methods you copy onto the prototype of unrelated classes with `Object.assign`. Horizontal reuse, like PHP traits.",
+          ),
+          code: "const Camuflable = { ocultar() { return 'te fundes con el bosque'; } };\nclass CapaElfica {}\nclass Barca {}\nObject.assign(CapaElfica.prototype, Camuflable);\nObject.assign(Barca.prototype, Camuflable);",
+        },
+      ],
+      keyTakeaway: P(
+        "Herencia para «es un» (con new.target simulas lo abstracto y el método plantilla); mixins vía Object.assign para «sabe hacer», compartido entre clases sin parentesco. Son ejes distintos y se combinan.",
+        "Inheritance for \"is a\" (new.target fakes abstract and the template method); mixins via Object.assign for \"can do\", shared across unrelated classes. They're different axes and they combine.",
+      ),
+    },
+  },
+  frasco_de_galadriel: {
+    kind: "challenge",
+    title: P("El Frasco de Galadriel", "The Phial of Galadriel"),
+    lore_intro: P(
+      "«Que sea para ti una luz en los lugares oscuros.» Todo don comparte una forma; sólo cambia cómo se usa.",
+      "\"May it be a light for you in dark places.\" Every gift shares a shape; only its use changes.",
+    ),
+    challenge: {
+      topic: P("Bases abstractas y herencia", "Abstract bases and inheritance"),
+      instructions: P(
+        "La clase base `ObjetoMagico` ya existe: guarda `nombre`, comparte `describir()`, exige `usar()` y lanza si se instancia directamente. Crea `FrascoDeGaladriel` que la EXTIENDA e implemente `usar()` devolviendo exactamente 'una luz en los lugares oscuros'.",
+        "The base class `ObjetoMagico` already exists: it stores `nombre`, shares `describir()`, requires `usar()` and throws if instantiated directly. Create `FrascoDeGaladriel` that EXTENDS it and implements `usar()` returning exactly 'una luz en los lugares oscuros'.",
+      ),
+      sut: "new FrascoDeGaladriel('Frasco')",
+      support_code:
+        "class ObjetoMagico {\n  constructor(nombre) {\n    if (new.target === ObjetoMagico) throw new Error('ObjetoMagico es abstracta');\n    this.nombre = nombre;\n  }\n  usar() { throw new Error('usar() no implementado'); }\n  describir() { return `Don de Galadriel: ${this.nombre}`; }\n}",
+      starter_code:
+        "// ObjetoMagico ya existe: es abstracta, comparte describir() y exige usar().\n\nclass FrascoDeGaladriel extends ObjetoMagico {\n  // implementa usar(): string\n}\n",
+      hints: [
+        P("Sólo implementa `usar()`: `describir()` se hereda ya resuelto.", "Just implement `usar()`: `describir()` is inherited already solved."),
+        P("Devuelve el texto exacto: `return 'una luz en los lugares oscuros';`.", "Return the exact text: `return 'una luz en los lugares oscuros';`."),
+      ],
+      test_cases: [
+        { input: "usar()", expected: "una luz en los lugares oscuros", description: P("Cada don se usa a su manera", "Each gift is used its own way") },
+        { input: "describir()", expected: "Don de Galadriel: Frasco", description: P("describir() se HEREDA de la base", "describir() is INHERITED from the base") },
+        {
+          input: "(() => { try { new ObjetoMagico('x'); return false; } catch (e) { return true; } })()",
+          raw: true,
+          expected: true,
+          description: P("La base no se puede instanciar directamente", "The base can't be instantiated directly"),
+        },
+      ],
+    },
+  },
+  capas_elficas: {
+    kind: "challenge",
+    title: P("Las Capas Élficas", "The Elven Cloaks"),
+    lore_intro: P(
+      "Las capas de Lórien no son de la familia de las barcas… pero ambas saben esconderse. Eso no se hereda: se comparte con un mixin.",
+      "Lórien's cloaks aren't kin to the boats… yet both know how to hide. That isn't inherited: it's shared with a mixin.",
+    ),
+    challenge: {
+      topic: P("Mixins (reuso horizontal)", "Mixins (horizontal reuse)"),
+      instructions: P(
+        "Existe el mixin `CamuflajeElfico`, un objeto con `ocultar()` que devuelve 'te fundes con el bosque'. Crea DOS clases sin parentesco, `CapaElfica` y `Barca`, y AÑÁDELES el mixin con `Object.assign(Clase.prototype, CamuflajeElfico)` para que ambas tengan `ocultar()`.",
+        "There's a mixin `CamuflajeElfico`, an object with `ocultar()` returning 'te fundes con el bosque'. Create TWO unrelated classes, `CapaElfica` and `Barca`, and ADD the mixin to them with `Object.assign(Class.prototype, CamuflajeElfico)` so both get `ocultar()`.",
+      ),
+      support_code:
+        "const CamuflajeElfico = {\n  ocultar() { return 'te fundes con el bosque'; },\n};",
+      starter_code:
+        "// El mixin CamuflajeElfico ya existe: { ocultar() {...} }\n\nclass CapaElfica {}\nclass Barca {}\n\n// aplica el mixin al prototipo de cada clase\n",
+      hints: [
+        P("`Object.assign(CapaElfica.prototype, CamuflajeElfico);`.", "`Object.assign(CapaElfica.prototype, CamuflajeElfico);`."),
+        P("Haz lo mismo con `Barca.prototype`. No copies el método a mano.", "Do the same with `Barca.prototype`. Don't hand-copy the method."),
+      ],
+      test_cases: [
+        { input: "new CapaElfica().ocultar()", expected: "te fundes con el bosque", description: P("La capa esconde a quien la lleva", "The cloak hides its wearer"), raw: true },
+        { input: "new Barca().ocultar()", expected: "te fundes con el bosque", description: P("La barca también, sin heredar de la capa", "The boat too, without inheriting from the cloak"), raw: true },
+        { input: "CapaElfica.prototype.ocultar === CamuflajeElfico.ocultar", expected: true, description: P("El método viene del MIXIN, no de copiar y pegar", "The method comes from the MIXIN, not copy-paste"), raw: true },
+        { input: "Barca.prototype.ocultar === CamuflajeElfico.ocultar", expected: true, description: P("El mismo mixin, reutilizado horizontalmente", "The same mixin, reused horizontally"), raw: true },
+      ],
+    },
+  },
+  dones_de_lorien: {
+    kind: "challenge",
+    title: P("Los Dones de la Dama", "The Lady's Gifts"),
+    lore_intro: P(
+      "Cada don es distinto, pero todos llevan la bendición de Lórien. Se juntan las dos ideas: la familia que comparte forma y el don que se pega a cualquiera.",
+      "Each gift is different, yet all bear Lórien's blessing. The two ideas meet: the family that shares a shape, and the gift that clings to anyone.",
+    ),
+    challenge: {
+      topic: P("Bases abstractas + mixins combinados", "Abstract bases + mixins combined"),
+      instructions: P(
+        "Existen la base `Don` (exige `poder()`), el mixin `Bendecido` (aporta `bendicion()` = 10) y `Cofre.poderTotal(dones)`. Crea `Frasco` y `Capa`: ambas EXTIENDEN `Don`, y añádeles el mixin con `Object.assign`. `poder()` devuelve su base más la bendición: 5 en Frasco (total 15), 2 en Capa (total 12).",
+        "There's a base `Don` (requires `poder()`), a mixin `Bendecido` (adds `bendicion()` = 10) and `Cofre.poderTotal(dones)`. Create `Frasco` and `Capa`: both EXTEND `Don`, and add the mixin with `Object.assign`. `poder()` returns its base plus the blessing: 5 in Frasco (total 15), 2 in Capa (total 12).",
+      ),
+      support_code:
+        "class Don {\n  constructor() { if (new.target === Don) throw new Error('Don es abstracta'); }\n  poder() { throw new Error('poder() no implementado'); }\n}\nconst Bendecido = { bendicion() { return 10; } };\nconst Cofre = {\n  poderTotal(dones) { return dones.reduce((s, d) => s + d.poder(), 0); },\n};",
+      starter_code:
+        "// Don (base), Bendecido (mixin) y Cofre ya existen.\n\nclass Frasco extends Don {\n  poder() { /* 5 + this.bendicion() */ }\n}\nclass Capa extends Don {\n  poder() { /* 2 + this.bendicion() */ }\n}\n\n// añade el mixin Bendecido al prototipo de cada una\n",
+      hints: [
+        P("Dentro de `poder()` usa el método del mixin: `return 5 + this.bendicion();`.", "Inside `poder()` use the mixin's method: `return 5 + this.bendicion();`."),
+        P("Aplica el mixin: `Object.assign(Frasco.prototype, Bendecido);` (y Capa).", "Apply the mixin: `Object.assign(Frasco.prototype, Bendecido);` (and Capa)."),
+      ],
+      test_cases: [
+        { input: "new Frasco().poder()", expected: 15, description: P("5 propios + 10 de bendición", "5 of its own + 10 blessing"), raw: true },
+        { input: "new Capa().poder()", expected: 12, description: P("2 propios + 10 de bendición", "2 of its own + 10 blessing"), raw: true },
+        { input: "Cofre.poderTotal([new Frasco(), new Capa()])", expected: 27, description: P("El cofre las suma a ambas como Don", "The chest sums both as Don"), raw: true },
+        {
+          input: "(new Frasco() instanceof Don) && Frasco.prototype.bendicion === Bendecido.bendicion",
+          raw: true,
+          expected: true,
+          description: P("Hereda de Don Y usa el mixin Bendecido", "Inherits from Don AND uses the Bendecido mixin"),
+        },
+      ],
+    },
+  },
+};

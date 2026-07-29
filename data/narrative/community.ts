@@ -983,3 +983,160 @@ export const NARR_COMMUNITY_6: ChapterNarrative = {
     { node_id: "c6_galeria_de_mazarbul", kind: "challenge", position: { x: 16, y: 10 }, spriteId: "gimli" },
   ],
 };
+
+/** Capítulo 7 · El Espejo de Lothlórien. */
+export const NARR_COMMUNITY_7: ChapterNarrative = {
+  chapter: 7,
+  title: { es: "El Espejo de Lothlórien", en: "The Mirror of Lothlórien" },
+  lore: {
+    es: "Bajo los mallorn dorados de Caras Galadhon, Galadriel muestra lo que fue, lo que es y lo que aún podría ser. Al partir entrega dones: distintos objetos que comparten un mismo poder élfico sin pertenecer a la misma estirpe.",
+    en: "Beneath the golden mallorn of Caras Galadhon, Galadriel shows what was, what is, and what may yet be. At their parting she gives gifts: different objects that share one Elvish power without belonging to the same kin.",
+  },
+  mapSize: { cols: 44, rows: 26 },
+  spawn: { x: 2, y: 8 },
+  xpParaRetos: 180,
+  unlockedBy: 6,
+  companions: ["aragorn", "boromir", "gimli", "legolas", "sam"],
+  scenery: {
+    ground: "gold",
+    pathRows: [8],
+    pathGround: "path",
+    pond: { x: 10, y: 2, w: 5, h: 3 },
+    dialogues: [
+      {
+        x: 7, y: 8, speaker: "legolas", name: { es: "Legolas", en: "Legolas" },
+        text: {
+          es: "Cantan lamentos por Gandalf. No tengo fuerzas para traducirlos.",
+          en: "They sing laments for Gandalf. I have not the heart to translate them.",
+        },
+      },
+      {
+        x: 16, y: 8, speaker: "gimli", name: { es: "Gimli", en: "Gimli" },
+        text: {
+          es: "Pedí un cabello de oro de la Dama. Me dio tres.",
+          en: "I asked for a single hair from the Lady. She gave me three.",
+        },
+      },
+    ],
+    decor: [
+      { type: "mallorn", x: 4, y: 5 },
+      { type: "mallorn", x: 8, y: 6 },
+      { type: "mallorn", x: 17, y: 5 },
+      { type: "mallorn", x: 21, y: 6 },
+      { type: "mallorn", x: 6, y: 13 },
+      { type: "mallorn", x: 12, y: 13 },
+      { type: "mallorn", x: 19, y: 13 },
+      { type: "mallorn", x: 23, y: 10 },
+      { type: "rock", x: 8, y: 3 },
+      { type: "rock", x: 16, y: 3 },
+      { type: "rock", x: 14, y: 10 },
+      { type: "mallorn", x: 26, y: 6 },
+      { type: "mallorn", x: 30, y: 4 },
+      { type: "mallorn", x: 34, y: 6 },
+      { type: "mallorn", x: 38, y: 5 },
+      { type: "mallorn", x: 28, y: 12 },
+      { type: "mallorn", x: 32, y: 11 },
+      { type: "mallorn", x: 27, y: 18 },
+      { type: "mallorn", x: 31, y: 24 },
+      { type: "mallorn", x: 37, y: 22 },
+      { type: "mallorn", x: 41, y: 14 },
+      { type: "rock", x: 35, y: 16 },
+      { type: "rock", x: 29, y: 9 },
+      { type: "rock", x: 39, y: 19 },
+    ],
+  },
+  nodes: [
+    {
+      node_id: "c7_orco_explorador",
+      kind: "battle",
+      title: { es: "Sombras entre los mallorn", en: "Shadows among the mallorn" },
+      lore_intro: {
+        es: "La luz dorada de Lórien no llega a todos los rincones. En la linde del bosque, un explorador de Isengard estudia el terreno.",
+        en: "The golden light of Lórien doesn't reach every corner. At the forest's edge, an Isengard scout studies the ground.",
+      },
+      position: { x: 27, y: 4 },
+      spriteId: "orco",
+      enemy: {
+        name: { es: "Explorador de Isengard", en: "Isengard scout" },
+        spriteId: "orco",
+        hp: 5, damage: 1, xp: 55,
+        taunt: {
+          es: "«El bosque de la bruja no os protegerá al salir.»",
+          en: "\"The witch's wood won't protect you once you leave.\"",
+        },
+      },
+    },
+    {
+      node_id: "c7_trasgo_frontera",
+      kind: "battle",
+      title: { es: "El acecho en la frontera", en: "The lurk at the border" },
+      lore_intro: {
+        es: "Los Guardianes élficos vigilan el interior, pero la linde es larga. Un trasgo se ha colado entre las raíces doradas.",
+        en: "The Elven wardens watch the interior, but the border is long. A goblin has slipped in among the golden roots.",
+      },
+      position: { x: 24, y: 22 },
+      spriteId: "trasgo",
+      enemy: {
+        name: { es: "Trasgo merodeador", en: "Prowling goblin" },
+        spriteId: "trasgo",
+        hp: 5, damage: 2, xp: 60,
+        taunt: {
+          es: "«Oro… tantos árboles de oro… mi señor querrá todos.»",
+          en: "\"Gold… so many golden trees… my master will want them all.\"",
+        },
+      },
+    },
+    {
+      node_id: "c7_uruk_rastreador",
+      kind: "battle",
+      title: { es: "El rastreador de Mano Blanca", en: "The White Hand tracker" },
+      lore_intro: {
+        es: "Más grande que un orco y sin miedo al sol, lleva la Mano Blanca pintada en la frente. Rastrea el olor de la Comunidad desde Moria.",
+        en: "Larger than an orc and unafraid of the sun, it wears the White Hand painted on its brow. It has tracked the Fellowship's scent since Moria.",
+      },
+      position: { x: 33, y: 20 },
+      spriteId: "uruk",
+      enemy: {
+        name: { es: "Uruk-hai rastreador", en: "Uruk-hai tracker" },
+        spriteId: "uruk",
+        hp: 6, damage: 2, xp: 65,
+        taunt: {
+          es: "«Servimos a Saruman el Sabio, la Mano Blanca.»",
+          en: "\"We serve Saruman the Wise, the White Hand.\"",
+        },
+      },
+    },
+    {
+      node_id: "c7_jefe_ugluk",
+      kind: "battle",
+      title: { es: "Uglúk, capitán de Isengard", en: "Uglúk, captain of Isengard" },
+      lore_intro: {
+        es: "En la última linde dorada, antes del Anduin, el capitán de la partida de caza se planta en el sendero. Trae órdenes de Saruman: coger a los medianos vivos. La Comunidad forma a tu espalda.",
+        en: "At the last golden edge, before the Anduin, the captain of the hunting party plants himself in the path. He carries Saruman's orders: take the halflings alive. The Fellowship forms at your back.",
+      },
+      position: { x: 40, y: 8 },
+      spriteId: "uruk",
+      enemy: {
+        name: { es: "Uglúk de Isengard", en: "Uglúk of Isengard" },
+        spriteId: "uruk",
+        hp: 7, damage: 3, xp: 190, boss: true,
+        taunt: {
+          es: "«¡Los medianos, vivos! ¡Saruman los quiere enteros!»",
+          en: "\"The halflings, alive! Saruman wants them whole!\"",
+        },
+        reward: {
+          hero: "boromir",
+          name: { es: "Boromir de Gondor", en: "Boromir of Gondor" },
+          blurb: {
+            es: "El capitán de la Ciudad Blanca, escudo de la Comunidad pese a su carga. Boromir se une a tus héroes.",
+            en: "The captain of the White City, shield of the Fellowship despite his burden. Boromir joins your heroes.",
+          },
+        },
+      },
+    },
+    { node_id: "pergamino_dones", kind: "scroll", position: { x: 3, y: 11 } },
+    { node_id: "frasco_de_galadriel", kind: "challenge", position: { x: 9, y: 8 }, spriteId: "legolas" },
+    { node_id: "capas_elficas", kind: "challenge", position: { x: 14, y: 5 }, spriteId: "sam" },
+    { node_id: "dones_de_lorien", kind: "challenge", position: { x: 20, y: 8 }, spriteId: "gimli" },
+  ],
+};
