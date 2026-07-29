@@ -368,3 +368,167 @@ export const NARR_COMMUNITY_2: ChapterNarrative = {
     },
   ],
 };
+
+
+/** Capítulo 3 · Bree y la Cima de los Vientos. */
+export const NARR_COMMUNITY_3: ChapterNarrative = {
+  chapter: 3,
+  title: {
+    es: "Bree y la Cima de los Vientos",
+    en: "Bree and Weathertop",
+  },
+  lore: {
+    es: "En El Póney Pisador aguarda un montaraz encapuchado al que llaman Trancos. Tras él, el camino asciende hasta Amon Sûl, donde cinco Jinetes Negros esperan bajo las ruinas.",
+    en: "At the Prancing Pony a hooded ranger they call Strider awaits. Beyond him the road climbs to Amon Sûl, where five Black Riders lurk beneath the ruins.",
+  },
+  mapSize: { cols: 44, rows: 26 },
+  spawn: { x: 2, y: 9 },
+  xpParaRetos: 105,
+  unlockedBy: 2,
+  companions: ["sam", "merry", "pippin", "aragorn"],
+  scenery: {
+    ground: "dry",
+    pathRows: [9],
+    pathGround: "stone",
+    npcs: [
+      { spriteId: "aldeano", x: 4, y: 12, label: { es: "Vecino de Bree", en: "Bree local" } },
+      { spriteId: "aldeana", x: 10, y: 12 },
+      { spriteId: "aldeano", x: 14, y: 13 },
+    ],
+    dialogues: [
+      {
+        x: 4, y: 9, speaker: "merry", name: { es: "Merry", en: "Merry" },
+        text: {
+          es: "En Bree hay más ojos que ventanas. No digáis vuestro nombre.",
+          en: "Bree has more eyes than windows. Don't say your name.",
+        },
+      },
+      {
+        x: 16, y: 9, speaker: "aragorn", name: { es: "Trancos", en: "Strider" },
+        text: {
+          es: "Amon Sûl está ahí arriba. Al descubierto, y los Nueve lo saben.",
+          en: "Amon Sûl is up there. In the open, and the Nine know it.",
+        },
+      },
+    ],
+    decor: [
+      { type: "tree", x: 7, y: 22 },
+      { type: "tree", x: 15, y: 24 },
+      { type: "house", x: 22, y: 22, label: { es: "Casa de Helechal", en: "Ferny's house" } },
+      { type: "tree", x: 30, y: 23 },
+      { type: "tree", x: 38, y: 21 },
+      { type: "rock", x: 26, y: 20 },
+      { type: "rock", x: 34, y: 24 },
+      { type: "rock", x: 41, y: 17 },
+      { type: "house", x: 4, y: 7, label: { es: "El Póney Pisador", en: "The Prancing Pony" } },
+      { type: "house", x: 9, y: 7 },
+      { type: "tree", x: 10, y: 12 },
+      { type: "tree", x: 12, y: 12 },
+      { type: "tree", x: 2, y: 4 },
+      { type: "tree", x: 13, y: 4 },
+      { type: "tree", x: 16, y: 12 },
+      { type: "rock", x: 15, y: 7 },
+      { type: "rock", x: 18, y: 4 },
+      { type: "rock", x: 20, y: 3 },
+      { type: "rock", x: 22, y: 4 },
+      { type: "rock", x: 18, y: 7 },
+      { type: "rock", x: 22, y: 7 },
+      { type: "rock", x: 21, y: 6 },
+      { type: "tree", x: 23, y: 12 },
+    ],
+  },
+  nodes: [
+    {
+      node_id: "c3_ferny",
+      kind: "battle",
+      title: { es: "El vendido de Bree", en: "The sellout of Bree" },
+      lore_intro: {
+        es: "Bill Helechal escupe al suelo cuando pasas. Cobra en monedas de Isengard y no le importa a quién señale.",
+        en: "Bill Ferny spits on the ground as you pass. He's paid in Isengard coin and doesn't care whom he points at.",
+      },
+      position: { x: 26, y: 4 },
+      spriteId: "aldeano",
+      enemy: {
+        name: { es: "Bill Helechal", en: "Bill Ferny" },
+        spriteId: "aldeano",
+        hp: 3, damage: 1, xp: 35,
+        taunt: {
+          es: "«Cuatro medianos y un montaraz. Alguien pagará bien por saberlo.»",
+          en: "\"Four halflings and a ranger. Someone will pay well to know it.\"",
+        },
+      },
+    },
+    {
+      node_id: "c3_espia_nazgul",
+      kind: "battle",
+      title: { es: "Sombra en el camino de Amon Sûl", en: "Shadow on the road to Amon Sûl" },
+      lore_intro: {
+        es: "Uno de los Nueve se ha adelantado a los demás. Aún no ha dado la señal, y ésa es tu única ventaja.",
+        en: "One of the Nine has ridden ahead of the rest. It hasn't given the signal yet, and that's your only edge.",
+      },
+      position: { x: 31, y: 15 },
+      spriteId: "nazgul",
+      enemy: {
+        name: { es: "Nazgûl explorador", en: "Nazgûl scout" },
+        spriteId: "nazgul",
+        hp: 4, damage: 1, xp: 40,
+        taunt: {
+          es: "«No hay dónde esconderse en campo abierto, mediano.»",
+          en: "\"There's nowhere to hide in the open, halfling.\"",
+        },
+      },
+    },
+    {
+      node_id: "c3_montaraz_falso",
+      kind: "battle",
+      title: { es: "El que dice ser guía", en: "The one who claims to be a guide" },
+      lore_intro: {
+        es: "Al sur de Bree, un hombre embozado ofrece llevarte «por un atajo seguro». Cobra por adelantado y su acento no es de la comarca.",
+        en: "South of Bree, a muffled man offers to take you \"by a safe shortcut\". He charges up front and his accent isn't local.",
+      },
+      position: { x: 12, y: 23 },
+      spriteId: "orco",
+      enemy: {
+        name: { es: "Espía de Isengard", en: "Isengard spy" },
+        spriteId: "orco",
+        hp: 4, damage: 1, xp: 35,
+        taunt: {
+          es: "«El camino corto, medianos. Confiad en mí.»",
+          en: "\"The short way, halflings. Trust me.\"",
+        },
+      },
+    },
+    {
+      node_id: "c3_jefe_reybrujo",
+      kind: "battle",
+      title: { es: "El Rey Brujo en la cima", en: "The Witch-king on the hill" },
+      lore_intro: {
+        es: "Cinco sombras suben por la ladera de Amon Sûl. La del centro lleva corona. Trancos sostiene una antorcha en cada mano, pero esto lo tienes que resolver tú.",
+        en: "Five shadows climb the slope of Amon Sûl. The middle one wears a crown. Strider holds a torch in each hand, but this one is yours to solve.",
+      },
+      position: { x: 34, y: 9 },
+      spriteId: "nazgul",
+      enemy: {
+        name: { es: "El Rey Brujo", en: "The Witch-king" },
+        spriteId: "nazgul",
+        hp: 5, damage: 2, xp: 70, boss: true,
+        taunt: {
+          es: "«Ningún hombre vivo puede detenerme.»",
+          en: "\"No living man may hinder me.\"",
+        },
+        reward: {
+          hero: "aragorn",
+          name: { es: "Aragorn", en: "Aragorn" },
+          blurb: {
+            es: "El Montaraz que os guió desde Bree. Trancos pasa a estar disponible como héroe.",
+            en: "The Ranger who guided you from Bree. Strider becomes available as a hero.",
+          },
+        },
+      },
+    },
+    { node_id: "pergamino_herencia", kind: "scroll", position: { x: 3, y: 12 } },
+    { node_id: "poney_pisador", kind: "challenge", position: { x: 6, y: 9 }, spriteId: "aragorn" },
+    { node_id: "hojas_de_tumulo", kind: "challenge", position: { x: 13, y: 6 } },
+    { node_id: "cima_de_los_vientos", kind: "challenge", position: { x: 20, y: 5 }, spriteId: "nazgul" },
+  ],
+};

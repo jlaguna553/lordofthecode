@@ -564,3 +564,266 @@ export const SYL_PHP_COMMUNITY_2: Syllabus = {
     },
   },
 };
+
+
+/** Capítulo 3 · Herencia y sobrescritura (parent::). */
+export const SYL_PHP_COMMUNITY_3: Syllabus = {
+  c3_ferny: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Qué hereda una clase hija de su padre?",
+        options: [
+          "Los miembros public y protected; los private no",
+          "Absolutamente todo, incluidos los private",
+          "Sólo los métodos, nunca las propiedades",
+          "Sólo lo que declares con `use`",
+        ],
+        correct: 0,
+        explanation:
+          "`private` es privado de verdad: la hija no lo ve, aunque ocupe espacio en el objeto. Lo que quieras compartir con las hijas va en `protected`.",
+      },
+      {
+        question: "¿Cuántas clases puede extender una clase en PHP?",
+        options: ["Una sola", "Todas las que quieras, separadas por comas", "Hasta tres", "Ninguna: PHP no tiene herencia"],
+        correct: 0,
+        explanation:
+          "PHP tiene herencia SIMPLE: un solo `extends`. Para reunir comportamiento de varios sitios están los `interface` y los `trait`.",
+      },
+      {
+        question: "Al sobrescribir un método del padre, ¿qué NO puedes hacer?",
+        options: [
+          "Reducir su visibilidad (pasar de public a private)",
+          "Cambiar el cuerpo por completo",
+          "Ampliar la visibilidad (de protected a public)",
+          "Llamar a la versión del padre desde dentro",
+        ],
+        correct: 0,
+        explanation:
+          "La hija puede abrir el acceso, nunca cerrarlo: si el padre prometía un método público, quien use la hija como el padre debe poder llamarlo. Es Liskov aplicado por el lenguaje.",
+      },
+    ],
+  },
+  c3_espia_nazgul: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Qué hace exactamente `parent::__construct($x)`?",
+        options: [
+          "Ejecuta el constructor del padre desde el de la hija",
+          "Crea un objeto nuevo de la clase padre",
+          "Convierte el objeto en una instancia del padre",
+          "Copia las propiedades del padre",
+        ],
+        correct: 0,
+        explanation:
+          "`parent::` no crea nada: ejecuta el método del padre sobre el objeto ACTUAL. Permite ampliar el comportamiento heredado en vez de reemplazarlo.",
+      },
+      {
+        question:
+          "Una hija sobrescribe `atacar()` y quiere hacer lo mismo que el padre MÁS algo extra. ¿Cuál es la forma correcta?",
+        options: [
+          "Llamar a parent::atacar() dentro y añadir lo suyo",
+          "Copiar y pegar el código del padre y añadirlo",
+          "Declarar el método como abstract",
+          "No se puede: hay que reescribirlo entero",
+        ],
+        correct: 0,
+        explanation:
+          "Copiar y pegar se rompe el día que alguien toque al padre: dos versiones divergiendo en silencio. `parent::atacar()` mantiene una sola fuente de verdad.",
+      },
+      {
+        question:
+          "`$x instanceof Personaje` con `$x = new Hobbit()` y `class Hobbit extends Personaje`. ¿Qué devuelve?",
+        options: ["true: un Hobbit ES un Personaje", "false: sólo compara la clase exacta", "Error de tipos", "true sólo si Personaje es abstracta"],
+        correct: 0,
+        explanation:
+          "`instanceof` recorre toda la cadena de herencia y las interfaces implementadas. Es lo que hace posible el polimorfismo.",
+      },
+    ],
+  },
+  c3_montaraz_falso: {
+    kind: "battle",
+    questions: [
+      {
+        question: "`class B extends A {}`. Si `A` tiene un método protegido `paso()`, ¿puede `B` llamarlo?",
+        options: ["Sí: protected es visible para las clases hijas", "No: protected es como private", "Sólo si B lo declara también", "Sólo desde el constructor"],
+        correct: 0,
+        explanation:
+          "`protected` está pensado para esto: compartir con las hijas lo que sigue oculto para el exterior. Punto medio entre `private` y `public`.",
+      },
+      {
+        question: "Al sobrescribir un método, ¿puedes cambiar el tipo de retorno por uno más específico?",
+        options: ["Sí: covarianza. Puedes devolver un subtipo del tipo original", "No: debe ser idéntico", "Sí, cualquier tipo distinto", "Sólo si el método es estático"],
+        correct: 0,
+        explanation:
+          "PHP permite covarianza en el retorno: si el padre devuelve `Animal`, la hija puede devolver `Perro`. La regla de fondo es la sustituibilidad.",
+      },
+      {
+        question: "¿Qué es una clase base o superclase?",
+        options: ["La clase de la que otra hereda (el padre)", "La primera clase que se declara en el fichero", "Una clase que no se puede instanciar", "La clase con más métodos"],
+        correct: 0,
+        explanation:
+          "Superclase, clase base y clase padre son lo mismo: aquella de la que otra extiende. La que hereda es la subclase, derivada o hija.",
+      },
+    ],
+  },
+  c3_jefe_reybrujo: {
+    kind: "battle",
+    questions: [
+      {
+        question:
+          "```\nclass A { public function saludo() { return 'A'; } }\nclass B extends A { public function saludo() { return parent::saludo() . 'B'; } }\necho (new B())->saludo();\n```",
+        options: ["AB", "BA", "B", "A"],
+        correct: 0,
+        explanation:
+          "`parent::saludo()` devuelve 'A' y la hija le concatena su 'B'. Patrón «extender, no reemplazar».",
+      },
+      {
+        question: "¿Qué significa marcar una clase como `final`?",
+        options: ["Que nadie puede extenderla", "Que no se puede instanciar", "Que sus métodos no se pueden llamar dos veces", "Que todas sus propiedades son readonly"],
+        correct: 0,
+        explanation:
+          "`final class` cierra la herencia; `final function` cierra la sobrescritura de ese método. Si una clase no está pensada para extenderse, decirlo lo evita.",
+      },
+      {
+        question:
+          "El padre declara `public function golpe(int $fuerza): int`. ¿Puede la hija declarar `public function golpe(int $fuerza, string $arma): int`?",
+        options: ["No: cambiar la firma obligatoria rompe el contrato del padre", "Sí, siempre", "Sí, pero sólo si el padre es abstracto", "Sí, si el parámetro extra va el primero"],
+        correct: 0,
+        explanation:
+          "Quien tenga un `A` y llame a `golpe(5)` debe funcionar aunque por dentro sea `B`. Un parámetro OBLIGATORIO extra lo rompe. Con valor por defecto sí sería compatible.",
+      },
+      {
+        question: "¿Cuándo es preferible la COMPOSICIÓN a la herencia?",
+        options: ["Casi siempre: hereda sólo cuando hay un «es un» real y estable", "Nunca: la herencia siempre es mejor", "Sólo cuando no puedes modificar la clase padre", "Sólo en lenguajes sin herencia múltiple"],
+        correct: 0,
+        explanation:
+          "La herencia ata a la hija a los detalles del padre para siempre. La composición («tiene un») intercambia piezas sin tocar nada. Si dudas entre «es un» o «tiene un», es «tiene un».",
+      },
+    ],
+  },
+  pergamino_herencia: {
+    kind: "scroll",
+    title: "El Pergamino de los Montaraces",
+    lore_intro:
+      "En un rincón del Póney Pisador, bajo una jarra, un pergamino con el emblema de la Estrella: «Un montaraz es un viajero. No repitas lo que ya sabe tu estirpe: hereda.»",
+    scroll: {
+      topic: "Herencia y sobrescritura",
+      sections: [
+        {
+          heading: "extends: heredar es «ES UN»",
+          body: "Una subclase recibe TODAS las propiedades y métodos del padre sin reescribirlos, y añade lo suyo.\n\nUsa herencia sólo cuando «una X ES UNA Y» es cierta de verdad. Si sólo quieres reutilizar código suelto, busca composición o un trait.",
+          code: `class Viajero {
+    public function viajar(string $destino): string { /* … */ }
+}
+
+class Montaraz extends Viajero {
+    public function rastrear(string $rastro): string { /* … */ }
+}
+// Montaraz ya sabe viajar(): no hay que reescribirlo.`,
+        },
+        {
+          heading: "protected: la puerta de la familia",
+          body: "`private` esconde el dato incluso de las hijas. Si quieres que la subclase pueda usarlo, decláralo `protected`: visible para la clase y su descendencia, cerrado para el resto.",
+          code: `class Viajero {
+    public function __construct(protected string $nombre) {}
+}
+
+class Montaraz extends Viajero {
+    public function rastrear(string $rastro): string {
+        return "{$this->nombre} sigue el rastro";  // protected sí se ve
+    }
+}`,
+        },
+        {
+          heading: "Sobrescribir sin tirar lo que había: parent::",
+          body: "Redefinir un método en la hija SUSTITUYE al del padre. Si sólo quieres AMPLIARLO, llama al original con `parent::metodo()` y añade lo tuyo.",
+          code: `class HojaDeTumulo extends Arma {
+    public function atacar(): int {
+        return parent::atacar() * 2;   // reutiliza y amplía
+    }
+}`,
+        },
+      ],
+      keyTakeaway:
+        "Hereda cuando hay parentesco real. Y al sobrescribir, pregúntate si debes reemplazar el método del padre o ampliarlo con parent::.",
+    },
+  },
+  poney_pisador: {
+    kind: "challenge",
+    title: "Trancos, el Montaraz",
+    lore_intro:
+      "Un hombre curtido observa desde el rincón más oscuro de la posada. Es un Montaraz: un viajero como cualquier otro… pero con habilidades que los demás no tienen. En POO, eso es HEREDAR.",
+    challenge: {
+      topic: "Herencia (extends)",
+      instructions:
+        "Crea la clase Montaraz que HEREDE de Viajero usando extends. NO redefinas viajar(): debe heredarse tal cual. Sólo añade el método rastrear(string $rastro): string que devuelva '{nombre} sigue el rastro de {rastro}'.",
+      sut: "new Montaraz('Trancos')",
+      support_code:
+        "class Viajero {\n    public function __construct(protected string $nombre) {}\n    public function viajar(string $destino): string {\n        return \"{$this->nombre} viaja hacia {$destino}\";\n    }\n}",
+      starter_code:
+        "<?php\n\n// Viajero ya existe: tiene $nombre (protected) y viajar(string $destino)\n\nclass Montaraz {\n    // 1) Haz que herede de Viajero\n\n    // 2) Añade rastrear(string $rastro): string\n}\n",
+      hints: [
+        "Para heredar: class Montaraz extends Viajero { … }",
+        "$nombre es protected, así que la subclase puede usar $this->nombre directamente.",
+        'rastrear() devuelve: return "{$this->nombre} sigue el rastro de {$rastro}";',
+      ],
+      test_cases: [
+        { input: "viajar('Rivendel')", expected: "Trancos viaja hacia Rivendel", description: "viajar() se HEREDA de Viajero sin reescribirlo" },
+        { input: "rastrear('los Nazgûl')", expected: "Trancos sigue el rastro de los Nazgûl", description: "rastrear() es el método propio del Montaraz" },
+      ],
+    },
+  },
+  hojas_de_tumulo: {
+    kind: "challenge",
+    title: "Las Hojas de los Túmulos",
+    lore_intro:
+      "Tom Bombadil entregó a los hobbits dagas forjadas contra el Rey Brujo. Son armas normales… mejoradas. Sobrescribir un método no significa tirar el del padre: puedes reutilizarlo con parent::.",
+    challenge: {
+      topic: "Sobrescritura y parent::",
+      instructions:
+        "Crea HojaDeTumulo que extienda Arma y SOBRESCRIBA atacar() para devolver el DOBLE del daño base. Debes reutilizar el cálculo del padre llamando a parent::atacar() en vez de leer $danio directamente.",
+      sut: "new HojaDeTumulo(15)",
+      support_code:
+        "class Arma {\n    public static int $llamadasAlPadre = 0;\n    public function __construct(protected int $danio) {}\n    public function atacar(): int {\n        self::$llamadasAlPadre++;\n        return $this->danio;\n    }\n}",
+      starter_code:
+        "<?php\n\n// Arma ya existe: constructor con $danio (protected) y atacar(): int\n\nclass HojaDeTumulo {\n    // Hereda de Arma y sobrescribe atacar() usando parent::atacar()\n}\n",
+      hints: [
+        "class HojaDeTumulo extends Arma { … }",
+        "Dentro de atacar(), llama al padre así: return parent::atacar() * 2;",
+        "Si lees $this->danio directamente en vez de usar parent::atacar(), la última prueba fallará.",
+      ],
+      test_cases: [
+        { input: "atacar()", expected: 30, description: "La hoja duplica el daño base (15 → 30)" },
+        { input: "(new HojaDeTumulo(7))->atacar()", raw: true, expected: 14, description: "Funciona con cualquier daño (7 → 14)" },
+        { input: "Arma::$llamadasAlPadre > 0", raw: true, expected: true, description: "atacar() reutiliza el método del padre con parent::" },
+      ],
+    },
+  },
+  cima_de_los_vientos: {
+    kind: "challenge",
+    title: "La Cima de los Vientos",
+    lore_intro:
+      "Cinco Jinetes Negros ascienden entre las ruinas de Amon Sûl. El acero común los atraviesa sin daño: son espectros. Sólo una hoja encantada puede herir lo que es invisible.",
+    challenge: {
+      topic: "Sobrescritura de comportamiento",
+      instructions:
+        "Un arma común no puede herir a un Espectro invisible (devuelve 0). Crea HojaEncantada que extienda Arma y sobrescriba golpear(Espectro $e): int para que devuelva SIEMPRE el daño completo, incluso si el espectro es invisible.",
+      sut: "new HojaEncantada(20)",
+      support_code:
+        "class Espectro {\n    public bool $esInvisible = true;\n}\n\nclass Arma {\n    public function __construct(protected int $danio) {}\n    public function golpear(Espectro $e): int {\n        return $e->esInvisible ? 0 : $this->danio;\n    }\n}",
+      starter_code:
+        "<?php\n\n// Arma::golpear() devuelve 0 si el espectro es invisible\n\nclass HojaEncantada {\n    // Hereda de Arma y sobrescribe golpear(Espectro $e): int\n}\n",
+      hints: [
+        "class HojaEncantada extends Arma { … }",
+        "$danio es protected: puedes devolverlo directamente con return $this->danio;",
+        "Aquí NO conviene llamar a parent::golpear(): el padre devolvería 0 ante un espectro invisible.",
+      ],
+      test_cases: [
+        { input: "golpear(new Espectro())", expected: 20, description: "La hoja encantada SÍ hiere al espectro invisible" },
+        { input: "(new Arma(20))->golpear(new Espectro())", raw: true, expected: 0, description: "Un arma común sigue sin poder herirlo (padre intacto)" },
+      ],
+    },
+  },
+};

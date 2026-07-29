@@ -478,3 +478,203 @@ export const SYL_JS_COMMUNITY_2: Syllabus = {
     },
   },
 };
+
+
+/** Preguntas de combate sobre funciones en JavaScript. */
+const Q_DEF = {
+  question: P("¿Cómo se declara una función clásica en JavaScript?", "How do you declare a classic function in JavaScript?"),
+  options: [
+    P("function suma(a, b) { return a + b; }", "function suma(a, b) { return a + b; }"),
+    P("def suma(a, b): return a + b", "def suma(a, b): return a + b"),
+    P("func suma(a, b) => a + b", "func suma(a, b) => a + b"),
+    P("function suma(a, b): { a + b }", "function suma(a, b): { a + b }"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`function nombre(params) { ... return ... }`. El `def` es de Python; en JS el cuerpo va entre llaves y el valor se devuelve con `return`.",
+    "`function name(params) { ... return ... }`. `def` is Python; in JS the body goes in braces and the value is returned with `return`.",
+  ),
+};
+const Q_ARROW = {
+  question: P("¿Qué es `(x) => x * 2`?", "What is `(x) => x * 2`?"),
+  options: [
+    P("Una arrow function: una función corta que devuelve x * 2", "An arrow function: a short function that returns x * 2"),
+    P("Un comentario", "A comment"),
+    P("Una comparación", "A comparison"),
+    P("Un bucle", "A loop"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Las arrow functions son una forma breve de escribir funciones. Con una sola expresión, `x => x * 2` la devuelve sin `return` ni llaves.",
+    "Arrow functions are a short way to write functions. With a single expression, `x => x * 2` returns it without `return` or braces.",
+  ),
+};
+const Q_DEFAULT = {
+  question: P("¿Qué hace `function saluda(n, s = 'Hola') { ... }`?", "What does `function saluda(n, s = 'Hola') { ... }` do?"),
+  options: [
+    P("Da a `s` el valor 'Hola' si no se pasa argumento", "Gives `s` the value 'Hola' if no argument is passed"),
+    P("Obliga a pasar siempre `s`", "Forces you to always pass `s`"),
+    P("Declara `s` como constante", "Declares `s` as a constant"),
+    P("Es un error de sintaxis", "It's a syntax error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un valor por defecto se usa cuando el argumento falta (o es undefined). `saluda('Sam')` usa 'Hola'; `saluda('Sam', 'Ey')` usa 'Ey'.",
+    "A default value is used when the argument is missing (or undefined). `saluda('Sam')` uses 'Hola'; `saluda('Sam', 'Ey')` uses 'Ey'.",
+  ),
+};
+const Q_HOF = {
+  question: P("¿Puede una función recibir OTRA función como argumento?", "Can a function receive ANOTHER function as an argument?"),
+  options: [
+    P("Sí: las funciones son valores de primera clase en JS", "Yes: functions are first-class values in JS"),
+    P("No: sólo se pasan números y textos", "No: only numbers and text are passed"),
+    P("Sólo con la palabra clave callback", "Only with the callback keyword"),
+    P("Sólo si se declara con arrow", "Only if declared as arrow"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En JS una función es un valor como cualquier otro: puedes guardarla en una variable, pasarla como argumento y devolverla. Eso son las funciones de orden superior (map, filter…).",
+    "In JS a function is a value like any other: you can store it in a variable, pass it as an argument and return it. That's higher-order functions (map, filter…).",
+  ),
+};
+const Q_RETURN = {
+  question: P("Una función sin `return`, ¿qué devuelve?", "A function with no `return` returns what?"),
+  options: [
+    P("undefined", "undefined"),
+    P("null", "null"),
+    P("0", "0"),
+    P("Una cadena vacía", "An empty string"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Si una función no ejecuta ningún `return` (o hace `return;` a secas), devuelve `undefined`. Ojo con usar su resultado esperando un valor.",
+    "If a function runs no `return` (or does a bare `return;`), it returns `undefined`. Beware of using its result expecting a value.",
+  ),
+};
+
+/** Capítulo 3 · Funciones: parámetros, arrow y orden superior. */
+export const SYL_JS_COMMUNITY_3: Syllabus = {
+  c3_ferny: { kind: "battle", questions: [Q_DEF, Q_ARROW, Q_RETURN] },
+  c3_espia_nazgul: { kind: "battle", questions: [Q_DEFAULT, Q_HOF, Q_DEF] },
+  c3_montaraz_falso: { kind: "battle", questions: [Q_ARROW, Q_RETURN, Q_DEFAULT] },
+  c3_jefe_reybrujo: { kind: "battle", questions: [Q_HOF, Q_ARROW, Q_DEFAULT, Q_DEF] },
+  pergamino_herencia: {
+    kind: "scroll",
+    title: P("El Pergamino de los Montaraces", "The Rangers' Scroll"),
+    lore_intro: P(
+      "En el Póney Pisador, un pergamino enseña a nombrar acciones y reutilizarlas: funciones.",
+      "At the Prancing Pony, a scroll teaches how to name actions and reuse them: functions.",
+    ),
+    scroll: {
+      topic: P("Funciones: parámetros, arrow y orden superior", "Functions: parameters, arrow and higher-order"),
+      sections: [
+        {
+          heading: P("Declarar y llamar", "Declare and call"),
+          body: P(
+            "Una función encapsula una acción con nombre. Recibe parámetros y devuelve un valor con `return`.",
+            "A function wraps a named action. It takes parameters and returns a value with `return`.",
+          ),
+          code: "function viajar(nombre, destino) {\n  return `${nombre} viaja hacia ${destino}`;\n}\nviajar('Trancos', 'Rivendel');",
+        },
+        {
+          heading: P("Arrow functions y valores por defecto", "Arrow functions and default values"),
+          body: P(
+            "`(x) => x * 2` es una función corta. Un parámetro puede tener valor por defecto: se usa si no se pasa.",
+            "`(x) => x * 2` is a short function. A parameter can have a default value: used if none is passed.",
+          ),
+          code: "const doble = (x) => x * 2;\n\nfunction saludar(nombre, saludo = 'Salve') {\n  return `${saludo}, ${nombre}`;\n}",
+        },
+        {
+          heading: P("Funciones de orden superior", "Higher-order functions"),
+          body: P(
+            "Una función es un valor: puedes pasarla a otra función o devolverla. Así se construyen piezas reutilizables.",
+            "A function is a value: you can pass it to another function or return it. That's how reusable pieces are built.",
+          ),
+          code: "function aplicarDoble(fn, x) {\n  return fn(fn(x));   // llama fn dos veces\n}\naplicarDoble((n) => n + 1, 5);   // 7",
+        },
+      ],
+      keyTakeaway: P(
+        "function declara; return devuelve (o undefined si no hay). Las arrow (=>) son cortas, los parámetros admiten valor por defecto, y una función puede pasarse o devolverse como cualquier valor.",
+        "function declares; return returns (or undefined if none). Arrows (=>) are short, parameters can have defaults, and a function can be passed or returned like any value.",
+      ),
+    },
+  },
+  poney_pisador: {
+    kind: "challenge",
+    title: P("Trancos, el Montaraz", "Strider the Ranger"),
+    lore_intro: P(
+      "Un montaraz saluda distinto según la ocasión. Escribe la función que lo haga.",
+      "A ranger greets differently depending on the moment. Write the function that does it.",
+    ),
+    challenge: {
+      topic: P("Función con valor por defecto", "Function with a default value"),
+      instructions: P(
+        "Escribe `saludar(nombre, saludo = 'Salve')` que devuelva `'{saludo}, {nombre}'`.\n\nSi no se pasa `saludo`, usa 'Salve'. Ejemplos: `saludar('Frodo')` → `'Salve, Frodo'`; `saludar('Sam', 'Hola')` → `'Hola, Sam'`.",
+        "Write `saludar(nombre, saludo = 'Salve')` returning `'{saludo}, {nombre}'`.\n\nIf `saludo` isn't passed, use 'Salve'. Examples: `saludar('Frodo')` → `'Salve, Frodo'`; `saludar('Sam', 'Hola')` → `'Hola, Sam'`.",
+      ),
+      starter_code:
+        "function saludar(nombre, saludo = 'Salve') {\n  // devuelve `${saludo}, ${nombre}`\n}\n",
+      hints: [
+        P("El valor por defecto va en la firma: `(nombre, saludo = 'Salve')`.", "The default goes in the signature: `(nombre, saludo = 'Salve')`."),
+        P("`return `${saludo}, ${nombre}``;", "`return `${saludo}, ${nombre}``;"),
+      ],
+      test_cases: [
+        { input: "saludar('Frodo')", expected: "Salve, Frodo", description: P("Sin saludo: usa el por defecto", "No greeting: uses the default"), raw: true },
+        { input: "saludar('Sam', 'Hola')", expected: "Hola, Sam", description: P("Con saludo propio", "With a custom greeting"), raw: true },
+        { input: "saludar('Merry', 'Ey')", expected: "Ey, Merry", description: P("Otro saludo", "Another greeting"), raw: true },
+      ],
+    },
+  },
+  hojas_de_tumulo: {
+    kind: "challenge",
+    title: P("Las Hojas de los Túmulos", "The Barrow-blades"),
+    lore_intro: P(
+      "Una hoja encantada aplica su filo dos veces. En JS, una función puede recibir otra y usarla.",
+      "An enchanted blade applies its edge twice. In JS, a function can take another and use it.",
+    ),
+    challenge: {
+      topic: P("Funciones de orden superior", "Higher-order functions"),
+      instructions: P(
+        "Escribe `aplicarDoble(fn, x)` que llame a la función `fn` DOS veces sobre `x` y devuelva el resultado: `fn(fn(x))`.\n\nEjemplo: `aplicarDoble((n) => n + 1, 5)` → `7`.",
+        "Write `aplicarDoble(fn, x)` that calls the function `fn` TWICE on `x` and returns the result: `fn(fn(x))`.\n\nExample: `aplicarDoble((n) => n + 1, 5)` → `7`.",
+      ),
+      starter_code:
+        "function aplicarDoble(fn, x) {\n  // llama fn sobre x, y otra vez sobre el resultado\n}\n",
+      hints: [
+        P("`fn` es una función: la llamas con paréntesis, `fn(x)`.", "`fn` is a function: call it with parentheses, `fn(x)`."),
+        P("`return fn(fn(x));` — el resultado de la primera llamada entra en la segunda.", "`return fn(fn(x));` — the first call's result feeds the second."),
+      ],
+      test_cases: [
+        { input: "aplicarDoble((n) => n + 1, 5)", expected: 7, description: P("+1 dos veces", "+1 twice"), raw: true },
+        { input: "aplicarDoble((n) => n * 2, 3)", expected: 12, description: P("×2 dos veces", "×2 twice"), raw: true },
+        { input: "aplicarDoble((s) => s + '!', 'ea')", expected: "ea!!", description: P("También con textos", "Works with text too"), raw: true },
+      ],
+    },
+  },
+  cima_de_los_vientos: {
+    kind: "challenge",
+    title: P("La Cima de los Vientos", "Weathertop"),
+    lore_intro: P(
+      "Forja un arma que recuerde su daño. Una función puede DEVOLVER otra función que lo conserva.",
+      "Forge a weapon that remembers its damage. A function can RETURN another function that keeps it.",
+    ),
+    challenge: {
+      topic: P("Closures: devolver una función", "Closures: returning a function"),
+      instructions: P(
+        "Escribe `crearGolpe(danio)` que DEVUELVA una función. Esa función, al llamarla sin argumentos, devuelve el `danio` con el que se creó.\n\nEjemplo: `crearGolpe(20)()` → `20`.",
+        "Write `crearGolpe(danio)` that RETURNS a function. That function, called with no arguments, returns the `danio` it was created with.\n\nExample: `crearGolpe(20)()` → `20`.",
+      ),
+      starter_code:
+        "function crearGolpe(danio) {\n  // devuelve una función que devuelve danio\n}\n",
+      hints: [
+        P("`crearGolpe` debe `return` una función, p. ej. una arrow.", "`crearGolpe` must `return` a function, e.g. an arrow."),
+        P("`return () => danio;` — la función interior recuerda `danio` (closure).", "`return () => danio;` — the inner function remembers `danio` (closure)."),
+      ],
+      test_cases: [
+        { input: "crearGolpe(20)()", expected: 20, description: P("Recuerda su daño", "Remembers its damage"), raw: true },
+        { input: "crearGolpe(7)()", expected: 7, description: P("Con otro valor", "With another value"), raw: true },
+        { input: "typeof crearGolpe(1)", expected: "function", description: P("Devuelve una función", "Returns a function"), raw: true },
+      ],
+    },
+  },
+};
