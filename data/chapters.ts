@@ -4420,8 +4420,11 @@ export const CHAPTER_ALGOS: Chapter = {
  */
 export const CHAPTER_ALGOS_2: Chapter = {
   chapter: 11,
-  title: "El Laberinto de los Ecos",
-  lore: "Más hondo aún, un dédalo de galerías donde cada eco repite un problema distinto. Los Enanos grabaron el camino en oro: quien reconoce el patrón, sale; quien improvisa, se pierde.",
+  title: { es: "El Laberinto de los Ecos", en: "The Labyrinth of Echoes" },
+  lore: {
+    es: "Más hondo aún, un dédalo de galerías donde cada eco repite un problema distinto. Los Enanos grabaron el camino en oro: quien reconoce el patrón, sale; quien improvisa, se pierde.",
+    en: "Deeper still, a maze of galleries where each echo repeats a different problem. The Dwarves carved the path in gold: whoever recognizes the pattern gets out; whoever improvises gets lost.",
+  },
   mapSize: { cols: 24, rows: 14 },
   spawn: { x: 2, y: 7 },
   scenery: {
@@ -4443,20 +4446,28 @@ export const CHAPTER_ALGOS_2: Chapter = {
     {
       node_id: "pergamino_estructuras",
       kind: "scroll",
-      title: "El Pergamino de las Estructuras",
-      lore_intro:
-        "Una placa de bronce clavada a la roca. Es un índice: qué herramienta coger según lo que pida el eco.",
+      title: { es: "El Pergamino de las Estructuras", en: "The Scroll of Structures" },
+      lore_intro: {
+        es: "Una placa de bronce clavada a la roca. Es un índice: qué herramienta coger según lo que pida el eco.",
+        en: "A bronze plate nailed to the rock. It's an index: which tool to grab depending on what the echo asks for.",
+      },
       position: { x: 4, y: 10 },
       scroll: {
         topic: "Estructuras de datos y cuándo usarlas",
         sections: [
           {
-            heading: "El array de PHP es dos cosas a la vez",
-            body: "En PHP, `array` es lista Y tabla hash. Buscar por clave con `isset($a[$k])` es O(1) — por eso es el caballo de batalla.\n\nSi ves «¿existe / cuántas veces / visto antes?», la respuesta casi siempre es un hash map.",
+            heading: { es: "El array de PHP es dos cosas a la vez", en: "PHP's array is two things at once" },
+            body: {
+              es: "En PHP, `array` es lista Y tabla hash. Buscar por clave con `isset($a[$k])` es O(1) — por eso es el caballo de batalla.\n\nSi ves «¿existe / cuántas veces / visto antes?», la respuesta casi siempre es un hash map.",
+              en: "In PHP, `array` is a list AND a hash table. Looking up by key with `isset($a[$k])` is O(1) — that's why it's the workhorse.\n\nIf you see \"does it exist / how many times / seen before?\", the answer is almost always a hash map.",
+            },
           },
           {
-            heading: "Pila, cola y punteros",
-            body: "Pila (LIFO): `$s[] = $x` para apilar, `array_pop($s)` para sacar. Sirve para anidamiento y para deshacer.\nCola (FIFO): `array_shift()` saca por delante — es la base de BFS.\nListas enlazadas: no hay índices, sólo referencias. Se recorren con tres punteros: anterior, actual y siguiente.",
+            heading: { es: "Pila, cola y punteros", en: "Stack, queue and pointers" },
+            body: {
+              es: "Pila (LIFO): `$s[] = $x` para apilar, `array_pop($s)` para sacar. Sirve para anidamiento y para deshacer.\nCola (FIFO): `array_shift()` saca por delante — es la base de BFS.\nListas enlazadas: no hay índices, sólo referencias. Se recorren con tres punteros: anterior, actual y siguiente.",
+              en: "Stack (LIFO): `$s[] = $x` to push, `array_pop($s)` to pop. Good for nesting and undo.\nQueue (FIFO): `array_shift()` takes from the front — the basis of BFS.\nLinked lists: no indices, only references. Walked with three pointers: previous, current and next.",
+            },
             code: `// Invertir una lista enlazada: guarda, apunta atrás, avanza
 $prev = null;
 while ($head) {
@@ -4468,248 +4479,280 @@ while ($head) {
 return $prev;`,
           },
           {
-            heading: "Árboles y grillas: el mismo recorrido",
-            body: "Un árbol y una grilla se recorren igual: visitas, marcas y sigues a los vecinos.\n\nDFS (en profundidad) se escribe solo con recursión. BFS (en anchura) necesita una cola y te da el camino más corto en grafos sin pesos.\n\nTruco clásico en grillas: al visitar una celda, **márcala** (por ejemplo poniéndola a '0') para no volver a contarla.",
+            heading: { es: "Árboles y grillas: el mismo recorrido", en: "Trees and grids: the same traversal" },
+            body: {
+              es: "Un árbol y una grilla se recorren igual: visitas, marcas y sigues a los vecinos.\n\nDFS (en profundidad) se escribe solo con recursión. BFS (en anchura) necesita una cola y te da el camino más corto en grafos sin pesos.\n\nTruco clásico en grillas: al visitar una celda, **márcala** (por ejemplo poniéndola a '0') para no volver a contarla.",
+              en: "A tree and a grid are traversed the same way: visit, mark, and follow the neighbors.\n\nDFS (depth-first) practically writes itself with recursion. BFS (breadth-first) needs a queue and gives you the shortest path in unweighted graphs.\n\nClassic grid trick: when you visit a cell, **mark it** (e.g. setting it to '0') so you don't count it again.",
+            },
           },
           {
-            heading: "Memoización: no repitas trabajo",
-            body: "Si una recursión recalcula los mismos subproblemas, guarda el resultado en un array y reutilízalo. Eso convierte O(2ⁿ) en O(n).\n\nEs la puerta de entrada a la programación dinámica.",
+            heading: { es: "Memoización: no repitas trabajo", en: "Memoization: don't repeat work" },
+            body: {
+              es: "Si una recursión recalcula los mismos subproblemas, guarda el resultado en un array y reutilízalo. Eso convierte O(2ⁿ) en O(n).\n\nEs la puerta de entrada a la programación dinámica.",
+              en: "If a recursion recomputes the same subproblems, store the result in an array and reuse it. That turns O(2ⁿ) into O(n).\n\nIt's the gateway to dynamic programming.",
+            },
             code: `function fib(int $n, array &$memo = []): int {
     if ($n < 2) return $n;
     return $memo[$n] ??= fib($n-1, $memo) + fib($n-2, $memo);
 }`,
           },
         ],
-        keyTakeaway:
-          "Reconoce el patrón antes de escribir: conteo → hash; ordenado → dos punteros o binaria; mejor subarray → ventana; grafo/grilla → DFS/BFS; subproblemas repetidos → memoización.",
+        keyTakeaway: {
+          es: "Reconoce el patrón antes de escribir: conteo → hash; ordenado → dos punteros o binaria; mejor subarray → ventana; grafo/grilla → DFS/BFS; subproblemas repetidos → memoización.",
+          en: "Recognize the pattern before you write: counting → hash; sorted → two pointers or binary; best subarray → window; graph/grid → DFS/BFS; repeated subproblems → memoization.",
+        },
       },
     },
     {
       node_id: "algo_anagramas",
-      title: "Los Ecos Gemelos",
-      lore_intro:
-        "Varias inscripciones distintas resuenan igual: usan exactamente las mismas runas, sólo que en otro orden. Agrúpalas.",
+      title: { es: "Los Ecos Gemelos", en: "The Twin Echoes" },
+      lore_intro: {
+        es: "Varias inscripciones distintas resuenan igual: usan exactamente las mismas runas, sólo que en otro orden. Agrúpalas.",
+        en: "Several different inscriptions resonate the same: they use exactly the same runes, only in another order. Group them.",
+      },
       position: { x: 7, y: 7 },
       poo_challenge: {
         topic: "Hash map · O(n·k log k)",
         timeLimitSec: 1200,
-        instructions:
-          "Given an array of strings, group the anagrams together. Return a list of groups (order doesn't matter).\n\n(ES) Implementa groupAnagrams(array $strs): array, que agrupe las palabras que son anagramas entre sí.",
+        instructions: {
+          es: "Implementa groupAnagrams(array $strs): array, que agrupe las palabras que son anagramas entre sí. El orden de los grupos no importa.",
+          en: "Given an array of strings, group the anagrams together. Return a list of groups (order doesn't matter). Implement groupAnagrams(array $strs): array.",
+        },
         starter_code:
           "<?php\n\nfunction groupAnagrams(array $strs): array {\n    // ¿Qué tienen en común dos anagramas?\n}\n",
         hints: [
-          "Dos anagramas comparten las MISMAS letras ordenadas: esa es la clave del grupo.",
-          "Para construirla: $key = str_split($s); sort($key); $key = implode('', $key);",
-          "Acumula en $map[$key][] = $s; y al final devuelve array_values($map).",
+          { es: "Dos anagramas comparten las MISMAS letras ordenadas: esa es la clave del grupo.", en: "Two anagrams share the SAME sorted letters: that's the group key." },
+          { es: "Para construirla: $key = str_split($s); sort($key); $key = implode('', $key);", en: "To build it: $key = str_split($s); sort($key); $key = implode('', $key);" },
+          { es: "Acumula en $map[$key][] = $s; y al final devuelve array_values($map).", en: "Accumulate in $map[$key][] = $s; and finally return array_values($map)." },
         ],
         test_cases: [
           {
             input:
               "count(groupAnagrams(['eat','tea','tan','ate','nat','bat']))",
             expected: 3,
-            description: "Salen tres grupos",
+            description: { es: "Salen tres grupos", en: "Three groups come out" },
           },
           {
             input:
               "(function() { $r = groupAnagrams(['eat','tea','tan','ate','nat','bat']); foreach ($r as &$g) { sort($g); } unset($g); usort($r, fn($a, $b) => $a[0] <=> $b[0]); return $r; })()",
             expected: [["ate", "eat", "tea"], ["bat"], ["nat", "tan"]],
-            description: "Los grupos correctos (normalizados para comparar)",
+            description: { es: "Los grupos correctos (normalizados para comparar)", en: "The correct groups (normalized for comparison)" },
           },
           {
             input: "groupAnagrams([])",
             expected: [],
-            description: "Lista vacía: caso borde",
+            description: { es: "Lista vacía: caso borde", en: "Empty list: edge case" },
           },
         ],
       },
     },
     {
       node_id: "algo_ceros",
-      title: "Las Losas Huecas",
-      lore_intro:
-        "En el suelo hay losas macizas y losas huecas. Empuja las huecas al fondo sin alterar el orden de las macizas — y hazlo sobre la marcha.",
+      title: { es: "Las Losas Huecas", en: "The Hollow Slabs" },
+      lore_intro: {
+        es: "En el suelo hay losas macizas y losas huecas. Empuja las huecas al fondo sin alterar el orden de las macizas — y hazlo sobre la marcha.",
+        en: "On the floor there are solid slabs and hollow ones. Push the hollow ones to the back without altering the order of the solid ones — and do it in place.",
+      },
       position: { x: 11, y: 4 },
       poo_challenge: {
         topic: "Dos punteros · O(n)",
         timeLimitSec: 600,
-        instructions:
-          "Move all zeroes to the end of the array while keeping the relative order of the non-zero elements.\n\n(ES) Implementa moveZeroes(array $nums): array — los ceros al final, conservando el orden del resto.",
+        instructions: {
+          es: "Implementa moveZeroes(array $nums): array — los ceros al final, conservando el orden relativo del resto de elementos.",
+          en: "Move all zeroes to the end of the array while keeping the relative order of the non-zero elements. Implement moveZeroes(array $nums): array.",
+        },
         starter_code:
           "<?php\n\nfunction moveZeroes(array $nums): array {\n    // Un puntero de escritura basta\n}\n",
         hints: [
-          "Lleva un puntero de escritura $pos que empieza en 0.",
-          "Recorre y copia hacia adelante sólo los distintos de cero: if ($n !== 0) $nums[$pos++] = $n;",
-          "Al terminar, rellena de $pos hasta el final con ceros.",
+          { es: "Lleva un puntero de escritura $pos que empieza en 0.", en: "Keep a write pointer $pos starting at 0." },
+          { es: "Recorre y copia hacia adelante sólo los distintos de cero: if ($n !== 0) $nums[$pos++] = $n;", en: "Iterate and copy forward only the non-zero ones: if ($n !== 0) $nums[$pos++] = $n;" },
+          { es: "Al terminar, rellena de $pos hasta el final con ceros.", en: "When done, fill from $pos to the end with zeroes." },
         ],
         test_cases: [
           {
             input: "moveZeroes([0, 1, 0, 3, 12])",
             expected: [1, 3, 12, 0, 0],
-            description: "Se conserva el orden de los no-cero",
+            description: { es: "Se conserva el orden de los no-cero", en: "The order of the non-zeroes is preserved" },
           },
           {
             input: "moveZeroes([0, 0, 0])",
             expected: [0, 0, 0],
-            description: "Todos ceros",
+            description: { es: "Todos ceros", en: "All zeroes" },
           },
           {
             input: "moveZeroes([1, 2, 3])",
             expected: [1, 2, 3],
-            description: "Ningún cero: no cambia nada",
+            description: { es: "Ningún cero: no cambia nada", en: "No zeroes: nothing changes" },
           },
         ],
       },
     },
     {
       node_id: "algo_ventana",
-      title: "La Galería sin Repeticiones",
-      lore_intro:
-        "El pasillo más largo que puedes recorrer sin pisar dos veces la misma runa. Cuando te topes con una repetida, no vuelvas al principio: adelanta el inicio justo lo necesario.",
+      title: { es: "La Galería sin Repeticiones", en: "The Gallery Without Repeats" },
+      lore_intro: {
+        es: "El pasillo más largo que puedes recorrer sin pisar dos veces la misma runa. Cuando te topes con una repetida, no vuelvas al principio: adelanta el inicio justo lo necesario.",
+        en: "The longest corridor you can walk without stepping on the same rune twice. When you hit a repeat, don't go back to the start: move the start forward just enough.",
+      },
       position: { x: 12, y: 10 },
       poo_challenge: {
         topic: "Ventana deslizante · O(n)",
         timeLimitSec: 1500,
-        instructions:
-          "Return the length of the longest substring without repeating characters.\n\n(ES) Implementa lengthOfLongestSubstring(string $s): int — la longitud del substring más largo sin caracteres repetidos.",
+        instructions: {
+          es: "Implementa lengthOfLongestSubstring(string $s): int — la longitud del substring más largo sin caracteres repetidos.",
+          en: "Return the length of the longest substring without repeating characters. Implement lengthOfLongestSubstring(string $s): int.",
+        },
         starter_code:
           "<?php\n\nfunction lengthOfLongestSubstring(string $s): int {\n    // Ventana [inicio..i] que se encoge al encontrar repetidos\n}\n",
         hints: [
-          "Guarda en un hash el ÚLTIMO índice visto de cada carácter.",
-          "Si el carácter ya se vio dentro de la ventana actual, mueve el inicio: $start = $seen[$c] + 1;",
-          "En cada paso, el mejor es max($best, $i - $start + 1).",
+          { es: "Guarda en un hash el ÚLTIMO índice visto de cada carácter.", en: "Store in a hash the LAST seen index of each character." },
+          { es: "Si el carácter ya se vio dentro de la ventana actual, mueve el inicio: $start = $seen[$c] + 1;", en: "If the character was already seen within the current window, move the start: $start = $seen[$c] + 1;" },
+          { es: "En cada paso, el mejor es max($best, $i - $start + 1).", en: "At each step, the best is max($best, $i - $start + 1)." },
         ],
         test_cases: [
           {
             input: "lengthOfLongestSubstring('abcabcbb')",
             expected: 3,
-            description: "'abc' mide 3",
+            description: { es: "'abc' mide 3", en: "'abc' is length 3" },
           },
           {
             input: "lengthOfLongestSubstring('bbbbb')",
             expected: 1,
-            description: "Todos iguales: 1",
+            description: { es: "Todos iguales: 1", en: "All the same: 1" },
           },
           {
             input: "lengthOfLongestSubstring('pwwkew')",
             expected: 3,
-            description: "'wke' mide 3 (no 'pwke', que no es contiguo)",
+            description: { es: "'wke' mide 3 (no 'pwke', que no es contiguo)", en: "'wke' is length 3 (not 'pwke', which isn't contiguous)" },
           },
           {
             input: "lengthOfLongestSubstring('')",
             expected: 0,
-            description: "Cadena vacía: caso borde",
+            description: { es: "Cadena vacía: caso borde", en: "Empty string: edge case" },
           },
         ],
       },
     },
     {
       node_id: "algo_fibonacci",
-      title: "La Espiral de Durin",
-      lore_intro:
-        "Una espiral tallada donde cada arco mide como los dos anteriores juntos. Calcularla desde cero cada vez es perderse: apunta lo que ya resolviste.",
+      title: { es: "La Espiral de Durin", en: "Durin's Spiral" },
+      lore_intro: {
+        es: "Una espiral tallada donde cada arco mide como los dos anteriores juntos. Calcularla desde cero cada vez es perderse: apunta lo que ya resolviste.",
+        en: "A carved spiral where each arc measures as much as the two before it combined. Computing it from scratch each time is a trap: note down what you've already solved.",
+      },
       position: { x: 16, y: 7 },
       poo_challenge: {
         topic: "Recursión + memoización · O(n)",
         timeLimitSec: 600,
-        instructions:
-          "Return the nth Fibonacci number efficiently.\n\n(ES) Implementa fib(int $n, array &$memo = []): int — el n-ésimo Fibonacci, SIN recursión exponencial.",
+        instructions: {
+          es: "Implementa fib(int $n, array &$memo = []): int — el n-ésimo Fibonacci, SIN recursión exponencial.",
+          en: "Return the nth Fibonacci number efficiently. Implement fib(int $n, array &$memo = []): int, WITHOUT exponential recursion.",
+        },
         starter_code:
           "<?php\n\nfunction fib(int $n, array &$memo = []): int {\n    // Casos base y memoización\n}\n",
         hints: [
-          "Casos base: si $n < 2, devuelve $n.",
-          "El operador ??= guarda y devuelve en una línea: return $memo[$n] ??= fib($n-1, $memo) + fib($n-2, $memo);",
-          "Sin memoizar sería O(2ⁿ): fib(30) haría más de un millón de llamadas repetidas.",
+          { es: "Casos base: si $n < 2, devuelve $n.", en: "Base cases: if $n < 2, return $n." },
+          { es: "El operador ??= guarda y devuelve en una línea: return $memo[$n] ??= fib($n-1, $memo) + fib($n-2, $memo);", en: "The ??= operator stores and returns in one line: return $memo[$n] ??= fib($n-1, $memo) + fib($n-2, $memo);" },
+          { es: "Sin memoizar sería O(2ⁿ): fib(30) haría más de un millón de llamadas repetidas.", en: "Without memoizing it'd be O(2ⁿ): fib(30) would make over a million repeated calls." },
         ],
         test_cases: [
-          { input: "fib(0)", expected: 0, description: "Caso base" },
-          { input: "fib(1)", expected: 1, description: "Caso base" },
-          { input: "fib(10)", expected: 55, description: "Décimo Fibonacci" },
+          { input: "fib(0)", expected: 0, description: { es: "Caso base", en: "Base case" } },
+          { input: "fib(1)", expected: 1, description: { es: "Caso base", en: "Base case" } },
+          { input: "fib(10)", expected: 55, description: { es: "Décimo Fibonacci", en: "Tenth Fibonacci" } },
           {
             input: "fib(30)",
             expected: 832040,
-            description: "Con memo es instantáneo; sin memo, un millón de llamadas",
+            description: { es: "Con memo es instantáneo; sin memo, un millón de llamadas", en: "With memo it's instant; without memo, a million calls" },
           },
         ],
       },
     },
     {
       node_id: "algo_lista",
-      title: "La Cadena de Anillos",
-      lore_intro:
-        "Una cadena de eslabones donde cada uno sólo conoce al siguiente. Debes invertirla sin romperla: guarda el siguiente ANTES de cambiar el enlace, o perderás la cadena entera.",
+      title: { es: "La Cadena de Anillos", en: "The Chain of Rings" },
+      lore_intro: {
+        es: "Una cadena de eslabones donde cada uno sólo conoce al siguiente. Debes invertirla sin romperla: guarda el siguiente ANTES de cambiar el enlace, o perderás la cadena entera.",
+        en: "A chain of links where each one only knows the next. You must reverse it without breaking it: save the next BEFORE changing the link, or you'll lose the whole chain.",
+      },
       position: { x: 19, y: 4 },
       poo_challenge: {
         topic: "Listas enlazadas · O(n), O(1) espacio",
         timeLimitSec: 900,
-        instructions:
-          "Reverse a singly linked list and return the new head.\n\n(ES) Implementa reverseList(?ListNode $head): ?ListNode. La clase ListNode ya existe (tiene $val y $next), junto a dos ayudantes para construir y volcar listas.",
+        instructions: {
+          es: "Implementa reverseList(?ListNode $head): ?ListNode. La clase ListNode ya existe (tiene $val y $next), junto a dos ayudantes para construir y volcar listas.",
+          en: "Reverse a singly linked list and return the new head. Implement reverseList(?ListNode $head): ?ListNode. The ListNode class already exists (with $val and $next), plus two helpers to build and dump lists.",
+        },
         support_code:
           "class ListNode {\n    public ?ListNode $next = null;\n    public function __construct(public int $val) {}\n}\n\nfunction listaDesde(array $vals): ?ListNode {\n    $head = null;\n    foreach (array_reverse($vals) as $v) {\n        $n = new ListNode($v);\n        $n->next = $head;\n        $head = $n;\n    }\n    return $head;\n}\n\nfunction listaAArray(?ListNode $h): array {\n    $out = [];\n    while ($h) { $out[] = $h->val; $h = $h->next; }\n    return $out;\n}",
         starter_code:
           "<?php\n\n// ListNode, listaDesde() y listaAArray() ya existen.\n\nfunction reverseList(?ListNode $head): ?ListNode {\n    // Tres punteros: prev, head y next\n}\n",
         hints: [
-          "Empieza con $prev = null; y recorre mientras $head no sea null.",
-          "El orden importa: $next = $head->next; luego $head->next = $prev; luego avanza $prev = $head; $head = $next;",
-          "Al final, la nueva cabeza es $prev (cuando $head llegó a null).",
+          { es: "Empieza con $prev = null; y recorre mientras $head no sea null.", en: "Start with $prev = null; and loop while $head isn't null." },
+          { es: "El orden importa: $next = $head->next; luego $head->next = $prev; luego avanza $prev = $head; $head = $next;", en: "Order matters: $next = $head->next; then $head->next = $prev; then advance $prev = $head; $head = $next;" },
+          { es: "Al final, la nueva cabeza es $prev (cuando $head llegó a null).", en: "At the end, the new head is $prev (when $head reached null)." },
         ],
         test_cases: [
           {
             input: "listaAArray(reverseList(listaDesde([1, 2, 3, 4, 5])))",
             expected: [5, 4, 3, 2, 1],
-            description: "La cadena queda del revés",
+            description: { es: "La cadena queda del revés", en: "The chain ends up reversed" },
           },
           {
             input: "listaAArray(reverseList(listaDesde([1])))",
             expected: [1],
-            description: "Un solo eslabón",
+            description: { es: "Un solo eslabón", en: "A single link" },
           },
           {
             input: "listaAArray(reverseList(null))",
             expected: [],
-            description: "Lista vacía: caso borde",
+            description: { es: "Lista vacía: caso borde", en: "Empty list: edge case" },
           },
         ],
       },
     },
     {
       node_id: "algo_islas",
-      title: "Las Salas Aisladas",
-      lore_intro:
-        "El plano del laberinto marca roca ('1') y vacío ('0'). Cuenta cuántas salas independientes hay: dos trozos de roca son la misma sala si se tocan en horizontal o vertical.",
+      title: { es: "Las Salas Aisladas", en: "The Isolated Halls" },
+      lore_intro: {
+        es: "El plano del laberinto marca roca ('1') y vacío ('0'). Cuenta cuántas salas independientes hay: dos trozos de roca son la misma sala si se tocan en horizontal o vertical.",
+        en: "The maze map marks rock ('1') and void ('0'). Count how many independent halls there are: two pieces of rock are the same hall if they touch horizontally or vertically.",
+      },
       position: { x: 21, y: 10 },
       poo_challenge: {
         topic: "DFS en grilla · O(filas·columnas)",
         timeLimitSec: 1500,
-        instructions:
-          "Given a grid of '1' (land) and '0' (water), count the islands (land cells connected horizontally/vertically).\n\n(ES) Implementa numIslands(array $grid): int — cuenta las islas conectadas en 4 direcciones.",
+        instructions: {
+          es: "Implementa numIslands(array $grid): int — cuenta las islas conectadas en 4 direcciones, siendo '1' tierra y '0' agua.",
+          en: "Given a grid of '1' (land) and '0' (water), count the islands (land cells connected horizontally/vertically). Implement numIslands(array $grid): int.",
+        },
         starter_code:
           "<?php\n\nfunction numIslands(array $grid): int {\n    // Al hallar un '1': cuenta +1 y hunde toda su isla\n}\n",
         hints: [
-          "Recorre la grilla; cuando encuentres un '1', suma 1 al contador y lanza un DFS desde ahí.",
-          "El DFS marca la celda como '0' (visitada) y se llama a sí mismo en las 4 direcciones. Así no la recuentas.",
-          "Con una closure recursiva necesitas capturar por referencia: function($r,$c) use (&$dfs, &$grid, $rows, $cols) { … }",
+          { es: "Recorre la grilla; cuando encuentres un '1', suma 1 al contador y lanza un DFS desde ahí.", en: "Walk the grid; when you find a '1', add 1 to the counter and launch a DFS from there." },
+          { es: "El DFS marca la celda como '0' (visitada) y se llama a sí mismo en las 4 direcciones. Así no la recuentas.", en: "The DFS marks the cell as '0' (visited) and calls itself in the 4 directions. That way you don't recount it." },
+          { es: "Con una closure recursiva necesitas capturar por referencia: function($r,$c) use (&$dfs, &$grid, $rows, $cols) { … }", en: "With a recursive closure you need to capture by reference: function($r,$c) use (&$dfs, &$grid, $rows, $cols) { … }" },
         ],
         test_cases: [
           {
             input:
               "numIslands([['1','1','0','0'],['1','1','0','0'],['0','0','1','0'],['0','0','0','1']])",
             expected: 3,
-            description: "Un bloque grande y dos celdas sueltas",
+            description: { es: "Un bloque grande y dos celdas sueltas", en: "One big block and two loose cells" },
           },
           {
             input: "numIslands([['1','1','1'],['1','1','1']])",
             expected: 1,
-            description: "Todo conectado: una sola isla",
+            description: { es: "Todo conectado: una sola isla", en: "All connected: a single island" },
           },
           {
             input: "numIslands([['0','0'],['0','0']])",
             expected: 0,
-            description: "Sin tierra",
+            description: { es: "Sin tierra", en: "No land" },
           },
           {
             input: "numIslands([])",
             expected: 0,
-            description: "Grilla vacía: caso borde",
+            description: { es: "Grilla vacía: caso borde", en: "Empty grid: edge case" },
           },
         ],
       },
