@@ -6,7 +6,6 @@ import {
   BOOK_APPENDICES,
 } from "@/lib/game/book";
 import {
-  CHAPTER_1,
   CHAPTER_2,
   CHAPTER_3,
   CHAPTER_4,
@@ -23,7 +22,23 @@ import {
   CHAPTER_GOLLUM,
   CHAPTER_HELM,
 } from "./chapters";
-import { CHAPTER_JS_1 } from "./js-chapters";
+import { buildChapter } from "@/lib/game/narrative";
+import { NARR_COMMUNITY_1 } from "./narrative/community";
+import { SYL_PHP_COMMUNITY_1 } from "./syllabus/community-php";
+import { SYL_JS_COMMUNITY_1 } from "./syllabus/community-js";
+
+// Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
+// temario de cada lenguaje.
+const PHP_COMMUNITY_1 = buildChapter(
+  NARR_COMMUNITY_1,
+  SYL_PHP_COMMUNITY_1,
+  "php",
+);
+const JS_COMMUNITY_1 = buildChapter(
+  NARR_COMMUNITY_1,
+  SYL_JS_COMMUNITY_1,
+  "javascript",
+);
 
 /**
  * Catálogo de aventuras. Las `available` son jugables; las `soon` aparecen en
@@ -46,7 +61,7 @@ export const ADVENTURES: Adventure[] = [
       {
         book: BOOK_FELLOWSHIP,
         chapters: [
-          CHAPTER_1,
+          PHP_COMMUNITY_1,
           CHAPTER_2,
           CHAPTER_3,
           CHAPTER_4,
@@ -95,7 +110,7 @@ export const ADVENTURES: Adventure[] = [
       es: "El lenguaje de la web, ejecutándose de verdad en tu navegador. Bilingüe.",
       en: "The language of the web, running for real in your browser. Bilingual.",
     },
-    books: [{ book: BOOK_FELLOWSHIP, chapters: [CHAPTER_JS_1] }],
+    books: [{ book: BOOK_FELLOWSHIP, chapters: [JS_COMMUNITY_1] }],
   },
   {
     id: "typescript",
