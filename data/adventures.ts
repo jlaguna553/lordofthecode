@@ -46,7 +46,10 @@ import {
   SYL_JS_COMMUNITY_7,
   SYL_JS_COMMUNITY_8,
 } from "./syllabus/community-js";
-import { SYL_TS_COMMUNITY_1 } from "./syllabus/community-ts";
+import {
+  SYL_TS_COMMUNITY_1,
+  SYL_TS_COMMUNITY_2,
+} from "./syllabus/community-ts";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -83,6 +86,7 @@ const JS_COMMUNITY_7 = buildChapter(NARR_COMMUNITY_7, SYL_JS_COMMUNITY_7, "javas
 const PHP_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_PHP_COMMUNITY_8, "php");
 const JS_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_JS_COMMUNITY_8, "javascript");
 const TS_COMMUNITY_1 = buildChapter(NARR_COMMUNITY_1, SYL_TS_COMMUNITY_1, "typescript");
+const TS_COMMUNITY_2 = buildChapter(NARR_COMMUNITY_2, SYL_TS_COMMUNITY_2, "typescript");
 
 /**
  * Catálogo de aventuras. Las `available` son jugables; las `soon` aparecen en
@@ -182,7 +186,7 @@ export const ADVENTURES: Adventure[] = [
       en: "JavaScript with types: safety and tooling for serious projects. Transpiled and run in your browser. Bilingual.",
     },
     books: [
-      { book: BOOK_FELLOWSHIP, chapters: [TS_COMMUNITY_1] },
+      { book: BOOK_FELLOWSHIP, chapters: [TS_COMMUNITY_1, TS_COMMUNITY_2] },
     ],
   },
   {

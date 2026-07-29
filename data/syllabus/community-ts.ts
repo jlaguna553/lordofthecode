@@ -256,3 +256,237 @@ export const SYL_TS_COMMUNITY_1: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre arrays y tuplas tipados. */
+const Q_ARR_TYPE = {
+  question: P(
+    "¿Cómo se tipa un array de números en TypeScript?",
+    "How do you type an array of numbers in TypeScript?",
+  ),
+  options: [
+    P("number[]  (o Array<number>)", "number[]  (or Array<number>)"),
+    P("array<number>", "array<number>"),
+    P("[number]", "[number]"),
+    P("number{}", "number{}"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`number[]` es la forma habitual; `Array<number>` es equivalente. Ojo: `[number]` NO es «array de números», sino una TUPLA de exactamente un número.",
+    "`number[]` is the usual form; `Array<number>` is equivalent. Careful: `[number]` is NOT \"array of numbers\", but a TUPLE of exactly one number.",
+  ),
+};
+const Q_ARR_INFER = {
+  question: P(
+    "`const nombres = ['Frodo', 'Sam']`. ¿Qué tipo infiere TypeScript?",
+    "`const nombres = ['Frodo', 'Sam']`. What type does TypeScript infer?",
+  ),
+  options: [
+    P("string[]", "string[]"),
+    P("[string, string]", "[string, string]"),
+    P("any[]", "any[]"),
+    P("Array", "Array"),
+  ],
+  correct: 0,
+  explanation: P(
+    "De un array literal de strings, TS infiere `string[]` (no una tupla). Si quieres una tupla de tamaño fijo, tienes que anotarla o usar `as const`.",
+    "From a string array literal, TS infers `string[]` (not a tuple). If you want a fixed-size tuple, you must annotate it or use `as const`.",
+  ),
+};
+const Q_TUPLE = {
+  question: P(
+    "¿Qué describe el tipo `[number, string]`?",
+    "What does the type `[number, string]` describe?",
+  ),
+  options: [
+    P("Una tupla: un array de longitud fija con un number y luego un string", "A tuple: a fixed-length array with a number then a string"),
+    P("Un array de numbers o strings", "An array of numbers or strings"),
+    P("Un objeto con dos campos", "An object with two fields"),
+    P("Dos variables sueltas", "Two separate variables"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una tupla fija la LONGITUD y el tipo de cada posición: `[number, string]` es exactamente dos elementos, primero number y luego string. Útil para devolver «un par» sin crear un objeto.",
+    "A tuple fixes the LENGTH and the type of each position: `[number, string]` is exactly two elements, first a number then a string. Handy to return \"a pair\" without creating an object.",
+  ),
+};
+const Q_ARR_METHOD = {
+  question: P(
+    "`const xs: number[] = [1, 2, 3]`. ¿Qué tipo tiene `xs.map(n => n * 2)`?",
+    "`const xs: number[] = [1, 2, 3]`. What type does `xs.map(n => n * 2)` have?",
+  ),
+  options: [
+    P("number[] (map devuelve un array nuevo del tipo que produce la función)", "number[] (map returns a new array of the type the function produces)"),
+    P("number", "number"),
+    P("any[]", "any[]"),
+    P("void", "void"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`map` conserva los tipos: sobre `number[]` con una función que devuelve number, el resultado es `number[]`. Si la función devolviera string, sería `string[]`. TS deduce el tipo de `n` (number) sin anotarlo.",
+    "`map` preserves types: over `number[]` with a function returning number, the result is `number[]`. If the function returned string, it'd be `string[]`. TS infers `n`'s type (number) without annotation.",
+  ),
+};
+const Q_READONLY_ARR = {
+  question: P(
+    "¿Qué garantiza el tipo `readonly number[]`?",
+    "What does the type `readonly number[]` guarantee?",
+  ),
+  options: [
+    P("Que no puedes mutar el array (ni push, ni asignar por índice)", "That you can't mutate the array (no push, no index assignment)"),
+    P("Que sus números no cambian de valor", "That its numbers don't change value"),
+    P("Que el array es privado", "That the array is private"),
+    P("Que sólo se lee una vez", "That it's read only once"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`readonly number[]` prohíbe en tiempo de compilación cualquier mutación: `push`, `pop` o `xs[0] = 9` dan error. Es útil para parámetros que no deberías modificar. Como todo tipo, desaparece al transpilar.",
+    "`readonly number[]` forbids any mutation at compile time: `push`, `pop` or `xs[0] = 9` error out. Useful for parameters you shouldn't modify. Like all types, it vanishes on transpile.",
+  ),
+};
+const Q_MIXED_ARR = {
+  question: P(
+    "¿Cómo se tipa un array que puede contener strings Y numbers mezclados?",
+    "How do you type an array that can contain strings AND numbers mixed?",
+  ),
+  options: [
+    P("(string | number)[]", "(string | number)[]"),
+    P("string | number[]", "string | number[]"),
+    P("string[] & number[]", "string[] & number[]"),
+    P("[string, number]", "[string, number]"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los paréntesis importan: `(string | number)[]` es «array de (string o number)». Sin ellos, `string | number[]` significa «un string O un array de numbers», que es otra cosa.",
+    "The parentheses matter: `(string | number)[]` is \"array of (string or number)\". Without them, `string | number[]` means \"a string OR an array of numbers\", which is something else.",
+  ),
+};
+
+/** Capítulo 2 · Arrays y tuplas tipados. */
+export const SYL_TS_COMMUNITY_2: Syllabus = {
+  c2_raiz: { kind: "battle", questions: [Q_ARR_TYPE, Q_ARR_INFER, Q_ARR_METHOD] },
+  c2_niebla: { kind: "battle", questions: [Q_TUPLE, Q_MIXED_ARR, Q_ARR_TYPE] },
+  c2_sauce: { kind: "battle", questions: [Q_ARR_METHOD, Q_READONLY_ARR, Q_ARR_INFER] },
+  c2_jefe_tumulario: { kind: "battle", questions: [Q_TUPLE, Q_READONLY_ARR, Q_MIXED_ARR, Q_ARR_METHOD] },
+  pergamino_ciclo_vida: {
+    kind: "scroll",
+    title: P("El Pergamino de las Listas", "The Scroll of Lists"),
+    lore_intro: P(
+      "En un claro del Bosque Viejo, un pergamino enseña a nombrar no una cosa, sino MUCHAS: arrays con tipo, y tuplas de posición fija.",
+      "In a clearing of the Old Forest, a scroll teaches how to name not one thing but MANY: typed arrays, and fixed-position tuples.",
+    ),
+    scroll: {
+      topic: P("Arrays y tuplas tipados", "Typed arrays and tuples"),
+      sections: [
+        {
+          heading: P("Arrays con tipo", "Typed arrays"),
+          body: P(
+            "`number[]` es un array de números; `string[]` de textos. TS lo infiere de un literal, pero lo anotas en parámetros. Los métodos conservan el tipo: `map` sobre `number[]` da otro array del tipo que produzca la función.",
+            "`number[]` is an array of numbers; `string[]` of texts. TS infers it from a literal, but you annotate it in parameters. Methods preserve the type: `map` over `number[]` gives another array of whatever the function produces.",
+          ),
+          code:
+            "const vidas: number[] = [100, 40, 5];\nconst nombres: string[] = ['Frodo', 'Sam'];\nconst dobles = vidas.map(v => v * 2); // number[]",
+        },
+        {
+          heading: P("Tuplas: longitud y posición fijas", "Tuples: fixed length and position"),
+          body: P(
+            "Una tupla `[number, string]` es un array de tamaño fijo donde cada posición tiene su tipo. Perfecta para devolver «un par» sin montar un objeto.",
+            "A tuple `[number, string]` is a fixed-size array where each position has its own type. Perfect to return \"a pair\" without building an object.",
+          ),
+          code:
+            "function medir(xs: string[]): [number, string] {\n  return [xs.length, xs.join(' ')];\n}\nconst [n, texto] = medir(['a', 'b']); // n: number, texto: string",
+        },
+        {
+          heading: P("Uniones y readonly", "Unions and readonly"),
+          body: P(
+            "`(string | number)[]` mezcla tipos (ojo a los paréntesis). `readonly number[]` prohíbe mutar el array: ni `push` ni asignar por índice. Ideal para parámetros que no debes tocar.",
+            "`(string | number)[]` mixes types (mind the parentheses). `readonly number[]` forbids mutating the array: no `push`, no index assignment. Ideal for parameters you must not touch.",
+          ),
+          code:
+            "const mixto: (string | number)[] = ['A', 42];\nfunction total(xs: readonly number[]): number {\n  return xs.reduce((a, b) => a + b, 0); // leer sí; mutar no\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "`T[]` para listas de un tipo; `[A, B]` para tuplas de posición fija; `(A | B)[]` para mezclas; `readonly T[]` cuando no debe mutarse. Los métodos de array conservan el tipo.",
+        "`T[]` for lists of one type; `[A, B]` for fixed-position tuples; `(A | B)[]` for mixes; `readonly T[]` when it mustn't mutate. Array methods preserve the type.",
+      ),
+    },
+  },
+  viejo_hombre_sauce: {
+    kind: "challenge",
+    title: P("El Viejo Hombre Sauce", "Old Man Willow"),
+    lore_intro: P(
+      "Las raíces del Sauce atrapan a los hobbits uno a uno. Recorre la lista de nombres y devuelve otra, tipada.",
+      "The Willow's roots snare the hobbits one by one. Walk the list of names and return another, typed.",
+    ),
+    challenge: {
+      topic: P("Arrays de string y map", "String arrays and map"),
+      instructions: P(
+        "Escribe `atrapar(nombres: string[]): string[]` que devuelva un array NUEVO con cada nombre seguido de ' queda atrapado'.\n\nEjemplo: `atrapar(['Merry'])` → `['Merry queda atrapado']`.",
+        "Write `atrapar(nombres: string[]): string[]` that returns a NEW array with each name followed by ' queda atrapado'.\n\nExample: `atrapar(['Merry'])` → `['Merry queda atrapado']`.",
+      ),
+      starter_code:
+        "function atrapar(nombres: string[]): string[] {\n  // usa map y una template string\n}\n",
+      hints: [
+        P("`nombres.map(n => ...)` devuelve un `string[]` nuevo.", "`nombres.map(n => ...)` returns a new `string[]`."),
+        P("Cada elemento: `` `${n} queda atrapado` ``.", "Each element: `` `${n} queda atrapado` ``."),
+      ],
+      test_cases: [
+        { input: "atrapar(['Merry', 'Pippin'])", expected: ["Merry queda atrapado", "Pippin queda atrapado"], description: P("Cada nombre atrapado", "Each name snared"), raw: true },
+        { input: "atrapar([])", expected: [], description: P("Lista vacía", "Empty list"), raw: true },
+        { input: "atrapar(['Frodo'])", expected: ["Frodo queda atrapado"], description: P("Uno solo", "Just one"), raw: true },
+      ],
+    },
+  },
+  tumulo_espectro: {
+    kind: "challenge",
+    title: P("El Túmulo del Espectro", "The Wight's Barrow"),
+    lore_intro: P(
+      "El Tumulario drena la vida de cada hobbit. Aplica el drenaje a toda la lista de vidas, sin bajar nunca de 0.",
+      "The Barrow-wight drains the life of each hobbit. Apply the drain to the whole list of lives, never dropping below 0.",
+    ),
+    challenge: {
+      topic: P("Arrays de number y clamp", "Number arrays and clamp"),
+      instructions: P(
+        "Escribe `drenarVarios(vidas: number[], drenaje: number): number[]` que reste `drenaje` a cada vida, sin bajar nunca de 0. Usa `Math.max`.\n\nEjemplo: `drenarVarios([100, 20, 5], 30)` → `[70, 0, 0]`.",
+        "Write `drenarVarios(vidas: number[], drenaje: number): number[]` that subtracts `drenaje` from each life, never going below 0. Use `Math.max`.\n\nExample: `drenarVarios([100, 20, 5], 30)` → `[70, 0, 0]`.",
+      ),
+      starter_code:
+        "function drenarVarios(vidas: number[], drenaje: number): number[] {\n  // map + Math.max(0, ...)\n}\n",
+      hints: [
+        P("`vidas.map(v => Math.max(0, v - drenaje))`.", "`vidas.map(v => Math.max(0, v - drenaje))`."),
+        P("`Math.max(0, ...)` evita los negativos.", "`Math.max(0, ...)` avoids negatives."),
+      ],
+      test_cases: [
+        { input: "drenarVarios([100, 20, 5], 30)", expected: [70, 0, 0], description: P("Resta acotada a 0", "Subtraction clamped at 0"), raw: true },
+        { input: "drenarVarios([50], 10)", expected: [40], description: P("Una sola vida", "A single life"), raw: true },
+        { input: "drenarVarios([], 10)", expected: [], description: P("Sin vidas", "No lives"), raw: true },
+      ],
+    },
+  },
+  canto_bombadil: {
+    kind: "challenge",
+    title: P("El Canto de Tom Bombadil", "Tom Bombadil's Song"),
+    lore_intro: P(
+      "El canto de Tom rompe el hechizo. Resume los versos en un par: cuántos son y el canto entero. Una tupla lo dice todo.",
+      "Tom's song breaks the spell. Summarize the verses in a pair: how many there are and the whole song. A tuple says it all.",
+    ),
+    challenge: {
+      topic: P("Tuplas [number, string]", "Tuples [number, string]"),
+      instructions: P(
+        "Escribe `resumen(versos: string[]): [number, string]` que devuelva una TUPLA con:\n• cuántos versos hay,\n• todos los versos unidos por un espacio.\n\nEjemplo: `resumen(['ho', 'hey'])` → `[2, 'ho hey']`.",
+        "Write `resumen(versos: string[]): [number, string]` that returns a TUPLE with:\n• how many verses there are,\n• all verses joined by a space.\n\nExample: `resumen(['ho', 'hey'])` → `[2, 'ho hey']`.",
+      ),
+      starter_code:
+        "function resumen(versos: string[]): [number, string] {\n  // devuelve [longitud, versos unidos por ' ']\n}\n",
+      hints: [
+        P("`versos.length` da la cantidad; `versos.join(' ')` los une.", "`versos.length` gives the count; `versos.join(' ')` joins them."),
+        P("Devuelve las dos cosas como tupla: `return [versos.length, versos.join(' ')];`.", "Return both as a tuple: `return [versos.length, versos.join(' ')];`."),
+      ],
+      test_cases: [
+        { input: "resumen(['ho', 'hey'])", expected: [2, "ho hey"], description: P("Cantidad y canto", "Count and song"), raw: true },
+        { input: "resumen([])", expected: [0, ""], description: P("Sin versos", "No verses"), raw: true },
+        { input: "resumen(['solo'])", expected: [1, "solo"], description: P("Un verso", "One verse"), raw: true },
+      ],
+    },
+  },
+};
