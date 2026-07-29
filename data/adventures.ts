@@ -1,4 +1,10 @@
 import type { Adventure } from "@/lib/game/adventure";
+import { allChapters } from "@/lib/game/adventure";
+import {
+  BOOK_FELLOWSHIP,
+  BOOK_TWO_TOWERS,
+  BOOK_APPENDICES,
+} from "@/lib/game/book";
 import {
   CHAPTER_1,
   CHAPTER_2,
@@ -19,27 +25,6 @@ import {
 } from "./chapters";
 import { CHAPTER_JS_1 } from "./js-chapters";
 
-/** Capítulos de la aventura de PHP (La Comunidad del Anillo + práctica). */
-const PHP_CHAPTERS = [
-  CHAPTER_1,
-  CHAPTER_2,
-  CHAPTER_3,
-  CHAPTER_4,
-  CHAPTER_5,
-  CHAPTER_6,
-  CHAPTER_7,
-  CHAPTER_8,
-  CHAPTER_SOLID,
-  CHAPTER_ALGOS,
-  CHAPTER_ALGOS_2,
-  CHAPTER_ALGOS_3,
-  CHAPTER_LOGICA,
-  CHAPTER_CALENTAMIENTO,
-];
-
-/** Capítulos de la aventura de Python (Las Dos Torres). */
-const PYTHON_CHAPTERS = [CHAPTER_GOLLUM, CHAPTER_HELM];
-
 /**
  * Catálogo de aventuras. Las `available` son jugables; las `soon` aparecen en
  * el selector como "próximamente". Se irán activando por fases, empezando por
@@ -52,15 +37,37 @@ export const ADVENTURES: Adventure[] = [
     icon: "🐘",
     accent: "violet",
     status: "available",
-    name: {
-      es: "La Comunidad del Anillo — PHP",
-      en: "The Fellowship of the Ring — PHP",
-    },
+    name: { es: "PHP", en: "PHP" },
     blurb: {
       es: "Programación orientada a objetos en PHP, de las clases a los patrones. La campaña original.",
       en: "Object-oriented programming in PHP, from classes to design patterns. The original campaign.",
     },
-    chapters: PHP_CHAPTERS,
+    books: [
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [
+          CHAPTER_1,
+          CHAPTER_2,
+          CHAPTER_3,
+          CHAPTER_4,
+          CHAPTER_5,
+          CHAPTER_6,
+          CHAPTER_7,
+          CHAPTER_8,
+        ],
+      },
+      {
+        book: BOOK_APPENDICES,
+        chapters: [
+          CHAPTER_SOLID,
+          CHAPTER_ALGOS,
+          CHAPTER_ALGOS_2,
+          CHAPTER_ALGOS_3,
+          CHAPTER_LOGICA,
+          CHAPTER_CALENTAMIENTO,
+        ],
+      },
+    ],
   },
   {
     id: "python",
@@ -68,15 +75,14 @@ export const ADVENTURES: Adventure[] = [
     icon: "🐍",
     accent: "sky",
     status: "available",
-    name: {
-      es: "Las Dos Torres — Python",
-      en: "The Two Towers — Python",
-    },
+    name: { es: "Python", en: "Python" },
     blurb: {
       es: "Python desde cero: variables, control de flujo, funciones, colecciones y clases.",
       en: "Python from scratch: variables, control flow, functions, collections and classes.",
     },
-    chapters: PYTHON_CHAPTERS,
+    books: [
+      { book: BOOK_TWO_TOWERS, chapters: [CHAPTER_GOLLUM, CHAPTER_HELM] },
+    ],
   },
   {
     id: "javascript",
@@ -84,15 +90,12 @@ export const ADVENTURES: Adventure[] = [
     icon: "🟨",
     accent: "amber",
     status: "available",
-    name: {
-      es: "Las Tierras del Navegador — JavaScript",
-      en: "The Lands of the Browser — JavaScript",
-    },
+    name: { es: "JavaScript", en: "JavaScript" },
     blurb: {
       es: "El lenguaje de la web, ejecutándose de verdad en tu navegador. Bilingüe.",
       en: "The language of the web, running for real in your browser. Bilingual.",
     },
-    chapters: [CHAPTER_JS_1],
+    books: [{ book: BOOK_FELLOWSHIP, chapters: [CHAPTER_JS_1] }],
   },
   {
     id: "typescript",
@@ -105,7 +108,7 @@ export const ADVENTURES: Adventure[] = [
       es: "JavaScript con tipos: seguridad y tooling para proyectos serios.",
       en: "JavaScript with types: safety and tooling for serious projects.",
     },
-    chapters: [],
+    books: [],
   },
   {
     id: "sql",
@@ -118,7 +121,7 @@ export const ADVENTURES: Adventure[] = [
       es: "Consultas a bases de datos, de SELECT a los JOIN más retorcidos.",
       en: "Querying databases, from SELECT to the trickiest JOINs.",
     },
-    chapters: [],
+    books: [],
   },
   {
     id: "java",
@@ -131,7 +134,7 @@ export const ADVENTURES: Adventure[] = [
       es: "El clásico de la industria: tipado fuerte y orientación a objetos.",
       en: "The industry classic: strong typing and object orientation.",
     },
-    chapters: [],
+    books: [],
   },
   {
     id: "react",
@@ -144,7 +147,7 @@ export const ADVENTURES: Adventure[] = [
       es: "Interfaces con componentes, estado y hooks.",
       en: "Interfaces with components, state and hooks.",
     },
-    chapters: [],
+    books: [],
   },
   {
     id: "nextjs",
@@ -157,7 +160,7 @@ export const ADVENTURES: Adventure[] = [
       es: "El framework de React para producción: rutas, renderizado y datos.",
       en: "The React framework for production: routing, rendering and data.",
     },
-    chapters: [],
+    books: [],
   },
   {
     id: "aws",
@@ -170,7 +173,7 @@ export const ADVENTURES: Adventure[] = [
       es: "La nube de Amazon: cómputo, almacenamiento y despliegue.",
       en: "Amazon's cloud: compute, storage and deployment.",
     },
-    chapters: [],
+    books: [],
   },
 ];
 
@@ -183,6 +186,6 @@ export function getAdventure(id: string): Adventure | undefined {
 /** Aventura que contiene un capítulo con ese número (para migrar progreso). */
 export function adventureOfChapter(chapterNum: number): Adventure | undefined {
   return ADVENTURES.find((a) =>
-    a.chapters.some((c) => c.chapter === chapterNum),
+    allChapters(a).some((c) => c.chapter === chapterNum),
   );
 }

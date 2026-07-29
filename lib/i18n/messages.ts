@@ -122,6 +122,9 @@ export const MESSAGES = {
     en: "I've studied the scroll ✦",
   },
   "scroll.closeShort": { es: "Cerrar", en: "Close" },
+
+  // Libros
+  "book.label": { es: "Libro", en: "Book" },
 } as const;
 
 export type MessageKey = keyof typeof MESSAGES;

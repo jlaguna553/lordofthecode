@@ -1,7 +1,7 @@
 "use client";
 
 import { ADVENTURES } from "@/data/adventures";
-import { ACCENT_RING, ACCENT_TEXT } from "@/lib/game/adventure";
+import { ACCENT_RING, ACCENT_TEXT, chapterCount } from "@/lib/game/adventure";
 import { useLang } from "@/lib/i18n/context";
 
 interface Props {
@@ -44,7 +44,7 @@ export default function AdventureSelect({ current, onSelect, onClose }: Props) {
 
         <ul className="grid flex-1 grid-cols-1 gap-3 overflow-auto p-5 sm:grid-cols-2">
           {ADVENTURES.map((a) => {
-            const available = a.status === "available" && a.chapters.length > 0;
+            const available = a.status === "available" && chapterCount(a) > 0;
             const isCurrent = a.id === current;
             return (
               <li key={a.id}>
@@ -90,11 +90,11 @@ export default function AdventureSelect({ current, onSelect, onClose }: Props) {
                         isCurrent ? (
                           <span className={ACCENT_TEXT[a.accent]}>
                             ✦ {t("adventure.current")} ·{" "}
-                            {a.chapters.length} {t("adventure.chapters")}
+                            {chapterCount(a)} {t("adventure.chapters")}
                           </span>
                         ) : (
                           <span className="text-emerald-400">
-                            ▶ {t("adventure.play")} · {a.chapters.length}{" "}
+                            ▶ {t("adventure.play")} · {chapterCount(a)}{" "}
                             {t("adventure.chapters")}
                           </span>
                         )

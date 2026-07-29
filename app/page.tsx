@@ -6,10 +6,8 @@ import Link from "next/link";
 import type { LpcManifest } from "@/lib/lpc/types";
 import { buildPresetSheet, type PresetSheet } from "@/lib/game/sheet";
 import { CHAPTER_1 } from "@/data/chapters";
-import {
-  DEFAULT_ADVENTURE,
-  getAdventure,
-} from "@/data/adventures";
+import { DEFAULT_ADVENTURE, getAdventure } from "@/data/adventures";
+import { allChapters } from "@/lib/game/adventure";
 import { migrateLegacyProgress } from "@/data/migrate";
 import {
   capituloDesbloqueado,
@@ -106,7 +104,7 @@ export default function GamePage() {
   // Aventura activa y sus capítulos (la campaña de la tecnología elegida).
   const adventure =
     getAdventure(adventureId) ?? getAdventure(DEFAULT_ADVENTURE)!;
-  const chapters = adventure.chapters;
+  const chapters = useMemo(() => allChapters(adventure), [adventure]);
   const chapter =
     chapters.find((c) => c.chapter === currentChapter) ??
     chapters[0] ??
@@ -162,9 +160,10 @@ export default function GamePage() {
     const saved = loadProgress(advId);
     setProgress(saved);
     const adv = getAdventure(advId)!;
-    const start = adv.chapters.some((c) => c.chapter === saved.lastChapter)
+    const advChs = allChapters(adv);
+    const start = advChs.some((c) => c.chapter === saved.lastChapter)
       ? saved.lastChapter
-      : (adv.chapters[0]?.chapter ?? 1);
+      : (advChs[0]?.chapter ?? 1);
     setCurrentChapter(start);
   }, []);
 
@@ -342,9 +341,10 @@ export default function GamePage() {
     setProgress(p);
     setActiveNodeId(null);
     const adv = getAdventure(id)!;
-    const start = adv.chapters.some((c) => c.chapter === p.lastChapter)
+    const advChs = allChapters(adv);
+    const start = advChs.some((c) => c.chapter === p.lastChapter)
       ? p.lastChapter
-      : (adv.chapters[0]?.chapter ?? 1);
+      : (advChs[0]?.chapter ?? 1);
     setCurrentChapter(start);
     setShowIntro(true);
   }

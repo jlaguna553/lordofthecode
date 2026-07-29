@@ -1,9 +1,11 @@
 "use client";
 
 import type { Adventure } from "@/lib/game/adventure";
+import { getBook } from "@/lib/game/book";
 import type { Progress } from "@/lib/game/progress";
 import { completedOf } from "@/lib/game/progress";
 import { capituloDesbloqueado } from "@/lib/game/rpg";
+import { allChapters } from "@/lib/game/adventure";
 import { useLang } from "@/lib/i18n/context";
 
 interface Props {
@@ -24,7 +26,7 @@ export default function ChapterSelect({
   onClose,
 }: Props) {
   const { t, tc } = useLang();
-  const chapters = [...adventure.chapters].sort((a, b) => a.chapter - b.chapter);
+  const chapters = allChapters(adventure);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
@@ -46,72 +48,107 @@ export default function ChapterSelect({
           </button>
         </div>
 
-        <ul className="flex-1 space-y-2 overflow-auto p-5">
-          {chapters.map((chapter) => {
-            // Un capítulo puede existir pero estar cerrado hasta vencer al
-            // jefe del anterior.
-            const cierre = capituloDesbloqueado(chapter, progress, chapters);
-            const playable = cierre.abierto;
-            const total = chapter.nodes.length;
-            const done = [...completedOf(progress, chapter.chapter)].filter(
-              (id) => chapter.nodes.some((n) => n.node_id === id),
-            ).length;
-            const isCurrent = chapter.chapter === current;
-            const finished = playable && total > 0 && done === total;
-
+        <div className="flex-1 space-y-5 overflow-auto p-5">
+          {/* Los capítulos van agrupados por libro (película). */}
+          {adventure.books.map((ab, bi) => {
+            const book = getBook(ab.book);
+            if (!book || ab.chapters.length === 0) return null;
+            const chs = [...ab.chapters].sort((a, b) => a.chapter - b.chapter);
             return (
-              <li key={chapter.chapter}>
-                <button
-                  type="button"
-                  disabled={!playable}
-                  onClick={() => playable && onSelect(chapter.chapter)}
-                  className={
-                    "w-full rounded-xl p-4 text-left transition ring-1 " +
-                    (!playable
-                      ? "cursor-not-allowed bg-slate-950/60 text-slate-600 ring-white/5"
-                      : isCurrent
-                        ? "bg-emerald-500/15 text-slate-100 ring-emerald-500/40"
-                        : "bg-slate-800/60 text-slate-200 ring-white/10 hover:bg-slate-800")
-                  }
-                >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="font-bold">
-                      {chapter.chapter}. {tc(chapter.title)}
+              <section key={ab.book}>
+                <div className="mb-2 flex items-baseline gap-2">
+                  {book.film > 0 && (
+                    <span className="rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-200 ring-1 ring-amber-500/40">
+                      {t("book.label")} {book.film}
                     </span>
-                    <span className="shrink-0 text-xs">
-                      {!playable ? (
-                        <span className="rounded bg-slate-800 px-2 py-0.5 text-orange-400/80">
-                          {t("chapters.locked")}
-                        </span>
-                      ) : finished ? (
-                        <span className="text-emerald-400">
-                          {t("chapters.completed")}
-                        </span>
-                      ) : (
-                        <span className="text-amber-300">
-                          {done}/{total} {t("chapters.runes")}
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-xs leading-relaxed opacity-80">
-                    {!playable && cierre.motivo
-                      ? cierre.motivo
-                      : tc(chapter.lore)}
-                  </p>
-                  {playable && total > 0 && (
-                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-950">
-                      <div
-                        className="h-full rounded-full bg-emerald-500 transition-all"
-                        style={{ width: `${(done / total) * 100}%` }}
-                      />
-                    </div>
                   )}
-                </button>
-              </li>
+                  <h3 className="text-sm font-bold text-slate-200">
+                    {tc(book.title)}
+                  </h3>
+                  <span className="text-xs text-slate-500">
+                    · {tc(book.subtitle)}
+                  </span>
+                </div>
+
+                <ul className="space-y-2">
+                  {chs.map((chapter) => {
+                    const cierre = capituloDesbloqueado(
+                      chapter,
+                      progress,
+                      chapters,
+                    );
+                    const playable = cierre.abierto;
+                    const total = chapter.nodes.length;
+                    const done = [
+                      ...completedOf(progress, chapter.chapter),
+                    ].filter((id) =>
+                      chapter.nodes.some((n) => n.node_id === id),
+                    ).length;
+                    const isCurrent = chapter.chapter === current;
+                    const finished = playable && total > 0 && done === total;
+                    // Numeración por libro (1., 2., …) en vez del número global.
+                    const numEnLibro = chs.indexOf(chapter) + 1;
+
+                    return (
+                      <li key={chapter.chapter}>
+                        <button
+                          type="button"
+                          disabled={!playable}
+                          onClick={() =>
+                            playable && onSelect(chapter.chapter)
+                          }
+                          className={
+                            "w-full rounded-xl p-4 text-left transition ring-1 " +
+                            (!playable
+                              ? "cursor-not-allowed bg-slate-950/60 text-slate-600 ring-white/5"
+                              : isCurrent
+                                ? "bg-emerald-500/15 text-slate-100 ring-emerald-500/40"
+                                : "bg-slate-800/60 text-slate-200 ring-white/10 hover:bg-slate-800")
+                          }
+                        >
+                          <div className="flex items-baseline justify-between gap-3">
+                            <span className="font-bold">
+                              {numEnLibro}. {tc(chapter.title)}
+                            </span>
+                            <span className="shrink-0 text-xs">
+                              {!playable ? (
+                                <span className="rounded bg-slate-800 px-2 py-0.5 text-orange-400/80">
+                                  {t("chapters.locked")}
+                                </span>
+                              ) : finished ? (
+                                <span className="text-emerald-400">
+                                  {t("chapters.completed")}
+                                </span>
+                              ) : (
+                                <span className="text-amber-300">
+                                  {done}/{total} {t("chapters.runes")}
+                                </span>
+                              )}
+                            </span>
+                          </div>
+                          <p className="mt-1 text-xs leading-relaxed opacity-80">
+                            {!playable && cierre.motivo
+                              ? cierre.motivo
+                              : tc(chapter.lore)}
+                          </p>
+                          {playable && total > 0 && (
+                            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-950">
+                              <div
+                                className="h-full rounded-full bg-emerald-500 transition-all"
+                                style={{ width: `${(done / total) * 100}%` }}
+                              />
+                            </div>
+                          )}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+                {bi < adventure.books.length - 1 && <div className="h-1" />}
+              </section>
             );
           })}
-        </ul>
+        </div>
 
         <div className="flex items-center justify-between border-t border-white/10 p-4">
           <p className="text-xs text-slate-500">{t("chapters.savedHere")}</p>
