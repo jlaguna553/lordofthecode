@@ -5008,8 +5008,11 @@ export const CHAPTER_LOGICA: Chapter = {
  */
 export const CHAPTER_ALGOS_3: Chapter = {
   chapter: 13,
-  title: "El Árbol de Piedra",
-  lore: "En la última cámara crece un árbol tallado en roca viva, con ramas que se bifurcan hasta perderse. Los Enanos dejaron aquí sus enigmas más finos: los que se resuelven pensando en ramas, en combinaciones y en no repetir trabajo.",
+  title: { es: "El Árbol de Piedra", en: "The Tree of Stone" },
+  lore: {
+    es: "En la última cámara crece un árbol tallado en roca viva, con ramas que se bifurcan hasta perderse. Los Enanos dejaron aquí sus enigmas más finos: los que se resuelven pensando en ramas, en combinaciones y en no repetir trabajo.",
+    en: "In the last chamber grows a tree carved from living rock, its branches forking until they vanish. The Dwarves left their finest riddles here: the ones solved by thinking in branches, in combinations, and in not repeating work.",
+  },
   mapSize: { cols: 22, rows: 14 },
   spawn: { x: 2, y: 7 },
   scenery: {
@@ -5032,219 +5035,256 @@ export const CHAPTER_ALGOS_3: Chapter = {
     {
       node_id: "pergamino_narrar",
       kind: "scroll",
-      title: "El Pergamino de la Lengua Común",
-      lore_intro:
-        "Grabado bajo el árbol: «No basta con resolverlo. En los concilios de los Hombres del Oeste, hay que saber CONTAR cómo lo resolviste — y hacerlo en su lengua.»",
+      title: { es: "El Pergamino de la Lengua Común", en: "The Scroll of the Common Tongue" },
+      lore_intro: {
+        es: "Grabado bajo el árbol: «No basta con resolverlo. En los concilios de los Hombres del Oeste, hay que saber CONTAR cómo lo resolviste — y hacerlo en su lengua.»",
+        en: "Carved beneath the tree: \"Solving it is not enough. In the councils of the Men of the West, you must know how to TELL how you solved it — and to do so in their tongue.\"",
+      },
       position: { x: 4, y: 10 },
       scroll: {
         topic: "Cómo narrar la solución (y en inglés)",
         sections: [
           {
-            heading: "Los seis pasos",
-            body: "1. Reformula el enunciado y confirma los casos borde (vacío, negativos, duplicados).\n2. Di la fuerza bruta y su Big-O.\n3. Optimiza — casi siempre un hash map o dos punteros bajan de O(n²) a O(n).\n4. Codifica hablando.\n5. Prueba con un ejemplo pequeño.\n6. Cierra diciendo la complejidad final de tiempo Y espacio.\n\nUna solución correcta y lenta, bien explicada, puntúa más que una óptima a medias y en silencio.",
+            heading: { es: "Los seis pasos", en: "The six steps" },
+            body: {
+              es: "1. Reformula el enunciado y confirma los casos borde (vacío, negativos, duplicados).\n2. Di la fuerza bruta y su Big-O.\n3. Optimiza — casi siempre un hash map o dos punteros bajan de O(n²) a O(n).\n4. Codifica hablando.\n5. Prueba con un ejemplo pequeño.\n6. Cierra diciendo la complejidad final de tiempo Y espacio.\n\nUna solución correcta y lenta, bien explicada, puntúa más que una óptima a medias y en silencio.",
+              en: "1. Restate the problem and confirm the edge cases (empty, negatives, duplicates).\n2. State the brute force and its Big-O.\n3. Optimize — a hash map or two pointers almost always drop O(n²) to O(n).\n4. Code while talking.\n5. Test with a small example.\n6. Close by stating the final TIME AND SPACE complexity.\n\nA correct, slow solution, well explained, scores higher than a half-finished optimal one in silence.",
+            },
           },
           {
-            heading: "Frases que resuelven la entrevista técnica",
-            body: "«Let me restate the problem to make sure I understand it.»\n«The brute force would be O(n²) — let me see if I can do better.»\n«The trade-off here is between time and space, so I'd choose… because…»\n«Let me walk you through my approach step by step.»\n«Let me trace through a small example to verify.»\n«This runs in O(n) time and O(n) space.»",
+            heading: { es: "Frases que resuelven la entrevista técnica", en: "Phrases that carry the technical interview" },
+            body: {
+              es: "«Let me restate the problem to make sure I understand it.»\n«The brute force would be O(n²) — let me see if I can do better.»\n«The trade-off here is between time and space, so I'd choose… because…»\n«Let me walk you through my approach step by step.»\n«Let me trace through a small example to verify.»\n«This runs in O(n) time and O(n) space.»",
+              en: "\"Let me restate the problem to make sure I understand it.\"\n\"The brute force would be O(n²) — let me see if I can do better.\"\n\"The trade-off here is between time and space, so I'd choose… because…\"\n\"Let me walk you through my approach step by step.\"\n\"Let me trace through a small example to verify.\"\n\"This runs in O(n) time and O(n) space.\"",
+            },
           },
           {
-            heading: "Si te pierdes",
-            body: "«Could you rephrase that?» — pedir aclaración no resta, suma.\n«I'd start simple and only add complexity when a real constraint requires it.»\n\nHablar despacio y claro puntúa más que hablar rápido con errores. Y si un problema te atasca: márcalo, sigue, y vuelve al final.",
+            heading: { es: "Si te pierdes", en: "If you get lost" },
+            body: {
+              es: "«Could you rephrase that?» — pedir aclaración no resta, suma.\n«I'd start simple and only add complexity when a real constraint requires it.»\n\nHablar despacio y claro puntúa más que hablar rápido con errores. Y si un problema te atasca: márcalo, sigue, y vuelve al final.",
+              en: "\"Could you rephrase that?\" — asking for clarification doesn't subtract, it adds.\n\"I'd start simple and only add complexity when a real constraint requires it.\"\n\nSpeaking slowly and clearly scores higher than speaking fast with mistakes. And if a problem stalls you: flag it, move on, and come back at the end.",
+            },
           },
         ],
-        keyTakeaway:
-          "Piensa en voz alta desde el primer segundo. El silencio se interpreta como no saber, aunque estés resolviéndolo en tu cabeza.",
+        keyTakeaway: {
+          es: "Piensa en voz alta desde el primer segundo. El silencio se interpreta como no saber, aunque estés resolviéndolo en tu cabeza.",
+          en: "Think out loud from the first second. Silence is read as not knowing, even if you're solving it in your head.",
+        },
       },
     },
     {
       node_id: "algo_arbol",
-      title: "Las Ramas de Piedra",
-      lore_intro:
-        "El árbol se bifurca en dos por cada nudo. ¿Cuántos nudos hay en la rama más larga, desde la raíz hasta la punta?",
+      title: { es: "Las Ramas de Piedra", en: "The Branches of Stone" },
+      lore_intro: {
+        es: "El árbol se bifurca en dos por cada nudo. ¿Cuántos nudos hay en la rama más larga, desde la raíz hasta la punta?",
+        en: "The tree forks in two at every knot. How many knots are there on the longest branch, from the root to the tip?",
+      },
       position: { x: 7, y: 7 },
       poo_challenge: {
         topic: "Árboles · DFS recursivo · O(n)",
         timeLimitSec: 720,
-        instructions:
-          "Return the maximum depth (number of nodes along the longest root-to-leaf path) of a binary tree.\n\n(ES) Implementa maxDepth(?TreeNode $root): int. La clase TreeNode ya existe (con $val, $left y $right), junto a arbolDesde() para construir árboles por niveles.",
+        instructions: {
+          es: "Implementa maxDepth(?TreeNode $root): int — la profundidad máxima (número de nodos del camino raíz-hoja más largo) de un árbol binario. La clase TreeNode ya existe (con $val, $left y $right), junto a arbolDesde() para construir árboles por niveles.",
+          en: "Return the maximum depth (number of nodes along the longest root-to-leaf path) of a binary tree. Implement maxDepth(?TreeNode $root): int. The TreeNode class already exists (with $val, $left and $right), plus arbolDesde() to build trees level by level.",
+        },
         support_code:
           "class TreeNode {\n    public ?TreeNode $left = null;\n    public ?TreeNode $right = null;\n    public function __construct(public int $val) {}\n}\n\n/** Construye un árbol desde un array por niveles (null = hueco). */\nfunction arbolDesde(array $vals): ?TreeNode {\n    if (empty($vals) || $vals[0] === null) return null;\n    $root = new TreeNode($vals[0]);\n    $cola = [$root];\n    $i = 1;\n    while ($i < count($vals) && $cola) {\n        $n = array_shift($cola);\n        if ($i < count($vals)) { $v = $vals[$i++]; if ($v !== null) { $n->left = new TreeNode($v); $cola[] = $n->left; } }\n        if ($i < count($vals)) { $v = $vals[$i++]; if ($v !== null) { $n->right = new TreeNode($v); $cola[] = $n->right; } }\n    }\n    return $root;\n}",
         starter_code:
           "<?php\n\n// TreeNode y arbolDesde() ya existen.\n\nfunction maxDepth(?TreeNode $root): int {\n    // Caso base + la profundidad de cada rama\n}\n",
         hints: [
-          "Caso base: un nodo nulo tiene profundidad 0.",
-          "La profundidad de un nodo es 1 más la MAYOR de sus dos ramas.",
-          "En una línea: return 1 + max(maxDepth($root->left), maxDepth($root->right));",
+          { es: "Caso base: un nodo nulo tiene profundidad 0.", en: "Base case: a null node has depth 0." },
+          { es: "La profundidad de un nodo es 1 más la MAYOR de sus dos ramas.", en: "A node's depth is 1 plus the GREATER of its two branches." },
+          { es: "En una línea: return 1 + max(maxDepth($root->left), maxDepth($root->right));", en: "In one line: return 1 + max(maxDepth($root->left), maxDepth($root->right));" },
         ],
         test_cases: [
           {
             input: "maxDepth(arbolDesde([3, 9, 20, null, null, 15, 7]))",
             expected: 3,
-            description: "Árbol equilibrado de 3 niveles",
+            description: { es: "Árbol equilibrado de 3 niveles", en: "Balanced tree of 3 levels" },
           },
-          { input: "maxDepth(arbolDesde([1]))", expected: 1, description: "Sólo la raíz" },
-          { input: "maxDepth(null)", expected: 0, description: "Árbol vacío: caso borde" },
+          { input: "maxDepth(arbolDesde([1]))", expected: 1, description: { es: "Sólo la raíz", en: "Just the root" } },
+          { input: "maxDepth(null)", expected: 0, description: { es: "Árbol vacío: caso borde", en: "Empty tree: edge case" } },
           {
             input: "maxDepth(arbolDesde([1, 2, null, 3, null, 4]))",
             expected: 4,
-            description: "Rama izquierda encadenada: 4 niveles",
+            description: { es: "Rama izquierda encadenada: 4 niveles", en: "Chained left branch: 4 levels" },
           },
         ],
       },
     },
     {
       node_id: "algo_subconjuntos",
-      title: "Todas las Combinaciones",
-      lore_intro:
-        "Ante ti, un puñado de gemas distintas. ¿De cuántas formas puedes llevarte un subconjunto cualquiera — incluida la de no llevarte ninguna?",
+      title: { es: "Todas las Combinaciones", en: "All the Combinations" },
+      lore_intro: {
+        es: "Ante ti, un puñado de gemas distintas. ¿De cuántas formas puedes llevarte un subconjunto cualquiera — incluida la de no llevarte ninguna?",
+        en: "Before you, a handful of distinct gems. In how many ways can you take any subset — including taking none at all?",
+      },
       position: { x: 11, y: 4 },
       poo_challenge: {
         topic: "Recursión / combinaciones · O(n·2ⁿ)",
         timeLimitSec: 1200,
-        instructions:
-          "Return all possible subsets of an array of distinct integers (the power set).\n\n(ES) Implementa subsets(array $nums): array — todos los subconjuntos posibles. El orden no importa.",
+        instructions: {
+          es: "Implementa subsets(array $nums): array — todos los subconjuntos posibles (el conjunto potencia) de un array de enteros distintos. El orden no importa.",
+          en: "Return all possible subsets of an array of distinct integers (the power set). Implement subsets(array $nums): array. Order doesn't matter.",
+        },
         starter_code:
           "<?php\n\nfunction subsets(array $nums): array {\n    // Empieza con el conjunto vacío y ve duplicando\n}\n",
         hints: [
-          "Arranca con $res = [[]] — el conjunto vacío también es un subconjunto.",
-          "Por cada número, DUPLICA cada subconjunto que ya tienes añadiéndole ese número.",
-          "foreach ($nums as $n) { foreach ($res as $sub) $res[] = [...$sub, $n]; }",
+          { es: "Arranca con $res = [[]] — el conjunto vacío también es un subconjunto.", en: "Start with $res = [[]] — the empty set is a subset too." },
+          { es: "Por cada número, DUPLICA cada subconjunto que ya tienes añadiéndole ese número.", en: "For each number, DUPLICATE every subset you already have, adding that number to it." },
+          { es: "foreach ($nums as $n) { foreach ($res as $sub) $res[] = [...$sub, $n]; }", en: "foreach ($nums as $n) { foreach ($res as $sub) $res[] = [...$sub, $n]; }" },
         ],
         test_cases: [
           {
             input: "count(subsets([1, 2, 3]))",
             expected: 8,
-            description: "Con 3 elementos hay 2³ = 8 subconjuntos",
+            description: { es: "Con 3 elementos hay 2³ = 8 subconjuntos", en: "With 3 elements there are 2³ = 8 subsets" },
           },
           {
             input:
               "(function() { $r = subsets([1, 2, 3]); foreach ($r as &$s) { sort($s); } unset($s); usort($r, fn($a, $b) => [count($a), $a] <=> [count($b), $b]); return $r; })()",
             expected: [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]],
-            description: "Los 8 subconjuntos (normalizados para comparar)",
+            description: { es: "Los 8 subconjuntos (normalizados para comparar)", en: "The 8 subsets (normalized for comparison)" },
           },
           {
             input: "count(subsets([]))",
             expected: 1,
-            description: "Del conjunto vacío sale un solo subconjunto: el vacío",
+            description: { es: "Del conjunto vacío sale un solo subconjunto: el vacío", en: "The empty set yields a single subset: the empty one" },
           },
         ],
       },
     },
     {
       node_id: "algo_agua",
-      title: "El Aljibe de Khazad",
-      lore_intro:
-        "Una hilera de columnas de distinta altura. Eliges dos para formar un aljibe: el agua que retiene la limita SIEMPRE la más baja de las dos.",
+      title: { es: "El Aljibe de Khazad", en: "The Cistern of Khazad" },
+      lore_intro: {
+        es: "Una hilera de columnas de distinta altura. Eliges dos para formar un aljibe: el agua que retiene la limita SIEMPRE la más baja de las dos.",
+        en: "A row of columns of different heights. You pick two to form a cistern: the water it holds is ALWAYS limited by the shorter of the two.",
+      },
       position: { x: 12, y: 10 },
       poo_challenge: {
         topic: "Dos punteros · O(n)",
         timeLimitSec: 1200,
-        instructions:
-          "Given heights, pick two lines that with the x-axis form a container holding the most water. Return the max area.\n\n(ES) Implementa maxArea(array $h): int — el área máxima entre dos columnas.",
+        instructions: {
+          es: "Implementa maxArea(array $h): int — el área máxima de agua entre dos columnas (cada columna y el eje x forman un contenedor).",
+          en: "Given heights, pick two lines that with the x-axis form a container holding the most water. Return the max area. Implement maxArea(array $h): int.",
+        },
         starter_code:
           "<?php\n\nfunction maxArea(array $h): int {\n    // Dos punteros en los extremos, hacia dentro\n}\n",
         hints: [
-          "Empieza con un puntero en cada extremo: $l = 0 y $r = count($h) - 1.",
-          "El área es min($h[$l], $h[$r]) * ($r - $l) — la limita la columna más baja.",
-          "Mueve SIEMPRE el puntero de la columna más baja: mover el alto sólo puede empeorar el resultado.",
+          { es: "Empieza con un puntero en cada extremo: $l = 0 y $r = count($h) - 1.", en: "Start with a pointer at each end: $l = 0 and $r = count($h) - 1." },
+          { es: "El área es min($h[$l], $h[$r]) * ($r - $l) — la limita la columna más baja.", en: "The area is min($h[$l], $h[$r]) * ($r - $l) — the shorter column limits it." },
+          { es: "Mueve SIEMPRE el puntero de la columna más baja: mover el alto sólo puede empeorar el resultado.", en: "ALWAYS move the pointer of the shorter column: moving the taller one can only worsen the result." },
         ],
         test_cases: [
           {
             input: "maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7])",
             expected: 49,
-            description: "Las columnas de altura 8 y 7, separadas 7 posiciones",
+            description: { es: "Las columnas de altura 8 y 7, separadas 7 posiciones", en: "The columns of height 8 and 7, 7 positions apart" },
           },
-          { input: "maxArea([1, 1])", expected: 1, description: "Dos columnas mínimas" },
+          { input: "maxArea([1, 1])", expected: 1, description: { es: "Dos columnas mínimas", en: "Two minimal columns" } },
           {
             input: "maxArea([4, 3, 2, 1, 4])",
             expected: 16,
-            description: "Los dos extremos, altura 4 y distancia 4",
+            description: { es: "Los dos extremos, altura 4 y distancia 4", en: "The two ends, height 4 and distance 4" },
           },
         ],
       },
     },
     {
       node_id: "algo_topk",
-      title: "Los Ecos más Repetidos",
-      lore_intro:
-        "De todos los sonidos de la cámara, ¿cuáles son los k que más veces resuenan?",
+      title: { es: "Los Ecos más Repetidos", en: "The Most Repeated Echoes" },
+      lore_intro: {
+        es: "De todos los sonidos de la cámara, ¿cuáles son los k que más veces resuenan?",
+        en: "Of all the sounds in the chamber, which are the k that resonate most often?",
+      },
       position: { x: 16, y: 7 },
       poo_challenge: {
         topic: "Hash map + orden · O(n log n)",
         timeLimitSec: 1200,
-        instructions:
-          "Return the k most frequent elements of an array.\n\n(ES) Implementa topKFrequent(array $nums, int $k): array — los k elementos que más se repiten, del más frecuente al menos.",
+        instructions: {
+          es: "Implementa topKFrequent(array $nums, int $k): array — los k elementos que más se repiten, del más frecuente al menos.",
+          en: "Return the k most frequent elements of an array, from most to least frequent. Implement topKFrequent(array $nums, int $k): array.",
+        },
         starter_code:
           "<?php\n\nfunction topKFrequent(array $nums, int $k): array {\n    // Cuenta, ordena por conteo y corta\n}\n",
         hints: [
-          "array_count_values($nums) te da directamente valor => conteo.",
-          "arsort($c) ordena por conteo descendente CONSERVANDO las claves.",
-          "Los valores son las claves: return array_slice(array_keys($c), 0, $k);",
+          { es: "array_count_values($nums) te da directamente valor => conteo.", en: "array_count_values($nums) gives you value => count directly." },
+          { es: "arsort($c) ordena por conteo descendente CONSERVANDO las claves.", en: "arsort($c) sorts by count descending WHILE KEEPING the keys." },
+          { es: "Los valores son las claves: return array_slice(array_keys($c), 0, $k);", en: "The values are the keys: return array_slice(array_keys($c), 0, $k);" },
         ],
         test_cases: [
           {
             input: "topKFrequent([1, 1, 1, 2, 2, 3], 2)",
             expected: [1, 2],
-            description: "El 1 aparece 3 veces y el 2 dos veces",
+            description: { es: "El 1 aparece 3 veces y el 2 dos veces", en: "1 appears 3 times and 2 appears twice" },
           },
           {
             input: "topKFrequent([4, 4, 4, 4, 5, 5, 6], 1)",
             expected: [4],
-            description: "Sólo el más frecuente",
+            description: { es: "Sólo el más frecuente", en: "Only the most frequent" },
           },
-          { input: "topKFrequent([7], 1)", expected: [7], description: "Un único elemento" },
+          { input: "topKFrequent([7], 1)", expected: [7], description: { es: "Un único elemento", en: "A single element" } },
         ],
       },
     },
     {
       node_id: "algo_primos",
-      title: "La Criba de los Herreros",
-      lore_intro:
-        "Los herreros marcaban los números que NO servían, tachando de golpe todos los múltiplos de cada uno. Lo que quedaba sin tachar era puro.",
+      title: { es: "La Criba de los Herreros", en: "The Smiths' Sieve" },
+      lore_intro: {
+        es: "Los herreros marcaban los números que NO servían, tachando de golpe todos los múltiplos de cada uno. Lo que quedaba sin tachar era puro.",
+        en: "The smiths marked the numbers that were NO good, crossing out all the multiples of each at once. What remained uncrossed was pure.",
+      },
       position: { x: 19, y: 4 },
       poo_challenge: {
         topic: "Criba de Eratóstenes · O(n log log n)",
         timeLimitSec: 1200,
-        instructions:
-          "Count the prime numbers strictly less than n.\n\n(ES) Implementa countPrimes(int $n): int — cuántos primos hay MENORES que n.",
+        instructions: {
+          es: "Implementa countPrimes(int $n): int — cuántos primos hay estrictamente MENORES que n.",
+          en: "Count the prime numbers strictly less than n. Implement countPrimes(int $n): int.",
+        },
         starter_code:
           "<?php\n\nfunction countPrimes(int $n): int {\n    // Criba: marca los múltiplos en vez de comprobar uno a uno\n}\n",
         hints: [
-          "Si $n < 3 no hay primos menores que n: devuelve 0.",
-          "Crea un array de booleanos con array_fill(0, $n, true) y marca 0 y 1 como false.",
-          "Para cada $i con $i*$i < $n, si sigue siendo primo, tacha sus múltiplos EMPEZANDO EN $i*$i (los menores ya los tachó otro).",
+          { es: "Si $n < 3 no hay primos menores que n: devuelve 0.", en: "If $n < 3 there are no primes less than n: return 0." },
+          { es: "Crea un array de booleanos con array_fill(0, $n, true) y marca 0 y 1 como false.", en: "Create a boolean array with array_fill(0, $n, true) and mark 0 and 1 as false." },
+          { es: "Para cada $i con $i*$i < $n, si sigue siendo primo, tacha sus múltiplos EMPEZANDO EN $i*$i (los menores ya los tachó otro).", en: "For each $i with $i*$i < $n, if it's still prime, cross out its multiples STARTING AT $i*$i (smaller ones were already crossed by another)." },
         ],
         test_cases: [
-          { input: "countPrimes(10)", expected: 4, description: "2, 3, 5 y 7" },
-          { input: "countPrimes(2)", expected: 0, description: "Ninguno menor que 2" },
-          { input: "countPrimes(0)", expected: 0, description: "Caso borde" },
-          { input: "countPrimes(100)", expected: 25, description: "25 primos por debajo de 100" },
+          { input: "countPrimes(10)", expected: 4, description: { es: "2, 3, 5 y 7", en: "2, 3, 5 and 7" } },
+          { input: "countPrimes(2)", expected: 0, description: { es: "Ninguno menor que 2", en: "None less than 2" } },
+          { input: "countPrimes(0)", expected: 0, description: { es: "Caso borde", en: "Edge case" } },
+          { input: "countPrimes(100)", expected: 25, description: { es: "25 primos por debajo de 100", en: "25 primes below 100" } },
         ],
       },
     },
     {
       node_id: "algo_escaleras",
-      title: "La Escalinata Infinita",
-      lore_intro:
-        "Los peldaños suben en la penumbra. Puedes avanzar de uno en uno o de dos en dos. ¿De cuántas formas distintas llegas arriba?",
+      title: { es: "La Escalinata Infinita", en: "The Endless Stairway" },
+      lore_intro: {
+        es: "Los peldaños suben en la penumbra. Puedes avanzar de uno en uno o de dos en dos. ¿De cuántas formas distintas llegas arriba?",
+        en: "The steps rise into the gloom. You can advance one at a time or two at a time. In how many distinct ways can you reach the top?",
+      },
       position: { x: 20, y: 10 },
       poo_challenge: {
         topic: "Programación dinámica · O(n) tiempo, O(1) espacio",
         timeLimitSec: 720,
-        instructions:
-          "You can climb 1 or 2 steps at a time. In how many distinct ways can you climb n steps?\n\n(ES) Implementa climbStairs(int $n): int. Pista: es Fibonacci disfrazado.",
+        instructions: {
+          es: "Implementa climbStairs(int $n): int. Puedes subir 1 o 2 peldaños a la vez: ¿de cuántas formas distintas subes n peldaños? Pista: es Fibonacci disfrazado.",
+          en: "You can climb 1 or 2 steps at a time. In how many distinct ways can you climb n steps? Implement climbStairs(int $n): int. Hint: it's Fibonacci in disguise.",
+        },
         starter_code:
           "<?php\n\nfunction climbStairs(int $n): int {\n    // Dos variables bastan: no hace falta un array\n}\n",
         hints: [
-          "Para llegar al peldaño n vienes del n-1 (paso de 1) o del n-2 (paso de 2): formas(n) = formas(n-1) + formas(n-2).",
-          "No necesitas guardar todo el array: con dos variables basta y el espacio queda en O(1).",
-          "$a = 1; $b = 1; y en cada vuelta: [$a, $b] = [$b, $a + $b];",
+          { es: "Para llegar al peldaño n vienes del n-1 (paso de 1) o del n-2 (paso de 2): formas(n) = formas(n-1) + formas(n-2).", en: "To reach step n you come from n-1 (a 1-step) or n-2 (a 2-step): ways(n) = ways(n-1) + ways(n-2)." },
+          { es: "No necesitas guardar todo el array: con dos variables basta y el espacio queda en O(1).", en: "You don't need the whole array: two variables suffice and space stays O(1)." },
+          { es: "$a = 1; $b = 1; y en cada vuelta: [$a, $b] = [$b, $a + $b];", en: "$a = 1; $b = 1; and each round: [$a, $b] = [$b, $a + $b];" },
         ],
         test_cases: [
-          { input: "climbStairs(1)", expected: 1, description: "Un peldaño, una forma" },
-          { input: "climbStairs(2)", expected: 2, description: "1+1 o 2" },
-          { input: "climbStairs(3)", expected: 3, description: "1+1+1, 1+2 o 2+1" },
-          { input: "climbStairs(5)", expected: 8, description: "Fibonacci disfrazado" },
+          { input: "climbStairs(1)", expected: 1, description: { es: "Un peldaño, una forma", en: "One step, one way" } },
+          { input: "climbStairs(2)", expected: 2, description: "1+1, 2" },
+          { input: "climbStairs(3)", expected: 3, description: "1+1+1, 1+2, 2+1" },
+          { input: "climbStairs(5)", expected: 8, description: { es: "Fibonacci disfrazado", en: "Fibonacci in disguise" } },
         ],
       },
     },
