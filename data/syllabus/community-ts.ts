@@ -968,3 +968,240 @@ export const SYL_TS_COMMUNITY_4: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre clases tipadas. */
+const Q_CLASS_FIELD = {
+  question: P(
+    "¿Cómo se declara en una clase un campo `calor` de tipo number con valor inicial 100?",
+    "How do you declare in a class a field `calor` of type number with initial value 100?",
+  ),
+  options: [
+    P("calor: number = 100;", "calor: number = 100;"),
+    P("number calor = 100;", "number calor = 100;"),
+    P("let calor: number = 100;", "let calor: number = 100;"),
+    P("calor = number(100);", "calor = number(100);"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Dentro de una clase el campo se declara como `nombre: tipo = valor`, sin `let`/`const`. TS también infiere el tipo del valor inicial, pero anotarlo documenta la intención.",
+    "Inside a class the field is declared as `name: type = value`, without `let`/`const`. TS also infers the type from the initial value, but annotating it documents intent.",
+  ),
+};
+const Q_ACCESS = {
+  question: P(
+    "¿Qué hace el modificador `private` en un campo de clase de TypeScript?",
+    "What does the `private` modifier do on a TypeScript class field?",
+  ),
+  options: [
+    P("Impide acceder al campo desde fuera de la clase (en tiempo de compilación)", "It prevents accessing the field from outside the class (at compile time)"),
+    P("Lo hace inmutable", "It makes it immutable"),
+    P("Lo comparte entre instancias", "It shares it across instances"),
+    P("Lo borra al transpilar el valor", "It deletes its value on transpile"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`private` restringe el acceso a la propia clase, comprobado al COMPILAR. Como los tipos, se borra al transpilar: en el JS resultante el campo sigue siendo accesible. Para privacidad real en runtime, usa `#campo`.",
+    "`private` restricts access to the class itself, checked at COMPILE time. Like types, it's erased on transpile: in the resulting JS the field is still accessible. For real runtime privacy, use `#field`.",
+  ),
+};
+const Q_PARAM_PROP = {
+  question: P(
+    "¿Qué hace `constructor(public readonly nombre: string) {}`?",
+    "What does `constructor(public readonly nombre: string) {}` do?",
+  ),
+  options: [
+    P("Declara Y asigna el campo `nombre` automáticamente (propiedad de parámetro)", "It declares AND assigns the field `nombre` automatically (parameter property)"),
+    P("Sólo recibe un argumento, sin guardarlo", "It only receives an argument, without storing it"),
+    P("Crea una variable local `nombre`", "It creates a local variable `nombre`"),
+    P("Es un error de sintaxis", "It's a syntax error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Poner un modificador (`public`/`private`/`readonly`) en un parámetro del constructor crea el campo y lo asigna solo, sin escribir `this.nombre = nombre`. Es azúcar de TypeScript que ahorra el boilerplate más repetido.",
+    "Putting a modifier (`public`/`private`/`readonly`) on a constructor parameter creates the field and assigns it for you, without writing `this.nombre = nombre`. It's TypeScript sugar that saves the most repeated boilerplate.",
+  ),
+};
+const Q_READONLY_TS = {
+  question: P(
+    "¿Qué garantiza `readonly` en una propiedad de clase de TypeScript?",
+    "What does `readonly` guarantee on a TypeScript class property?",
+  ),
+  options: [
+    P("Que el compilador impide reasignarla tras el constructor (no en runtime)", "That the compiler prevents reassigning it after the constructor (not at runtime)"),
+    P("Que nadie puede leerla", "That no one can read it"),
+    P("Que se comparte entre instancias", "That it's shared across instances"),
+    P("Que lanza un error si la tocas en ejecución", "That it throws an error if you touch it at runtime"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`readonly` es una comprobación de COMPILACIÓN: TS marca error si reasignas la propiedad fuera del constructor. Pero desaparece al transpilar, así que en runtime el JS no lo impide (a diferencia del `readonly` de PHP, que sí lanza).",
+    "`readonly` is a COMPILE-time check: TS flags an error if you reassign the property outside the constructor. But it vanishes on transpile, so at runtime the JS doesn't prevent it (unlike PHP's `readonly`, which does throw).",
+  ),
+};
+const Q_CLASS_IMPL = {
+  question: P(
+    "¿Qué significa `class Espada implements Arma`?",
+    "What does `class Espada implements Arma` mean?",
+  ),
+  options: [
+    P("Espada se compromete a tener todo lo que declara la interfaz Arma", "Espada commits to having everything the interface Arma declares"),
+    P("Espada hereda el código de Arma", "Espada inherits Arma's code"),
+    P("Arma es una clase base", "Arma is a base class"),
+    P("Crea una instancia de Arma", "It creates an instance of Arma"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`implements` obliga a la clase a cumplir la FORMA de la interfaz: si falta un método o un campo, TS avisa. No aporta código (eso es `extends`); sólo verifica el contrato. Una clase puede implementar varias interfaces.",
+    "`implements` forces the class to satisfy the interface's SHAPE: if a method or field is missing, TS warns. It provides no code (that's `extends`); it only verifies the contract. A class can implement several interfaces.",
+  ),
+};
+const Q_STATIC_TS = {
+  question: P(
+    "`static readonly UMBRAL = 20` dentro de una clase `Nieve`. ¿Cómo lo lees?",
+    "`static readonly UMBRAL = 20` inside a class `Nieve`. How do you read it?",
+  ),
+  options: [
+    P("Nieve.UMBRAL", "Nieve.UMBRAL"),
+    P("this.UMBRAL", "this.UMBRAL"),
+    P("new Nieve().UMBRAL", "new Nieve().UMBRAL"),
+    P("UMBRAL", "UMBRAL"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`static` pertenece a la CLASE, no a la instancia: se lee con `Nieve.UMBRAL`. `readonly` le añade que no se reasigna. Es la forma típica de una constante ligada a la clase.",
+    "`static` belongs to the CLASS, not the instance: read it with `Nieve.UMBRAL`. `readonly` adds that it isn't reassigned. It's the typical form of a class-bound constant.",
+  ),
+};
+
+/** Capítulo 5 · Clases tipadas: campos, readonly, acceso y propiedades de parámetro. */
+export const SYL_TS_COMMUNITY_5: Syllabus = {
+  c5_crebain: { kind: "battle", questions: [Q_CLASS_FIELD, Q_PARAM_PROP, Q_READONLY_TS] },
+  c5_lobo_nieve: { kind: "battle", questions: [Q_ACCESS, Q_STATIC_TS, Q_CLASS_FIELD] },
+  c5_jefe_caradhras: { kind: "battle", questions: [Q_PARAM_PROP, Q_READONLY_TS, Q_CLASS_IMPL, Q_ACCESS] },
+  c5_trasgo_montanes: { kind: "battle", questions: [Q_STATIC_TS, Q_CLASS_IMPL, Q_PARAM_PROP] },
+  pergamino_hielo: {
+    kind: "scroll",
+    title: P("El Pergamino del Hielo Tipado", "The Scroll of Typed Ice"),
+    lore_intro: P(
+      "Gandalf resguarda un pergamino: enseña a moldear objetos con clases donde cada campo declara su tipo, su acceso y si puede cambiar.",
+      "Gandalf shelters a scroll: it teaches how to shape objects with classes where each field declares its type, its access and whether it can change.",
+    ),
+    scroll: {
+      topic: P("Clases tipadas: campos, acceso y readonly", "Typed classes: fields, access and readonly"),
+      sections: [
+        {
+          heading: P("Campos con tipo y modificadores", "Typed fields and modifiers"),
+          body: P(
+            "Dentro de una clase, cada campo declara su tipo: `calor: number = 100`. Los modificadores `public` / `private` controlan el acceso (comprobado al compilar; se borra en runtime — para privacidad real, `#campo`).",
+            "Inside a class, each field declares its type: `calor: number = 100`. The `public` / `private` modifiers control access (checked at compile time; erased at runtime — for real privacy, `#field`).",
+          ),
+          code:
+            "class Resistencia {\n  private calor: number = 100;\n  getCalor(): number { return this.calor; }\n}",
+        },
+        {
+          heading: P("Propiedades de parámetro y readonly", "Parameter properties and readonly"),
+          body: P(
+            "Un modificador en un parámetro del constructor crea y asigna el campo solo, sin `this.x = x`. `readonly` impide reasignarlo tras el constructor (comprobación de compilación).",
+            "A modifier on a constructor parameter creates and assigns the field for you, without `this.x = x`. `readonly` prevents reassigning it after the constructor (a compile-time check).",
+          ),
+          code:
+            "class Provision {\n  constructor(\n    public readonly nombre: string,\n    public readonly peso: number,\n  ) {}\n}\nnew Provision('lembas', 5).nombre; // 'lembas'",
+        },
+        {
+          heading: P("static, implements e inmutabilidad", "static, implements and immutability"),
+          body: P(
+            "`static readonly UMBRAL = 20` es una constante de la clase (se lee `Clase.UMBRAL`). `implements` obliga a cumplir una interfaz. Como `readonly` no protege en runtime, para «cambiar» un valor inmutable se devuelve una instancia nueva.",
+            "`static readonly UMBRAL = 20` is a class constant (read as `Class.UMBRAL`). `implements` forces satisfying an interface. Since `readonly` doesn't protect at runtime, to \"change\" an immutable value you return a new instance.",
+          ),
+          code:
+            "class Temperatura {\n  constructor(public readonly grados: number) {}\n  conMas(g: number): Temperatura {\n    return new Temperatura(this.grados + g);\n  }\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "Campos con `nombre: tipo`; `public`/`private` para el acceso; propiedades de parámetro para ahorrar boilerplate; `readonly` y `private` son de compilación (para privacidad real, `#`). `static` liga a la clase; «cambiar» un inmutable = nueva instancia.",
+        "Fields as `name: type`; `public`/`private` for access; parameter properties to save boilerplate; `readonly` and `private` are compile-time (for real privacy, `#`). `static` binds to the class; \"changing\" an immutable = new instance.",
+      ),
+    },
+  },
+  carga_de_bill: {
+    kind: "challenge",
+    title: P("La Carga de Bill el Poney", "Bill the Pony's Load"),
+    lore_intro: P(
+      "Una provisión es lo que es: su nombre y su peso se fijan al crearla. Decláralos con una propiedad de parámetro readonly.",
+      "A provision is what it is: its name and weight are set on creation. Declare them with a readonly parameter property.",
+    ),
+    challenge: {
+      topic: P("Propiedades de parámetro y readonly", "Parameter properties and readonly"),
+      instructions: P(
+        "Crea `class Provision` cuyo constructor use propiedades de parámetro `public readonly nombre: string` y `public readonly peso: number` (sin escribir `this.x = x`).\n\nEjemplo: `new Provision('lembas', 5).nombre` → `'lembas'`.",
+        "Create `class Provision` whose constructor uses parameter properties `public readonly nombre: string` and `public readonly peso: number` (without writing `this.x = x`).\n\nExample: `new Provision('lembas', 5).nombre` → `'lembas'`.",
+      ),
+      starter_code:
+        "class Provision {\n  constructor(\n    // public readonly nombre: string, public readonly peso: number\n  ) {}\n}\n",
+      hints: [
+        P("Pon los modificadores en los parámetros: `constructor(public readonly nombre: string, public readonly peso: number) {}`.", "Put the modifiers on the parameters: `constructor(public readonly nombre: string, public readonly peso: number) {}`."),
+        P("No necesitas cuerpo en el constructor: TS crea y asigna los campos.", "No constructor body needed: TS creates and assigns the fields."),
+      ],
+      test_cases: [
+        { input: "new Provision('lembas', 5).nombre", expected: "lembas", description: P("El nombre queda fijado", "The name is set"), raw: true },
+        { input: "new Provision('lembas', 5).peso", expected: 5, description: P("Y el peso", "And the weight"), raw: true },
+        { input: "new Provision('cuerda', 2).peso", expected: 2, description: P("Con otros valores", "With other values"), raw: true },
+      ],
+    },
+  },
+  resistencia_comunidad: {
+    kind: "challenge",
+    title: P("La Resistencia de la Comunidad", "The Fellowship's Endurance"),
+    lore_intro: P(
+      "Vigila el calor de la Comunidad con un campo privado tipado y una constante de clase, sin bajar nunca de 0.",
+      "Guard the Fellowship's warmth with a typed private field and a class constant, never dropping below 0.",
+    ),
+    challenge: {
+      topic: P("Campos privados, static y métodos tipados", "Private fields, static and typed methods"),
+      instructions: P(
+        "Crea `class ResistenciaComunidad` con `static readonly UMBRAL = 20` y un campo `private calor: number = 100`. Añade:\n• `getCalor(): number`,\n• `enfriar(g: number): void` que reste sin bajar de 0 (`Math.max`),\n• `estaCongelada(): boolean` que devuelva true cuando el calor sea ≤ UMBRAL.",
+        "Create `class ResistenciaComunidad` with `static readonly UMBRAL = 20` and a field `private calor: number = 100`. Add:\n• `getCalor(): number`,\n• `enfriar(g: number): void` that subtracts without going below 0 (`Math.max`),\n• `estaCongelada(): boolean` returning true when warmth is ≤ UMBRAL.",
+      ),
+      starter_code:
+        "class ResistenciaComunidad {\n  static readonly UMBRAL = 20;\n  private calor: number = 100;\n\n  getCalor(): number {\n    // ...\n  }\n  enfriar(g: number): void {\n    // Math.max(0, ...)\n  }\n  estaCongelada(): boolean {\n    // ...\n  }\n}\n",
+      hints: [
+        P("Resta acotada: `this.calor = Math.max(0, this.calor - g);`.", "Clamped subtraction: `this.calor = Math.max(0, this.calor - g);`."),
+        P("La constante se lee por la clase: `this.calor <= ResistenciaComunidad.UMBRAL`.", "Read the constant via the class: `this.calor <= ResistenciaComunidad.UMBRAL`."),
+      ],
+      test_cases: [
+        { input: "new ResistenciaComunidad().getCalor()", expected: 100, description: P("Empieza intacta", "Starts intact"), raw: true },
+        { input: "new ResistenciaComunidad().estaCongelada()", expected: false, description: P("No congelada al inicio", "Not frozen at first"), raw: true },
+        { input: "(() => { const r = new ResistenciaComunidad(); r.enfriar(50); return r.getCalor(); })()", expected: 50, description: P("Baja a 50", "Drops to 50"), raw: true },
+        { input: "(() => { const r = new ResistenciaComunidad(); r.enfriar(500); return r.getCalor(); })()", expected: 0, description: P("Nunca baja de 0", "Never below 0"), raw: true },
+        { input: "(() => { const r = new ResistenciaComunidad(); r.enfriar(90); return r.estaCongelada(); })()", expected: true, description: P("Con 10 (≤ 20) se congela", "At 10 (≤ 20) it freezes"), raw: true },
+      ],
+    },
+  },
+  temperatura_montana: {
+    kind: "challenge",
+    title: P("El Umbral de la Nieve", "The Snow Threshold"),
+    lore_intro: P(
+      "Una medida no se altera: si el frío cambia, es OTRA medida. Un objeto de valor tipado que devuelve una instancia nueva.",
+      "A measurement isn't altered: if the cold changes, it's ANOTHER measurement. A typed value object that returns a new instance.",
+    ),
+    challenge: {
+      topic: P("Objetos de valor tipados", "Typed value objects"),
+      instructions: P(
+        "Crea `class Temperatura` con `public readonly grados: number` (propiedad de parámetro). El constructor debe lanzar un `Error` si `grados` está fuera de -40..40. Añade `conMas(g: number): Temperatura` que devuelva una INSTANCIA NUEVA con los grados sumados.\n\nEjemplo: `new Temperatura(-10).conMas(-5).grados` → `-15`.",
+        "Create `class Temperatura` with `public readonly grados: number` (parameter property). The constructor must throw an `Error` if `grados` is outside -40..40. Add `conMas(g: number): Temperatura` returning a NEW INSTANCE with the added degrees.\n\nExample: `new Temperatura(-10).conMas(-5).grados` → `-15`.",
+      ),
+      starter_code:
+        "class Temperatura {\n  constructor(public readonly grados: number) {\n    // valida -40..40 y lanza si se pasa\n  }\n  conMas(g: number): Temperatura {\n    // devuelve OTRA Temperatura\n  }\n}\n",
+      hints: [
+        P("Valida en el constructor: `if (grados < -40 || grados > 40) throw new Error('rango');`.", "Validate in the constructor: `if (grados < -40 || grados > 40) throw new Error('rango');`."),
+        P("`conMas` no muta: `return new Temperatura(this.grados + g);`.", "`conMas` doesn't mutate: `return new Temperatura(this.grados + g);`."),
+      ],
+      test_cases: [
+        { input: "new Temperatura(-10).grados", expected: -10, description: P("La de partida", "The starting one"), raw: true },
+        { input: "new Temperatura(-10).conMas(-5).grados", expected: -15, description: P("Una más fría", "A colder one"), raw: true },
+        { input: "(() => { const t = new Temperatura(-10); t.conMas(-5); return t.grados; })()", expected: -10, description: P("La original no cambia", "The original doesn't change"), raw: true },
+        { input: "(() => { try { new Temperatura(-100); return false; } catch (e) { return true; } })()", expected: true, description: P("Rechaza fuera de rango", "Rejects out of range"), raw: true },
+      ],
+    },
+  },
+};
