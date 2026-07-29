@@ -1171,3 +1171,271 @@ export const SYL_JS_COMMUNITY_5: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre herencia, polimorfismo e iterables. */
+const Q_EXTENDS = {
+  question: P("¿Qué hace `class Gandalf extends Mago { ... }`?", "What does `class Gandalf extends Mago { ... }` do?"),
+  options: [
+    P("Gandalf hereda las propiedades y métodos de Mago", "Gandalf inherits Mago's properties and methods"),
+    P("Copia el código de Mago en tiempo de compilación", "It copies Mago's code at compile time"),
+    P("Crea una instancia de Mago", "It creates an instance of Mago"),
+    P("Declara una interfaz Mago", "It declares an interface Mago"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`extends` establece herencia: Gandalf ES UN Mago y dispone de todo lo suyo, además de lo que añada. En JS sólo se extiende UNA clase.",
+    "`extends` sets up inheritance: Gandalf IS A Mago and has all of its members, plus whatever it adds. In JS you extend only ONE class.",
+  ),
+};
+const Q_SUPER = {
+  question: P("En el constructor de una subclase, ¿para qué sirve `super(...)`?", "In a subclass constructor, what is `super(...)` for?"),
+  options: [
+    P("Llama al constructor de la clase padre", "It calls the parent class constructor"),
+    P("Crea un objeto global", "It creates a global object"),
+    P("Devuelve la instancia padre", "It returns the parent instance"),
+    P("Borra la clase padre", "It deletes the parent class"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`super(args)` ejecuta el constructor del padre y es OBLIGATORIO antes de usar `this` en la subclase. `super.metodo()` llama a la versión del padre de un método.",
+    "`super(args)` runs the parent's constructor and is REQUIRED before using `this` in the subclass. `super.method()` calls the parent's version of a method.",
+  ),
+};
+const Q_OVERRIDE = {
+  question: P("Una subclase define un método con el mismo nombre que el padre. ¿Qué ocurre?", "A subclass defines a method with the same name as the parent. What happens?"),
+  options: [
+    P("Lo sobrescribe: en esa subclase se usa la versión nueva", "It overrides it: that subclass uses the new version"),
+    P("Da error por nombre duplicado", "It errors on duplicate name"),
+    P("Se ejecutan los dos, uno tras otro", "Both run, one after the other"),
+    P("El del padre gana siempre", "The parent's always wins"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Sobrescribir reemplaza el método para esa subclase. Si aún quieres la lógica del padre, la invocas con `super.metodo()` dentro de la nueva versión.",
+    "Overriding replaces the method for that subclass. If you still want the parent's logic, call it with `super.method()` inside the new version.",
+  ),
+};
+const Q_POLY_JS = {
+  question: P("En JS, ¿qué necesita un objeto para que `horda.reduce((s, e) => s + e.atacar(), 0)` funcione con él?", "In JS, what does an object need for `horda.reduce((s, e) => s + e.atacar(), 0)` to work with it?"),
+  options: [
+    P("Sólo tener un método `atacar()`; su clase da igual (duck typing)", "Just to have an `atacar()` method; its class doesn't matter (duck typing)"),
+    P("Heredar de una clase Enemigo", "To inherit from an Enemigo class"),
+    P("Implementar una interfaz declarada", "To implement a declared interface"),
+    P("Ser del mismo tipo que los demás", "To be the same type as the others"),
+  ],
+  correct: 0,
+  explanation: P(
+    "JS no tiene interfaces: el polimorfismo es por forma («si camina como pato…»). Cualquier objeto con `atacar()` encaja, venga de la clase que venga. La responsabilidad de cumplir el contrato es tuya.",
+    "JS has no interfaces: polymorphism is by shape (\"if it walks like a duck…\"). Any object with `atacar()` fits, whatever class it comes from. Honoring the contract is on you.",
+  ),
+};
+const Q_INSTANCEOF_JS = {
+  question: P("¿Qué comprueba `x instanceof Hechizo`?", "What does `x instanceof Hechizo` check?"),
+  options: [
+    P("Si Hechizo está en la cadena de prototipos de x", "Whether Hechizo is in x's prototype chain"),
+    P("Si x tiene un método hechizo()", "Whether x has a hechizo() method"),
+    P("Si x se llama 'Hechizo'", "Whether x is named 'Hechizo'"),
+    P("Si x es una cadena de texto", "Whether x is a string"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`instanceof` recorre la cadena de prototipos: es `true` para la clase de x y todas sus superclases. Si `PalabraDeMando extends Hechizo`, una instancia suya es `instanceof` de ambas.",
+    "`instanceof` walks the prototype chain: it's `true` for x's class and all its superclasses. If `PalabraDeMando extends Hechizo`, an instance is `instanceof` both.",
+  ),
+};
+const Q_ITER = {
+  question: P("¿Qué hace recorrible con `for...of` (y con `[...x]`) a un objeto?", "What makes an object iterable with `for...of` (and with `[...x]`)?"),
+  options: [
+    P("Definir el método `[Symbol.iterator]()`", "Defining the `[Symbol.iterator]()` method"),
+    P("Tener una propiedad `length`", "Having a `length` property"),
+    P("Heredar de Array", "Inheriting from Array"),
+    P("Ser un objeto literal", "Being an object literal"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El protocolo de iteración: un objeto con `[Symbol.iterator]()` que rinda valores es recorrible por `for...of`, el spread `[...x]` y la desestructuración. Un generador (`function*`) es la forma más fácil de escribirlo.",
+    "The iteration protocol: an object with `[Symbol.iterator]()` yielding values is walkable by `for...of`, spread `[...x]` and destructuring. A generator (`function*`) is the easiest way to write it.",
+  ),
+};
+const Q_GEN = {
+  question: P("¿Qué hace `yield` dentro de una función generadora `function*`?", "What does `yield` do inside a generator `function*`?"),
+  options: [
+    P("Produce un valor y pausa la función hasta que se pida el siguiente", "Produces a value and pauses the function until the next is requested"),
+    P("Devuelve y termina la función, como return", "Returns and ends the function, like return"),
+    P("Lanza una excepción", "Throws an exception"),
+    P("Declara una variable", "Declares a variable"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`yield` emite un valor y congela el generador ahí; al pedir el siguiente, retoma justo después. Así se producen secuencias perezosas sin construir toda la lista. `yield*` delega en otro iterable.",
+    "`yield` emits a value and freezes the generator there; requesting the next resumes right after. This yields lazy sequences without building the whole list. `yield*` delegates to another iterable.",
+  ),
+};
+
+/** Capítulo 6 · Herencia (extends/super), polimorfismo (duck typing) e iterables. */
+export const SYL_JS_COMMUNITY_6: Syllabus = {
+  c6_trasgo_explorador: { kind: "battle", questions: [Q_POLY_JS, Q_EXTENDS, Q_OVERRIDE] },
+  c6_trol_cavernas: { kind: "battle", questions: [Q_SUPER, Q_INSTANCEOF_JS, Q_POLY_JS] },
+  c6_capitan_trasgo: { kind: "battle", questions: [Q_OVERRIDE, Q_EXTENDS, Q_SUPER] },
+  c6_jefe_balrog: { kind: "battle", questions: [Q_ITER, Q_GEN, Q_POLY_JS, Q_INSTANCEOF_JS] },
+  pergamino_contratos: {
+    kind: "scroll",
+    title: P("El Pergamino de los Contratos", "The Scroll of Contracts"),
+    lore_intro: P(
+      "Gandalf despliega un pergamino de runas. «No preguntes de qué está hecha una cosa. Pregunta qué sabe hacer.»",
+      "Gandalf unrolls a scroll of runes. \"Don't ask what a thing is made of. Ask what it can do.\"",
+    ),
+    scroll: {
+      topic: P("Herencia, polimorfismo e iterables", "Inheritance, polymorphism and iterables"),
+      sections: [
+        {
+          heading: P("extends y super", "extends and super"),
+          body: P(
+            "Una subclase hereda con `extends` y llama al padre con `super`: `super(...)` a su constructor, `super.metodo()` a su método. Sobrescribir es redefinir un método heredado.",
+            "A subclass inherits with `extends` and calls the parent with `super`: `super(...)` for its constructor, `super.method()` for its method. Overriding is redefining an inherited method.",
+          ),
+          code: "class Hechizo {\n  constructor(nombre) { this.nombre = nombre; }\n  describir() { return `Hechizo: ${this.nombre}`; }\n}\nclass PalabraDeMando extends Hechizo {\n  constructor() { super('Palabra de Mando'); }\n}",
+        },
+        {
+          heading: P("Polimorfismo por forma (duck typing)", "Polymorphism by shape (duck typing)"),
+          body: P(
+            "JS no tiene interfaces: si un objeto tiene el método que necesitas, encaja, venga de la clase que venga. El código que los recorre no sabe ni le importa qué son.",
+            "JS has no interfaces: if an object has the method you need, it fits, whatever class it's from. The code walking them doesn't know or care what they are.",
+          ),
+          code: "const danioTotal = (horda) =>\n  horda.reduce((s, e) => s + e.atacar(), 0);\n// funciona con cualquier cosa que tenga atacar()",
+        },
+        {
+          heading: P("Iterables y generadores", "Iterables and generators"),
+          body: P(
+            "Un objeto con `[Symbol.iterator]()` es recorrible por `for...of` y `[...x]`. Un generador (`function*` con `yield`) es la forma más simple de producirlo.",
+            "An object with `[Symbol.iterator]()` is walkable by `for...of` and `[...x]`. A generator (`function*` with `yield`) is the simplest way to produce it.",
+          ),
+          code: "class Galeria {\n  #salas = [];\n  agregar(s) { this.#salas.push(s); return this; }\n  *[Symbol.iterator]() { yield* this.#salas; }\n}\n[...new Galeria().agregar('Mazarbul')]; // ['Mazarbul']",
+        },
+      ],
+      keyTakeaway: P(
+        "extends + super comparten y amplían comportamiento; el polimorfismo en JS es por forma, no por tipo declarado; y `[Symbol.iterator]` (con generadores) hace recorrible cualquier objeto.",
+        "extends + super share and extend behavior; polymorphism in JS is by shape, not declared type; and `[Symbol.iterator]` (with generators) makes any object iterable.",
+      ),
+    },
+  },
+  puertas_de_durin: {
+    kind: "challenge",
+    title: P("Las Puertas de Durin", "The Doors of Durin"),
+    lore_intro: P(
+      "«Habla, amigo, y entra.» La puerta sólo promete una cosa: reconocer la palabra correcta.",
+      "\"Speak, friend, and enter.\" The door promises just one thing: to recognize the right word.",
+    ),
+    challenge: {
+      topic: P("Clases y método (contrato por convención)", "Classes and method (contract by convention)"),
+      instructions: P(
+        "Crea la clase `PuertaDurin` con el método `susurrarPalabra(palabra)` que devuelva `true` SÓLO con la palabra élfica 'mellon' (amigo), sin distinguir mayúsculas.\n\nEjemplo: `susurrarPalabra('Mellon')` → `true`.",
+        "Create class `PuertaDurin` with method `susurrarPalabra(palabra)` returning `true` ONLY for the Elvish word 'mellon' (friend), case-insensitive.\n\nExample: `susurrarPalabra('Mellon')` → `true`.",
+      ),
+      sut: "new PuertaDurin()",
+      starter_code:
+        "class PuertaDurin {\n  susurrarPalabra(palabra) {\n    // true sólo con 'mellon', sin importar mayúsculas\n  }\n}\n",
+      hints: [
+        P("Normaliza a minúsculas: `palabra.toLowerCase()`.", "Normalize to lowercase: `palabra.toLowerCase()`."),
+        P("Compara: `return palabra.toLowerCase() === 'mellon';`.", "Compare: `return palabra.toLowerCase() === 'mellon';`."),
+      ],
+      test_cases: [
+        { input: "susurrarPalabra('Mellon')", expected: true, description: P("La palabra élfica abre la puerta", "The Elvish word opens the door") },
+        { input: "susurrarPalabra('mellon')", expected: true, description: P("No distingue mayúsculas", "Case-insensitive") },
+        { input: "susurrarPalabra('Amigo')", expected: false, description: P("En castellano no funciona", "In Spanish it doesn't work") },
+      ],
+    },
+  },
+  camara_mazarbul: {
+    kind: "challenge",
+    title: P("La Cámara de Mazarbul", "The Chamber of Mazarbul"),
+    lore_intro: P(
+      "Trasgos y un troll irrumpen a la vez: distintas criaturas, un mismo gesto — todas atacan. El código que suma su daño no sabe qué son.",
+      "Goblins and a troll burst in at once: different creatures, one same gesture — they all attack. The code summing their damage doesn't know what they are.",
+    ),
+    challenge: {
+      topic: P("Polimorfismo (duck typing)", "Polymorphism (duck typing)"),
+      instructions: P(
+        "Existe `Camara.danioTotal(horda)`, que suma el `atacar()` de cada enemigo. Crea DOS clases con métodos `nombre()` y `atacar()`: `Trasgo` (nombre 'Trasgo', ataque 5) y `Troll` (nombre 'Troll', ataque 20).",
+        "There's `Camara.danioTotal(horda)`, summing each enemy's `atacar()`. Create TWO classes with methods `nombre()` and `atacar()`: `Trasgo` (name 'Trasgo', attack 5) and `Troll` (name 'Troll', attack 20).",
+      ),
+      support_code:
+        "const Camara = {\n  danioTotal(horda) {\n    return horda.reduce((s, e) => s + e.atacar(), 0);\n  },\n};",
+      starter_code:
+        "// Camara.danioTotal(horda) ya existe.\n\nclass Trasgo {\n  // nombre() y atacar()\n}\n\nclass Troll {\n  // nombre() y atacar()\n}\n",
+      hints: [
+        P("Cada clase define los dos métodos: `nombre()` devuelve el texto, `atacar()` el número.", "Each class defines both methods: `nombre()` returns the text, `atacar()` the number."),
+        P("`Camara.danioTotal` no sabe si son trasgos o trolls: eso es polimorfismo por forma.", "`Camara.danioTotal` doesn't know if they're goblins or trolls: that's polymorphism by shape."),
+      ],
+      test_cases: [
+        { input: "new Trasgo().nombre()", expected: "Trasgo", description: P("El trasgo se identifica", "The goblin identifies itself"), raw: true },
+        { input: "new Trasgo().atacar()", expected: 5, description: P("El trasgo golpea flojo", "The goblin hits soft"), raw: true },
+        { input: "new Troll().atacar()", expected: 20, description: P("El troll golpea fuerte", "The troll hits hard"), raw: true },
+        { input: "Camara.danioTotal([new Trasgo(), new Trasgo(), new Troll()])", expected: 30, description: P("La misma función suma la horda mezclada", "The same function sums the mixed horde"), raw: true },
+      ],
+    },
+  },
+  puente_khazad_dum: {
+    kind: "challenge",
+    title: P("El Puente de Khazad-dûm", "The Bridge of Khazad-dûm"),
+    lore_intro: P(
+      "Gandalf alza a Glamdring sobre el puente estrecho. Un hechizo hereda del linaje de la magia y añade lo suyo.",
+      "Gandalf raises Glamdring over the narrow bridge. A spell inherits from the lineage of magic and adds its own.",
+    ),
+    challenge: {
+      topic: P("Herencia: extends y super", "Inheritance: extends and super"),
+      instructions: P(
+        "Existe la clase base `Hechizo` (constructor `nombre`, método `describir()`), la clase `Puente` (con `roto`) y `Gandalf`, que ejecuta cualquier hechizo. Crea `PalabraDeMando extends Hechizo`:\n• su `constructor()` debe llamar a `super('Palabra de Mando')`,\n• su método `lanzar(puente)` pone `puente.roto = true` y devuelve exactamente '¡No puedes pasar!'.",
+        "There's a base class `Hechizo` (constructor `nombre`, method `describir()`), a class `Puente` (with `roto`) and `Gandalf`, which executes any spell. Create `PalabraDeMando extends Hechizo`:\n• its `constructor()` must call `super('Palabra de Mando')`,\n• its method `lanzar(puente)` sets `puente.roto = true` and returns exactly '¡No puedes pasar!'.",
+      ),
+      support_code:
+        "class Puente {\n  constructor() { this.roto = false; }\n}\nclass Hechizo {\n  constructor(nombre) { this.nombre = nombre; }\n  describir() { return `Hechizo: ${this.nombre}`; }\n  lanzar(puente) { return 'nada ocurre'; }\n}\nconst Gandalf = {\n  ejecutar(hechizo, puente) { return hechizo.lanzar(puente); },\n};",
+      starter_code:
+        "// Hechizo (base), Puente y Gandalf ya existen.\n\nclass PalabraDeMando extends Hechizo {\n  // constructor() con super(...), y lanzar(puente)\n}\n",
+      hints: [
+        P("En el constructor, primero: `super('Palabra de Mando');`.", "In the constructor, first: `super('Palabra de Mando');`."),
+        P("`lanzar` modifica el puente: `puente.roto = true;` y `return '¡No puedes pasar!';`.", "`lanzar` modifies the bridge: `puente.roto = true;` then `return '¡No puedes pasar!';`."),
+      ],
+      test_cases: [
+        { input: "Gandalf.ejecutar(new PalabraDeMando(), new Puente())", expected: "¡No puedes pasar!", description: P("Gandalf ejecuta el hechizo", "Gandalf casts the spell"), raw: true },
+        {
+          input: "(() => { const p = new Puente(); Gandalf.ejecutar(new PalabraDeMando(), p); return p.roto; })()",
+          raw: true,
+          expected: true,
+          description: P("El puente se quiebra bajo el Balrog", "The bridge breaks under the Balrog"),
+        },
+        { input: "new PalabraDeMando().describir()", expected: "Hechizo: Palabra de Mando", description: P("describir() se HEREDA del padre vía super", "describir() is INHERITED from the parent via super"), raw: true },
+        { input: "new PalabraDeMando() instanceof Hechizo", expected: true, description: P("Es un Hechizo por herencia", "It's a Hechizo by inheritance"), raw: true },
+      ],
+    },
+  },
+  c6_galeria_de_mazarbul: {
+    kind: "challenge",
+    title: P("La galería sin fin", "The endless gallery"),
+    lore_intro: P(
+      "Las salas de Khazad-dûm se encadenan en la oscuridad. Quien lleve su registro debe poder recorrerlas con un simple for...of — eso es un iterable.",
+      "The halls of Khazad-dûm chain together in the dark. Whoever keeps their record must walk them with a simple for...of — that's an iterable.",
+    ),
+    challenge: {
+      topic: P("Iterables y generadores (Symbol.iterator)", "Iterables and generators (Symbol.iterator)"),
+      instructions: P(
+        "Crea la clase `Galeria` con las salas en un campo PRIVADO `#salas`:\n• `agregar(sala)` — añade la sala y devuelve `this` (interfaz fluida),\n• `*[Symbol.iterator]()` — un generador que rinde las salas en orden con `yield*`,\n• el getter `tamano` — cuántas salas hay.\n\nAsí `[...galeria]` y `for...of` la recorren.",
+        "Create class `Galeria` with the halls in a PRIVATE field `#salas`:\n• `agregar(sala)` — adds the hall and returns `this` (fluent interface),\n• `*[Symbol.iterator]()` — a generator yielding the halls in order with `yield*`,\n• the getter `tamano` — how many halls there are.\n\nThen `[...galeria]` and `for...of` walk it.",
+      ),
+      starter_code:
+        "class Galeria {\n  #salas = [];\n\n  agregar(sala) {\n    // añade y devuelve this\n  }\n\n  *[Symbol.iterator]() {\n    // yield* las salas\n  }\n\n  get tamano() {\n    // cuántas salas\n  }\n}\n",
+      hints: [
+        P("Fluida: al final de `agregar`, `return this;`.", "Fluent: at the end of `agregar`, `return this;`."),
+        P("El generador delega: `yield* this.#salas;`.", "The generator delegates: `yield* this.#salas;`."),
+        P("`tamano` devuelve `this.#salas.length`.", "`tamano` returns `this.#salas.length`."),
+      ],
+      test_cases: [
+        { input: "[...new Galeria().agregar('Mazarbul').agregar('Puente')]", expected: ["Mazarbul", "Puente"], description: P("Se recorre con spread, en orden", "Walkable with spread, in order"), raw: true },
+        { input: "new Galeria().agregar('a').agregar('b').agregar('c').tamano", expected: 3, description: P("tamano cuenta las salas", "tamano counts the halls"), raw: true },
+        { input: "new Galeria().tamano", expected: 0, description: P("Una galería vacía", "An empty gallery"), raw: true },
+        { input: "new Galeria().agregar('x') instanceof Galeria", expected: true, description: P("agregar() es fluida: devuelve la galería", "agregar() is fluent: returns the gallery"), raw: true },
+        { input: "typeof new Galeria()[Symbol.iterator]", expected: "function", description: P("Es iterable de verdad", "It's truly iterable"), raw: true },
+      ],
+    },
+  },
+};

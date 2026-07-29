@@ -1476,3 +1476,356 @@ $p->peso = 99; // ❌ Error: Cannot modify readonly property`,
     },
   },
 };
+
+/** Capítulo 6 · Interfaces, polimorfismo, patrón Command e iteradores. */
+export const SYL_PHP_COMMUNITY_6: Syllabus = {
+  c6_trasgo_explorador: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Qué es una interfaz en PHP?",
+        options: [
+          "Un contrato de métodos que una clase se compromete a implementar",
+          "Una clase que no se puede instanciar pero tiene código",
+          "Una propiedad compartida por varias clases",
+          "Un tipo de método estático",
+        ],
+        correct: 0,
+        explanation:
+          "Una interfaz declara QUÉ métodos deben existir, sin decir CÓMO. No trae implementación (a diferencia de una clase abstracta). Quien la implementa se obliga a escribir todos sus métodos: es una promesa que el compilador hace cumplir.",
+      },
+      {
+        question: "¿Con qué palabra clave una clase adopta una interfaz?",
+        options: ["implements", "extends", "uses", "interface"],
+        correct: 0,
+        explanation:
+          "`class Espada implements Arma`. `extends` es para heredar de una clase; `use` es para traits. Una clase puede `implements` varias interfaces a la vez (separadas por comas), aunque sólo pueda `extends` una clase.",
+      },
+      {
+        question:
+          "Si una clase declara `implements Arma` pero le falta un método de esa interfaz, ¿qué ocurre?",
+        options: [
+          "Error fatal: la clase no compila hasta implementarlo",
+          "Se ejecuta, pero el método devuelve null",
+          "Nada: la interfaz es sólo documentación",
+          "PHP crea el método vacío automáticamente",
+        ],
+        correct: 0,
+        explanation:
+          "La interfaz es un contrato que PHP verifica al cargar la clase: si falta un método, es error fatal inmediato. Esa garantía es justo su valor — sabes que cualquier objeto de tipo `Arma` responde a todos los métodos de `Arma`, sin excepción.",
+      },
+    ],
+  },
+  c6_trol_cavernas: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Qué es el polimorfismo?",
+        options: [
+          "Tratar objetos de clases distintas de forma uniforme si comparten un tipo",
+          "Que una clase tenga muchos métodos",
+          "Heredar de varias clases a la vez",
+          "Cambiar el tipo de una variable en ejecución",
+        ],
+        correct: 0,
+        explanation:
+          "Poli-morfismo = «muchas formas». Si Espada, Hacha y Arco implementan `Arma`, puedes guardarlos todos en un array de `Arma` y llamar `$a->golpe()` sin saber cuál es cada uno: cada objeto responde a su manera. El código que los usa no necesita cambiar cuando añades un arma nueva.",
+      },
+      {
+        question: "Tienes `function atacar(Arma $a)`. ¿Qué objetos acepta?",
+        options: [
+          "Cualquiera cuya clase implemente la interfaz Arma",
+          "Sólo objetos de una clase llamada exactamente Arma",
+          "Cualquier objeto, Arma sólo documenta",
+          "Sólo si Arma es una clase abstracta",
+        ],
+        correct: 0,
+        explanation:
+          "Declarar el parámetro con el tipo de la interfaz acepta CUALQUIER implementación: Espada, Hacha, lo que sea que cumpla el contrato `Arma`. Programas contra la interfaz, no contra la clase concreta — eso es lo que te deja añadir armas nuevas sin tocar `atacar()`.",
+      },
+      {
+        question:
+          "¿Por qué se dice «programa hacia una interfaz, no hacia una implementación»?",
+        options: [
+          "Para depender de lo que algo HACE, no de cómo está hecho: piezas intercambiables",
+          "Porque las interfaces son más rápidas",
+          "Porque así se usa menos memoria",
+          "Porque las clases concretas no se pueden testear",
+        ],
+        correct: 0,
+        explanation:
+          "Si tu código sólo conoce la interfaz `Repositorio`, puedes cambiar la implementación (MySQL por memoria, real por falsa en un test) sin tocar nada más. Depender de la clase concreta te ata a sus detalles. Es la base de la D en SOLID.",
+      },
+    ],
+  },
+  c6_capitan_trasgo: {
+    kind: "battle",
+    questions: [
+      {
+        question: "¿Puede una clase implementar VARIAS interfaces a la vez?",
+        options: [
+          "Sí: implements A, B, C — separadas por comas",
+          "No: sólo una interfaz por clase",
+          "Sí, pero sólo dos como máximo",
+          "Sólo si las interfaces no comparten métodos",
+        ],
+        correct: 0,
+        explanation:
+          "Aquí está la diferencia clave con la herencia: `extends` admite UNA clase, pero `implements` admite tantas interfaces como quieras. Es la forma que tiene PHP de combinar contratos sin los problemas de la herencia múltiple.",
+      },
+      {
+        question:
+          "Una interfaz puede declarar constantes y firmas de métodos. ¿Puede incluir el CUERPO de un método?",
+        options: [
+          "No: sólo la firma; el cuerpo lo pone quien la implementa",
+          "Sí, como una clase normal",
+          "Sí, pero sólo métodos privados",
+          "Sólo si el método es estático",
+        ],
+        correct: 0,
+        explanation:
+          "Una interfaz define el QUÉ, nunca el CÓMO: sus métodos no tienen cuerpo. Si necesitas compartir implementación entre clases, eso es trabajo de una clase abstracta o de un trait, no de una interfaz.",
+      },
+      {
+        question: "`$x instanceof Arma`: ¿cuándo devuelve true?",
+        options: [
+          "Si la clase de $x implementa Arma (directa o heredada)",
+          "Sólo si $x fue creado con new Arma",
+          "Si $x tiene un método llamado arma()",
+          "Nunca: instanceof no funciona con interfaces",
+        ],
+        correct: 0,
+        explanation:
+          "`instanceof` reconoce interfaces igual que clases: si la clase de `$x` (o algún ancestro) implementa `Arma`, es true. Por eso puedes filtrar una colección mixta quedándote sólo con lo que cumple cierto contrato.",
+      },
+    ],
+  },
+  c6_jefe_balrog: {
+    kind: "battle",
+    questions: [
+      {
+        question:
+          "```\ninterface Arma { public function golpe(): int; }\nclass Espada implements Arma { public function golpe(): int { return 10; } }\nclass Hacha  implements Arma { public function golpe(): int { return 15; } }\n$armas = [new Espada(), new Hacha()];\necho array_sum(array_map(fn(Arma $a) => $a->golpe(), $armas));\n```",
+        options: ["25", "10", "15", "Error: tipos distintos en el array"],
+        correct: 0,
+        explanation:
+          "Espada y Hacha son de clases distintas, pero AMBAS son `Arma`. El array las mezcla sin problema y `array_map` llama `golpe()` en cada una: 10 + 15 = 25. Eso es polimorfismo: un mismo código opera sobre formas distintas.",
+      },
+      {
+        question:
+          "Quieres añadir una `Lanza` al juego. Con un buen diseño de interfaces, ¿qué código existente hay que tocar?",
+        options: [
+          "Ninguno: creas Lanza implements Arma y ya funciona en todas partes",
+          "Todos los sitios que reciben un Arma, para añadir el caso Lanza",
+          "La interfaz Arma, para registrar la lanza",
+          "El array de armas y cada bucle que lo recorre",
+        ],
+        correct: 0,
+        explanation:
+          "Ésa es la victoria de programar contra la interfaz: si `Lanza implements Arma`, todo lo que ya trabajaba con `Arma` la acepta sin cambios. Si tuvieras que tocar diez `switch` por tipo, tu diseño estaría pidiendo a gritos una interfaz.",
+      },
+      {
+        question: "¿Cuál es la diferencia entre una interfaz y una clase abstracta?",
+        options: [
+          "La interfaz sólo declara firmas; la abstracta puede traer código y estado",
+          "No hay diferencia práctica",
+          "La interfaz puede instanciarse; la abstracta no",
+          "La abstracta sólo tiene métodos estáticos",
+        ],
+        correct: 0,
+        explanation:
+          "La interfaz es un contrato puro, sin implementación, y una clase puede cumplir muchas. La abstracta puede aportar métodos ya escritos y propiedades, pero sólo se hereda UNA. Regla práctica: interfaz para «puede hacer X», abstracta para «es un tipo de Y con base común».",
+      },
+      {
+        question:
+          "Una interfaz `Contable` exige `contar(): int`. ¿Qué garantiza sobre un objeto de tipo `Contable`?",
+        options: [
+          "Que puedes llamar $obj->contar() y recibir un int, sea cual sea su clase",
+          "Que el objeto tiene una propiedad $contador",
+          "Que el objeto es inmutable",
+          "Que hereda de una clase Contable",
+        ],
+        correct: 0,
+        explanation:
+          "El contrato garantiza el MÉTODO, no cómo lo cumpla cada clase. Uno contará elementos de un array, otro filas de una base de datos: a quien recibe el `Contable` le da igual. Confía en la firma, no en la implementación.",
+      },
+    ],
+  },
+  pergamino_contratos: {
+    kind: "scroll",
+    title: "El Pergamino de los Contratos",
+    lore_intro:
+      "Ante las puertas cerradas, Gandalf despliega un pergamino cubierto de runas. «No preguntes de qué está hecha una cosa. Pregunta qué promete hacer.»",
+    scroll: {
+      topic: "Interfaces y polimorfismo",
+      sections: [
+        {
+          heading: "Una interfaz es un CONTRATO",
+          body: "Una interfaz declara QUÉ métodos debe tener una clase, sin decir cómo. Quien la implementa se compromete a cumplirlos.\n\nA diferencia de la herencia, una clase puede implementar VARIAS interfaces — no está atada a un único padre.",
+          code: `interface Descifrable {
+    public function susurrarPalabra(string $palabra): bool;
+}
+
+class PuertaDurin implements Descifrable {
+    public function susurrarPalabra(string $palabra): bool {
+        return strtolower($palabra) === 'mellon';
+    }
+}`,
+        },
+        {
+          heading: "Polimorfismo: el mismo mensaje, distintas respuestas",
+          body: "Si varias clases cumplen el mismo contrato, tu código puede tratarlas por igual sin saber cuál es cuál. Añadir un tipo nuevo NO obliga a tocar el código que las usa — es Open/Closed en acción.",
+          code: `function danioTotal(array $enemigos): int {
+    $suma = 0;
+    foreach ($enemigos as $e) {
+        $suma += $e->atacar(); // no importa si es Orco o Troll
+    }
+    return $suma;
+}`,
+        },
+        {
+          heading: "Interfaz o clase abstracta",
+          body: "Interfaz = contrato puro, sin implementación ni estado; una clase puede implementar muchas.\nAbstracta = puede traer código y propiedades compartidas, pero sólo se hereda UNA.\n\nRegla práctica: usa interfaz para el «qué», abstracta para compartir el «cómo».",
+        },
+      ],
+      keyTakeaway:
+        "Programa contra la interfaz, no contra la implementación. Es la base del polimorfismo y de la inyección de dependencias.",
+    },
+  },
+  puertas_de_durin: {
+    kind: "challenge",
+    title: "Las Puertas de Durin",
+    lore_intro:
+      "Las runas de ithildin brillan bajo la luz de la luna: «Habla, amigo, y entra.» Gandalf lucha con hechizos de apertura… hasta que Merry hace la pregunta correcta. La puerta sólo promete una cosa: reconocer la palabra.",
+    challenge: {
+      topic: "Interfaces (implements)",
+      instructions:
+        "Implementa la interfaz Descifrable en la clase PuertaDurin. El método susurrarPalabra(string $palabra): bool debe devolver true SOLO con la palabra élfica 'mellon' (amigo), sin distinguir mayúsculas.",
+      sut: "new PuertaDurin()",
+      support_code:
+        "interface Descifrable {\n    public function susurrarPalabra(string $palabra): bool;\n}",
+      starter_code:
+        "<?php\n\n// La interfaz Descifrable ya existe.\n\nclass PuertaDurin {\n    // Implementa el contrato: susurrarPalabra(string $palabra): bool\n}\n",
+      hints: [
+        "Declara que cumples el contrato: class PuertaDurin implements Descifrable",
+        "Para ignorar mayúsculas: strtolower($palabra) === 'mellon'",
+        "Si el nombre o la firma del método no coinciden con la interfaz, PHP lanzará un error fatal.",
+      ],
+      test_cases: [
+        { input: "susurrarPalabra('Mellon')", expected: true, description: "La palabra élfica abre la puerta" },
+        { input: "susurrarPalabra('mellon')", expected: true, description: "No distingue mayúsculas" },
+        { input: "susurrarPalabra('Amigo')", expected: false, description: "En castellano no funciona: hay que decirlo en élfico" },
+        {
+          input: "(new PuertaDurin()) instanceof Descifrable",
+          raw: true,
+          expected: true,
+          description: "La clase debe IMPLEMENTAR el contrato Descifrable",
+        },
+      ],
+    },
+  },
+  camara_mazarbul: {
+    kind: "challenge",
+    title: "La Cámara de Mazarbul",
+    lore_intro:
+      "«Han tomado el puente y la segunda sala.» Tambores en lo profundo. Trasgos y un troll de las cavernas irrumpen a la vez: distintas criaturas, un mismo contrato — todas atacan.",
+    challenge: {
+      topic: "Polimorfismo",
+      instructions:
+        "Existe la interfaz Enemigo (nombre(): string y atacar(): int) y la clase Camara con el método estático danioTotal(). Crea DOS clases que implementen Enemigo: Trasgo, que se llame 'Trasgo' y ataque con 5, y Troll, que se llame 'Troll' y ataque con 20.",
+      support_code:
+        "interface Enemigo {\n    public function nombre(): string;\n    public function atacar(): int;\n}\n\nclass Camara {\n    /** @param Enemigo[] $horda */\n    public static function danioTotal(array $horda): int {\n        return array_sum(array_map(fn(Enemigo $e) => $e->atacar(), $horda));\n    }\n}",
+      starter_code:
+        "<?php\n\n// Enemigo (interfaz) y Camara::danioTotal() ya existen.\n\nclass Trasgo {\n    //\n}\n\nclass Troll {\n    //\n}\n",
+      hints: [
+        "Ambas deben declarar el contrato: class Trasgo implements Enemigo",
+        "Cada una implementa los DOS métodos de la interfaz: nombre() y atacar().",
+        "Fíjate en que Camara::danioTotal() no sabe si le pasas trasgos o trolls: eso es polimorfismo.",
+      ],
+      test_cases: [
+        { input: "(new Trasgo())->nombre()", raw: true, expected: "Trasgo", description: "El trasgo se identifica" },
+        { input: "(new Trasgo())->atacar()", raw: true, expected: 5, description: "El trasgo golpea flojo" },
+        { input: "(new Troll())->atacar()", raw: true, expected: 20, description: "El troll golpea fuerte" },
+        {
+          input: "Camara::danioTotal([new Trasgo(), new Trasgo(), new Troll()])",
+          raw: true,
+          expected: 30,
+          description: "La MISMA función suma la horda mezclada sin saber qué es cada uno",
+        },
+        { input: "(new Troll()) instanceof Enemigo", raw: true, expected: true, description: "Ambas cumplen el contrato Enemigo" },
+      ],
+    },
+  },
+  puente_khazad_dum: {
+    kind: "challenge",
+    title: "El Puente de Khazad-dûm",
+    lore_intro:
+      "Una sombra con alas de oscuridad y una espada de llama. «¡Huid, insensatos!» Gandalf alza a Glamdring sobre el puente estrecho. Un comando mágico es un objeto: quien lo ejecuta no necesita saber qué hechizo es.",
+    challenge: {
+      topic: "Interfaces · patrón Command",
+      instructions:
+        "Existen la interfaz ComandoMagico (lanzar(Puente $p): string), la clase Puente (con $roto) y Gandalf, que ejecuta cualquier comando. Crea PalabraDeMando, que implemente ComandoMagico: al lanzarse debe ROMPER el puente ($p->roto = true) y devolver exactamente '¡No puedes pasar!'.",
+      sut: "new Gandalf()",
+      support_code:
+        "class Puente {\n    public bool $roto = false;\n}\n\ninterface ComandoMagico {\n    public function lanzar(Puente $p): string;\n}\n\nclass Gandalf {\n    public function ejecutar(ComandoMagico $hechizo, Puente $p): string {\n        return $hechizo->lanzar($p);\n    }\n}",
+      starter_code:
+        "<?php\n\n// ComandoMagico (interfaz), Puente y Gandalf ya existen.\n\nclass PalabraDeMando {\n    // Implementa ComandoMagico: rompe el puente y devuelve el grito\n}\n",
+      hints: [
+        "class PalabraDeMando implements ComandoMagico { … }",
+        "Dentro de lanzar() modifica el puente recibido: $p->roto = true;",
+        "Devuelve el texto EXACTO, con signos de apertura y cierre: return '¡No puedes pasar!';",
+      ],
+      test_cases: [
+        {
+          input: "ejecutar(new PalabraDeMando(), new Puente())",
+          expected: "¡No puedes pasar!",
+          description: "Gandalf ejecuta el comando sin saber cuál es",
+        },
+        {
+          input:
+            "(function() { $p = new Puente(); (new Gandalf())->ejecutar(new PalabraDeMando(), $p); return $p->roto; })()",
+          raw: true,
+          expected: true,
+          description: "El puente se quiebra bajo el Balrog",
+        },
+        {
+          input: "(new PalabraDeMando()) instanceof ComandoMagico",
+          raw: true,
+          expected: true,
+          description: "El hechizo cumple el contrato ComandoMagico",
+        },
+      ],
+    },
+  },
+  c6_galeria_de_mazarbul: {
+    kind: "challenge",
+    title: "La galería sin fin",
+    lore_intro:
+      "Las salas de Khazad-dûm se encadenan una tras otra en la oscuridad. Quien lleve su registro debe poder recorrerlas con un simple foreach — eso es un iterador, y la interfaz que lo permite.",
+    challenge: {
+      topic: "Generadores e IteratorAggregate",
+      instructions:
+        "Un generador produce valores de uno en uno con `yield`, sin construir la lista entera. Y un objeto se vuelve recorrible con foreach implementando la interfaz `IteratorAggregate`.\n\n" +
+        "Escribe la clase `Galeria` que implemente `IteratorAggregate` y `Countable`, con las salas en una propiedad PRIVADA:\n" +
+        "• `agregar(string $sala): static` — añade una sala y devuelve `$this` (interfaz fluida).\n" +
+        "• `getIterator(): Generator` — rinde las salas en orden con `yield from`. Una línea.\n" +
+        "• `count(): int` — cuántas salas hay.",
+      starter_code:
+        "<?php\n\nfinal class Galeria implements IteratorAggregate, Countable\n{\n    private array $salas = [];\n\n    public function agregar(string $sala): static\n    {\n        // añade y devuelve $this\n    }\n\n    public function getIterator(): Generator\n    {\n        // yield from ...\n    }\n\n    public function count(): int\n    {\n        //\n    }\n}\n",
+      hints: [
+        "La interfaz fluida es `return $this;` al final del método que modifica.",
+        "`getIterator()` puede ser un generador: `yield from $this->salas;` y ya está.",
+        "`Countable` hace que `count($objeto)` llame a tu método `count()`: devuelve `count($this->salas)`.",
+      ],
+      test_cases: [
+        { input: "iterator_to_array((new Galeria())->agregar('Mazarbul')->agregar('Puente'), false)", expected: ["Mazarbul", "Puente"], description: "Se recorre en orden", raw: true },
+        { input: "count((new Galeria())->agregar('Mazarbul')->agregar('Puente')->agregar('Escalera'))", expected: 3, description: "count() sobre el objeto", raw: true },
+        { input: "count(new Galeria())", expected: 0, description: "Una galería vacía", raw: true },
+        { input: "(new Galeria()) instanceof Traversable", expected: true, description: "Es recorrible de verdad", raw: true },
+        { input: "(new Galeria())->agregar('x') instanceof Galeria", expected: true, description: "agregar() devuelve la galería (fluida)", raw: true },
+        { input: "(new ReflectionMethod('Galeria', 'getIterator'))->isGenerator()", expected: true, description: "getIterator() es un generador, no un array", raw: true },
+        { input: "(new ReflectionProperty('Galeria', 'salas'))->isPrivate()", expected: true, description: "Las salas son privadas", raw: true },
+      ],
+    },
+  },
+};

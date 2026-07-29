@@ -821,3 +821,165 @@ export const NARR_COMMUNITY_5: ChapterNarrative = {
     { node_id: "temperatura_montana", kind: "challenge", position: { x: 20, y: 8 }, spriteId: "aragorn" },
   ],
 };
+
+/** Capítulo 6 · Las Minas de Moria. */
+export const NARR_COMMUNITY_6: ChapterNarrative = {
+  chapter: 6,
+  title: { es: "Las Minas de Moria", en: "The Mines of Moria" },
+  lore: {
+    es: "Khazad-dûm, el reino subterráneo de los Enanos, hoy tomado por los trasgos. Bajo la montaña sólo importa una cosa: qué CONTRATO cumple cada cosa, no de qué está hecha. Y en el puente aguarda el Daño de Durin.",
+    en: "Khazad-dûm, the underground realm of the Dwarves, now overrun by goblins. Under the mountain only one thing matters: what CONTRACT each thing fulfills, not what it's made of. And on the bridge waits Durin's Bane.",
+  },
+  mapSize: { cols: 44, rows: 26 },
+  spawn: { x: 2, y: 7 },
+  xpParaRetos: 160,
+  unlockedBy: 5,
+  companions: ["gandalf", "aragorn", "boromir", "gimli", "legolas", "sam"],
+  scenery: {
+    ground: "darkstone",
+    pathRows: [7],
+    pathGround: "stone",
+    pond: { x: 17, y: 9, w: 6, h: 5 },
+    pondGround: "lava",
+    npcs: [
+      { spriteId: "gollum", x: 12, y: 12, label: { es: "¿…mi tesoro?", en: "…my precious?" } },
+      { spriteId: "esqueleto", x: 6, y: 3, label: { es: "Enano caído", en: "Fallen dwarf" } },
+      { spriteId: "esqueleto", x: 16, y: 11 },
+      { spriteId: "esqueleto", x: 21, y: 3 },
+      { spriteId: "esqueleto", x: 30, y: 18 },
+      { spriteId: "esqueleto", x: 37, y: 4 },
+      { spriteId: "esqueleto", x: 25, y: 9 },
+    ],
+    dialogues: [
+      {
+        x: 7, y: 7, speaker: "gimli", name: { es: "Gimli", en: "Gimli" },
+        text: { es: "¡Esto no es una mina… es una tumba!", en: "This is no mine… it's a tomb!" },
+      },
+      {
+        x: 14, y: 7, speaker: "gandalf", name: { es: "Gandalf", en: "Gandalf" },
+        text: { es: "Los tambores. Vienen de lo profundo.", en: "The drums. They come from the deep." },
+      },
+      {
+        x: 18, y: 7, speaker: "gandalf", name: { es: "Gandalf", en: "Gandalf" },
+        text: { es: "Un Balrog. Este enemigo os supera a todos. ¡Corred!", en: "A Balrog. This foe is beyond any of you. Run!" },
+      },
+    ],
+    decor: [
+      { type: "rock", x: 4, y: 4 },
+      { type: "rock", x: 7, y: 10 },
+      { type: "rock", x: 10, y: 3 },
+      { type: "rock", x: 11, y: 11 },
+      { type: "rock", x: 15, y: 4 },
+      { type: "rock", x: 15, y: 11 },
+      { type: "rock", x: 20, y: 4 },
+      { type: "rock", x: 22, y: 8 },
+      { type: "rock", x: 6, y: 12 },
+      { type: "rock", x: 13, y: 9 },
+      { type: "rock", x: 26, y: 6 },
+      { type: "rock", x: 29, y: 11 },
+      { type: "rock", x: 32, y: 4 },
+      { type: "rock", x: 35, y: 9 },
+      { type: "rock", x: 38, y: 13 },
+      { type: "rock", x: 28, y: 16 },
+      { type: "rock", x: 34, y: 23 },
+      { type: "rock", x: 41, y: 18 },
+      { type: "rock", x: 23, y: 13 },
+      { type: "rock", x: 31, y: 24 },
+    ],
+  },
+  nodes: [
+    {
+      node_id: "c6_trasgo_explorador",
+      kind: "battle",
+      title: { es: "Trasgos en la oscuridad", en: "Goblins in the dark" },
+      lore_intro: {
+        es: "Cientos de ojos amarillos brotan de las grietas de las columnas. El primero salta hacia ti con un alarido metálico.",
+        en: "Hundreds of yellow eyes sprout from the cracks in the columns. The first leaps at you with a metallic shriek.",
+      },
+      position: { x: 27, y: 4 },
+      spriteId: "trasgo",
+      enemy: {
+        name: { es: "Trasgo explorador", en: "Goblin scout" },
+        spriteId: "trasgo",
+        hp: 4, damage: 1, xp: 50,
+        taunt: {
+          es: "«¡Carne! ¡Carne para los tambores!»",
+          en: "\"Meat! Meat for the drums!\"",
+        },
+      },
+    },
+    {
+      node_id: "c6_trol_cavernas",
+      kind: "battle",
+      title: { es: "El Trol de la Cámara", en: "The Cave Troll" },
+      lore_intro: {
+        es: "La puerta de la Cámara de Mazarbul revienta y un trol de las cavernas mete el brazo, buscando a tientas. Huele mal y golpea peor.",
+        en: "The door of the Chamber of Mazarbul bursts and a cave troll thrusts its arm in, groping blindly. It smells foul and hits worse.",
+      },
+      position: { x: 33, y: 21 },
+      spriteId: "troll",
+      enemy: {
+        name: { es: "Trol de las cavernas", en: "Cave troll" },
+        spriteId: "troll",
+        hp: 6, damage: 2, xp: 55,
+        taunt: {
+          es: "El trol gruñe y arrastra una cadena rota por el suelo de piedra.",
+          en: "The troll growls and drags a broken chain across the stone floor.",
+        },
+      },
+    },
+    {
+      node_id: "c6_capitan_trasgo",
+      kind: "battle",
+      title: { es: "El capitán de la horda", en: "The captain of the horde" },
+      lore_intro: {
+        es: "Un trasgo enorme, con armadura de placas robadas, ordena a los demás a golpe de látigo. Si cae él, la horda dudará.",
+        en: "A huge goblin, in armor of stolen plates, commands the rest with cracks of a whip. If it falls, the horde will falter.",
+      },
+      position: { x: 24, y: 22 },
+      spriteId: "orco",
+      enemy: {
+        name: { es: "Capitán trasgo", en: "Goblin captain" },
+        spriteId: "orco",
+        hp: 5, damage: 2, xp: 55,
+        taunt: {
+          es: "«El Portador del Anillo es MÍO. ¡Rodeadlos!»",
+          en: "\"The Ring-bearer is MINE. Surround them!\"",
+        },
+      },
+    },
+    {
+      node_id: "c6_jefe_balrog",
+      kind: "battle",
+      title: { es: "El Daño de Durin", en: "Durin's Bane" },
+      lore_intro: {
+        es: "El puente de Khazad-dûm, estrecho sobre el abismo sin fondo. Al otro lado, una sombra de fuego y sombra alza un látigo de llamas. Gandalf se planta en medio: «¡No podéis pasar!». Lo que decidas aquí, decídelo rápido.",
+        en: "The bridge of Khazad-dûm, narrow over the bottomless abyss. On the far side, a shape of fire and shadow raises a whip of flame. Gandalf plants himself in the middle: \"You cannot pass!\" Whatever you decide here, decide it fast.",
+      },
+      position: { x: 40, y: 7 },
+      spriteId: "balrog",
+      enemy: {
+        name: { es: "El Balrog de Morgoth", en: "The Balrog of Morgoth" },
+        spriteId: "balrog",
+        hp: 7, damage: 3, xp: 175, boss: true,
+        taunt: {
+          es: "Una columna de fuego y sombra llena el puente. El calor te seca los ojos.",
+          en: "A pillar of fire and shadow fills the bridge. The heat dries your eyes.",
+        },
+        reward: {
+          hero: "legolas",
+          name: { es: "Legolas Hojaverde", en: "Legolas Greenleaf" },
+          blurb: {
+            es: "El arquero de la Comunidad, ojos que ven en la oscuridad de Moria. Legolas se une a tus héroes.",
+            en: "The Fellowship's archer, eyes that see in the dark of Moria. Legolas joins your heroes.",
+          },
+        },
+      },
+    },
+    { node_id: "pergamino_contratos", kind: "scroll", position: { x: 5, y: 10 } },
+    { node_id: "puertas_de_durin", kind: "challenge", position: { x: 9, y: 7 }, spriteId: "gandalf" },
+    { node_id: "camara_mazarbul", kind: "challenge", position: { x: 13, y: 4 }, spriteId: "troll" },
+    { node_id: "puente_khazad_dum", kind: "challenge", position: { x: 19, y: 7 }, spriteId: "balrog" },
+    { node_id: "c6_galeria_de_mazarbul", kind: "challenge", position: { x: 16, y: 10 }, spriteId: "gimli" },
+  ],
+};
