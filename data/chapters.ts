@@ -4767,8 +4767,11 @@ return $prev;`,
  */
 export const CHAPTER_LOGICA: Chapter = {
   chapter: 12,
-  title: "La Sala de los Espejos Helados",
-  lore: "Una cámara de hielo pulido donde los reflejos hacen preguntas. Aquí no se escribe código: se piensa. Y como en toda prueba de verdad, el reloj también cuenta.",
+  title: { es: "La Sala de los Espejos Helados", en: "The Hall of Frozen Mirrors" },
+  lore: {
+    es: "Una cámara de hielo pulido donde los reflejos hacen preguntas. Aquí no se escribe código: se piensa. Y como en toda prueba de verdad, el reloj también cuenta.",
+    en: "A chamber of polished ice where the reflections ask questions. Here you don't write code: you think. And as in any real test, the clock counts too.",
+  },
   mapSize: { cols: 22, rows: 14 },
   spawn: { x: 2, y: 7 },
   scenery: {
@@ -4790,65 +4793,89 @@ export const CHAPTER_LOGICA: Chapter = {
     {
       node_id: "pergamino_logica",
       kind: "scroll",
-      title: "El Pergamino del Reflejo",
-      lore_intro:
-        "Grabado en el marco del primer espejo: no da respuestas, da método.",
+      title: { es: "El Pergamino del Reflejo", en: "The Scroll of Reflection" },
+      lore_intro: {
+        es: "Grabado en el marco del primer espejo: no da respuestas, da método.",
+        en: "Carved on the frame of the first mirror: it gives no answers, it gives method.",
+      },
       position: { x: 4, y: 10 },
       scroll: {
         topic: "Cómo afrontar un test de lógica cronometrado",
         sections: [
           {
-            heading: "La respuesta intuitiva suele ser la trampa",
-            body: "Estos tests están diseñados para que la primera respuesta que se te ocurra sea la equivocada. Antes de contestar, comprueba tu intuición con un caso pequeño y concreto.\n\nSi una pregunta parece demasiado fácil, casi siempre hay un matiz escondido.",
+            heading: { es: "La respuesta intuitiva suele ser la trampa", en: "The intuitive answer is usually the trap" },
+            body: {
+              es: "Estos tests están diseñados para que la primera respuesta que se te ocurra sea la equivocada. Antes de contestar, comprueba tu intuición con un caso pequeño y concreto.\n\nSi una pregunta parece demasiado fácil, casi siempre hay un matiz escondido.",
+              en: "These tests are designed so that the first answer that comes to mind is the wrong one. Before answering, check your intuition with a small, concrete case.\n\nIf a question seems too easy, there's almost always a hidden catch.",
+            },
           },
           {
-            heading: "Secuencias: mira las DIFERENCIAS",
-            body: "Ante una serie numérica, calcula la diferencia entre términos consecutivos. Si las diferencias forman a su vez un patrón, ya lo tienes.\n\nSi no, prueba con productos (n × algo), cuadrados, o una regla que describa el término anterior en palabras.",
+            heading: { es: "Secuencias: mira las DIFERENCIAS", en: "Sequences: look at the DIFFERENCES" },
+            body: {
+              es: "Ante una serie numérica, calcula la diferencia entre términos consecutivos. Si las diferencias forman a su vez un patrón, ya lo tienes.\n\nSi no, prueba con productos (n × algo), cuadrados, o una regla que describa el término anterior en palabras.",
+              en: "Faced with a number series, compute the difference between consecutive terms. If the differences form a pattern of their own, you've got it.\n\nIf not, try products (n × something), squares, or a rule that describes the previous term in words.",
+            },
           },
           {
-            heading: "Proporciones: busca la unidad",
-            body: "«Si 5 máquinas hacen 5 productos en 5 minutos…» — no escales a ciegas. Reduce primero a UNA unidad: ¿cuánto tarda UNA máquina en hacer UN producto?\n\nCon esa cifra, el resto sale solo.",
+            heading: { es: "Proporciones: busca la unidad", en: "Proportions: find the unit" },
+            body: {
+              es: "«Si 5 máquinas hacen 5 productos en 5 minutos…» — no escales a ciegas. Reduce primero a UNA unidad: ¿cuánto tarda UNA máquina en hacer UN producto?\n\nCon esa cifra, el resto sale solo.",
+              en: "\"If 5 machines make 5 products in 5 minutes…\" — don't scale blindly. Reduce first to ONE unit: how long does ONE machine take to make ONE product?\n\nWith that figure, the rest follows.",
+            },
           },
           {
-            heading: "Probabilidad condicionada: reduce el espacio",
-            body: "Cuando te dan información («sabiendo que al menos una…»), el conjunto de casos posibles ENCOGE. Enumera los casos que quedan y cuenta cuántos cumplen. Con 2 o 3 elementos, escribirlos todos es más rápido y seguro que aplicar una fórmula de memoria.",
+            heading: { es: "Probabilidad condicionada: reduce el espacio", en: "Conditional probability: shrink the space" },
+            body: {
+              es: "Cuando te dan información («sabiendo que al menos una…»), el conjunto de casos posibles ENCOGE. Enumera los casos que quedan y cuenta cuántos cumplen. Con 2 o 3 elementos, escribirlos todos es más rápido y seguro que aplicar una fórmula de memoria.",
+              en: "When you're given information (\"knowing that at least one…\"), the set of possible cases SHRINKS. Enumerate the remaining cases and count how many qualify. With 2 or 3 elements, writing them all out is faster and safer than applying a memorized formula.",
+            },
           },
         ],
-        keyTakeaway:
-          "Gestiona el reloj: si un enigma te atasca, márcalo y sigue; vuelve al final. Una respuesta reflexionada vale más que tres apresuradas.",
+        keyTakeaway: {
+          es: "Gestiona el reloj: si un enigma te atasca, márcalo y sigue; vuelve al final. Una respuesta reflexionada vale más que tres apresuradas.",
+          en: "Manage the clock: if a riddle stalls you, flag it and move on; come back at the end. One considered answer beats three rushed ones.",
+        },
       },
     },
     {
       node_id: "logica_secuencias",
       kind: "quiz",
-      title: "Las Runas Numéricas",
-      lore_intro:
-        "El primer espejo muestra una hilera de cifras que se repiten sin descanso. Falta la última.",
+      title: { es: "Las Runas Numéricas", en: "The Numeric Runes" },
+      lore_intro: {
+        es: "El primer espejo muestra una hilera de cifras que se repiten sin descanso. Falta la última.",
+        en: "The first mirror shows a row of figures repeating without rest. The last one is missing.",
+      },
       position: { x: 7, y: 7 },
       quiz: {
         topic: "Secuencias y patrones",
         timeLimitSec: 300,
         questions: [
           {
-            question: "2, 6, 12, 20, 30, ?  — ¿qué número sigue?",
+            question: { es: "2, 6, 12, 20, 30, ?  — ¿qué número sigue?", en: "2, 6, 12, 20, 30, ?  — which number comes next?" },
             options: ["36", "40", "42", "44"],
             correct: 2,
-            explanation:
-              "Son n(n+1): 1·2=2, 2·3=6, 3·4=12, 4·5=20, 5·6=30 y 6·7=42. También se ve en las diferencias, que suben de dos en dos: 4, 6, 8, 10, 12.",
+            explanation: {
+              es: "Son n(n+1): 1·2=2, 2·3=6, 3·4=12, 4·5=20, 5·6=30 y 6·7=42. También se ve en las diferencias, que suben de dos en dos: 4, 6, 8, 10, 12.",
+              en: "They're n(n+1): 1·2=2, 2·3=6, 3·4=12, 4·5=20, 5·6=30 and 6·7=42. You can also see it in the differences, rising by two: 4, 6, 8, 10, 12.",
+            },
           },
           {
-            question: "1, 11, 21, 1211, 111221, ?  — ¿qué sigue?",
+            question: { es: "1, 11, 21, 1211, 111221, ?  — ¿qué sigue?", en: "1, 11, 21, 1211, 111221, ?  — what comes next?" },
             options: ["112213", "312211", "122112", "111222"],
             correct: 1,
-            explanation:
-              "Cada término DESCRIBE en voz alta el anterior. 111221 se lee «tres unos, dos doses, un uno» → 312211. Se llama secuencia look-and-say; no es aritmética, es descriptiva.",
+            explanation: {
+              es: "Cada término DESCRIBE en voz alta el anterior. 111221 se lee «tres unos, dos doses, un uno» → 312211. Se llama secuencia look-and-say; no es aritmética, es descriptiva.",
+              en: "Each term DESCRIBES the previous one aloud. 111221 reads \"three ones, two twos, one one\" → 312211. It's the look-and-say sequence; not arithmetic, but descriptive.",
+            },
           },
           {
-            question: "3, 6, 11, 18, 27, ?  — ¿qué sigue?",
+            question: { es: "3, 6, 11, 18, 27, ?  — ¿qué sigue?", en: "3, 6, 11, 18, 27, ?  — what comes next?" },
             options: ["36", "38", "40", "42"],
             correct: 1,
-            explanation:
-              "Las diferencias son 3, 5, 7, 9 (impares consecutivos), así que la siguiente es 11: 27 + 11 = 38. Truco general: cuando el patrón no salta a la vista, calcula siempre las diferencias.",
+            explanation: {
+              es: "Las diferencias son 3, 5, 7, 9 (impares consecutivos), así que la siguiente es 11: 27 + 11 = 38. Truco general: cuando el patrón no salta a la vista, calcula siempre las diferencias.",
+              en: "The differences are 3, 5, 7, 9 (consecutive odd numbers), so the next is 11: 27 + 11 = 38. General trick: when the pattern isn't obvious, always compute the differences.",
+            },
           },
         ],
       },
@@ -4856,37 +4883,66 @@ export const CHAPTER_LOGICA: Chapter = {
     {
       node_id: "logica_proporciones",
       kind: "quiz",
-      title: "La Fragua de los Enanos",
-      lore_intro:
-        "El segundo espejo refleja una forja llena de yunques trabajando a la vez. Las cifras engañan si no reduces a la unidad.",
+      title: { es: "La Fragua de los Enanos", en: "The Dwarves' Forge" },
+      lore_intro: {
+        es: "El segundo espejo refleja una forja llena de yunques trabajando a la vez. Las cifras engañan si no reduces a la unidad.",
+        en: "The second mirror reflects a forge full of anvils working at once. The figures deceive if you don't reduce to the unit.",
+      },
       position: { x: 12, y: 10 },
       quiz: {
         topic: "Proporciones y razonamiento",
         timeLimitSec: 300,
         questions: [
           {
-            question:
-              "Si 5 máquinas hacen 5 productos en 5 minutos, ¿cuánto tardan 100 máquinas en hacer 100 productos?",
-            options: ["5 minutos", "20 minutos", "100 minutos", "1 minuto"],
+            question: {
+              es: "Si 5 máquinas hacen 5 productos en 5 minutos, ¿cuánto tardan 100 máquinas en hacer 100 productos?",
+              en: "If 5 machines make 5 products in 5 minutes, how long do 100 machines take to make 100 products?",
+            },
+            options: [
+              { es: "5 minutos", en: "5 minutes" },
+              { es: "20 minutos", en: "20 minutes" },
+              { es: "100 minutos", en: "100 minutes" },
+              { es: "1 minuto", en: "1 minute" },
+            ],
             correct: 0,
-            explanation:
-              "Reduce a la unidad: cada máquina hace 1 producto en 5 minutos. Entonces 100 máquinas trabajando EN PARALELO hacen 100 productos también en 5 minutos. La trampa es escalar el tiempo junto con las cantidades.",
+            explanation: {
+              es: "Reduce a la unidad: cada máquina hace 1 producto en 5 minutos. Entonces 100 máquinas trabajando EN PARALELO hacen 100 productos también en 5 minutos. La trampa es escalar el tiempo junto con las cantidades.",
+              en: "Reduce to the unit: each machine makes 1 product in 5 minutes. So 100 machines working IN PARALLEL make 100 products in 5 minutes too. The trap is scaling time along with the quantities.",
+            },
           },
           {
-            question:
-              "Un bate y una pelota cuestan 1,10 € en total. El bate cuesta 1,00 € MÁS que la pelota. ¿Cuánto cuesta la pelota?",
-            options: ["0,10 €", "0,05 €", "0,15 €", "1,00 €"],
+            question: {
+              es: "Un bate y una pelota cuestan 1,10 € en total. El bate cuesta 1,00 € MÁS que la pelota. ¿Cuánto cuesta la pelota?",
+              en: "A bat and a ball cost €1.10 in total. The bat costs €1.00 MORE than the ball. How much does the ball cost?",
+            },
+            options: [
+              { es: "0,10 €", en: "€0.10" },
+              { es: "0,05 €", en: "€0.05" },
+              { es: "0,15 €", en: "€0.15" },
+              { es: "1,00 €", en: "€1.00" },
+            ],
             correct: 1,
-            explanation:
-              "La respuesta intuitiva (0,10 €) falla: entonces el bate valdría 1,10 € y el total sería 1,20 €. Si la pelota vale x, el bate vale x+1, así que 2x+1 = 1,10 → x = 0,05 €. El bate cuesta 1,05 €.",
+            explanation: {
+              es: "La respuesta intuitiva (0,10 €) falla: entonces el bate valdría 1,10 € y el total sería 1,20 €. Si la pelota vale x, el bate vale x+1, así que 2x+1 = 1,10 → x = 0,05 €. El bate cuesta 1,05 €.",
+              en: "The intuitive answer (€0.10) fails: then the bat would be €1.10 and the total €1.20. If the ball is x, the bat is x+1, so 2x+1 = 1.10 → x = €0.05. The bat costs €1.05.",
+            },
           },
           {
-            question:
-              "En un estanque, los nenúfares duplican su superficie cada día y cubren el estanque entero el día 48. ¿Qué día cubrían la mitad?",
-            options: ["Día 24", "Día 47", "Día 32", "Día 46"],
+            question: {
+              es: "En un estanque, los nenúfares duplican su superficie cada día y cubren el estanque entero el día 48. ¿Qué día cubrían la mitad?",
+              en: "In a pond, the water lilies double their area every day and cover the whole pond on day 48. On which day did they cover half?",
+            },
+            options: [
+              { es: "Día 24", en: "Day 24" },
+              { es: "Día 47", en: "Day 47" },
+              { es: "Día 32", en: "Day 32" },
+              { es: "Día 46", en: "Day 46" },
+            ],
             correct: 1,
-            explanation:
-              "Si se duplican cada día, el día anterior a cubrirlo todo estaba justo a la mitad: día 47. Dividir 48 entre 2 sería tratar un crecimiento exponencial como si fuera lineal.",
+            explanation: {
+              es: "Si se duplican cada día, el día anterior a cubrirlo todo estaba justo a la mitad: día 47. Dividir 48 entre 2 sería tratar un crecimiento exponencial como si fuera lineal.",
+              en: "If they double every day, the day before covering it all they were exactly at half: day 47. Dividing 48 by 2 would treat exponential growth as if it were linear.",
+            },
           },
         ],
       },
@@ -4894,37 +4950,51 @@ export const CHAPTER_LOGICA: Chapter = {
     {
       node_id: "logica_balanza",
       kind: "quiz",
-      title: "La Balanza de Mithril",
-      lore_intro:
-        "El último espejo muestra una balanza de platillos y unas monedas girando en el aire. Probabilidad y peso: los dos sitios donde más falla la intuición.",
+      title: { es: "La Balanza de Mithril", en: "The Mithril Scales" },
+      lore_intro: {
+        es: "El último espejo muestra una balanza de platillos y unas monedas girando en el aire. Probabilidad y peso: los dos sitios donde más falla la intuición.",
+        en: "The last mirror shows a pair of scales and some coins spinning in the air. Probability and weight: the two places where intuition fails most.",
+      },
       position: { x: 17, y: 7 },
       quiz: {
         topic: "Probabilidad y estrategia",
         timeLimitSec: 420,
         questions: [
           {
-            question:
-              "Lanzas dos monedas justas. Sabiendo que al menos una salió cara, ¿cuál es la probabilidad de que AMBAS sean cara?",
+            question: {
+              es: "Lanzas dos monedas justas. Sabiendo que al menos una salió cara, ¿cuál es la probabilidad de que AMBAS sean cara?",
+              en: "You flip two fair coins. Given that at least one came up heads, what's the probability that BOTH are heads?",
+            },
             options: ["1/2", "1/3", "1/4", "2/3"],
             correct: 1,
-            explanation:
-              "Los cuatro casos posibles son CC, CX, XC, XX. La condición «al menos una cara» elimina XX y deja tres: CC, CX, XC. Sólo uno cumple que ambas sean cara → 1/3, no 1/2. La información recibida encoge el espacio de casos.",
+            explanation: {
+              es: "Los cuatro casos posibles son CC, CX, XC, XX. La condición «al menos una cara» elimina XX y deja tres: CC, CX, XC. Sólo uno cumple que ambas sean cara → 1/3, no 1/2. La información recibida encoge el espacio de casos.",
+              en: "The four possible cases are HH, HT, TH, TT. The \"at least one heads\" condition eliminates TT and leaves three: HH, HT, TH. Only one has both heads → 1/3, not 1/2. The information received shrinks the space of cases.",
+            },
           },
           {
-            question:
-              "Tienes 9 bolas idénticas; una pesa un poco más. Con una balanza de platillos, ¿en cuántas pesadas GARANTIZAS encontrar la más pesada?",
+            question: {
+              es: "Tienes 9 bolas idénticas; una pesa un poco más. Con una balanza de platillos, ¿en cuántas pesadas GARANTIZAS encontrar la más pesada?",
+              en: "You have 9 identical balls; one weighs slightly more. With a balance scale, in how many weighings can you GUARANTEE finding the heavier one?",
+            },
             options: ["2", "3", "4", "8"],
             correct: 0,
-            explanation:
-              "Dos. Divide en tres grupos de 3 y pesa dos grupos: si uno baja, la bola está ahí; si quedan iguales, está en el tercero. Segunda pesada: de esas 3, pesa dos. Cada pesada tiene TRES resultados posibles, así que descarta dos tercios de golpe.",
+            explanation: {
+              es: "Dos. Divide en tres grupos de 3 y pesa dos grupos: si uno baja, la bola está ahí; si quedan iguales, está en el tercero. Segunda pesada: de esas 3, pesa dos. Cada pesada tiene TRES resultados posibles, así que descarta dos tercios de golpe.",
+              en: "Two. Split into three groups of 3 and weigh two groups: if one drops, the ball is there; if they're equal, it's in the third. Second weighing: of those 3, weigh two. Each weighing has THREE possible outcomes, so it rules out two thirds at once.",
+            },
           },
           {
-            question:
-              "Una familia tiene dos hijos. Sabes que al menos uno es niño. ¿Probabilidad de que AMBOS sean niños?",
+            question: {
+              es: "Una familia tiene dos hijos. Sabes que al menos uno es niño. ¿Probabilidad de que AMBOS sean niños?",
+              en: "A family has two children. You know at least one is a boy. Probability that BOTH are boys?",
+            },
             options: ["1/2", "1/3", "1/4", "3/4"],
             correct: 1,
-            explanation:
-              "El mismo razonamiento que el de las monedas: los casos son NN, NÑ, ÑN, ÑÑ. «Al menos un niño» descarta ÑÑ y quedan tres, de los cuales sólo NN cumple → 1/3. Reconocer que es el MISMO problema con otro disfraz es justo lo que evalúan.",
+            explanation: {
+              es: "El mismo razonamiento que el de las monedas: los casos son NN, NÑ, ÑN, ÑÑ. «Al menos un niño» descarta ÑÑ y quedan tres, de los cuales sólo NN cumple → 1/3. Reconocer que es el MISMO problema con otro disfraz es justo lo que evalúan.",
+              en: "The same reasoning as the coins: the cases are BB, BG, GB, GG. \"At least one boy\" rules out GG and leaves three, of which only BB qualifies → 1/3. Recognizing it's the SAME problem in another disguise is exactly what they're testing.",
+            },
           },
         ],
       },
