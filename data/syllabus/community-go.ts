@@ -1616,3 +1616,224 @@ export const SYL_GO_COMMUNITY_7: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre errores y factorías. */
+const Q_ERROR_IFACE = {
+  question: P(
+    "En Go, ¿cómo se señala que algo salió mal (en vez de excepciones)?",
+    "In Go, how do you signal that something went wrong (instead of exceptions)?",
+  ),
+  options: [
+    P("Devolviendo un `error` como último valor: `(resultado, error)`", "Returning an `error` as the last value: `(result, error)`"),
+    P("Con `throw`", "With `throw`"),
+    P("Con `try/catch`", "With `try/catch`"),
+    P("Devolviendo `-1` siempre", "Always returning `-1`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Go no tiene excepciones para los fallos normales: las funciones devuelven un `error` como último valor. Si todo fue bien, el error es `nil`. `error` es una interfaz con un método `Error() string`.",
+    "Go has no exceptions for ordinary failures: functions return an `error` as the last value. If all went well, the error is `nil`. `error` is an interface with one method, `Error() string`.",
+  ),
+};
+const Q_ERR_CHECK = {
+  question: P(
+    "¿Cuál es el patrón idiomático para comprobar un error en Go?",
+    "What's the idiomatic pattern to check an error in Go?",
+  ),
+  options: [
+    P("`v, err := f(); if err != nil { ... }`", "`v, err := f(); if err != nil { ... }`"),
+    P("`try { f() } catch (err) { ... }`", "`try { f() } catch (err) { ... }`"),
+    P("`if f().hasError()`", "`if f().hasError()`"),
+    P("No se comprueban: se ignoran", "You don't check them: you ignore them"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Recibes valor y error, y compruebas `if err != nil` justo después de la llamada. Es explícito y repetitivo a propósito: el manejo del error está a la vista, no escondido en un `catch` lejano.",
+    "You receive the value and the error, and check `if err != nil` right after the call. It's explicit and repetitive on purpose: error handling is in plain sight, not hidden in a distant `catch`.",
+  ),
+};
+const Q_ERRORS_NEW = {
+  question: P(
+    "¿Cómo se crea un error nuevo con un mensaje?",
+    "How do you create a new error with a message?",
+  ),
+  options: [
+    P("`errors.New(\"mensaje\")` (o `fmt.Errorf(\"...%d\", n)` con formato)", "`errors.New(\"message\")` (or `fmt.Errorf(\"...%d\", n)` with formatting)"),
+    P("`new Error(\"mensaje\")`", "`new Error(\"message\")`"),
+    P("`throw \"mensaje\"`", "`throw \"message\"`"),
+    P("`raise(\"mensaje\")`", "`raise(\"message\")`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`errors.New(\"...\")` crea un error simple; `fmt.Errorf(\"...%w\", err)` compone un mensaje (y puede envolver otro error). Se leen con `err.Error()`. Nada de `new` ni `throw`: Go los TRATA como valores.",
+    "`errors.New(\"...\")` makes a simple error; `fmt.Errorf(\"...%w\", err)` composes a message (and can wrap another error). Read them with `err.Error()`. No `new` or `throw`: Go treats them as values.",
+  ),
+};
+const Q_NIL_ERR = {
+  question: P(
+    "Una función `(string, error)` termina bien. ¿Qué error devuelve?",
+    "A `(string, error)` function finishes fine. What error does it return?",
+  ),
+  options: [
+    P("`nil`: la ausencia de error", "`nil`: the absence of an error"),
+    P("Un error vacío `\"\"`", "An empty error `\"\"`"),
+    P("`0`", "`0`"),
+    P("Debe lanzar algo igualmente", "It must throw something anyway"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El valor cero de una interfaz es `nil`, y así se indica «sin error»: `return valor, nil`. Quien llama comprueba `if err != nil` y, si es `nil`, usa el valor con confianza.",
+    "The zero value of an interface is `nil`, and that's how you say \"no error\": `return value, nil`. The caller checks `if err != nil` and, if it's `nil`, uses the value with confidence.",
+  ),
+};
+const Q_FACTORY_GO = {
+  question: P(
+    "Una función `crear(tipo string) (Guerrero, error)` que devuelve distintos tipos según el parámetro. ¿Qué patrón es?",
+    "A function `crear(tipo string) (Guerrero, error)` returning different types based on the parameter. What pattern is that?",
+  ),
+  options: [
+    P("Una factoría: centraliza la creación y devuelve la interfaz", "A factory: it centralizes creation and returns the interface"),
+    P("Un singleton", "A singleton"),
+    P("Un método plantilla", "A template method"),
+    P("Un decorador", "A decorator"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La factoría decide QUÉ crear y devuelve un tipo de interfaz (`Guerrero`), así el que llama no se acopla al tipo concreto. Ante un tipo inválido, devuelve un `error` en vez de un valor inventado.",
+    "The factory decides WHAT to create and returns an interface type (`Guerrero`), so the caller doesn't couple to the concrete type. For an invalid type, it returns an `error` instead of a made-up value.",
+  ),
+};
+
+/** Capítulo 8 · Errores y constructores (factory). */
+export const SYL_GO_COMMUNITY_8: Syllabus = {
+  c8_uruk_arquero: { kind: "battle", questions: [Q_ERROR_IFACE, Q_ERR_CHECK, Q_ERRORS_NEW] },
+  c8_orco_saqueador: { kind: "battle", questions: [Q_NIL_ERR, Q_ERR_CHECK, Q_ERROR_IFACE] },
+  c8_uruk_espadachin: { kind: "battle", questions: [Q_FACTORY_GO, Q_ERRORS_NEW, Q_NIL_ERR] },
+  c8_jefe_lurtz: { kind: "battle", questions: [Q_ERR_CHECK, Q_FACTORY_GO, Q_ERROR_IFACE, Q_ERRORS_NEW] },
+  pergamino_fallos: {
+    kind: "scroll",
+    title: P("El Pergamino de lo que Puede Fallar", "The Scroll of What Can Go Wrong"),
+    lore_intro: P(
+      "Aragorn deja caer un pergamino. «En Go, un fallo no se lanza: se devuelve. Un error es un valor más, y comprobarlo es tu deber.»",
+      "Aragorn drops a scroll. \"In Go, a failure isn't thrown: it's returned. An error is just another value, and checking it is your duty.\"",
+    ),
+    scroll: {
+      topic: P("Errores y factorías", "Errors and factories"),
+      sections: [
+        {
+          heading: P("El error como valor de retorno", "The error as a return value"),
+          body: P(
+            "Go no usa excepciones para los fallos normales: la función devuelve un `error` como último valor. `nil` significa «todo bien». Se crea con `errors.New(...)` o `fmt.Errorf(...)`.",
+            "Go doesn't use exceptions for ordinary failures: the function returns an `error` as the last value. `nil` means \"all good\". Create it with `errors.New(...)` or `fmt.Errorf(...)`.",
+          ),
+          code: "import \"errors\"\n\nfunc resistir(tentacion int) (string, error) {\n\tif tentacion > 80 {\n\t\treturn \"\", errors.New(\"El Anillo lo reclama\")\n\t}\n\treturn \"resiste\", nil\n}",
+        },
+        {
+          heading: P("Comprobar el error", "Checking the error"),
+          body: P(
+            "El patrón idiomático: recibe valor y error, y comprueba `if err != nil` justo después. El manejo está a la vista, no escondido en un catch lejano.",
+            "The idiomatic pattern: receive value and error, and check `if err != nil` right after. The handling is in plain sight, not hidden in a distant catch.",
+          ),
+          code: "vision, err := mirar(conAnillo)\nif err != nil {\n\treturn \"te quitas el Anillo: \" + err.Error()\n}\nreturn vision",
+        },
+        {
+          heading: P("Factoría con error", "Factory with an error"),
+          body: P(
+            "Una factoría decide qué crear y devuelve un tipo de interfaz. Ante un tipo inválido, devuelve un `error` en lugar de un valor inventado.",
+            "A factory decides what to create and returns an interface type. For an invalid type, it returns an `error` instead of a made-up value.",
+          ),
+          code: "func crear(tipo string) (Guerrero, error) {\n\tswitch tipo {\n\tcase \"orco\":\n\t\treturn Orco{}, nil\n\tdefault:\n\t\treturn nil, errors.New(\"tipo desconocido: \" + tipo)\n\t}\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "En Go los errores son valores: se devuelven como último resultado, se crean con errors.New/fmt.Errorf y se comprueban con `if err != nil`. Una factoría devuelve la interfaz y un error ante lo inválido.",
+        "In Go errors are values: returned as the last result, created with errors.New/fmt.Errorf and checked with `if err != nil`. A factory returns the interface and an error for the invalid case.",
+      ),
+    },
+  },
+  tentacion_de_boromir: {
+    kind: "challenge",
+    title: P("La Tentación de Boromir", "Boromir's Temptation"),
+    lore_intro: P(
+      "Cuando la voluntad flaquea, no lo escondas: devuélvelo como error. Un error es un valor más.",
+      "When the will falters, don't hide it: return it as an error. An error is just another value.",
+    ),
+    challenge: {
+      topic: P("Devolver un error", "Returning an error"),
+      instructions: P(
+        "Escribe `resistir(tentacion int) (string, error)`:\n• si `tentacion` es 80 o menos, devuelve `\"resiste\"` y `nil`,\n• si es mayor que 80, devuelve `\"\"` y un `errors.New(\"El Anillo lo reclama\")`.\n\nEl paquete `errors` ya está disponible. Se prueba con los ayudantes `mensajeDe` y `fallaCon`.",
+        "Write `resistir(tentacion int) (string, error)`:\n• if `tentacion` is 80 or less, return `\"resiste\"` and `nil`,\n• if greater than 80, return `\"\"` and an `errors.New(\"El Anillo lo reclama\")`.\n\nThe `errors` package is available. It's tested via the helpers `mensajeDe` and `fallaCon`.",
+      ),
+      support_code:
+        'package main\n\nimport "errors"\n\nvar _ = errors.New\n\nfunc mensajeDe(t int) string {\n\ts, err := resistir(t)\n\tif err != nil {\n\t\treturn err.Error()\n\t}\n\treturn s\n}\n\nfunc fallaCon(t int) bool {\n\t_, err := resistir(t)\n\treturn err != nil\n}',
+      starter_code:
+        '// errors ya está importado. mensajeDe(t) y fallaCon(t) prueban tu función.\n\nfunc resistir(tentacion int) (string, error) {\n\t// > 80 → error; si no, "resiste", nil\n}\n',
+      hints: [
+        P("Guard clause: `if tentacion > 80 { return \"\", errors.New(\"El Anillo lo reclama\") }`.", "Guard clause: `if tentacion > 80 { return \"\", errors.New(\"El Anillo lo reclama\") }`."),
+        P("El caso bueno: `return \"resiste\", nil`.", "The good case: `return \"resiste\", nil`."),
+      ],
+      test_cases: [
+        { input: "mensajeDe(50)", expected: "resiste", description: P("Poca tentación: aguanta", "Little temptation: he holds"), raw: true },
+        { input: "mensajeDe(95)", expected: "El Anillo lo reclama", description: P("El error lleva su mensaje", "The error carries its message"), raw: true },
+        { input: "fallaCon(95)", expected: true, description: P("Con 95 sucumbe (error != nil)", "At 95 he succumbs (error != nil)"), raw: true },
+        { input: "fallaCon(50)", expected: false, description: P("Con 50 no hay error", "At 50 there's no error"), raw: true },
+      ],
+    },
+  },
+  solio_de_la_vision: {
+    kind: "challenge",
+    title: P("El Solio de la Visión", "The Seat of Seeing"),
+    lore_intro: P(
+      "Mirar con el Anillo tiene un precio. Recibe el error y reacciona con `if err != nil`.",
+      "Looking with the Ring has a price. Receive the error and react with `if err != nil`.",
+    ),
+    challenge: {
+      topic: P("Comprobar y manejar un error", "Checking and handling an error"),
+      instructions: P(
+        "Ya existe `mirar(conAnillo bool) (string, error)`, que devuelve un error si miras con el Anillo puesto. Escribe `observar(conAnillo bool) string` que:\n• si hay error, devuelva `\"te quitas el Anillo: \"` seguido del mensaje del error,\n• si no, devuelva la visión.",
+        "The function `mirar(conAnillo bool) (string, error)` already exists, returning an error if you look with the Ring on. Write `observar(conAnillo bool) string` that:\n• if there's an error, returns `\"te quitas el Anillo: \"` followed by the error's message,\n• otherwise returns the vision.",
+      ),
+      support_code:
+        'package main\n\nimport "errors"\n\nfunc mirar(conAnillo bool) (string, error) {\n\tif conAnillo {\n\t\treturn "", errors.New("El Ojo te ve")\n\t}\n\treturn "ves las tierras de Rohan", nil\n}',
+      starter_code:
+        '// mirar(conAnillo) (string, error) ya existe.\n\nfunc observar(conAnillo bool) string {\n\tvision, err := mirar(conAnillo)\n\t// if err != nil { ... }\n}\n',
+      hints: [
+        P("`if err != nil { return \"te quitas el Anillo: \" + err.Error() }`.", "`if err != nil { return \"te quitas el Anillo: \" + err.Error() }`."),
+        P("Si no hubo error, `return vision`.", "If there was no error, `return vision`."),
+      ],
+      test_cases: [
+        { input: "observar(false)", expected: "ves las tierras de Rohan", description: P("Sin el Anillo, visión segura", "Without the Ring, safe vision"), raw: true },
+        { input: "observar(true)", expected: "te quitas el Anillo: El Ojo te ve", description: P("Con el Anillo, capturas el error", "With the Ring, you catch the error"), raw: true },
+      ],
+    },
+  },
+  hueste_de_isengard: {
+    kind: "challenge",
+    title: P("La Hueste de Isengard", "The Host of Isengard"),
+    lore_intro: P(
+      "No los crees uno a uno: una factoría decide qué crear y, ante lo desconocido, devuelve un error.",
+      "Don't create them one by one: a factory decides what to make and, faced with the unknown, returns an error.",
+    ),
+    challenge: {
+      topic: P("Factoría con error", "Factory with an error"),
+      instructions: P(
+        "Ya existen la interfaz `Guerrero` (con `ResistenciaSol() int`) y los tipos `Orco` (0) y `UrukHai` (100). Escribe `crear(tipo string) (Guerrero, error)` que devuelva un `Orco` para `\"orco\"`, un `UrukHai` para `\"uruk\"`, y un `errors.New(...)` (con `nil` como Guerrero) para cualquier otro tipo.\n\nSe prueba con `resistenciaDe` y `fallaAl`.",
+        "The interface `Guerrero` (with `ResistenciaSol() int`) and the types `Orco` (0) and `UrukHai` (100) already exist. Write `crear(tipo string) (Guerrero, error)` returning an `Orco` for `\"orco\"`, a `UrukHai` for `\"uruk\"`, and an `errors.New(...)` (with `nil` as the Guerrero) for any other type.\n\nTested via `resistenciaDe` and `fallaAl`.",
+      ),
+      support_code:
+        'package main\n\nimport "errors"\n\ntype Guerrero interface {\n\tResistenciaSol() int\n}\n\ntype Orco struct{}\n\nfunc (o Orco) ResistenciaSol() int { return 0 }\n\ntype UrukHai struct{}\n\nfunc (u UrukHai) ResistenciaSol() int { return 100 }\n\nvar _ = errors.New\n\nfunc resistenciaDe(tipo string) int {\n\tg, err := crear(tipo)\n\tif err != nil {\n\t\treturn -1\n\t}\n\treturn g.ResistenciaSol()\n}\n\nfunc fallaAl(tipo string) bool {\n\t_, err := crear(tipo)\n\treturn err != nil\n}',
+      starter_code:
+        '// Guerrero, Orco, UrukHai y los ayudantes ya existen. errors está importado.\n\nfunc crear(tipo string) (Guerrero, error) {\n\t// switch tipo { case "orco": ...; case "uruk": ...; default: nil, errors.New(...) }\n}\n',
+      hints: [
+        P("`switch tipo` con `case \"orco\": return Orco{}, nil` y `case \"uruk\": return UrukHai{}, nil`.", "`switch tipo` with `case \"orco\": return Orco{}, nil` and `case \"uruk\": return UrukHai{}, nil`."),
+        P("`default: return nil, errors.New(\"tipo desconocido: \" + tipo)`.", "`default: return nil, errors.New(\"tipo desconocido: \" + tipo)`."),
+      ],
+      test_cases: [
+        { input: 'resistenciaDe("orco")', expected: 0, description: P("El orco se abrasa al sol", "The orc burns in the sun"), raw: true },
+        { input: 'resistenciaDe("uruk")', expected: 100, description: P("El Uruk-hai marcha a plena luz", "The Uruk-hai marches in daylight"), raw: true },
+        { input: 'fallaAl("elfo")', expected: true, description: P("Un tipo desconocido da error", "An unknown type errors"), raw: true },
+        { input: 'resistenciaDe("elfo")', expected: -1, description: P("…y el ayudante lo traduce a -1", "…and the helper turns it into -1"), raw: true },
+      ],
+    },
+  },
+};

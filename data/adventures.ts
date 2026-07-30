@@ -64,6 +64,7 @@ import {
   SYL_GO_COMMUNITY_5,
   SYL_GO_COMMUNITY_6,
   SYL_GO_COMMUNITY_7,
+  SYL_GO_COMMUNITY_8,
 } from "./syllabus/community-go";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
@@ -115,6 +116,7 @@ const GO_COMMUNITY_4 = buildChapter(NARR_COMMUNITY_4, SYL_GO_COMMUNITY_4, "go");
 const GO_COMMUNITY_5 = buildChapter(NARR_COMMUNITY_5, SYL_GO_COMMUNITY_5, "go");
 const GO_COMMUNITY_6 = buildChapter(NARR_COMMUNITY_6, SYL_GO_COMMUNITY_6, "go");
 const GO_COMMUNITY_7 = buildChapter(NARR_COMMUNITY_7, SYL_GO_COMMUNITY_7, "go");
+const GO_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_GO_COMMUNITY_8, "go");
 
 /**
  * Catálogo de aventuras. Las `available` son jugables; las `soon` aparecen en
@@ -312,6 +314,7 @@ export const ADVENTURES: Adventure[] = [
           GO_COMMUNITY_5,
           GO_COMMUNITY_6,
           GO_COMMUNITY_7,
+          GO_COMMUNITY_8,
         ],
       },
     ],
