@@ -135,7 +135,31 @@ export const SYL_TS_COMMUNITY_1: Syllabus = {
   c1_espia: { kind: "battle", questions: [Q_ANNOTATION, Q_PRIMITIVES, Q_INFERENCE] },
   c1_jinete_rastreador: { kind: "battle", questions: [Q_FUNC_TYPE, Q_WHY_TS, Q_PRIMITIVES] },
   c1_perro_negro: { kind: "battle", questions: [Q_INFERENCE, Q_UNION, Q_ANY] },
-  c1_jefe_nazgul: { kind: "battle", questions: [Q_FUNC_TYPE, Q_ANNOTATION, Q_UNION, Q_WHY_TS] },
+  c1_jefe_nazgul: {
+    kind: "challenge",
+    title: P("El Jinete Negro", "The Black Rider"),
+    lore_intro: P(
+      "El Nazgûl acorrala a Frodo. Sólo la VOLUNTAD lo detiene: escribe la función TIPADA que mide si resistes o sucumbes.",
+      "The Nazgûl corners Frodo. Only WILL stops it: write the TYPED function that measures whether you resist or succumb.",
+    ),
+    challenge: {
+      topic: P("Funciones tipadas y template strings", "Typed functions and template strings"),
+      instructions: P(
+        "Escribe `resistir(nombre: string, tentacion: number): string`:\n• si `tentacion` es 100 o más, devuelve `'{nombre} sucumbe'`,\n• si no, devuelve `'{nombre} resiste con {100 - tentacion} de voluntad'`.\n\nEjemplo: `resistir('Frodo', 30)` → `'Frodo resiste con 70 de voluntad'`.",
+        "Write `resistir(nombre: string, tentacion: number): string`:\n• if `tentacion` is 100 or more, return `'{nombre} sucumbe'`,\n• otherwise, return `'{nombre} resiste con {100 - tentacion} de voluntad'`.\n\nExample: `resistir('Frodo', 30)` → `'Frodo resiste con 70 de voluntad'`.",
+      ),
+      starter_code: "function resistir(nombre: string, tentacion: number): string {\n}\n",
+      hints: [
+        P("Anota los parámetros y el retorno: `(nombre: string, tentacion: number): string`.", "Annotate the params and return: `(nombre: string, tentacion: number): string`."),
+        P("Interpola con template strings: `` `${nombre} resiste con ${100 - tentacion} de voluntad` ``.", "Interpolate with template strings: `` `${nombre} resiste con ${100 - tentacion} de voluntad` ``."),
+      ],
+      test_cases: [
+        { input: "resistir('Frodo', 30)", expected: "Frodo resiste con 70 de voluntad", description: P("Resiste", "Resists"), raw: true },
+        { input: "resistir('Boromir', 100)", expected: "Boromir sucumbe", description: P("Sucumbe al llegar a 100", "Succumbs at 100"), raw: true },
+        { input: "resistir('Sam', 0)", expected: "Sam resiste con 100 de voluntad", description: P("Voluntad plena", "Full will"), raw: true },
+      ],
+    },
+  },
   pergamino_clases: {
     kind: "scroll",
     title: P("El Pergamino del Guión Tipado", "The Scroll of the Typed Script"),
@@ -381,7 +405,31 @@ export const SYL_TS_COMMUNITY_2: Syllabus = {
   c2_raiz: { kind: "battle", questions: [Q_ARR_TYPE, Q_ARR_INFER, Q_ARR_METHOD] },
   c2_niebla: { kind: "battle", questions: [Q_TUPLE, Q_MIXED_ARR, Q_ARR_TYPE] },
   c2_sauce: { kind: "battle", questions: [Q_ARR_METHOD, Q_READONLY_ARR, Q_ARR_INFER] },
-  c2_jefe_tumulario: { kind: "battle", questions: [Q_TUPLE, Q_READONLY_ARR, Q_MIXED_ARR, Q_ARR_METHOD] },
+  c2_jefe_tumulario: {
+    kind: "challenge",
+    title: P("El Rey de los Túmulos", "The Barrow-king"),
+    lore_intro: P(
+      "El Tumulario alza su horda. Resume el daño en un PAR tipado: cuántos golpes y el más fuerte. Una tupla lo dice todo.",
+      "The Barrow-wight raises its horde. Summarize the damage in a typed PAIR: how many blows and the strongest. A tuple says it all.",
+    ),
+    challenge: {
+      topic: P("Arrays y tuplas tipados", "Typed arrays and tuples"),
+      instructions: P(
+        "Escribe `resumen(danios: number[]): [number, number]` que devuelva una TUPLA con:\n• cuántos daños hay,\n• el daño MÁXIMO (0 si la lista está vacía).\n\nEjemplo: `resumen([3, 7, 2])` → `[3, 7]`.",
+        "Write `resumen(danios: number[]): [number, number]` returning a TUPLE with:\n• how many damages there are,\n• the MAXIMUM damage (0 if the list is empty).\n\nExample: `resumen([3, 7, 2])` → `[3, 7]`.",
+      ),
+      starter_code: "function resumen(danios: number[]): [number, number] {\n}\n",
+      hints: [
+        P("La longitud es `danios.length`; el máximo, un bucle que guarde el mayor.", "The length is `danios.length`; the max, a loop keeping the largest."),
+        P("Devuelve la tupla: `return [danios.length, max];`.", "Return the tuple: `return [danios.length, max];`."),
+      ],
+      test_cases: [
+        { input: "resumen([3, 7, 2])", expected: [3, 7], description: P("Cantidad y máximo", "Count and max"), raw: true },
+        { input: "resumen([])", expected: [0, 0], description: P("Lista vacía", "Empty list"), raw: true },
+        { input: "resumen([5])", expected: [1, 5], description: P("Uno solo", "Just one"), raw: true },
+      ],
+    },
+  },
   pergamino_ciclo_vida: {
     kind: "scroll",
     title: P("El Pergamino de las Listas", "The Scroll of Lists"),
@@ -633,7 +681,32 @@ export const SYL_TS_COMMUNITY_3: Syllabus = {
   c3_ferny: { kind: "battle", questions: [Q_INTERFACE, Q_OBJ_TYPE, Q_OPTIONAL] },
   c3_espia_nazgul: { kind: "battle", questions: [Q_STRUCTURAL, Q_METHOD_SIG, Q_INTERFACE] },
   c3_montaraz_falso: { kind: "battle", questions: [Q_OPTIONAL, Q_TYPE_ALIAS, Q_OBJ_TYPE] },
-  c3_jefe_reybrujo: { kind: "battle", questions: [Q_STRUCTURAL, Q_TYPE_ALIAS, Q_METHOD_SIG, Q_INTERFACE] },
+  c3_jefe_reybrujo: {
+    kind: "challenge",
+    title: P("El Rey Brujo de Angmar", "The Witch-king of Angmar"),
+    lore_intro: P(
+      "«Ningún hombre vivo puede detenerme.» Describe a los guerreros con una INTERFAZ y saca el nombre de los más fuertes.",
+      "\"No living man can hinder me.\" Describe the warriors with an INTERFACE and pull the names of the strongest.",
+    ),
+    challenge: {
+      topic: P("Interfaces y tipos de objeto", "Interfaces and object types"),
+      instructions: P(
+        "Declara la interfaz `Guerrero` con `nombre: string` y `poder: number`. Escribe `nombresFuertes(guerreros: Guerrero[], min: number): string[]` que devuelva SÓLO los nombres de los guerreros cuyo `poder` sea ≥ `min`, en orden.\n\nEjemplo: `nombresFuertes([{ nombre: 'Aragorn', poder: 80 }, { nombre: 'Frodo', poder: 20 }], 50)` → `['Aragorn']`.",
+        "Declare the interface `Guerrero` with `nombre: string` and `poder: number`. Write `nombresFuertes(guerreros: Guerrero[], min: number): string[]` returning ONLY the names of warriors whose `poder` is ≥ `min`, in order.\n\nExample: `nombresFuertes([{ nombre: 'Aragorn', poder: 80 }, { nombre: 'Frodo', poder: 20 }], 50)` → `['Aragorn']`.",
+      ),
+      starter_code:
+        "interface Guerrero {\n  nombre: string;\n  poder: number;\n}\n\nfunction nombresFuertes(guerreros: Guerrero[], min: number): string[] {\n}\n",
+      hints: [
+        P("La interfaz describe la forma del objeto; el array es `Guerrero[]`.", "The interface describes the object's shape; the array is `Guerrero[]`."),
+        P("Filtra y transforma: `.filter(g => g.poder >= min).map(g => g.nombre)`.", "Filter and transform: `.filter(g => g.poder >= min).map(g => g.nombre)`."),
+      ],
+      test_cases: [
+        { input: "nombresFuertes([{ nombre: 'Aragorn', poder: 80 }, { nombre: 'Frodo', poder: 20 }], 50)", expected: ["Aragorn"], description: P("Sólo el fuerte", "Only the strong one"), raw: true },
+        { input: "nombresFuertes([], 50)", expected: [], description: P("Lista vacía", "Empty list"), raw: true },
+        { input: "nombresFuertes([{ nombre: 'Gimli', poder: 60 }, { nombre: 'Legolas', poder: 70 }], 50)", expected: ["Gimli", "Legolas"], description: P("Ambos, en orden", "Both, in order"), raw: true },
+      ],
+    },
+  },
   pergamino_herencia: {
     kind: "scroll",
     title: P("El Pergamino de las Formas", "The Scroll of Shapes"),
@@ -846,7 +919,32 @@ const Q_ENUM_NUMERIC = {
 export const SYL_TS_COMMUNITY_4: Syllabus = {
   c4_jinete_rezagado: { kind: "battle", questions: [Q_LITERAL, Q_ENUM, Q_ENUM_VS_LITERAL] },
   c4_lobo: { kind: "battle", questions: [Q_ENUM_NUMERIC, Q_EXHAUSTIVE, Q_LITERAL] },
-  c4_jefe_nueve: { kind: "battle", questions: [Q_ENUM, Q_LITERAL, Q_ENUM_VS_LITERAL, Q_ENUM_NUMERIC] },
+  c4_jefe_nueve: {
+    kind: "challenge",
+    title: P("Los Nueve en el Vado", "The Nine at the Ford"),
+    lore_intro: P(
+      "Las aguas del Bruinen se alzan. El estado del vado sólo puede ser uno de TRES: modélalo con un tipo de unión literal.",
+      "The waters of the Bruinen rise. The ford's state can only be one of THREE: model it with a literal union type.",
+    ),
+    challenge: {
+      topic: P("Tipos de unión literal", "Literal union types"),
+      instructions: P(
+        "Declara el tipo `Estado = 'calmo' | 'crecido' | 'desbordado'`. Escribe `estado(caudal: number): Estado` que devuelva:\n• `'calmo'` si el caudal es menor que 30,\n• `'crecido'` si es menor que 70,\n• `'desbordado'` en los demás casos.",
+        "Declare the type `Estado = 'calmo' | 'crecido' | 'desbordado'`. Write `estado(caudal: number): Estado` returning:\n• `'calmo'` if the flow is under 30,\n• `'crecido'` if under 70,\n• `'desbordado'` otherwise.",
+      ),
+      starter_code:
+        "type Estado = 'calmo' | 'crecido' | 'desbordado';\n\nfunction estado(caudal: number): Estado {\n}\n",
+      hints: [
+        P("El tipo de retorno `Estado` obliga a devolver uno de los tres literales exactos.", "The return type `Estado` forces you to return one of the three exact literals."),
+        P("Dos `if` en cascada: `< 30` → calmo, `< 70` → crecido, y el resto desbordado.", "Two cascading `if`s: `< 30` → calm, `< 70` → risen, and the rest overflowing."),
+      ],
+      test_cases: [
+        { input: "estado(10)", expected: "calmo", description: P("Caudal bajo", "Low flow"), raw: true },
+        { input: "estado(50)", expected: "crecido", description: P("Caudal medio", "Medium flow"), raw: true },
+        { input: "estado(200)", expected: "desbordado", description: P("El río contra los Nueve", "The river against the Nine"), raw: true },
+      ],
+    },
+  },
   c4_trasgo_montaraz: { kind: "battle", questions: [Q_EXHAUSTIVE, Q_ENUM_NUMERIC, Q_ENUM] },
   pergamino_estatico: {
     kind: "scroll",
@@ -1103,7 +1201,33 @@ const Q_STATIC_TS = {
 export const SYL_TS_COMMUNITY_5: Syllabus = {
   c5_crebain: { kind: "battle", questions: [Q_CLASS_FIELD, Q_PARAM_PROP, Q_READONLY_TS] },
   c5_lobo_nieve: { kind: "battle", questions: [Q_ACCESS, Q_STATIC_TS, Q_CLASS_FIELD] },
-  c5_jefe_caradhras: { kind: "battle", questions: [Q_PARAM_PROP, Q_READONLY_TS, Q_CLASS_IMPL, Q_ACCESS] },
+  c5_jefe_caradhras: {
+    kind: "challenge",
+    title: P("La Voluntad de Caradhras", "The Will of Caradhras"),
+    lore_intro: P(
+      "La montaña es el enemigo. Forja una hoja con su filo PRIVADO, que valide su forja y golpee sin dañar de menos que cero.",
+      "The mountain is the enemy. Forge a blade with its PRIVATE edge, that validates its forging and strikes without dealing below zero.",
+    ),
+    challenge: {
+      topic: P("Clases tipadas: private y validación", "Typed classes: private and validation"),
+      instructions: P(
+        "Crea la clase `Espada` con un campo `private filo: number`:\n• el `constructor(filo: number)` lanza un `Error` si `filo` es negativo; si no, lo guarda,\n• `getFilo(): number` devuelve el filo,\n• `golpear(objetivo: number): number` devuelve `objetivo - filo`, sin bajar de 0.\n\nEjemplo: `new Espada(10).golpear(30)` → `20`.",
+        "Create the class `Espada` with a `private filo: number` field:\n• the `constructor(filo: number)` throws an `Error` if `filo` is negative; otherwise stores it,\n• `getFilo(): number` returns the edge,\n• `golpear(objetivo: number): number` returns `objetivo - filo`, never below 0.\n\nExample: `new Espada(10).golpear(30)` → `20`.",
+      ),
+      starter_code:
+        "class Espada {\n  private filo: number;\n  constructor(filo: number) {\n  }\n  getFilo(): number {\n  }\n  golpear(objetivo: number): number {\n  }\n}\n",
+      hints: [
+        P("Guard clause en el constructor: `if (filo < 0) throw new Error('...');`.", "Guard clause in the constructor: `if (filo < 0) throw new Error('...');`."),
+        P("`golpear` no baja de 0: `Math.max(0, objetivo - this.filo)`.", "`golpear` doesn't go below 0: `Math.max(0, objetivo - this.filo)`."),
+      ],
+      test_cases: [
+        { input: "new Espada(10).golpear(30)", expected: 20, description: P("30 − 10", "30 − 10"), raw: true },
+        { input: "new Espada(10).golpear(5)", expected: 0, description: P("Nunca negativo", "Never negative"), raw: true },
+        { input: "new Espada(10).getFilo()", expected: 10, description: P("El filo se lee por su método", "The edge is read via its method"), raw: true },
+        { input: "(() => { try { new Espada(-1); return false; } catch (e) { return true; } })()", expected: true, description: P("Un filo negativo se rechaza", "A negative edge is rejected"), raw: true },
+      ],
+    },
+  },
   c5_trasgo_montanes: { kind: "battle", questions: [Q_STATIC_TS, Q_CLASS_IMPL, Q_PARAM_PROP] },
   pergamino_hielo: {
     kind: "scroll",
@@ -1338,7 +1462,31 @@ export const SYL_TS_COMMUNITY_6: Syllabus = {
   c6_trasgo_explorador: { kind: "battle", questions: [Q_GENERIC, Q_GENERIC_INFER, Q_WHY_GENERIC] },
   c6_trol_cavernas: { kind: "battle", questions: [Q_GENERIC_FN, Q_GENERIC_CONSTRAINT, Q_GENERIC] },
   c6_capitan_trasgo: { kind: "battle", questions: [Q_GENERIC_CONSTRAINT, Q_GENERIC_CLASS, Q_GENERIC_INFER] },
-  c6_jefe_balrog: { kind: "battle", questions: [Q_GENERIC_FN, Q_GENERIC_CLASS, Q_WHY_GENERIC, Q_GENERIC_CONSTRAINT] },
+  c6_jefe_balrog: {
+    kind: "challenge",
+    title: P("El Balrog de Morgoth", "The Balrog of Morgoth"),
+    lore_intro: P(
+      "Sombra y fuego. Forja una herramienta que sirva para CUALQUIER tipo: una función genérica que transforma una lista.",
+      "Shadow and flame. Forge a tool that works for ANY type: a generic function that transforms a list.",
+    ),
+    challenge: {
+      topic: P("Genéricos: <T, U>", "Generics: <T, U>"),
+      instructions: P(
+        "Escribe `mapear<T, U>(xs: T[], fn: (x: T) => U): U[]` que aplique `fn` a cada elemento y devuelva el array de resultados. Con dos parámetros de tipo, funciona con cualquier entrada y salida.\n\nEjemplo: `mapear([1, 2, 3], (n) => n * 2)` → `[2, 4, 6]`.",
+        "Write `mapear<T, U>(xs: T[], fn: (x: T) => U): U[]` applying `fn` to each element and returning the array of results. With two type parameters, it works with any input and output.\n\nExample: `mapear([1, 2, 3], (n) => n * 2)` → `[2, 4, 6]`.",
+      ),
+      starter_code: "function mapear<T, U>(xs: T[], fn: (x: T) => U): U[] {\n}\n",
+      hints: [
+        P("`T` es el tipo de entrada y `U` el de salida; el resultado es `U[]`.", "`T` is the input type and `U` the output; the result is `U[]`."),
+        P("El cuerpo es una línea: `return xs.map(fn);`.", "The body is one line: `return xs.map(fn);`."),
+      ],
+      test_cases: [
+        { input: "mapear([1, 2, 3], (n) => n * 2)", expected: [2, 4, 6], description: P("Números a números", "Numbers to numbers"), raw: true },
+        { input: "mapear(['a', 'bb'], (s) => s.length)", expected: [1, 2], description: P("Textos a longitudes: T y U distintos", "Texts to lengths: different T and U"), raw: true },
+        { input: "mapear([], (x) => x)", expected: [], description: P("Lista vacía", "Empty list"), raw: true },
+      ],
+    },
+  },
   pergamino_contratos: {
     kind: "scroll",
     title: P("El Pergamino de los Moldes", "The Scroll of Molds"),
@@ -1595,7 +1743,31 @@ export const SYL_TS_COMMUNITY_7: Syllabus = {
   c7_orco_explorador: { kind: "battle", questions: [Q_INTERSECTION, Q_UTILITY, Q_PARTIAL] },
   c7_trasgo_frontera: { kind: "battle", questions: [Q_RECORD, Q_PICK, Q_INTERSECTION] },
   c7_uruk_rastreador: { kind: "battle", questions: [Q_PARTIAL, Q_READONLY_UTIL, Q_UTILITY] },
-  c7_jefe_ugluk: { kind: "battle", questions: [Q_INTERSECTION, Q_RECORD, Q_PICK, Q_PARTIAL] },
+  c7_jefe_ugluk: {
+    kind: "challenge",
+    title: P("Uglúk, capitán de Isengard", "Uglúk, captain of Isengard"),
+    lore_intro: P(
+      "El capitán reúne dos linajes en uno. Combina dos tipos con una INTERSECCIÓN: un guerrero es a la vez con-nombre y con-poder.",
+      "The captain unites two lineages in one. Combine two types with an INTERSECTION: a warrior is both named and powered.",
+    ),
+    challenge: {
+      topic: P("Tipos de intersección (A & B)", "Intersection types (A & B)"),
+      instructions: P(
+        "Declara `ConNombre = { nombre: string }` y `ConPoder = { poder: number }`. Escribe `crearGuerrero(nombre: string, poder: number): ConNombre & ConPoder` que devuelva un objeto con AMBAS propiedades.\n\nEjemplo: `crearGuerrero('Aragorn', 80).poder` → `80`.",
+        "Declare `ConNombre = { nombre: string }` and `ConPoder = { poder: number }`. Write `crearGuerrero(nombre: string, poder: number): ConNombre & ConPoder` returning an object with BOTH properties.\n\nExample: `crearGuerrero('Aragorn', 80).poder` → `80`.",
+      ),
+      starter_code:
+        "type ConNombre = { nombre: string };\ntype ConPoder = { poder: number };\n\nfunction crearGuerrero(nombre: string, poder: number): ConNombre & ConPoder {\n}\n",
+      hints: [
+        P("La intersección `A & B` exige TODAS las propiedades de ambos.", "The intersection `A & B` requires ALL properties of both."),
+        P("Devuelve un objeto con las dos: `return { nombre, poder };`.", "Return an object with both: `return { nombre, poder };`."),
+      ],
+      test_cases: [
+        { input: "crearGuerrero('Aragorn', 80).nombre", expected: "Aragorn", description: P("Tiene nombre", "Has a name"), raw: true },
+        { input: "crearGuerrero('Aragorn', 80).poder", expected: 80, description: P("Y poder: A & B", "And power: A & B"), raw: true },
+      ],
+    },
+  },
   pergamino_dones: {
     kind: "scroll",
     title: P("El Pergamino de los Dones Derivados", "The Scroll of Derived Gifts"),
@@ -1826,7 +1998,31 @@ export const SYL_TS_COMMUNITY_8: Syllabus = {
   c8_uruk_arquero: { kind: "battle", questions: [Q_NARROW, Q_UNKNOWN, Q_NARROW_WHY] },
   c8_orco_saqueador: { kind: "battle", questions: [Q_DISCRIMINATED, Q_IN_OPERATOR, Q_NARROW] },
   c8_uruk_espadachin: { kind: "battle", questions: [Q_TYPE_PREDICATE, Q_UNKNOWN, Q_DISCRIMINATED] },
-  c8_jefe_lurtz: { kind: "battle", questions: [Q_DISCRIMINATED, Q_TYPE_PREDICATE, Q_NARROW_WHY, Q_IN_OPERATOR] },
+  c8_jefe_lurtz: {
+    kind: "challenge",
+    title: P("Lurtz, el primero de los Uruk-hai", "Lurtz, first of the Uruk-hai"),
+    lore_intro: P(
+      "El último enemigo de la Comunidad. Un valor puede llegar como número o como texto: ESTRECHA el tipo con typeof y actúa en consecuencia.",
+      "The Fellowship's last foe. A value may come as a number or as text: NARROW the type with typeof and act accordingly.",
+    ),
+    challenge: {
+      topic: P("Narrowing: uniones y typeof", "Narrowing: unions and typeof"),
+      instructions: P(
+        "Escribe `describir(x: string | number): string` que:\n• si `x` es un número, devuelva `'numero {x}'`,\n• si es un texto, devuelva `'texto {x}'`.\n\nUsa `typeof` para estrechar el tipo. Ejemplo: `describir(5)` → `'numero 5'`; `describir('hola')` → `'texto hola'`.",
+        "Write `describir(x: string | number): string` that:\n• if `x` is a number, returns `'numero {x}'`,\n• if it's text, returns `'texto {x}'`.\n\nUse `typeof` to narrow the type. Example: `describir(5)` → `'numero 5'`; `describir('hola')` → `'texto hola'`.",
+      ),
+      starter_code: "function describir(x: string | number): string {\n}\n",
+      hints: [
+        P("`if (typeof x === 'number') { ... }` estrecha `x` a number en esa rama.", "`if (typeof x === 'number') { ... }` narrows `x` to number in that branch."),
+        P("Interpola con template strings: `` `numero ${x}` `` y `` `texto ${x}` ``.", "Interpolate with template strings: `` `numero ${x}` `` and `` `texto ${x}` ``."),
+      ],
+      test_cases: [
+        { input: "describir(5)", expected: "numero 5", description: P("Rama number", "Number branch"), raw: true },
+        { input: "describir('hola')", expected: "texto hola", description: P("Rama string", "String branch"), raw: true },
+        { input: "describir(0)", expected: "numero 0", description: P("El 0 también es número", "0 is a number too"), raw: true },
+      ],
+    },
+  },
   pergamino_fallos: {
     kind: "scroll",
     title: P("El Pergamino de lo que Puede Fallar", "The Scroll of What Can Go Wrong"),
