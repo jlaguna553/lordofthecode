@@ -225,3 +225,221 @@ export const SYL_REACT_COMMUNITY_1: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre listas, children y composición. */
+const Q_LIST = {
+  question: P(
+    "¿Cómo se renderiza una lista de elementos desde un array en JSX?",
+    "How do you render a list of elements from an array in JSX?",
+  ),
+  options: [
+    P("Con `.map`: `{items.map(x => <li>{x}</li>)}`", "With `.map`: `{items.map(x => <li>{x}</li>)}`"),
+    P("Con un bucle `for` dentro del JSX", "With a `for` loop inside the JSX"),
+    P("Con `items.forEach(...)`", "With `items.forEach(...)`"),
+    P("No se puede renderizar un array", "You can't render an array"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`map` transforma cada dato en un elemento y devuelve un array de JSX, que React sabe renderizar. `forEach` no sirve (no devuelve nada) y un `for` es una sentencia, no una expresión.",
+    "`map` turns each item into an element and returns an array of JSX, which React knows how to render. `forEach` won't work (returns nothing) and a `for` is a statement, not an expression.",
+  ),
+};
+const Q_KEY = {
+  question: P(
+    "¿Para qué sirve la prop `key` en los elementos de una lista?",
+    "What is the `key` prop for on list items?",
+  ),
+  options: [
+    P(
+      "Para que React identifique cada elemento entre renders (rendimiento y estado correcto)",
+      "So React can identify each element across renders (performance and correct state)",
+    ),
+    P("Para ordenar la lista", "To sort the list"),
+    P("Para darle estilo", "To style it"),
+    P("Es obligatoria en el HTML final", "It's required in the final HTML"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`key` le da a React una identidad estable a cada elemento de una lista para saber cuál cambió, se añadió o se borró. Debe ser única entre hermanos. No aparece en el HTML final: es sólo para React.",
+    "`key` gives React a stable identity for each list item so it knows which one changed, was added or removed. It must be unique among siblings. It doesn't appear in the final HTML: it's only for React.",
+  ),
+};
+const Q_CHILDREN = {
+  question: P(
+    "¿Qué es la prop especial `children` de un componente?",
+    "What is a component's special `children` prop?",
+  ),
+  options: [
+    P(
+      "Lo que se escribe ENTRE las etiquetas: `<Marco>esto</Marco>`",
+      "Whatever is written BETWEEN the tags: `<Marco>this</Marco>`",
+    ),
+    P("Sus componentes hijos declarados en el fichero", "Its child components declared in the file"),
+    P("Una lista de sus props", "A list of its props"),
+    P("El componente padre", "The parent component"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`children` es lo que pones entre las etiquetas de apertura y cierre: en `<Marco>hola</Marco>`, `children` es `'hola'`. El componente lo coloca donde quiera con `{children}`. Así se hacen envoltorios reutilizables.",
+    "`children` is whatever you put between the opening and closing tags: in `<Marco>hola</Marco>`, `children` is `'hola'`. The component places it wherever it wants with `{children}`. That's how you build reusable wrappers.",
+  ),
+};
+const Q_COMPOSE = {
+  question: P(
+    "¿Cómo usa un componente a OTRO componente dentro de su JSX?",
+    "How does one component use ANOTHER component inside its JSX?",
+  ),
+  options: [
+    P("Como una etiqueta: `<Verso texto={v} />`", "As a tag: `<Verso texto={v} />`"),
+    P("Llamándolo como función: `Verso(v)`", "Calling it as a function: `Verso(v)`"),
+    P("Con `import` dentro del return", "With `import` inside the return"),
+    P("No se pueden anidar componentes", "You can't nest components"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La composición es el corazón de React: un componente usa a otro como si fuera una etiqueta, pasándole props. `<Canto>` puede renderizar muchos `<Verso />`. Se construyen interfaces complejas combinando piezas simples.",
+    "Composition is the heart of React: a component uses another like a tag, passing it props. `<Canto>` can render many `<Verso />`. You build complex interfaces by combining simple pieces.",
+  ),
+};
+const Q_CLASSNAME = {
+  question: P(
+    "En JSX, ¿cómo se pone una clase CSS a un elemento?",
+    "In JSX, how do you put a CSS class on an element?",
+  ),
+  options: [
+    P("Con `className`: `<div className=\"caja\">`", "With `className`: `<div className=\"caja\">`"),
+    P("Con `class`: `<div class=\"caja\">`", "With `class`: `<div class=\"caja\">`"),
+    P("Con `css`: `<div css=\"caja\">`", "With `css`: `<div css=\"caja\">`"),
+    P("Con `style`: `<div style=\"caja\">`", "With `style`: `<div style=\"caja\">`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En JSX es `className`, no `class` (porque `class` es palabra reservada de JavaScript). React lo traduce al atributo `class` del HTML final. Igual pasa con `htmlFor` en vez de `for`.",
+    "In JSX it's `className`, not `class` (because `class` is a reserved JavaScript word). React translates it to the `class` attribute in the final HTML. The same goes for `htmlFor` instead of `for`.",
+  ),
+};
+
+/** Capítulo 2 · Listas, children y composición. */
+export const SYL_REACT_COMMUNITY_2: Syllabus = {
+  c2_raiz: { kind: "battle", questions: [Q_LIST, Q_KEY, Q_CLASSNAME] },
+  c2_niebla: { kind: "battle", questions: [Q_CHILDREN, Q_COMPOSE, Q_LIST] },
+  c2_sauce: { kind: "battle", questions: [Q_KEY, Q_CLASSNAME, Q_CHILDREN] },
+  c2_jefe_tumulario: { kind: "battle", questions: [Q_LIST, Q_KEY, Q_COMPOSE, Q_CHILDREN] },
+  pergamino_ciclo_vida: {
+    kind: "scroll",
+    title: P("El Pergamino de las Muchas Formas", "The Scroll of Many Shapes"),
+    lore_intro: P(
+      "En el Bosque Viejo, un pergamino enseña a dibujar MUCHAS cosas (listas con map), a envolver contenido (children) y a combinar componentes (composición).",
+      "In the Old Forest, a scroll teaches how to draw MANY things (lists with map), wrap content (children) and combine components (composition).",
+    ),
+    scroll: {
+      topic: P("Listas, children y composición", "Lists, children and composition"),
+      sections: [
+        {
+          heading: P("Listas con map (y key)", "Lists with map (and key)"),
+          body: P(
+            "Para renderizar un array, transfórmalo con `.map` en elementos. Dale a cada uno una `key` única: React la usa para seguir cada elemento (no aparece en el HTML).",
+            "To render an array, transform it with `.map` into elements. Give each a unique `key`: React uses it to track each item (it doesn't appear in the HTML).",
+          ),
+          code: "function Lista({ nombres }) {\n  return (\n    <ul>\n      {nombres.map((n) => (\n        <li key={n}>{n}</li>\n      ))}\n    </ul>\n  );\n}",
+        },
+        {
+          heading: P("children: envolver contenido", "children: wrapping content"),
+          body: P(
+            "Lo que pones ENTRE las etiquetas llega como la prop `children`. El componente lo coloca con `{children}`. Ideal para envoltorios. Ojo: la clase CSS es `className`, no `class`.",
+            "Whatever you put BETWEEN the tags arrives as the `children` prop. The component places it with `{children}`. Great for wrappers. Note: the CSS class is `className`, not `class`.",
+          ),
+          code: "function Marco({ children }) {\n  return <div className=\"marco\">{children}</div>;\n}\n// <Marco>hola</Marco>  →  <div class=\"marco\">hola</div>",
+        },
+        {
+          heading: P("Composición: componentes dentro de componentes", "Composition: components within components"),
+          body: P(
+            "Un componente usa a otro como una etiqueta, pasándole props. Combinando piezas simples se arman interfaces complejas.",
+            "A component uses another like a tag, passing it props. Combining simple pieces builds complex interfaces.",
+          ),
+          code: "function Verso({ texto }) {\n  return <li>{texto}</li>;\n}\nfunction Canto({ versos }) {\n  return <ul>{versos.map((v) => <Verso key={v} texto={v} />)}</ul>;\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "`.map` renderiza listas (con `key` única por elemento); `children` es el contenido entre etiquetas; y la composición combina componentes como etiquetas. La clase CSS se escribe `className`.",
+        "`.map` renders lists (with a unique `key` per item); `children` is the content between tags; and composition combines components as tags. The CSS class is written `className`.",
+      ),
+    },
+  },
+  viejo_hombre_sauce: {
+    kind: "challenge",
+    title: P("El Viejo Hombre Sauce", "Old Man Willow"),
+    lore_intro: P(
+      "El Sauce atrapa a los hobbits uno a uno. Muéstralos a todos en una lista con map.",
+      "The Willow snares the hobbits one by one. Show them all in a list with map.",
+    ),
+    challenge: {
+      topic: P("Listas con map y key", "Lists with map and key"),
+      instructions: P(
+        "Escribe el componente `Lista` que reciba la prop `nombres` (array de strings) y devuelva un `<ul>` con un `<li>` por cada nombre. Dale a cada `<li>` una `key` (usa el propio nombre).\n\n`render(<Lista nombres={[\"Merry\", \"Pippin\"]} />)` → `\"<ul><li>Merry</li><li>Pippin</li></ul>\"`.",
+        "Write the component `Lista` that takes the prop `nombres` (array of strings) and returns a `<ul>` with one `<li>` per name. Give each `<li>` a `key` (use the name itself).\n\n`render(<Lista nombres={[\"Merry\", \"Pippin\"]} />)` → `\"<ul><li>Merry</li><li>Pippin</li></ul>\"`.",
+      ),
+      starter_code:
+        "function Lista({ nombres }) {\n  // <ul>{nombres.map(n => <li key={n}>{n}</li>)}</ul>\n}\n",
+      hints: [
+        P("Envuelve el map en un `<ul>`: `<ul>{nombres.map(...)}</ul>`.", "Wrap the map in a `<ul>`: `<ul>{nombres.map(...)}</ul>`."),
+        P("Cada elemento lleva su key: `<li key={n}>{n}</li>`.", "Each element carries its key: `<li key={n}>{n}</li>`."),
+      ],
+      test_cases: [
+        { input: 'render(<Lista nombres={["Merry", "Pippin"]} />)', expected: "<ul><li>Merry</li><li>Pippin</li></ul>", description: P("Cada nombre, su <li>", "Each name, its own <li>"), raw: true },
+        { input: "render(<Lista nombres={[]} />)", expected: "<ul></ul>", description: P("Lista vacía", "Empty list"), raw: true },
+        { input: 'render(<Lista nombres={["Frodo"]} />)', expected: "<ul><li>Frodo</li></ul>", description: P("Uno solo", "Just one"), raw: true },
+      ],
+    },
+  },
+  tumulo_espectro: {
+    kind: "challenge",
+    title: P("El Túmulo del Espectro", "The Wight's Barrow"),
+    lore_intro: P(
+      "El Tumulario encierra a sus víctimas. Crea un envoltorio que rodee lo que sea que le pongas dentro: eso es children.",
+      "The Barrow-wight locks its victims away. Build a wrapper that surrounds whatever you place inside it: that's children.",
+    ),
+    challenge: {
+      topic: P("La prop children (y className)", "The children prop (and className)"),
+      instructions: P(
+        "Escribe el componente `Tumba` que envuelva su contenido (`children`) en un `<div>` con la clase CSS `tumba`.\n\nRecuerda: en JSX la clase se escribe `className`. `render(<Tumba>Frodo</Tumba>)` → `\"<div class=\\\"tumba\\\">Frodo</div>\"`.",
+        "Write the component `Tumba` that wraps its content (`children`) in a `<div>` with the CSS class `tumba`.\n\nRemember: in JSX the class is written `className`. `render(<Tumba>Frodo</Tumba>)` → `\"<div class=\\\"tumba\\\">Frodo</div>\"`.",
+      ),
+      starter_code:
+        'function Tumba({ children }) {\n  // <div className="tumba">{children}</div>\n}\n',
+      hints: [
+        P("Desestructura `children` y colócalo dentro: `{children}`.", "Destructure `children` and place it inside: `{children}`."),
+        P('La clase va con `className`, que React vuelca a `class`: `<div className="tumba">`.', 'The class goes with `className`, which React turns into `class`: `<div className="tumba">`.'),
+      ],
+      test_cases: [
+        { input: "render(<Tumba>Frodo</Tumba>)", expected: '<div class="tumba">Frodo</div>', description: P("Envuelve el contenido", "Wraps the content"), raw: true },
+        { input: 'render(<Tumba>{"Sam"}</Tumba>)', expected: '<div class="tumba">Sam</div>', description: P("Con otro contenido", "With other content"), raw: true },
+      ],
+    },
+  },
+  canto_bombadil: {
+    kind: "challenge",
+    title: P("El Canto de Tom Bombadil", "Tom Bombadil's Song"),
+    lore_intro: P(
+      "El canto de Tom es muchos versos, cada uno su propio componente. Compón el canto a partir de piezas pequeñas.",
+      "Tom's song is many verses, each its own component. Compose the song out of small pieces.",
+    ),
+    challenge: {
+      topic: P("Composición de componentes", "Component composition"),
+      instructions: P(
+        "Escribe DOS componentes:\n• `Verso` que reciba `texto` y devuelva `<li>{texto}</li>`,\n• `Canto` que reciba `versos` (array) y devuelva un `<ul>` renderizando un `<Verso />` por cada verso (con `key`).\n\n`render(<Canto versos={[\"ho\", \"hey\"]} />)` → `\"<ul><li>ho</li><li>hey</li></ul>\"`.",
+        "Write TWO components:\n• `Verso` taking `texto` and returning `<li>{texto}</li>`,\n• `Canto` taking `versos` (array) and returning a `<ul>` rendering one `<Verso />` per verse (with `key`).\n\n`render(<Canto versos={[\"ho\", \"hey\"]} />)` → `\"<ul><li>ho</li><li>hey</li></ul>\"`.",
+      ),
+      starter_code:
+        "function Verso({ texto }) {\n  // <li>{texto}</li>\n}\n\nfunction Canto({ versos }) {\n  // <ul>{versos.map(v => <Verso key={v} texto={v} />)}</ul>\n}\n",
+      hints: [
+        P("`Canto` usa a `Verso` como una etiqueta: `<Verso key={v} texto={v} />`.", "`Canto` uses `Verso` as a tag: `<Verso key={v} texto={v} />`."),
+        P("`Verso` sólo devuelve `<li>{texto}</li>`.", "`Verso` just returns `<li>{texto}</li>`."),
+      ],
+      test_cases: [
+        { input: 'render(<Canto versos={["ho", "hey"]} />)', expected: "<ul><li>ho</li><li>hey</li></ul>", description: P("Canto compuesto de versos", "A song composed of verses"), raw: true },
+        { input: "render(<Canto versos={[]} />)", expected: "<ul></ul>", description: P("Sin versos", "No verses"), raw: true },
+      ],
+    },
+  },
+};

@@ -66,7 +66,10 @@ import {
   SYL_GO_COMMUNITY_7,
   SYL_GO_COMMUNITY_8,
 } from "./syllabus/community-go";
-import { SYL_REACT_COMMUNITY_1 } from "./syllabus/community-react";
+import {
+  SYL_REACT_COMMUNITY_1,
+  SYL_REACT_COMMUNITY_2,
+} from "./syllabus/community-react";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -121,6 +124,11 @@ const GO_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_GO_COMMUNITY_8, "go");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
+  "react",
+);
+const REACT_COMMUNITY_2 = buildChapter(
+  NARR_COMMUNITY_2,
+  SYL_REACT_COMMUNITY_2,
   "react",
 );
 
@@ -282,7 +290,10 @@ export const ADVENTURES: Adventure[] = [
       en: "Interfaces with components, props and JSX, truly rendered in your browser. Bilingual.",
     },
     books: [
-      { book: BOOK_FELLOWSHIP, chapters: [REACT_COMMUNITY_1] },
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [REACT_COMMUNITY_1, REACT_COMMUNITY_2],
+      },
     ],
   },
   {
