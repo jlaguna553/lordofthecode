@@ -431,6 +431,17 @@ export const SYL_JS_COMMUNITY_2: Syllabus = {
       ),
       starter_code:
         "function atrapar(nombres) {\n  const r = [];\n  // recorre y añade con push\n  return r;\n}\n",
+      blocks: [
+        "function atrapar(nombres) {",
+        "  const r = [];",
+        "  for (const n of nombres) {",
+        "    r.push(`${n} queda atrapado`);",
+        "  }",
+        "  return r;",
+        "}",
+        "    r.push(n);",
+        "  for (const n in nombres) {",
+      ],
       hints: [
         P("`for (const n of nombres) { ... }` recorre cada nombre.", "`for (const n of nombres) { ... }` goes over each name."),
         P("Dentro: `r.push(`${n} queda atrapado`)`.", "Inside: `r.push(`${n} queda atrapado`)`."),
@@ -457,6 +468,17 @@ export const SYL_JS_COMMUNITY_2: Syllabus = {
       ),
       starter_code:
         "function drenarVarios(vidas, frio) {\n  const r = [];\n  // recorre y resta, sin bajar de 0\n  return r;\n}\n",
+      blocks: [
+        "function drenarVarios(vidas, frio) {",
+        "  const r = [];",
+        "  for (const v of vidas) {",
+        "    r.push(Math.max(0, v - frio));",
+        "  }",
+        "  return r;",
+        "}",
+        "    r.push(v - frio);",
+        "    r.push(Math.min(0, v - frio));",
+      ],
       hints: [
         P("`for (const v of vidas)` recorre cada vida.", "`for (const v of vidas)` goes over each life."),
         P("`r.push(Math.max(0, v - frio))` nunca añade menos de 0.", "`r.push(Math.max(0, v - frio))` never adds less than 0."),
@@ -483,6 +505,18 @@ export const SYL_JS_COMMUNITY_2: Syllabus = {
       ),
       starter_code:
         "function romperHechizo(fuerza, golpe) {\n  let versos = 0;\n  // mientras el hechizo aguante, canta\n  return versos;\n}\n",
+      blocks: [
+        "function romperHechizo(fuerza, golpe) {",
+        "  let versos = 0;",
+        "  while (fuerza > 0) {",
+        "    fuerza -= golpe;",
+        "    versos++;",
+        "  }",
+        "  return versos;",
+        "}",
+        "  while (fuerza >= 0) {",
+        "    fuerza += golpe;",
+      ],
       hints: [
         P("`while (fuerza > 0)` repite mientras el hechizo resista.", "`while (fuerza > 0)` repeats while the spell holds."),
         P("Dentro: `fuerza -= golpe;` y `versos++;`.", "Inside: `fuerza -= golpe;` and `versos++;`."),

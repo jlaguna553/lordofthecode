@@ -5734,6 +5734,12 @@ export const CHAPTER_GOLLUM: Chapter = {
         },
         starter_code:
           "def presentarse(nombre, edad):\n    # devuelve la f-string con el formato pedido\n    ...\n",
+        blocks: [
+          "def presentarse(nombre, edad):",
+          "    return f'Soy {nombre} y tengo {edad} años'",
+          "    return f'Soy {nombre} y tengo {edad}'",
+          "    return 'Soy {nombre} y tengo {edad} años'",
+        ],
         hints: [
           { es: "Una función se declara con `def nombre(parametros):` y su cuerpo va indentado debajo.", en: "A function is declared with `def name(params):` and its body is indented below." },
           { es: "Una f-string lleva la f delante y las variables entre llaves: `f'Soy {nombre}...'`.", en: "An f-string has the f in front and variables inside braces: `f'Soy {nombre}...'`." },
@@ -5787,6 +5793,14 @@ export const CHAPTER_GOLLUM: Chapter = {
         },
         starter_code:
           "def es_par(n):\n    ...\n\n\ndef a_entero(texto):\n    ...\n",
+        blocks: [
+          "def es_par(n):",
+          "    return n % 2 == 0",
+          "def a_entero(texto):",
+          "    return int(texto)",
+          "    return n % 2 == 1",
+          "    return texto",
+        ],
         hints: [
           { es: "Un número es par si al dividirlo entre 2 el resto es 0: `n % 2 == 0`. Esa comparación YA es un booleano, puedes devolverla directamente.", en: "A number is even if dividing by 2 leaves remainder 0: `n % 2 == 0`. That comparison is ALREADY a boolean, you can return it directly." },
           { es: "`int(texto)` convierte un str a int. `a_entero('42')` debe devolver el número 42, no la cadena '42'.", en: "`int(texto)` converts a str to int. `a_entero('42')` must return the number 42, not the string '42'." },
@@ -5839,6 +5853,17 @@ export const CHAPTER_GOLLUM: Chapter = {
         },
         starter_code:
           "def clasificar(peces):\n    if peces <= 0:\n        return 'hambriento'\n    # añade elif y else\n",
+        blocks: [
+          "def clasificar(peces):",
+          "    if peces <= 0:",
+          "        return 'hambriento'",
+          "    elif peces < 3:",
+          "        return 'conforme'",
+          "    else:",
+          "        return 'gordo y feliz'",
+          "    elif peces > 3:",
+          "        return 'conforme y feliz'",
+        ],
         hints: [
           { es: "Tres casos, tres ramas: `if peces <= 0:` … `elif peces < 3:` … `else:`.", en: "Three cases, three branches: `if peces <= 0:` … `elif peces < 3:` … `else:`." },
           { es: "Cada `return` va indentado 8 espacios (dentro de su rama, que ya está dentro de la función).", en: "Each `return` is indented 8 spaces (inside its branch, which is already inside the function)." },

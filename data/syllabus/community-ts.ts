@@ -443,6 +443,13 @@ export const SYL_TS_COMMUNITY_2: Syllabus = {
       ),
       starter_code:
         "function atrapar(nombres: string[]): string[] {\n  // usa map y una template string\n}\n",
+      blocks: [
+        "function atrapar(nombres: string[]): string[] {",
+        "  return nombres.map(n => `${n} queda atrapado`);",
+        "}",
+        "  return nombres.map(n => n);",
+        "  return nombres.map(n => `${n}`);",
+      ],
       hints: [
         P("`nombres.map(n => ...)` devuelve un `string[]` nuevo.", "`nombres.map(n => ...)` returns a new `string[]`."),
         P("Cada elemento: `` `${n} queda atrapado` ``.", "Each element: `` `${n} queda atrapado` ``."),
@@ -469,6 +476,13 @@ export const SYL_TS_COMMUNITY_2: Syllabus = {
       ),
       starter_code:
         "function drenarVarios(vidas: number[], drenaje: number): number[] {\n  // map + Math.max(0, ...)\n}\n",
+      blocks: [
+        "function drenarVarios(vidas: number[], drenaje: number): number[] {",
+        "  return vidas.map(v => Math.max(0, v - drenaje));",
+        "}",
+        "  return vidas.map(v => v - drenaje);",
+        "  return vidas.map(v => Math.min(0, v - drenaje));",
+      ],
       hints: [
         P("`vidas.map(v => Math.max(0, v - drenaje))`.", "`vidas.map(v => Math.max(0, v - drenaje))`."),
         P("`Math.max(0, ...)` evita los negativos.", "`Math.max(0, ...)` avoids negatives."),
@@ -495,6 +509,13 @@ export const SYL_TS_COMMUNITY_2: Syllabus = {
       ),
       starter_code:
         "function resumen(versos: string[]): [number, string] {\n  // devuelve [longitud, versos unidos por ' ']\n}\n",
+      blocks: [
+        "function resumen(versos: string[]): [number, string] {",
+        "  return [versos.length, versos.join(' ')];",
+        "}",
+        "  return [versos.join(' '), versos.length];",
+        "  return [versos.length, versos.join('')];",
+      ],
       hints: [
         P("`versos.length` da la cantidad; `versos.join(' ')` los une.", "`versos.length` gives the count; `versos.join(' ')` joins them."),
         P("Devuelve las dos cosas como tupla: `return [versos.length, versos.join(' ')];`.", "Return both as a tuple: `return [versos.length, versos.join(' ')];`."),

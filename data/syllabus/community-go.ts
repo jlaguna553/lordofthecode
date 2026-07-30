@@ -432,6 +432,18 @@ export const SYL_GO_COMMUNITY_2: Syllabus = {
       ),
       starter_code:
         'package main\n\nfunc atrapar(nombres []string) []string {\n\tresultado := []string{}\n\t// range + append\n\treturn resultado\n}\n',
+      blocks: [
+        "package main",
+        "func atrapar(nombres []string) []string {",
+        "\tresultado := []string{}",
+        "\tfor _, n := range nombres {",
+        '\t\tresultado = append(resultado, n+" queda atrapado")',
+        "\t}",
+        "\treturn resultado",
+        "}",
+        "\t\tresultado = append(resultado, n)",
+        "\tfor n := range nombres {",
+      ],
       hints: [
         P("`for _, n := range nombres { ... }` recorre los valores.", "`for _, n := range nombres { ... }` iterates the values."),
         P('Acumula: `resultado = append(resultado, n+" queda atrapado")`.', 'Accumulate: `resultado = append(resultado, n+" queda atrapado")`.'),
@@ -458,6 +470,22 @@ export const SYL_GO_COMMUNITY_2: Syllabus = {
       ),
       starter_code:
         "package main\n\nfunc drenarVarios(vidas []int, drenaje int) []int {\n\tresultado := []int{}\n\t// range + if para no bajar de 0\n\treturn resultado\n}\n",
+      blocks: [
+        "package main",
+        "func drenarVarios(vidas []int, drenaje int) []int {",
+        "\tresultado := []int{}",
+        "\tfor _, v := range vidas {",
+        "\t\tx := v - drenaje",
+        "\t\tif x < 0 {",
+        "\t\t\tx = 0",
+        "\t\t}",
+        "\t\tresultado = append(resultado, x)",
+        "\t}",
+        "\treturn resultado",
+        "}",
+        "\t\tx := v + drenaje",
+        "\t\tif x > 0 {",
+      ],
       hints: [
         P("Por cada vida: `x := v - drenaje; if x < 0 { x = 0 }`.", "For each life: `x := v - drenaje; if x < 0 { x = 0 }`."),
         P("`resultado = append(resultado, x)`.", "`resultado = append(resultado, x)`."),
@@ -484,6 +512,15 @@ export const SYL_GO_COMMUNITY_2: Syllabus = {
       ),
       starter_code:
         'package main\n\nimport (\n\t"fmt"\n\t"strings"\n)\n\nfunc resumen(versos []string) string {\n\t// fmt.Sprintf con len(versos) y strings.Join(versos, " ")\n}\n',
+      blocks: [
+        "package main",
+        'import (\n\t"fmt"\n\t"strings"\n)',
+        "func resumen(versos []string) string {",
+        '\treturn fmt.Sprintf("%d: %s", len(versos), strings.Join(versos, " "))',
+        "}",
+        '\treturn strings.Join(versos, " ")',
+        '\treturn fmt.Sprintf("%s: %d", strings.Join(versos, " "), len(versos))',
+      ],
       hints: [
         P("`len(versos)` cuenta; `strings.Join(versos, \" \")` une.", "`len(versos)` counts; `strings.Join(versos, \" \")` joins."),
         P('`return fmt.Sprintf("%d: %s", len(versos), strings.Join(versos, " "))`.', '`return fmt.Sprintf("%d: %s", len(versos), strings.Join(versos, " "))`.'),

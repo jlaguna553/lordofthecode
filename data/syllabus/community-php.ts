@@ -242,6 +242,14 @@ class Hobbit {
       sut: "new Hobbit('Frodo')",
       starter_code:
         "<?php\n\nclass Hobbit {\n    // 1) Declara la propiedad y el constructor con $nombre\n\n    // 2) Implementa presentarse(): string\n}\n",
+      blocks: [
+        "class Hobbit {",
+        "    public function __construct(private string $nombre) {}",
+        '    public function presentarse(): string {\n        return "Soy {$this->nombre} de la Comarca";\n    }',
+        "}",
+        '    public function presentarse(): string {\n        return "Soy {$this->nombre}";\n    }',
+        '    public function presentarse(): string {\n        return "Soy de la Comarca";\n    }',
+      ],
       hints: [
         "En PHP 8 puedes declarar y asignar la propiedad en el propio constructor: __construct(private string $nombre) {}",
         'Dentro de comillas dobles se interpola así: return "Soy {$this->nombre} de la Comarca";',
@@ -269,6 +277,16 @@ class Hobbit {
         "class Nazgul {\n    public function __construct(private int $percepcion = 50) {}\n    public function getPercepcion(): int { return $this->percepcion; }\n}",
       starter_code:
         "<?php\n\nclass Hobbit {\n    // Protege $nivelSigilo (private) e implementa los tres métodos\n\n}\n",
+      blocks: [
+        "class Hobbit {",
+        "    private int $nivelSigilo = 0;",
+        "    public function getNivelSigilo(): int {\n        return $this->nivelSigilo;\n    }",
+        "    public function ocultarse(int $n): void {\n        $this->nivelSigilo = min(100, $this->nivelSigilo + $n);\n    }",
+        "    public function esVisiblePara(Nazgul $n): bool {\n        return $this->nivelSigilo < $n->getPercepcion();\n    }",
+        "}",
+        "    public function ocultarse(int $n): void {\n        $this->nivelSigilo = $this->nivelSigilo + $n;\n    }",
+        "    public function esVisiblePara(Nazgul $n): bool {\n        return $this->nivelSigilo > $n->getPercepcion();\n    }",
+      ],
       hints: [
         "Declara la propiedad como private int $nivelSigilo = 0; para que nadie pueda tocarla desde fuera.",
         "ocultarse() debe SUMAR al sigilo actual, no reemplazarlo: min(100, $this->nivelSigilo + $n)",
