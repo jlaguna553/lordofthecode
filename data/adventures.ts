@@ -56,6 +56,7 @@ import {
   SYL_TS_COMMUNITY_7,
   SYL_TS_COMMUNITY_8,
 } from "./syllabus/community-ts";
+import { SYL_GO_COMMUNITY_1 } from "./syllabus/community-go";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -99,6 +100,7 @@ const TS_COMMUNITY_5 = buildChapter(NARR_COMMUNITY_5, SYL_TS_COMMUNITY_5, "types
 const TS_COMMUNITY_6 = buildChapter(NARR_COMMUNITY_6, SYL_TS_COMMUNITY_6, "typescript");
 const TS_COMMUNITY_7 = buildChapter(NARR_COMMUNITY_7, SYL_TS_COMMUNITY_7, "typescript");
 const TS_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_TS_COMMUNITY_8, "typescript");
+const GO_COMMUNITY_1 = buildChapter(NARR_COMMUNITY_1, SYL_GO_COMMUNITY_1, "go");
 
 /**
  * Catálogo de aventuras. Las `available` son jugables; las `soon` aparecen en
@@ -279,13 +281,13 @@ export const ADVENTURES: Adventure[] = [
     tech: "Go",
     icon: "🐹",
     accent: "cyan",
-    status: "soon",
+    status: "available",
     name: { es: "Go", en: "Go" },
     blurb: {
-      es: "El lenguaje de Google: simple, concurrente y compilado. Goroutines y canales.",
-      en: "Google's language: simple, concurrent and compiled. Goroutines and channels.",
+      es: "El lenguaje de Google: simple y compilado. Interpretado de verdad en tu navegador (Yaegi → WASM). Bilingüe.",
+      en: "Google's language: simple and compiled. Truly interpreted in your browser (Yaegi → WASM). Bilingual.",
     },
-    books: [],
+    books: [{ book: BOOK_FELLOWSHIP, chapters: [GO_COMMUNITY_1] }],
   },
   {
     id: "aws",
