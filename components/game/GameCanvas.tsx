@@ -456,7 +456,18 @@ export default function GameCanvas({
             const cx = node.position.x * TILE + TILE / 2;
             const cy = node.position.y * TILE + TILE / 2;
 
-            // PNJ del nodo (p. ej. el Jinete Negro), mirando al sur.
+            // Cada tipo de nodo tiene su color: reto (oro), pergamino (azul),
+            // enigma de lógica (violeta).
+            const kind = node.kind ?? "challenge";
+            // Jefe: combate con enemy.boss O reto-jefe (challenge con .boss).
+            const esJefe =
+              (node.kind === "battle" && node.enemy.boss) ||
+              ((node.kind ?? "challenge") === "challenge" &&
+                "boss" in node &&
+                (node as { boss?: boolean }).boss === true);
+
+            // PNJ del nodo (p. ej. el Jinete Negro), mirando al sur. El JEFE se
+            // dibuja mucho más grande para que se note que es el jefe del nivel.
             const sheet = node.spriteId ? nodeSheets[node.spriteId] : undefined;
             if (sheet) {
               const feet = node.position.y * TILE + TILE;
@@ -469,22 +480,27 @@ export default function GameCanvas({
                 )
                 .setOrigin(0.5, 1)
                 .setDepth(feet);
+              if (esJefe) {
+                sp.setScale(2.1);
+                // Aura roja tenue bajo el jefe para reforzar su presencia.
+                const aura = this.add
+                  .circle(cx, feet - TILE * 0.5, TILE * 0.95, 0xf43f5e, 0.18)
+                  .setDepth(feet - 1);
+                this.tweens.add({
+                  targets: aura,
+                  scale: 1.25,
+                  alpha: 0.08,
+                  duration: 1400,
+                  yoyo: true,
+                  repeat: -1,
+                });
+              }
               this.vigilantes.push({
                 sprite: sp,
                 cols: sheet.cols,
                 mirada: Phaser.Math.Between(0, 3000),
               });
             }
-
-            // Cada tipo de nodo tiene su color: reto (oro), pergamino (azul),
-            // enigma de lógica (violeta).
-            const kind = node.kind ?? "challenge";
-            // Jefe: combate con enemy.boss O reto-jefe (challenge con .boss).
-            const esJefe =
-              (node.kind === "battle" && node.enemy.boss) ||
-              ((node.kind ?? "challenge") === "challenge" &&
-                "boss" in node &&
-                (node as { boss?: boolean }).boss === true);
             const ESTILOS = {
               challenge: { color: 0xffd24a, text: "#ffe9a8", icon: "" },
               scroll: { color: 0x8ab4ff, text: "#cfe0ff", icon: "📜 " },
