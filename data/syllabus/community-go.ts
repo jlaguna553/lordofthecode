@@ -1414,3 +1414,205 @@ export const SYL_GO_COMMUNITY_6: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre embedding y composición. */
+const Q_EMBED = {
+  question: P(
+    "En `type Frasco struct { ObjetoMagico }` (sin nombre de campo), ¿qué es `ObjetoMagico`?",
+    "In `type Frasco struct { ObjetoMagico }` (no field name), what is `ObjetoMagico`?",
+  ),
+  options: [
+    P("Un campo EMBEBIDO: sus métodos y campos se promueven a Frasco", "An EMBEDDED field: its methods and fields are promoted to Frasco"),
+    P("Un error: falta el nombre del campo", "An error: the field name is missing"),
+    P("Una clase padre de la que Frasco hereda", "A parent class Frasco inherits from"),
+    P("Un comentario", "A comment"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Escribir un tipo sin nombre de campo lo EMBEBE: `Frasco` gana los métodos y campos de `ObjetoMagico` como si fueran suyos (promoción). No es herencia: es composición. Puedes acceder al embebido con `f.ObjetoMagico`.",
+    "Writing a type with no field name EMBEDS it: `Frasco` gains `ObjetoMagico`'s methods and fields as if they were its own (promotion). It's not inheritance: it's composition. You can reach the embedded one via `f.ObjetoMagico`.",
+  ),
+};
+const Q_PROMOTION = {
+  question: P(
+    "`Frasco` embebe `ObjetoMagico`, que tiene `Describir()`. ¿Cómo se llama a ese método?",
+    "`Frasco` embeds `ObjetoMagico`, which has `Describir()`. How do you call that method?",
+  ),
+  options: [
+    P("Directamente: `f.Describir()` (está promovido)", "Directly: `f.Describir()` (it's promoted)"),
+    P("Sólo con `f.ObjetoMagico.Describir()`", "Only with `f.ObjetoMagico.Describir()`"),
+    P("No se puede llamar desde fuera", "It can't be called from outside"),
+    P("Con `super.Describir()`", "With `super.Describir()`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los métodos del tipo embebido se promueven: `f.Describir()` funciona como si fuera de `Frasco`. También vale la forma explícita `f.ObjetoMagico.Describir()`, útil si hay un choque de nombres.",
+    "The embedded type's methods are promoted: `f.Describir()` works as if it were `Frasco`'s. The explicit form `f.ObjetoMagico.Describir()` also works, handy if there's a name clash.",
+  ),
+};
+const Q_COMPOSITION = {
+  question: P(
+    "Go no tiene herencia de clases. ¿Cómo comparte comportamiento entre tipos?",
+    "Go has no class inheritance. How does it share behavior between types?",
+  ),
+  options: [
+    P("Con COMPOSICIÓN: embebiendo tipos (has-a), no heredando (is-a)", "With COMPOSITION: embedding types (has-a), not inheriting (is-a)"),
+    P("Con `extends`", "With `extends`"),
+    P("Con herencia múltiple", "With multiple inheritance"),
+    P("No se puede compartir", "It can't be shared"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La filosofía de Go es «composición sobre herencia». Embebes un tipo con la capacidad que quieres (un `Camuflaje` con `Ocultar()`) en cuantos tipos la necesiten. Sin jerarquías rígidas: piezas que se combinan.",
+    "Go's philosophy is \"composition over inheritance\". You embed a type with the capability you want (a `Camuflaje` with `Ocultar()`) into whatever types need it. No rigid hierarchies: pieces that combine.",
+  ),
+};
+const Q_EMBED_IFACE = {
+  question: P(
+    "Un tipo embebe `Bendicion` (que aporta `Bendecir()`) y define su propio `Poder()`. ¿Puede cumplir una interfaz `Don { Poder() int }`?",
+    "A type embeds `Bendicion` (providing `Bendecir()`) and defines its own `Poder()`. Can it satisfy an interface `Don { Poder() int }`?",
+  ),
+  options: [
+    P("Sí: tiene `Poder()` (propio) y `Bendecir()` (promovido); cumple `Don`", "Yes: it has `Poder()` (its own) and `Bendecir()` (promoted); it satisfies `Don`"),
+    P("No: embeber impide cumplir interfaces", "No: embedding prevents satisfying interfaces"),
+    P("Sólo si `Bendicion` cumple `Don`", "Only if `Bendicion` satisfies `Don`"),
+    P("Sólo con `implements Don`", "Only with `implements Don`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los métodos promovidos cuentan para satisfacer interfaces igual que los propios. El tipo tiene `Poder()` (que exige `Don`) y de paso `Bendecir()` heredado por composición. Combina embedding e interfaces sin fricción.",
+    "Promoted methods count toward satisfying interfaces just like the type's own. The type has `Poder()` (which `Don` requires) plus `Bendecir()` gained by composition. It combines embedding and interfaces seamlessly.",
+  ),
+};
+
+/** Capítulo 7 · Embedding y composición. */
+export const SYL_GO_COMMUNITY_7: Syllabus = {
+  c7_orco_explorador: { kind: "battle", questions: [Q_EMBED, Q_PROMOTION, Q_COMPOSITION] },
+  c7_trasgo_frontera: { kind: "battle", questions: [Q_COMPOSITION, Q_EMBED_IFACE, Q_EMBED] },
+  c7_uruk_rastreador: { kind: "battle", questions: [Q_PROMOTION, Q_EMBED_IFACE, Q_COMPOSITION] },
+  c7_jefe_ugluk: { kind: "battle", questions: [Q_EMBED, Q_PROMOTION, Q_EMBED_IFACE, Q_COMPOSITION] },
+  pergamino_dones: {
+    kind: "scroll",
+    title: P("El Pergamino de Galadriel", "Galadriel's Scroll"),
+    lore_intro: P(
+      "La Dama entrega un pergamino. «En estas tierras no hay estirpes que hereden. Hay dones que se ENGARZAN en quien los porte: composición.»",
+      "The Lady hands over a scroll. \"In these lands there are no bloodlines that inherit. There are gifts that are SET into whoever bears them: composition.\"",
+    ),
+    scroll: {
+      topic: P("Embedding y composición", "Embedding and composition"),
+      sections: [
+        {
+          heading: P("Embeber: promoción de métodos y campos", "Embedding: method and field promotion"),
+          body: P(
+            "Un tipo sin nombre de campo dentro de un struct queda EMBEBIDO: sus métodos y campos se promueven al que lo contiene, como si fueran suyos.",
+            "A type with no field name inside a struct is EMBEDDED: its methods and fields are promoted to the container, as if they were its own.",
+          ),
+          code: "type ObjetoMagico struct{ Nombre string }\nfunc (o ObjetoMagico) Describir() string { return \"Don: \" + o.Nombre }\n\ntype Frasco struct {\n\tObjetoMagico // embebido\n}\n// Frasco{...}.Describir() y .Nombre funcionan (promovidos)",
+        },
+        {
+          heading: P("Composición sobre herencia", "Composition over inheritance"),
+          body: P(
+            "Go no tiene herencia de clases. Compartes comportamiento embebiendo un tipo con esa capacidad en cuantos tipos la necesiten — sin parentesco.",
+            "Go has no class inheritance. You share behavior by embedding a type with that capability into whatever types need it — with no kinship.",
+          ),
+          code: "type Camuflaje struct{}\nfunc (c Camuflaje) Ocultar() string { return \"te fundes\" }\n\ntype CapaElfica struct{ Camuflaje }\ntype Barca struct{ Camuflaje } // sin relación entre sí",
+        },
+        {
+          heading: P("Embedding + interfaces", "Embedding + interfaces"),
+          body: P(
+            "Los métodos promovidos cuentan para cumplir interfaces. Un tipo puede embeber una capacidad y, con su propio método, satisfacer un contrato.",
+            "Promoted methods count toward satisfying interfaces. A type can embed a capability and, with its own method, satisfy a contract.",
+          ),
+          code: "type Don interface{ Poder() int }\n\ntype Frasco struct{ Bendicion } // aporta Bendecir()\nfunc (f Frasco) Poder() int { return 5 + f.Bendecir() } // cumple Don",
+        },
+      ],
+      keyTakeaway: P(
+        "Go compone, no hereda: embeber un tipo promueve sus métodos y campos (has-a). Combínalo con interfaces —los métodos promovidos también cuentan— para reusar comportamiento sin jerarquías.",
+        "Go composes, it doesn't inherit: embedding a type promotes its methods and fields (has-a). Combine it with interfaces —promoted methods count too— to reuse behavior without hierarchies.",
+      ),
+    },
+  },
+  frasco_de_galadriel: {
+    kind: "challenge",
+    title: P("El Frasco de Galadriel", "The Phial of Galadriel"),
+    lore_intro: P(
+      "Todo don comparte una forma. Engarza esa base común en el frasco embebiéndola: sus métodos pasan a ser suyos.",
+      "Every gift shares a shape. Set that common base into the phial by embedding it: its methods become its own.",
+    ),
+    challenge: {
+      topic: P("Embedding (promoción de métodos)", "Embedding (method promotion)"),
+      instructions: P(
+        "Ya existe `ObjetoMagico` (con el campo `Nombre` y el método `Describir()`). Crea `FrascoDeGaladriel` que EMBEBA `ObjetoMagico` y añada el método `Usar()` que devuelva `\"una luz en los lugares oscuros\"`.\n\nAl embeberlo, `Describir()` y `Nombre` quedan promovidos.",
+        "The type `ObjetoMagico` (with field `Nombre` and method `Describir()`) already exists. Create `FrascoDeGaladriel` that EMBEDS `ObjetoMagico` and adds the method `Usar()` returning `\"una luz en los lugares oscuros\"`.\n\nBy embedding it, `Describir()` and `Nombre` are promoted.",
+      ),
+      support_code:
+        'package main\n\ntype ObjetoMagico struct {\n\tNombre string\n}\n\nfunc (o ObjetoMagico) Describir() string {\n\treturn "Don de Galadriel: " + o.Nombre\n}',
+      starter_code:
+        "// ObjetoMagico (con Nombre y Describir()) ya existe.\n\ntype FrascoDeGaladriel struct {\n\t// embebe ObjetoMagico (sin nombre de campo)\n}\n\nfunc (f FrascoDeGaladriel) Usar() string {\n\t//\n}\n",
+      hints: [
+        P("Para embeber, escribe el tipo sin nombre de campo: `struct { ObjetoMagico }`.", "To embed, write the type with no field name: `struct { ObjetoMagico }`."),
+        P("`Usar()` devuelve el texto exacto; `Describir()` ya viene promovido.", "`Usar()` returns the exact text; `Describir()` is already promoted."),
+      ],
+      test_cases: [
+        { input: 'FrascoDeGaladriel{ObjetoMagico{Nombre: "Frasco"}}.Usar()', expected: "una luz en los lugares oscuros", description: P("Su método propio", "Its own method"), raw: true },
+        { input: 'FrascoDeGaladriel{ObjetoMagico{Nombre: "Frasco"}}.Describir()', expected: "Don de Galadriel: Frasco", description: P("Describir() promovido del embebido", "Describir() promoted from the embedded type"), raw: true },
+        { input: 'FrascoDeGaladriel{ObjetoMagico{Nombre: "Frasco"}}.Nombre', expected: "Frasco", description: P("El campo Nombre también se promueve", "The Nombre field is promoted too"), raw: true },
+      ],
+    },
+  },
+  capas_elficas: {
+    kind: "challenge",
+    title: P("Las Capas Élficas", "The Elven Cloaks"),
+    lore_intro: P(
+      "Capas y barcas no son de la misma estirpe… pero ambas saben esconderse. Engarza la misma capacidad en las dos por composición.",
+      "Cloaks and boats aren't of the same kin… yet both know how to hide. Set the same capability into both by composition.",
+    ),
+    challenge: {
+      topic: P("Composición: embeber una capacidad", "Composition: embedding a capability"),
+      instructions: P(
+        "Ya existe `Camuflaje`, con el método `Ocultar()` que devuelve `\"te fundes con el bosque\"`. Crea DOS tipos SIN relación entre sí, `CapaElfica` y `Barca`, que EMBEBAN `Camuflaje` para ganar ese método.",
+        "The type `Camuflaje`, with method `Ocultar()` returning `\"te fundes con el bosque\"`, already exists. Create TWO UNRELATED types, `CapaElfica` and `Barca`, that EMBED `Camuflaje` to gain that method.",
+      ),
+      support_code:
+        'package main\n\ntype Camuflaje struct{}\n\nfunc (c Camuflaje) Ocultar() string {\n\treturn "te fundes con el bosque"\n}',
+      starter_code:
+        "// Camuflaje (con Ocultar()) ya existe.\n\ntype CapaElfica struct {\n\t// embebe Camuflaje\n}\n\ntype Barca struct {\n\t// embebe Camuflaje\n}\n",
+      hints: [
+        P("Embeber = escribir `Camuflaje` sin nombre de campo dentro de cada struct.", "Embedding = writing `Camuflaje` with no field name inside each struct."),
+        P("No escribas `Ocultar()` en ninguna: viene promovido del embebido.", "Don't write `Ocultar()` in either: it comes promoted from the embedded type."),
+      ],
+      test_cases: [
+        { input: "CapaElfica{}.Ocultar()", expected: "te fundes con el bosque", description: P("La capa esconde a quien la lleva", "The cloak hides its wearer"), raw: true },
+        { input: "Barca{}.Ocultar()", expected: "te fundes con el bosque", description: P("La barca también, sin parentesco", "The boat too, with no kinship"), raw: true },
+      ],
+    },
+  },
+  dones_de_lorien: {
+    kind: "challenge",
+    title: P("Los Dones de la Dama", "The Lady's Gifts"),
+    lore_intro: P(
+      "Cada don lleva la bendición de Lórien y sabe declarar su poder. Embedding para la bendición, interfaz para el poder.",
+      "Each gift bears Lórien's blessing and knows how to declare its power. Embedding for the blessing, an interface for the power.",
+    ),
+    challenge: {
+      topic: P("Embedding + interfaces combinados", "Embedding + interfaces combined"),
+      instructions: P(
+        "Ya existen: la interfaz `Don` (con `Poder() int`), el tipo `Bendicion` (con `Bendecir() int` = 10) y `PoderTotal(dones []Don) int`. Crea `Frasco` y `Capa`: ambos EMBEBEN `Bendicion` y definen `Poder()` = su base + `Bendecir()`. Base 5 en Frasco (total 15), 2 en Capa (total 12).",
+        "Already exist: the interface `Don` (with `Poder() int`), the type `Bendicion` (with `Bendecir() int` = 10) and `PoderTotal(dones []Don) int`. Create `Frasco` and `Capa`: both EMBED `Bendicion` and define `Poder()` = their base + `Bendecir()`. Base 5 in Frasco (total 15), 2 in Capa (total 12).",
+      ),
+      support_code:
+        "package main\n\ntype Don interface {\n\tPoder() int\n}\n\ntype Bendicion struct{}\n\nfunc (b Bendicion) Bendecir() int { return 10 }\n\nfunc PoderTotal(dones []Don) int {\n\ttotal := 0\n\tfor _, d := range dones {\n\t\ttotal += d.Poder()\n\t}\n\treturn total\n}",
+      starter_code:
+        "// Don (interfaz), Bendicion (con Bendecir()) y PoderTotal(...) ya existen.\n\ntype Frasco struct {\n\tBendicion\n}\n\nfunc (f Frasco) Poder() int {\n\t// 5 + f.Bendecir()\n}\n\ntype Capa struct {\n\tBendicion\n}\n\nfunc (c Capa) Poder() int {\n\t// 2 + c.Bendecir()\n}\n",
+      hints: [
+        P("`Bendecir()` viene promovido del embebido: `f.Bendecir()` funciona.", "`Bendecir()` comes promoted from the embedded type: `f.Bendecir()` works."),
+        P("Al tener `Poder()`, ambos cumplen `Don` y entran en `PoderTotal`.", "By having `Poder()`, both satisfy `Don` and fit into `PoderTotal`."),
+      ],
+      test_cases: [
+        { input: "Frasco{}.Poder()", expected: 15, description: P("5 propios + 10 de bendición", "5 of its own + 10 blessing"), raw: true },
+        { input: "Capa{}.Poder()", expected: 12, description: P("2 propios + 10 de bendición", "2 of its own + 10 blessing"), raw: true },
+        { input: "PoderTotal([]Don{Frasco{}, Capa{}})", expected: 27, description: P("Los suma a ambos como Don", "Sums both as Don"), raw: true },
+      ],
+    },
+  },
+};
