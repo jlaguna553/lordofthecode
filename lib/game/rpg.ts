@@ -7,7 +7,13 @@
  * de antes de existir el combate siguen siendo válidas sin migración.
  */
 
-import type { BattleNode, Chapter, MapNode, Reward } from "./types";
+import type {
+  BattleNode,
+  ChallengeNode,
+  Chapter,
+  MapNode,
+  Reward,
+} from "./types";
 import { completedOf, type Progress } from "./progress";
 
 /**
@@ -67,9 +73,35 @@ export function batallasDe(chapter: Chapter): BattleNode[] {
   return chapter.nodes.filter(esBatalla);
 }
 
-/** El jefe del capítulo, si lo tiene. */
+/** El jefe de COMBATE del capítulo, si lo tiene (undefined si el jefe es reto). */
 export function jefeDe(chapter: Chapter): BattleNode | undefined {
   return batallasDe(chapter).find((b) => b.enemy.boss);
+}
+
+/** ¿Es este nodo un reto-JEFE (capstone orientado al lenguaje)? */
+export function esRetoJefe(n: MapNode): n is ChallengeNode {
+  return (n.kind ?? "challenge") === "challenge" && Boolean((n as ChallengeNode).boss);
+}
+
+/** El nodo-jefe del capítulo, sea combate (enemy.boss) o reto (challenge.boss). */
+export function nodoJefe(chapter: Chapter): MapNode | undefined {
+  return chapter.nodes.find(
+    (n) => (n.kind === "battle" && n.enemy.boss) || esRetoJefe(n),
+  );
+}
+
+/** La recompensa del jefe del capítulo, venga de combate o de reto-jefe. */
+export function recompensaJefe(chapter: Chapter): Reward | undefined {
+  const j = nodoJefe(chapter);
+  if (!j) return undefined;
+  return j.kind === "battle" ? j.enemy.reward : (j as ChallengeNode).reward;
+}
+
+/** Retos de código NO-jefe de un capítulo (los que abren al reto-jefe). */
+function retosNormales(chapter: Chapter): MapNode[] {
+  return chapter.nodes.filter(
+    (n) => (n.kind ?? "challenge") === "challenge" && !esRetoJefe(n),
+  );
 }
 
 /** Experiencia ganada en un capítulo concreto. */
@@ -107,8 +139,11 @@ export function estadoNodo(
   completados: Set<string>,
 ): Bloqueo {
   const kind = node.kind ?? "challenge";
+  const retoJefe = esRetoJefe(node);
 
-  if (kind === "challenge" && chapter.xpParaRetos) {
+  // Retos NORMALES: piden experiencia del capítulo. El reto-jefe NO (se abre por
+  // haber resuelto los demás retos, más abajo).
+  if (kind === "challenge" && !retoJefe && chapter.xpParaRetos) {
     const xp = xpDeCapitulo(chapter, completados);
     if (xp < chapter.xpParaRetos) {
       return {
@@ -120,15 +155,18 @@ export function estadoNodo(
     }
   }
 
-  if (kind === "battle" && (node as BattleNode).enemy.boss) {
-    const retos = chapter.nodes.filter((n) => (n.kind ?? "challenge") === "challenge");
-    const pendientes = retos.filter((r) => !completados.has(r.node_id));
+  // El JEFE (de combate o el reto-jefe) sólo se abre con todos los retos
+  // normales resueltos: es el capstone del capítulo.
+  if ((kind === "battle" && (node as BattleNode).enemy.boss) || retoJefe) {
+    const pendientes = retosNormales(chapter).filter(
+      (r) => !completados.has(r.node_id),
+    );
     if (pendientes.length) {
       return {
         abierto: false,
         motivo:
-          `No estás listo. Resuelve los ${pendientes.length} acertijo(s) de ` +
-          `código que quedan antes de enfrentarte a ${(node as BattleNode).enemy.name}.`,
+          `No estás listo. Resuelve los ${pendientes.length} reto(s) de código ` +
+          `del capítulo antes del desafío final.`,
       };
     }
   }
@@ -154,7 +192,7 @@ export function capituloDesbloqueado(
   if (!previo) return { abierto: true };
 
   const hechos = completedOf(progress, previo.chapter);
-  const jefe = jefeDe(previo);
+  const jefe = nodoJefe(previo);
   if (jefe && hechos.has(jefe.node_id)) return { abierto: true };
 
   // Partidas anteriores al combate: valió con resolver todo lo que había.
@@ -165,9 +203,7 @@ export function capituloDesbloqueado(
 
   return {
     abierto: false,
-    motivo: jefe
-      ? `Derrota a ${jefe.enemy.name} en el capítulo ${previo.chapter} para abrir este camino.`
-      : `Completa el capítulo ${previo.chapter} primero.`,
+    motivo: `Supera el desafío final del capítulo ${previo.chapter} para abrir este camino.`,
   };
 }
 
@@ -188,8 +224,11 @@ export function heroesDesbloqueados(
   const ganados: Reward[] = [];
   for (const c of capitulos) {
     const hechos = completedOf(progress, c.chapter);
-    for (const b of batallasDe(c)) {
-      if (b.enemy.reward && hechos.has(b.node_id)) ganados.push(b.enemy.reward);
+    // La recompensa del jefe, sea combate (enemy.reward) o reto-jefe (.reward).
+    const jefe = nodoJefe(c);
+    if (jefe && hechos.has(jefe.node_id)) {
+      const r = recompensaJefe(c);
+      if (r) ganados.push(r);
     }
   }
   // Sin repetidos, por si dos jefes premiaran al mismo personaje.

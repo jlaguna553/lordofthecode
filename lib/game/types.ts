@@ -87,10 +87,19 @@ interface BaseNode {
   spriteId?: string;
 }
 
-/** Nodo de acertijo: hay que escribir PHP y pasar los tests. */
+/** Nodo de acertijo: hay que escribir código y pasar los tests. */
 export interface ChallengeNode extends BaseNode {
   kind?: "challenge";
   poo_challenge: PooChallenge;
+  /**
+   * Reto-JEFE (capstone) del capítulo: integra lo aprendido. Se desbloquea sólo
+   * cuando el resto de retos del capítulo están resueltos, y resolverlo entrega
+   * la recompensa y abre el capítulo siguiente. Reemplaza al jefe de combate en
+   * las aventuras que orientan el jefe al lenguaje.
+   */
+  boss?: boolean;
+  /** Recompensa por resolver el reto-jefe (héroe que se une). */
+  reward?: Reward;
 }
 
 /** Una pregunta de combate: corta, de opción múltiple, sobre el tema del capítulo. */

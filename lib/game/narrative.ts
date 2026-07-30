@@ -113,10 +113,30 @@ export function buildChapter(
         `Temario incompleto: falta el nodo "${n.node_id}" (${lang}).`,
       );
     }
-    if (s.kind !== n.kind) {
+    // Excepción: el temario puede convertir el JEFE de combate en un RETO de
+    // código (capstone orientado al lenguaje). El reto hereda la recompensa y la
+    // marca de jefe de la narrativa; el resto de mecánicas de jefe se conservan.
+    const jefeComoReto =
+      n.kind === "battle" && n.enemy.boss && s.kind === "challenge";
+
+    if (s.kind !== n.kind && !jefeComoReto) {
       throw new Error(
         `Tipo de temario ("${s.kind}") no coincide con la narrativa ("${n.kind}") en "${n.node_id}".`,
       );
+    }
+
+    if (jefeComoReto && n.kind === "battle" && s.kind === "challenge") {
+      return {
+        node_id: n.node_id,
+        title: s.title,
+        lore_intro: s.lore_intro,
+        position: n.position,
+        spriteId: n.spriteId,
+        kind: "challenge",
+        poo_challenge: { ...s.challenge, lang },
+        boss: true,
+        reward: n.enemy.reward,
+      };
     }
 
     if (n.kind === "battle" && s.kind === "battle") {

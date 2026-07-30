@@ -479,7 +479,12 @@ export default function GameCanvas({
             // Cada tipo de nodo tiene su color: reto (oro), pergamino (azul),
             // enigma de lógica (violeta).
             const kind = node.kind ?? "challenge";
-            const esJefe = node.kind === "battle" && node.enemy.boss;
+            // Jefe: combate con enemy.boss O reto-jefe (challenge con .boss).
+            const esJefe =
+              (node.kind === "battle" && node.enemy.boss) ||
+              ((node.kind ?? "challenge") === "challenge" &&
+                "boss" in node &&
+                (node as { boss?: boolean }).boss === true);
             const ESTILOS = {
               challenge: { color: 0xffd24a, text: "#ffe9a8", icon: "" },
               scroll: { color: 0x8ab4ff, text: "#cfe0ff", icon: "📜 " },

@@ -146,8 +146,29 @@ export const SYL_JS_COMMUNITY_1: Syllabus = {
     questions: [Q_TEMPLATE, Q_TYPEOF, Q_TERNARY],
   },
   c1_jefe_nazgul: {
-    kind: "battle",
-    questions: [Q_STRICT, Q_CONST_LET, Q_FALSY, Q_NUMBER],
+    kind: "challenge",
+    title: P("El Jinete Negro", "The Black Rider"),
+    lore_intro: P(
+      "El Nazgûl acorrala a Frodo. No hay acero que lo hiera aquí: sólo la VOLUNTAD. Escribe la función que mide si resistes o sucumbes.",
+      "The Nazgûl corners Frodo. No steel harms it here: only WILL. Write the function that measures whether you resist or succumb.",
+    ),
+    challenge: {
+      topic: P("Funciones, template strings y condicionales", "Functions, template strings and conditionals"),
+      instructions: P(
+        "Escribe `resistir(nombre, tentacion)`:\n• si `tentacion` es 100 o más, devuelve `'{nombre} sucumbe'`,\n• si no, devuelve `'{nombre} resiste con {X} de voluntad'`, donde `X` es `100 - tentacion`.\n\nEjemplo: `resistir('Frodo', 30)` → `'Frodo resiste con 70 de voluntad'`.",
+        "Write `resistir(nombre, tentacion)`:\n• if `tentacion` is 100 or more, return `'{nombre} sucumbe'`,\n• otherwise, return `'{nombre} resiste con {X} de voluntad'`, where `X` is `100 - tentacion`.\n\nExample: `resistir('Frodo', 30)` → `'Frodo resiste con 70 de voluntad'`.",
+      ),
+      starter_code: "function resistir(nombre, tentacion) {\n}\n",
+      hints: [
+        P("Un `if` con el caso de sucumbir; el resto, resistir.", "An `if` for the succumb case; the rest, resist."),
+        P("Interpola con template strings: `` `${nombre} resiste con ${100 - tentacion} de voluntad` ``.", "Interpolate with template strings: `` `${nombre} resiste con ${100 - tentacion} de voluntad` ``."),
+      ],
+      test_cases: [
+        { input: "resistir('Frodo', 30)", expected: "Frodo resiste con 70 de voluntad", description: P("Resiste", "Resists"), raw: true },
+        { input: "resistir('Boromir', 100)", expected: "Boromir sucumbe", description: P("Sucumbe al llegar a 100", "Succumbs at 100"), raw: true },
+        { input: "resistir('Sam', 0)", expected: "Sam resiste con 100 de voluntad", description: P("Voluntad plena", "Full will"), raw: true },
+      ],
+    },
   },
   pergamino_clases: {
     kind: "scroll",
@@ -372,7 +393,31 @@ export const SYL_JS_COMMUNITY_2: Syllabus = {
   c2_raiz: { kind: "battle", questions: [Q_FOR, Q_PUSH, Q_LEN] },
   c2_niebla: { kind: "battle", questions: [Q_WHILE, Q_BREAK, Q_FOR] },
   c2_sauce: { kind: "battle", questions: [Q_PUSH, Q_LEN, Q_WHILE] },
-  c2_jefe_tumulario: { kind: "battle", questions: [Q_FOR, Q_WHILE, Q_BREAK, Q_PUSH] },
+  c2_jefe_tumulario: {
+    kind: "challenge",
+    title: P("El Rey de los Túmulos", "The Barrow-king"),
+    lore_intro: P(
+      "El Tumulario alza a sus muertos. Recorre la horda y quédate sólo con los golpes que de verdad hieren: un bucle y un array.",
+      "The Barrow-wight raises its dead. Walk the horde and keep only the blows that truly harm: a loop and an array.",
+    ),
+    challenge: {
+      topic: P("Bucles y arrays", "Loops and arrays"),
+      instructions: P(
+        "Escribe `filtrarFuertes(danios, minimo)` que devuelva un array NUEVO con los daños que sean MAYORES O IGUALES que `minimo`. Recórrelo con un bucle y añade con `push`.\n\nEjemplo: `filtrarFuertes([3, 7, 2, 9], 5)` → `[7, 9]`.",
+        "Write `filtrarFuertes(danios, minimo)` returning a NEW array with the damages GREATER THAN OR EQUAL to `minimo`. Iterate with a loop and add with `push`.\n\nExample: `filtrarFuertes([3, 7, 2, 9], 5)` → `[7, 9]`.",
+      ),
+      starter_code: "function filtrarFuertes(danios, minimo) {\n}\n",
+      hints: [
+        P("Empieza con un array vacío y recórrelos: `for (const d of danios)`.", "Start with an empty array and iterate: `for (const d of danios)`."),
+        P("`if (d >= minimo) r.push(d);`.", "`if (d >= minimo) r.push(d);`."),
+      ],
+      test_cases: [
+        { input: "filtrarFuertes([3, 7, 2, 9], 5)", expected: [7, 9], description: P("Sólo los fuertes", "Only the strong ones"), raw: true },
+        { input: "filtrarFuertes([1, 2], 5)", expected: [], description: P("Ninguno llega", "None reaches it"), raw: true },
+        { input: "filtrarFuertes([5, 6], 5)", expected: [5, 6], description: P("El 5 entra (>=)", "5 counts (>=)"), raw: true },
+      ],
+    },
+  },
   pergamino_ciclo_vida: {
     kind: "scroll",
     title: P("El Pergamino del Camino", "The Scroll of the Path"),
@@ -603,7 +648,30 @@ export const SYL_JS_COMMUNITY_3: Syllabus = {
   c3_ferny: { kind: "battle", questions: [Q_DEF, Q_ARROW, Q_RETURN] },
   c3_espia_nazgul: { kind: "battle", questions: [Q_DEFAULT, Q_HOF, Q_DEF] },
   c3_montaraz_falso: { kind: "battle", questions: [Q_ARROW, Q_RETURN, Q_DEFAULT] },
-  c3_jefe_reybrujo: { kind: "battle", questions: [Q_HOF, Q_ARROW, Q_DEFAULT, Q_DEF] },
+  c3_jefe_reybrujo: {
+    kind: "challenge",
+    title: P("El Rey Brujo de Angmar", "The Witch-king of Angmar"),
+    lore_intro: P(
+      "«Ningún hombre vivo puede detenerme.» Forja una cuenta que RECUERDE cada golpe: una función que devuelve otra función con memoria — una clausura.",
+      "\"No living man can hinder me.\" Forge a tally that REMEMBERS each blow: a function that returns another function with memory — a closure.",
+    ),
+    challenge: {
+      topic: P("Clausuras (closures)", "Closures"),
+      instructions: P(
+        "Escribe `crearCuenta(inicio)` que DEVUELVA una función. Cada vez que se llame a esa función (sin argumentos), incrementa en 1 el valor (que empieza en `inicio`) y lo devuelve.\n\nEjemplos: `crearCuenta(10)()` → `11`; y llamando tres veces a la misma cuenta desde 0 → `3`.",
+        "Write `crearCuenta(inicio)` that RETURNS a function. Each time that function is called (no arguments), it increments the value (starting at `inicio`) by 1 and returns it.\n\nExamples: `crearCuenta(10)()` → `11`; and calling the same tally three times from 0 → `3`.",
+      ),
+      starter_code: "function crearCuenta(inicio) {\n}\n",
+      hints: [
+        P("Guarda el estado en una variable local y devuelve una función que la usa.", "Keep the state in a local variable and return a function that uses it."),
+        P("`let n = inicio; return () => { n += 1; return n; };`.", "`let n = inicio; return () => { n += 1; return n; };`."),
+      ],
+      test_cases: [
+        { input: "crearCuenta(10)()", expected: 11, description: P("Desde 10, una llamada: 11", "From 10, one call: 11"), raw: true },
+        { input: "(() => { const f = crearCuenta(0); f(); f(); return f(); })()", expected: 3, description: P("La misma cuenta recuerda: 3 llamadas", "The same tally remembers: 3 calls"), raw: true },
+      ],
+    },
+  },
   pergamino_herencia: {
     kind: "scroll",
     title: P("El Pergamino de los Montaraces", "The Rangers' Scroll"),
@@ -812,7 +880,31 @@ const Q_REDUCE = {
 export const SYL_JS_COMMUNITY_4: Syllabus = {
   c4_jinete_rezagado: { kind: "battle", questions: [Q_OBJ, Q_PROP, Q_MAP] },
   c4_lobo: { kind: "battle", questions: [Q_METHOD, Q_FILTER, Q_OBJ] },
-  c4_jefe_nueve: { kind: "battle", questions: [Q_FILTER, Q_REDUCE, Q_MAP, Q_METHOD] },
+  c4_jefe_nueve: {
+    kind: "challenge",
+    title: P("Los Nueve en el Vado", "The Nine at the Ford"),
+    lore_intro: P(
+      "Los Nueve entran en el agua. De la lista de jinetes, saca sólo el NOMBRE de los que aún resisten la crecida: filter + map sobre objetos.",
+      "The Nine enter the water. From the list of riders, pull only the NAME of those still resisting the flood: filter + map over objects.",
+    ),
+    challenge: {
+      topic: P("Objetos y métodos de array (filter + map)", "Objects and array methods (filter + map)"),
+      instructions: P(
+        "Escribe `nombresFuertes(guerreros, min)` que reciba un array de objetos `{ nombre, poder }` y devuelva un array SÓLO con los `nombre` de aquellos cuyo `poder` sea MAYOR O IGUAL que `min`, en orden.\n\nEjemplo: `nombresFuertes([{ nombre: 'Aragorn', poder: 80 }, { nombre: 'Frodo', poder: 20 }], 50)` → `['Aragorn']`.",
+        "Write `nombresFuertes(guerreros, min)` taking an array of objects `{ nombre, poder }` and returning an array with ONLY the `nombre`s of those whose `poder` is GREATER THAN OR EQUAL to `min`, in order.\n\nExample: `nombresFuertes([{ nombre: 'Aragorn', poder: 80 }, { nombre: 'Frodo', poder: 20 }], 50)` → `['Aragorn']`.",
+      ),
+      starter_code: "function nombresFuertes(guerreros, min) {\n}\n",
+      hints: [
+        P("Primero filtra por poder: `guerreros.filter(g => g.poder >= min)`.", "First filter by power: `guerreros.filter(g => g.poder >= min)`."),
+        P("Luego transforma a nombres: `.map(g => g.nombre)`.", "Then transform to names: `.map(g => g.nombre)`."),
+      ],
+      test_cases: [
+        { input: "nombresFuertes([{ nombre: 'Aragorn', poder: 80 }, { nombre: 'Frodo', poder: 20 }], 50)", expected: ["Aragorn"], description: P("Sólo el fuerte", "Only the strong one"), raw: true },
+        { input: "nombresFuertes([], 50)", expected: [], description: P("Lista vacía", "Empty list"), raw: true },
+        { input: "nombresFuertes([{ nombre: 'Gimli', poder: 60 }, { nombre: 'Legolas', poder: 70 }], 50)", expected: ["Gimli", "Legolas"], description: P("Ambos, en orden", "Both, in order"), raw: true },
+      ],
+    },
+  },
   c4_trasgo_montaraz: { kind: "battle", questions: [Q_PROP, Q_REDUCE, Q_MAP] },
   pergamino_estatico: {
     kind: "scroll",
@@ -1047,7 +1139,32 @@ const Q_FREEZE = {
 export const SYL_JS_COMMUNITY_5: Syllabus = {
   c5_crebain: { kind: "battle", questions: [Q_CLASS, Q_CTOR, Q_THIS_CLASS] },
   c5_lobo_nieve: { kind: "battle", questions: [Q_PRIVATE, Q_FREEZE, Q_CTOR] },
-  c5_jefe_caradhras: { kind: "battle", questions: [Q_FREEZE, Q_PRIVATE, Q_STATIC_JS, Q_CLASS] },
+  c5_jefe_caradhras: {
+    kind: "challenge",
+    title: P("La Voluntad de Caradhras", "The Will of Caradhras"),
+    lore_intro: P(
+      "La montaña es el enemigo. Forja una hoja con su filo PROTEGIDO (privado), que valide su forja y golpee sin dañar de menos que cero.",
+      "The mountain is the enemy. Forge a blade with its edge PROTECTED (private), that validates its forging and strikes without dealing below zero.",
+    ),
+    challenge: {
+      topic: P("Clases: campos privados (#), validación y métodos", "Classes: private fields (#), validation and methods"),
+      instructions: P(
+        "Crea la clase `Espada` con un campo PRIVADO `#filo`:\n• el `constructor(filo)` lanza un `Error` si `filo` es negativo; si no, lo guarda,\n• el método `filo()` devuelve el filo,\n• el método `golpear(objetivo)` devuelve `objetivo - #filo`, sin bajar de 0.\n\nEjemplo: `new Espada(10).golpear(30)` → `20`.",
+        "Create the class `Espada` with a PRIVATE field `#filo`:\n• the `constructor(filo)` throws an `Error` if `filo` is negative; otherwise stores it,\n• the method `filo()` returns the edge,\n• the method `golpear(objetivo)` returns `objetivo - #filo`, never below 0.\n\nExample: `new Espada(10).golpear(30)` → `20`.",
+      ),
+      starter_code: "class Espada {\n  #filo;\n  constructor(filo) {\n  }\n  filo() {\n  }\n  golpear(objetivo) {\n  }\n}\n",
+      hints: [
+        P("Guard clause en el constructor: `if (filo < 0) throw new Error('...');`.", "Guard clause in the constructor: `if (filo < 0) throw new Error('...');`."),
+        P("`golpear` no baja de 0: `Math.max(0, objetivo - this.#filo)`.", "`golpear` doesn't go below 0: `Math.max(0, objetivo - this.#filo)`."),
+      ],
+      test_cases: [
+        { input: "new Espada(10).golpear(30)", expected: 20, description: P("30 − 10", "30 − 10"), raw: true },
+        { input: "new Espada(10).golpear(5)", expected: 0, description: P("Nunca negativo", "Never negative"), raw: true },
+        { input: "new Espada(10).filo()", expected: 10, description: P("El filo se lee por su método", "The edge is read via its method"), raw: true },
+        { input: "(() => { try { new Espada(-1); return false; } catch (e) { return true; } })()", expected: true, description: P("Un filo negativo se rechaza", "A negative edge is rejected"), raw: true },
+      ],
+    },
+  },
   c5_trasgo_montanes: { kind: "battle", questions: [Q_THIS_CLASS, Q_STATIC_JS, Q_PRIVATE] },
   pergamino_hielo: {
     kind: "scroll",
@@ -1313,7 +1430,33 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
   c6_trasgo_explorador: { kind: "battle", questions: [Q_POLY_JS, Q_EXTENDS, Q_OVERRIDE] },
   c6_trol_cavernas: { kind: "battle", questions: [Q_SUPER, Q_INSTANCEOF_JS, Q_POLY_JS] },
   c6_capitan_trasgo: { kind: "battle", questions: [Q_OVERRIDE, Q_EXTENDS, Q_SUPER] },
-  c6_jefe_balrog: { kind: "battle", questions: [Q_ITER, Q_GEN, Q_POLY_JS, Q_INSTANCEOF_JS] },
+  c6_jefe_balrog: {
+    kind: "challenge",
+    title: P("El Balrog de Morgoth", "The Balrog of Morgoth"),
+    lore_intro: P(
+      "Sombra y fuego. El Balrog es un Enemigo más… pero golpea DIEZ veces más fuerte. Hereda del Enemigo base y amplía su ataque con super.",
+      "Shadow and flame. The Balrog is just another Enemy… but it strikes TEN times harder. Extend the base Enemy and amplify its attack with super.",
+    ),
+    challenge: {
+      topic: P("Herencia: extends, super y polimorfismo", "Inheritance: extends, super and polymorphism"),
+      instructions: P(
+        "Existen la clase base `Enemigo` (con `atacar()` que devuelve 1) y `danioTotal(enemigos)` que suma el `atacar()` de cada uno. Crea `Balrog extends Enemigo` cuyo `atacar()` devuelva DIEZ veces el del padre (usa `super.atacar()`).\n\n`new Balrog().atacar()` → `10`.",
+        "The base class `Enemigo` (with `atacar()` returning 1) and `danioTotal(enemigos)` (summing each one's `atacar()`) already exist. Create `Balrog extends Enemigo` whose `atacar()` returns TEN times the parent's (use `super.atacar()`).\n\n`new Balrog().atacar()` → `10`.",
+      ),
+      support_code:
+        "class Enemigo {\n  atacar() { return 1; }\n}\nfunction danioTotal(enemigos) {\n  return enemigos.reduce((s, e) => s + e.atacar(), 0);\n}",
+      starter_code: "class Balrog extends Enemigo {\n}\n",
+      hints: [
+        P("Sobrescribe `atacar()` y reutiliza al padre: `return super.atacar() * 10;`.", "Override `atacar()` and reuse the parent: `return super.atacar() * 10;`."),
+        P("`danioTotal` trata a Enemigo y Balrog por igual: eso es polimorfismo.", "`danioTotal` treats Enemigo and Balrog alike: that's polymorphism."),
+      ],
+      test_cases: [
+        { input: "new Balrog().atacar()", expected: 10, description: P("Diez veces el ataque base", "Ten times the base attack"), raw: true },
+        { input: "danioTotal([new Enemigo(), new Balrog()])", expected: 11, description: P("1 + 10, mezclados", "1 + 10, mixed"), raw: true },
+        { input: "new Balrog() instanceof Enemigo", expected: true, description: P("Un Balrog ES un Enemigo", "A Balrog IS an Enemigo"), raw: true },
+      ],
+    },
+  },
   pergamino_contratos: {
     kind: "scroll",
     title: P("El Pergamino de los Contratos", "The Scroll of Contracts"),
@@ -1563,7 +1706,33 @@ export const SYL_JS_COMMUNITY_7: Syllabus = {
   c7_orco_explorador: { kind: "battle", questions: [Q_ABSTRACT_JS, Q_NEWTARGET, Q_TEMPLATE_METHOD] },
   c7_trasgo_frontera: { kind: "battle", questions: [Q_MIXIN, Q_PROTO, Q_MIXIN_VS] },
   c7_uruk_rastreador: { kind: "battle", questions: [Q_MIXIN_VS, Q_ABSTRACT_JS, Q_MIXIN] },
-  c7_jefe_ugluk: { kind: "battle", questions: [Q_TEMPLATE_METHOD, Q_NEWTARGET, Q_MIXIN, Q_PROTO] },
+  c7_jefe_ugluk: {
+    kind: "challenge",
+    title: P("Uglúk, capitán de Isengard", "Uglúk, captain of Isengard"),
+    lore_intro: P(
+      "El capitán Uruk-hai porta una reliquia. Existe la base abstracta `Don` y el mixin `Bendecido`. Crea una `Reliquia` que herede del Don y gane la bendición por composición.",
+      "The Uruk-hai captain bears a relic. The abstract base `Don` and the mixin `Bendecido` exist. Create a `Reliquia` that extends the Don and gains the blessing by composition.",
+    ),
+    challenge: {
+      topic: P("Base abstracta + mixin (composición)", "Abstract base + mixin (composition)"),
+      instructions: P(
+        "Existen la base `Don` (que exige `poder()` y no se puede instanciar sola) y el mixin `Bendecido` (aporta `bendicion()` = 10). Crea `Reliquia extends Don` cuyo `poder()` devuelva `5 + this.bendicion()`, y aplícale el mixin con `Object.assign(Reliquia.prototype, Bendecido)`.\n\n`new Reliquia().poder()` → `15`.",
+        "The base `Don` (requiring `poder()` and not instantiable on its own) and the mixin `Bendecido` (providing `bendicion()` = 10) exist. Create `Reliquia extends Don` whose `poder()` returns `5 + this.bendicion()`, and apply the mixin with `Object.assign(Reliquia.prototype, Bendecido)`.\n\n`new Reliquia().poder()` → `15`.",
+      ),
+      support_code:
+        "class Don {\n  constructor() { if (new.target === Don) throw new Error('Don es abstracta'); }\n  poder() { throw new Error('poder() no implementado'); }\n}\nconst Bendecido = { bendicion() { return 10; } };",
+      starter_code: "class Reliquia extends Don {\n}\n",
+      hints: [
+        P("En `poder()` usa el método del mixin: `return 5 + this.bendicion();`.", "In `poder()` use the mixin's method: `return 5 + this.bendicion();`."),
+        P("Aplica el mixin al prototipo: `Object.assign(Reliquia.prototype, Bendecido);`.", "Apply the mixin to the prototype: `Object.assign(Reliquia.prototype, Bendecido);`."),
+      ],
+      test_cases: [
+        { input: "new Reliquia().poder()", expected: 15, description: P("5 propios + 10 de bendición", "5 of its own + 10 blessing"), raw: true },
+        { input: "new Reliquia() instanceof Don", expected: true, description: P("Hereda del Don", "Inherits from Don"), raw: true },
+        { input: "(() => { try { new Don(); return false; } catch (e) { return true; } })()", expected: true, description: P("La base abstracta no se instancia sola", "The abstract base isn't instantiated alone"), raw: true },
+      ],
+    },
+  },
   pergamino_dones: {
     kind: "scroll",
     title: P("El Pergamino de Galadriel", "Galadriel's Scroll"),
@@ -1792,7 +1961,33 @@ export const SYL_JS_COMMUNITY_8: Syllabus = {
   c8_uruk_arquero: { kind: "battle", questions: [Q_THROW, Q_ERRVSRET, Q_CUSTOMERR] },
   c8_orco_saqueador: { kind: "battle", questions: [Q_TRYCATCH, Q_FINALLY, Q_CUSTOMERR] },
   c8_uruk_espadachin: { kind: "battle", questions: [Q_FACTORY, Q_THROW, Q_TRYCATCH] },
-  c8_jefe_lurtz: { kind: "battle", questions: [Q_FINALLY, Q_FACTORY, Q_ERRVSRET, Q_CUSTOMERR] },
+  c8_jefe_lurtz: {
+    kind: "challenge",
+    title: P("Lurtz, el primero de los Uruk-hai", "Lurtz, first of the Uruk-hai"),
+    lore_intro: P(
+      "El último enemigo de la Comunidad. Monta la fábrica que crea a la hueste de Isengard — y que ante lo desconocido, LANZA en vez de mentir.",
+      "The Fellowship's last foe. Build the factory that creates the host of Isengard — and that, faced with the unknown, THROWS instead of lying.",
+    ),
+    challenge: {
+      topic: P("Factoría y errores (throw)", "Factory and errors (throw)"),
+      instructions: P(
+        "Existen las clases `Orco` (`fuerza()` = 10) y `UrukHai` (`fuerza()` = 30). Escribe `crear(tipo)` que devuelva un `Orco` para `'orco'`, un `UrukHai` para `'uruk'`, y LANCE un `Error` para cualquier otro tipo.\n\n`crear('uruk').fuerza()` → `30`.",
+        "The classes `Orco` (`fuerza()` = 10) and `UrukHai` (`fuerza()` = 30) exist. Write `crear(tipo)` returning an `Orco` for `'orco'`, a `UrukHai` for `'uruk'`, and THROWING an `Error` for any other type.\n\n`crear('uruk').fuerza()` → `30`.",
+      ),
+      support_code:
+        "class Orco {\n  fuerza() { return 10; }\n}\nclass UrukHai {\n  fuerza() { return 30; }\n}",
+      starter_code: "function crear(tipo) {\n}\n",
+      hints: [
+        P("Compara el tipo y devuelve la instancia; para lo desconocido, `throw new Error(...)`.", "Compare the type and return the instance; for the unknown, `throw new Error(...)`."),
+        P("`if (tipo === 'orco') return new Orco();` … `throw new Error('tipo desconocido: ' + tipo);`.", "`if (tipo === 'orco') return new Orco();` … `throw new Error('tipo desconocido: ' + tipo);`."),
+      ],
+      test_cases: [
+        { input: "crear('orco').fuerza()", expected: 10, description: P("El orco", "The orc"), raw: true },
+        { input: "crear('uruk').fuerza()", expected: 30, description: P("El Uruk-hai", "The Uruk-hai"), raw: true },
+        { input: "(() => { try { crear('elfo'); return false; } catch (e) { return true; } })()", expected: true, description: P("Un tipo desconocido lanza", "An unknown type throws"), raw: true },
+      ],
+    },
+  },
   pergamino_fallos: {
     kind: "scroll",
     title: P("El Pergamino de lo que Puede Fallar", "The Scroll of What Can Go Wrong"),

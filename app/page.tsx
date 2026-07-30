@@ -14,7 +14,8 @@ import {
   estadoNodo,
   heroActivo,
   heroesDesbloqueados,
-  jefeDe,
+  nodoJefe,
+  recompensaJefe,
   nivelDe,
   xpDeCapitulo,
   xpTotal,
@@ -274,13 +275,14 @@ export default function GamePage() {
       return next;
     });
 
-    // ¿Se ha vencido al jefe? Entonces toca recompensa y salto de capítulo.
-    const jefe = jefeDe(chapter);
-    if (jefe && jefe.node_id === nodeId && jefe.enemy.reward) {
+    // ¿Se ha superado al jefe (de combate o reto-jefe)? Recompensa y salto.
+    const jefe = nodoJefe(chapter);
+    const premio = recompensaJefe(chapter);
+    if (jefe && jefe.node_id === nodeId && premio) {
       const siguiente = chapters.find(
         (c) => c.unlockedBy === chapter.chapter,
       )?.chapter;
-      setReward({ data: jefe.enemy.reward, next: siguiente });
+      setReward({ data: premio, next: siguiente });
     }
   }
 
