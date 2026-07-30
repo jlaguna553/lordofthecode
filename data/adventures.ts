@@ -66,6 +66,7 @@ import {
   SYL_GO_COMMUNITY_7,
   SYL_GO_COMMUNITY_8,
 } from "./syllabus/community-go";
+import { SYL_REACT_COMMUNITY_1 } from "./syllabus/community-react";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -117,6 +118,11 @@ const GO_COMMUNITY_5 = buildChapter(NARR_COMMUNITY_5, SYL_GO_COMMUNITY_5, "go");
 const GO_COMMUNITY_6 = buildChapter(NARR_COMMUNITY_6, SYL_GO_COMMUNITY_6, "go");
 const GO_COMMUNITY_7 = buildChapter(NARR_COMMUNITY_7, SYL_GO_COMMUNITY_7, "go");
 const GO_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_GO_COMMUNITY_8, "go");
+const REACT_COMMUNITY_1 = buildChapter(
+  NARR_COMMUNITY_1,
+  SYL_REACT_COMMUNITY_1,
+  "react",
+);
 
 /**
  * Catálogo de aventuras. Las `available` son jugables; las `soon` aparecen en
@@ -269,13 +275,15 @@ export const ADVENTURES: Adventure[] = [
     tech: "React",
     icon: "⚛️",
     accent: "cyan",
-    status: "soon",
+    status: "available",
     name: { es: "React", en: "React" },
     blurb: {
-      es: "Interfaces con componentes, estado y hooks.",
-      en: "Interfaces with components, state and hooks.",
+      es: "Interfaces con componentes, props y JSX, renderizadas de verdad en tu navegador. Bilingüe.",
+      en: "Interfaces with components, props and JSX, truly rendered in your browser. Bilingual.",
     },
-    books: [],
+    books: [
+      { book: BOOK_FELLOWSHIP, chapters: [REACT_COMMUNITY_1] },
+    ],
   },
   {
     id: "nextjs",
