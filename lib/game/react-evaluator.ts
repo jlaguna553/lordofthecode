@@ -168,6 +168,9 @@ export async function runReactChallenge(
     // El click dispara el handler de React (setState); flushSync fuerza el
     // re-render de forma síncrona, así el DOM ya refleja el cambio al leerlo.
     "    click: (sel) => { const n = sel ? __c.querySelector(sel) : __c.querySelector('button'); if (n) __flushSync(() => n.click()); return api; },",
+    // Escribe en un input controlado: usa el setter NATIVO de value y dispara el
+    // evento 'input' (que React escucha como onChange), todo dentro de flushSync.
+    "    fill: (sel, value) => { const n = sel ? __c.querySelector(sel) : __c.querySelector('input'); if (n) { const d = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(n), 'value'); __flushSync(() => { d.set.call(n, value); n.dispatchEvent(new Event('input', { bubbles: true })); }); } return api; },",
     "  };",
     "  return api;",
     "};",

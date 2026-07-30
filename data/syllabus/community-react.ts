@@ -669,3 +669,252 @@ export const SYL_REACT_COMMUNITY_3: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre inputs controlados y estado. */
+const Q_CONTROLLED = {
+  question: P(
+    "¿Qué es un input CONTROLADO en React?",
+    "What is a CONTROLLED input in React?",
+  ),
+  options: [
+    P(
+      "Uno cuyo valor viene del estado (`value={x}`) y se actualiza con `onChange`",
+      "One whose value comes from state (`value={x}`) and updates with `onChange`",
+    ),
+    P("Uno que React no toca nunca", "One React never touches"),
+    P("Un input de sólo lectura", "A read-only input"),
+    P("Un input dentro de un formulario", "An input inside a form"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En un input controlado, el estado es la ÚNICA fuente de verdad: `value={texto}` lo pinta y `onChange={e => setTexto(e.target.value)}` lo actualiza. El estado y lo que se ve nunca se desincronizan.",
+    "In a controlled input, state is the SINGLE source of truth: `value={texto}` paints it and `onChange={e => setTexto(e.target.value)}` updates it. State and what's shown never drift apart.",
+  ),
+};
+const Q_ONCHANGE = {
+  question: P(
+    "En `onChange={e => ...}`, ¿cómo se lee lo que el usuario escribió?",
+    "In `onChange={e => ...}`, how do you read what the user typed?",
+  ),
+  options: [
+    P("`e.target.value`", "`e.target.value`"),
+    P("`e.value`", "`e.value`"),
+    P("`e.text`", "`e.text`"),
+    P("`this.value`", "`this.value`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El evento trae el elemento en `e.target`, y su contenido en `.value`: `e.target.value`. Para un checkbox se usa `e.target.checked` (booleano) en su lugar.",
+    "The event carries the element in `e.target`, and its content in `.value`: `e.target.value`. For a checkbox you use `e.target.checked` (boolean) instead.",
+  ),
+};
+const Q_DERIVED = {
+  question: P(
+    "Si un valor se puede CALCULAR a partir del estado en cada render, ¿deberías guardarlo en otro useState?",
+    "If a value can be COMPUTED from state on each render, should you store it in another useState?",
+  ),
+  options: [
+    P(
+      "No: calcúlalo en el render (estado derivado); guardar duplica y se desincroniza",
+      "No: compute it in the render (derived state); storing it duplicates and drifts",
+    ),
+    P("Sí, siempre en su propio useState", "Yes, always in its own useState"),
+    P("Sólo si es un número", "Only if it's a number"),
+    P("Da igual", "It doesn't matter"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El estado derivado se calcula durante el render a partir del estado real: `const total = a + b`. Guardarlo en otro `useState` crea una copia que hay que mantener sincronizada a mano — fuente de bugs. Menos estado, mejor.",
+    "Derived state is computed during render from the real state: `const total = a + b`. Storing it in another `useState` creates a copy you must keep in sync by hand — a bug source. Less state is better.",
+  ),
+};
+const Q_MULTI_STATE = {
+  question: P(
+    "¿Puede un componente tener VARIOS `useState`?",
+    "Can a component have SEVERAL `useState` hooks?",
+  ),
+  options: [
+    P(
+      "Sí: uno por cada porción de estado independiente",
+      "Yes: one per independent piece of state",
+    ),
+    P("No: sólo uno por componente", "No: only one per component"),
+    P("Sólo dos como máximo", "Only two at most"),
+    P("Sólo si son del mismo tipo", "Only if they're the same type"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Puedes llamar a `useState` tantas veces como necesites: `const [nombre, setNombre] = useState('')` y `const [edad, setEdad] = useState(0)`. React los distingue por el ORDEN de llamada, por eso los hooks no van dentro de condicionales.",
+    "You can call `useState` as many times as you need: `const [nombre, setNombre] = useState('')` and `const [edad, setEdad] = useState(0)`. React tells them apart by CALL ORDER, which is why hooks don't go inside conditionals.",
+  ),
+};
+const Q_CHECKBOX = {
+  question: P(
+    "En un checkbox controlado, ¿qué prop refleja su estado y qué se lee en onChange?",
+    "For a controlled checkbox, which prop reflects its state and what do you read in onChange?",
+  ),
+  options: [
+    P("`checked={ok}` y `e.target.checked`", "`checked={ok}` and `e.target.checked`"),
+    P("`value={ok}` y `e.target.value`", "`value={ok}` and `e.target.value`"),
+    P("`checked={ok}` y `e.target.value`", "`checked={ok}` and `e.target.value`"),
+    P("`on={ok}` y `e.on`", "`on={ok}` and `e.on`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un checkbox se controla con `checked={ok}` (booleano), y en `onChange` se lee `e.target.checked`. Es el paralelo de `value`/`e.target.value` de los inputs de texto.",
+    "A checkbox is controlled with `checked={ok}` (boolean), and in `onChange` you read `e.target.checked`. It's the parallel of `value`/`e.target.value` for text inputs.",
+  ),
+};
+
+/** Capítulo 4 · Inputs controlados y estado múltiple/derivado. */
+export const SYL_REACT_COMMUNITY_4: Syllabus = {
+  c4_jinete_rezagado: { kind: "battle", questions: [Q_CONTROLLED, Q_ONCHANGE, Q_MULTI_STATE] },
+  c4_lobo: { kind: "battle", questions: [Q_DERIVED, Q_CHECKBOX, Q_CONTROLLED] },
+  c4_jefe_nueve: { kind: "battle", questions: [Q_CONTROLLED, Q_ONCHANGE, Q_DERIVED, Q_MULTI_STATE] },
+  c4_trasgo_montaraz: { kind: "battle", questions: [Q_MULTI_STATE, Q_CHECKBOX, Q_ONCHANGE] },
+  pergamino_estatico: {
+    kind: "scroll",
+    title: P("El Pergamino de la Voz", "The Scroll of the Voice"),
+    lore_intro: P(
+      "Antes del Vado, un pergamino enseña a ESCUCHAR al usuario: inputs controlados (value + onChange), varios estados y valores derivados.",
+      "Before the Ford, a scroll teaches how to LISTEN to the user: controlled inputs (value + onChange), several states and derived values.",
+    ),
+    scroll: {
+      topic: P("Inputs controlados y estado", "Controlled inputs and state"),
+      sections: [
+        {
+          heading: P("Input controlado", "Controlled input"),
+          body: P(
+            "El estado es la fuente de verdad: `value={texto}` lo pinta, `onChange` lo actualiza leyendo `e.target.value`. Para un checkbox, `checked={ok}` y `e.target.checked`.",
+            "State is the source of truth: `value={texto}` paints it, `onChange` updates it reading `e.target.value`. For a checkbox, `checked={ok}` and `e.target.checked`.",
+          ),
+          code: "function Eco() {\n  const [texto, setTexto] = useState(\"\");\n  return (\n    <div>\n      <input value={texto} onChange={(e) => setTexto(e.target.value)} />\n      <p>{texto}</p>\n    </div>\n  );\n}",
+        },
+        {
+          heading: P("Varios estados", "Several states"),
+          body: P(
+            "Llama a `useState` una vez por cada porción de estado independiente. React los distingue por el ORDEN de llamada: nunca metas hooks dentro de `if`.",
+            "Call `useState` once per independent piece of state. React tells them apart by CALL ORDER: never put hooks inside an `if`.",
+          ),
+          code: "const [nombre, setNombre] = useState(\"\");\nconst [edad, setEdad] = useState(0);",
+        },
+        {
+          heading: P("Estado derivado: no lo guardes, calcúlalo", "Derived state: don't store it, compute it"),
+          body: P(
+            "Si un valor se puede calcular del estado en cada render, NO lo metas en otro useState: calcúlalo. Guardarlo duplica y se desincroniza.",
+            "If a value can be computed from state each render, DON'T put it in another useState: compute it. Storing it duplicates and drifts out of sync.",
+          ),
+          code: "const [caudal, setCaudal] = useState(0);\nconst estado = caudal < 3 ? \"calmo\" : caudal < 6 ? \"crecido\" : \"desbordado\";",
+        },
+      ],
+      keyTakeaway: P(
+        "Input controlado = value/checked desde el estado + onChange que lo actualiza (e.target.value / .checked). Usa un useState por porción independiente, y CALCULA lo derivado en el render en vez de guardarlo.",
+        "Controlled input = value/checked from state + onChange that updates it (e.target.value / .checked). Use one useState per independent piece, and COMPUTE derived values in the render instead of storing them.",
+      ),
+    },
+  },
+  montura_asfaloth: {
+    kind: "challenge",
+    title: P("Asfaloth, el Corcel Élfico", "Asfaloth, the Elven Steed"),
+    lore_intro: P(
+      "El corcel repite la orden que le das. Un input controlado: el estado manda lo que se ve.",
+      "The steed echoes the command you give it. A controlled input: state drives what's shown.",
+    ),
+    challenge: {
+      topic: P("Input de texto controlado", "Controlled text input"),
+      instructions: P(
+        "Escribe `Eco` (sin props) con `useState(\"\")`. Devuelve un `<div>` con:\n• un `<input value={texto} onChange={e => setTexto(e.target.value)} />`,\n• un `<p>{texto}</p>` que muestre lo escrito.\n\nEn los tests, `.fill(sel, valor)` escribe en el input. `mount(<Eco />).fill(\"input\", \"hola\").text(\"p\")` → `\"hola\"`.",
+        "Write `Eco` (no props) with `useState(\"\")`. Return a `<div>` with:\n• an `<input value={texto} onChange={e => setTexto(e.target.value)} />`,\n• a `<p>{texto}</p>` showing what was typed.\n\nIn the tests, `.fill(sel, value)` types into the input. `mount(<Eco />).fill(\"input\", \"hola\").text(\"p\")` → `\"hola\"`.",
+      ),
+      starter_code:
+        'function Eco() {\n  const [texto, setTexto] = useState("");\n  return (\n    <div>\n      <input value={texto} onChange={(e) => setTexto(e.target.value)} />\n      <p>{texto}</p>\n    </div>\n  );\n}\n',
+      hints: [
+        P("El input controlado ata `value` al estado y lo actualiza en `onChange`.", "The controlled input ties `value` to state and updates it in `onChange`."),
+        P("Lee lo escrito con `e.target.value`.", "Read what's typed with `e.target.value`."),
+      ],
+      test_cases: [
+        { input: 'mount(<Eco />).text("p")', expected: "", description: P("Empieza vacío", "Starts empty"), raw: true },
+        { input: 'mount(<Eco />).fill("input", "hola").text("p")', expected: "hola", description: P("Refleja lo escrito", "Reflects what's typed"), raw: true },
+        { input: 'mount(<Eco />).fill("input", "Noro lim").text("p")', expected: "Noro lim", description: P("Con otro texto", "With other text"), raw: true },
+      ],
+    },
+  },
+  recuento_de_los_nueve: {
+    kind: "challenge",
+    title: P("El Recuento de los Nueve", "The Reckoning of the Nine"),
+    lore_intro: P(
+      "Sube y baja la cuenta de los jinetes con dos botones, sin bajar de 0.",
+      "Raise and lower the count of riders with two buttons, without going below 0.",
+    ),
+    challenge: {
+      topic: P("Varios manejadores y clamp", "Multiple handlers and clamp"),
+      instructions: P(
+        "Escribe `Recuento` (sin props) con `useState(0)`. Devuelve un `<div>` con:\n• un `<button className=\"menos\">` que RESTE 1 sin bajar de 0,\n• un `<span>{n}</span>`,\n• un `<button className=\"mas\">` que SUME 1.\n\n`mount(<Recuento />).click(\".mas\").click(\".mas\").text(\"span\")` → `\"2\"`.",
+        "Write `Recuento` (no props) with `useState(0)`. Return a `<div>` with:\n• a `<button className=\"menos\">` that SUBTRACTS 1 without going below 0,\n• a `<span>{n}</span>`,\n• a `<button className=\"mas\">` that ADDS 1.\n\n`mount(<Recuento />).click(\".mas\").click(\".mas\").text(\"span\")` → `\"2\"`.",
+      ),
+      starter_code:
+        'function Recuento() {\n  const [n, setN] = useState(0);\n  return (\n    <div>\n      <button className="menos" onClick={() => setN((m) => Math.max(0, m - 1))}>-</button>\n      <span>{n}</span>\n      <button className="mas" onClick={() => setN((m) => m + 1)}>+</button>\n    </div>\n  );\n}\n',
+      hints: [
+        P("Cada botón lleva su `className` y su `onClick`.", "Each button has its `className` and its `onClick`."),
+        P("El de restar usa clamp: `setN(m => Math.max(0, m - 1))`.", "The subtract one uses clamp: `setN(m => Math.max(0, m - 1))`."),
+      ],
+      test_cases: [
+        { input: 'mount(<Recuento />).click(".mas").click(".mas").text("span")', expected: "2", description: P("Dos veces más", "Twice up"), raw: true },
+        { input: 'mount(<Recuento />).click(".menos").text("span")', expected: "0", description: P("No baja de 0", "Doesn't go below 0"), raw: true },
+        { input: 'mount(<Recuento />).click(".mas").click(".mas").click(".mas").click(".menos").text("span")', expected: "2", description: P("+3 y −1 = 2", "+3 and −1 = 2"), raw: true },
+      ],
+    },
+  },
+  vado_de_bruinen: {
+    kind: "challenge",
+    title: P("El Vado de Bruinen", "The Ford of Bruinen"),
+    lore_intro: P(
+      "¿Se puede cruzar el vado? Una casilla controlada decide, con checked y e.target.checked.",
+      "Can the ford be crossed? A controlled checkbox decides, with checked and e.target.checked.",
+    ),
+    challenge: {
+      topic: P("Checkbox controlado", "Controlled checkbox"),
+      instructions: P(
+        "Escribe `Vadeable` (sin props) con `useState(false)`. Devuelve un `<div>` con:\n• un `<input type=\"checkbox\" checked={ok} onChange={e => setOk(e.target.checked)} />`,\n• un `<span>` que muestre `\"puede cruzar\"` si el estado es true, o `\"no puede\"` si es false.\n\nAl hacer click en la casilla se marca. `mount(<Vadeable />).click(\"input\").text(\"span\")` → `\"puede cruzar\"`.",
+        "Write `Vadeable` (no props) with `useState(false)`. Return a `<div>` with:\n• an `<input type=\"checkbox\" checked={ok} onChange={e => setOk(e.target.checked)} />`,\n• a `<span>` showing `\"puede cruzar\"` if the state is true, or `\"no puede\"` if false.\n\nClicking the checkbox checks it. `mount(<Vadeable />).click(\"input\").text(\"span\")` → `\"puede cruzar\"`.",
+      ),
+      starter_code:
+        'function Vadeable() {\n  const [ok, setOk] = useState(false);\n  return (\n    <div>\n      <input type="checkbox" checked={ok} onChange={(e) => setOk(e.target.checked)} />\n      <span>{ok ? "puede cruzar" : "no puede"}</span>\n    </div>\n  );\n}\n',
+      hints: [
+        P("El checkbox se controla con `checked={ok}` y se lee con `e.target.checked`.", "The checkbox is controlled with `checked={ok}` and read with `e.target.checked`."),
+        P('El span muestra según el estado: `{ok ? "puede cruzar" : "no puede"}`.', 'The span shows based on state: `{ok ? "puede cruzar" : "no puede"}`.'),
+      ],
+      test_cases: [
+        { input: 'mount(<Vadeable />).text("span")', expected: "no puede", description: P("Al principio, no", "At first, no"), raw: true },
+        { input: 'mount(<Vadeable />).click("input").text("span")', expected: "puede cruzar", description: P("Marcada: puede", "Checked: can"), raw: true },
+        { input: 'mount(<Vadeable />).click("input").click("input").text("span")', expected: "no puede", description: P("Desmarcar vuelve a no", "Unchecking returns to no"), raw: true },
+      ],
+    },
+  },
+  c4_runas_del_vado: {
+    kind: "challenge",
+    title: P("Las runas del Vado", "The runes of the Ford"),
+    lore_intro: P(
+      "El caudal sube con cada runa. El estado del agua se CALCULA del caudal: eso es estado derivado.",
+      "The flow rises with each rune. The water's state is COMPUTED from the flow: that's derived state.",
+    ),
+    challenge: {
+      topic: P("Estado derivado", "Derived state"),
+      instructions: P(
+        "Escribe `Runas` (sin props) con `useState(0)` para el caudal. NO guardes el estado del agua en otro useState: CALCÚLALO en el render:\n• `\"calmo\"` si el caudal es menor que 3,\n• `\"crecido\"` si es menor que 6,\n• `\"desbordado\"` si es 6 o más.\n\nDevuelve un `<div>` con un `<button>` que suba el caudal en 1 y un `<span>` con el estado.\n\n`mount(<Runas />).click().click().click().text(\"span\")` → `\"crecido\"`.",
+        "Write `Runas` (no props) with `useState(0)` for the flow. DON'T store the water's state in another useState: COMPUTE it in the render:\n• `\"calmo\"` if the flow is under 3,\n• `\"crecido\"` if under 6,\n• `\"desbordado\"` if 6 or more.\n\nReturn a `<div>` with a `<button>` that raises the flow by 1 and a `<span>` with the state.\n\n`mount(<Runas />).click().click().click().text(\"span\")` → `\"crecido\"`.",
+      ),
+      starter_code:
+        'function Runas() {\n  const [caudal, setCaudal] = useState(0);\n  const estado = caudal < 3 ? "calmo" : caudal < 6 ? "crecido" : "desbordado";\n  return (\n    <div>\n      <button onClick={() => setCaudal((c) => c + 1)}>subir</button>\n      <span>{estado}</span>\n    </div>\n  );\n}\n',
+      hints: [
+        P("`estado` se calcula del caudal con un ternario encadenado, sin otro useState.", "`estado` is computed from the flow with a chained ternary, without another useState."),
+        P("El botón sólo sube el caudal: `setCaudal(c => c + 1)`.", "The button only raises the flow: `setCaudal(c => c + 1)`."),
+      ],
+      test_cases: [
+        { input: 'mount(<Runas />).text("span")', expected: "calmo", description: P("Caudal 0: calmo", "Flow 0: calm"), raw: true },
+        { input: 'mount(<Runas />).click().click().click().text("span")', expected: "crecido", description: P("Caudal 3: crecido", "Flow 3: risen"), raw: true },
+        { input: 'mount(<Runas />).click().click().click().click().click().click().text("span")', expected: "desbordado", description: P("Caudal 6: desbordado", "Flow 6: overflowing"), raw: true },
+      ],
+    },
+  },
+};
