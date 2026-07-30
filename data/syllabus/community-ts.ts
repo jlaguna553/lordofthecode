@@ -207,6 +207,13 @@ export const SYL_TS_COMMUNITY_1: Syllabus = {
       ),
       starter_code:
         "function presentarse(nombre: string): string {\n  // devuelve `Soy ${nombre} de la Comarca`\n}\n",
+      blocks: [
+        "function presentarse(nombre: string): string {",
+        "  return `Soy ${nombre} de la Comarca`;",
+        "}",
+        '  return "Soy " + nombre;',
+        "  return `${nombre} de la Comarca`;",
+      ],
       hints: [
         P("El parámetro lleva su tipo: `(nombre: string)`, y el retorno tras los paréntesis: `): string`.", "The parameter carries its type: `(nombre: string)`, and the return after the parentheses: `): string`."),
         P("La variable va dentro de ${ } en una template string: `` `Soy ${nombre} de la Comarca` ``.", "The variable goes inside ${ } in a template string: `` `Soy ${nombre} de la Comarca` ``."),
@@ -242,6 +249,16 @@ export const SYL_TS_COMMUNITY_1: Syllabus = {
       ),
       starter_code:
         "function ocultar(actual: number, n: number): number {\n  // Math.min(100, ...)\n}\n\nfunction esVisible(sigilo: number, percepcion: number): boolean {\n  // ...\n}\n",
+      blocks: [
+        "function ocultar(actual: number, n: number): number {",
+        "  return Math.min(100, actual + n);",
+        "}",
+        "function esVisible(sigilo: number, percepcion: number): boolean {",
+        "  return sigilo < percepcion;",
+        "}",
+        "  return Math.max(100, actual + n);",
+        "  return sigilo > percepcion;",
+      ],
       hints: [
         P("`Math.min(100, actual + n)` nunca devuelve más de 100.", "`Math.min(100, actual + n)` never returns more than 100."),
         P("`sigilo < percepcion` ya es un `boolean`: devuélvelo.", "`sigilo < percepcion` is already a `boolean`: return it."),

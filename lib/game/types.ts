@@ -50,6 +50,15 @@ export interface PooChallenge {
    */
   timeLimitSec?: number;
   test_cases: TestCase[];
+  /**
+   * Modo "bloques" para móvil (estilo Parsons): un conjunto de fragmentos de
+   * código donde ALGUNOS forman la solución (en cierto orden) y otros son
+   * distractores incorrectos. El jugador los ordena en vez de teclear; al
+   * ejecutar, los bloques elegidos se unen y pasan por el MISMO evaluador —
+   * el compilador y los tests siguen siendo el juez. Opcional: si falta, el
+   * reto sólo ofrece el editor de texto.
+   */
+  blocks?: string[];
 }
 
 /** Una sección de un Pergamino: teoría, opcionalmente con código de ejemplo. */

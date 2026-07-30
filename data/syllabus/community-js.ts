@@ -217,6 +217,13 @@ export const SYL_JS_COMMUNITY_1: Syllabus = {
       ),
       starter_code:
         "function presentarse(nombre) {\n  // devuelve `Soy ${nombre} de la Comarca`\n}\n",
+      blocks: [
+        "function presentarse(nombre) {",
+        "  return `Soy ${nombre} de la Comarca`;",
+        "}",
+        '  return "Soy " + nombre;',
+        "  return `Soy ${nombre}`;",
+      ],
       hints: [
         P(
           "Una template string va entre comillas invertidas: `...`.",
@@ -258,6 +265,16 @@ export const SYL_JS_COMMUNITY_1: Syllabus = {
       ),
       starter_code:
         "function ocultar(actual, n) {\n  // Math.min(100, ...)\n}\n\nfunction esVisible(sigilo, percepcion) {\n  // ...\n}\n",
+      blocks: [
+        "function ocultar(actual, n) {",
+        "  return Math.min(100, actual + n);",
+        "}",
+        "function esVisible(sigilo, percepcion) {",
+        "  return sigilo < percepcion;",
+        "}",
+        "  return Math.max(100, actual + n);",
+        "  return sigilo > percepcion;",
+      ],
       hints: [
         P(
           "`Math.min(100, actual + n)` nunca devuelve más de 100.",

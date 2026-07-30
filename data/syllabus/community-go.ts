@@ -198,6 +198,15 @@ export const SYL_GO_COMMUNITY_1: Syllabus = {
       ),
       starter_code:
         'package main\n\nimport "fmt"\n\nfunc presentarse(nombre string) string {\n\t// usa fmt.Sprintf con el verbo %s\n}\n',
+      blocks: [
+        "package main",
+        'import "fmt"',
+        "func presentarse(nombre string) string {",
+        '\treturn fmt.Sprintf("Soy %s de la Comarca", nombre)',
+        "}",
+        '\treturn "Soy " + nombre',
+        "func presentarse(nombre int) string {",
+      ],
       hints: [
         P("`fmt.Sprintf` formatea sin imprimir: `%s` inserta un string.", "`fmt.Sprintf` formats without printing: `%s` inserts a string."),
         P('`return fmt.Sprintf("Soy %s de la Comarca", nombre)`.', '`return fmt.Sprintf("Soy %s de la Comarca", nombre)`.'),
@@ -224,6 +233,21 @@ export const SYL_GO_COMMUNITY_1: Syllabus = {
       ),
       starter_code:
         "package main\n\nfunc ocultar(actual, n int) int {\n\t// suma y limita a 100 con un if\n}\n\nfunc esVisible(sigilo, percepcion int) bool {\n\t// ...\n}\n",
+      blocks: [
+        "package main",
+        "func ocultar(actual, n int) int {",
+        "\tsuma := actual + n",
+        "\tif suma > 100 {",
+        "\t\treturn 100",
+        "\t}",
+        "\treturn suma",
+        "}",
+        "func esVisible(sigilo, percepcion int) bool {",
+        "\treturn sigilo < percepcion",
+        "}",
+        "\treturn actual + n",
+        "\treturn sigilo > percepcion",
+      ],
       hints: [
         P("Suma primero y comprueba: `if suma > 100 { return 100 }`.", "Sum first and check: `if suma > 100 { return 100 }`."),
         P("`sigilo < percepcion` ya es un `bool`: devuélvelo.", "`sigilo < percepcion` is already a `bool`: return it."),

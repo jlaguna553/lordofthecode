@@ -6,6 +6,7 @@ import type { ChallengeNode, EvalResult } from "@/lib/game/types";
 import { runChallenge, warmup, langOf } from "@/lib/game/runner";
 import { useLang } from "@/lib/i18n/context";
 import { playSfx } from "@/lib/game/audio";
+import BlocksEditor from "./BlocksEditor";
 
 interface Props {
   node: ChallengeNode;
@@ -29,7 +30,7 @@ export default function ChallengeModal({
   onSolved,
   onClose,
 }: Props) {
-  const { tc } = useLang();
+  const { tc, lang } = useLang();
   const c = node.poo_challenge;
   // Si el jugador ya escribió aquí, retomamos su código donde lo dejó.
   const [code, setCode] = useState(savedCode ?? c.starter_code);
@@ -37,6 +38,19 @@ export default function ChallengeModal({
   // Instancia del editor Monaco (para escribirle al Reiniciar; va no controlado).
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editorRef = useRef<any>(null);
+
+  // Modo BLOQUES (Parsons) para móvil: sólo disponible si el reto trae `blocks`.
+  const hasBlocks = Boolean(c.blocks && c.blocks.length > 0);
+  const [isMobile] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 1023px)").matches,
+  );
+  const [mode, setMode] = useState<"editor" | "blocks">(
+    hasBlocks && isMobile ? "blocks" : "editor",
+  );
+  const [blocksResetKey, setBlocksResetKey] = useState(0);
+  const T = (es: string, en: string) => (lang === "en" ? en : es);
 
   // Guardado con debounce: no escribimos en localStorage en cada tecla.
   useEffect(() => {
@@ -256,33 +270,76 @@ export default function ChallengeModal({
 
           {/* Editor + acciones */}
           <div className="flex min-h-0 flex-col">
+            {hasBlocks && (
+              <div className="flex items-center gap-1 border-b border-white/10 bg-slate-900/60 px-3 py-2">
+                <button
+                  type="button"
+                  onClick={() => setMode("blocks")}
+                  className={
+                    "rounded-md px-2.5 py-1 text-xs font-semibold transition " +
+                    (mode === "blocks"
+                      ? "bg-indigo-500 text-white"
+                      : "bg-slate-800 text-slate-300 hover:bg-slate-700")
+                  }
+                >
+                  🧩 {T("Bloques", "Blocks")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode("editor")}
+                  className={
+                    "rounded-md px-2.5 py-1 text-xs font-semibold transition " +
+                    (mode === "editor"
+                      ? "bg-indigo-500 text-white"
+                      : "bg-slate-800 text-slate-300 hover:bg-slate-700")
+                  }
+                >
+                  ⌨ {T("Editor", "Editor")}
+                </button>
+                <span className="ml-1 hidden text-[11px] text-slate-500 sm:inline">
+                  {T(
+                    "Ordena los bloques o escribe a mano",
+                    "Order the blocks or type by hand",
+                  )}
+                </span>
+              </div>
+            )}
             <div className="min-h-[280px] flex-1">
-              {/*
-                Editor NO controlado: `defaultValue` en vez de `value`. Monaco
-                es la fuente de verdad del texto y `onChange` sólo alimenta el
-                estado que se usa al ejecutar. Con `value` controlado, los
-                re-renders del cronómetro (uno por segundo) hacían que Monaco
-                recibiera un value desfasado y reejecutara setValue, borrando lo
-                tecleado y mandando el cursor al final.
-              */}
-              <Editor
-                height="100%"
-                language={langOf(c)}
-                path={`reto-${node.node_id}.${langOf(c) === "python" ? "py" : langOf(c) === "javascript" ? "js" : langOf(c) === "typescript" ? "ts" : langOf(c) === "go" ? "go" : "php"}`}
-                theme="vs-dark"
-                defaultValue={code}
-                onMount={(editor) => {
-                  editorRef.current = editor;
-                }}
-                onChange={(v) => setCode(v ?? "")}
-                options={{
-                  fontSize: 14,
-                  minimap: { enabled: false },
-                  scrollBeyondLastLine: false,
-                  tabSize: 4,
-                  insertSpaces: true,
-                }}
-              />
+              {mode === "blocks" && hasBlocks ? (
+                <BlocksEditor
+                  blocks={c.blocks!}
+                  onChange={setCode}
+                  resetKey={blocksResetKey}
+                  lang={lang}
+                />
+              ) : (
+                /*
+                  Editor NO controlado: `defaultValue` en vez de `value`. Monaco
+                  es la fuente de verdad del texto y `onChange` sólo alimenta el
+                  estado que se usa al ejecutar. Con `value` controlado, los
+                  re-renders del cronómetro (uno por segundo) hacían que Monaco
+                  recibiera un value desfasado y reejecutara setValue, borrando lo
+                  tecleado y mandando el cursor al final.
+                */
+                <Editor
+                  height="100%"
+                  language={langOf(c)}
+                  path={`reto-${node.node_id}.${langOf(c) === "python" ? "py" : langOf(c) === "javascript" ? "js" : langOf(c) === "typescript" ? "ts" : langOf(c) === "go" ? "go" : "php"}`}
+                  theme="vs-dark"
+                  defaultValue={code}
+                  onMount={(editor) => {
+                    editorRef.current = editor;
+                  }}
+                  onChange={(v) => setCode(v ?? "")}
+                  options={{
+                    fontSize: 14,
+                    minimap: { enabled: false },
+                    scrollBeyondLastLine: false,
+                    tabSize: 4,
+                    insertSpaces: true,
+                  }}
+                />
+              )}
             </div>
 
             <div className="flex items-center gap-3 border-t border-white/10 p-4">
@@ -295,14 +352,20 @@ export default function ChallengeModal({
               </button>
               <button
                 onClick={() => {
-                  // Editor no controlado: hay que escribirle el texto a mano.
-                  editorRef.current?.setValue(c.starter_code);
-                  setCode(c.starter_code);
+                  if (mode === "blocks") {
+                    // Rebaraja el pool y vacía la selección.
+                    setBlocksResetKey((k) => k + 1);
+                    setCode("");
+                  } else {
+                    // Editor no controlado: hay que escribirle el texto a mano.
+                    editorRef.current?.setValue(c.starter_code);
+                    setCode(c.starter_code);
+                  }
                   setResult(null);
                 }}
                 className="rounded-lg bg-slate-800 px-3 py-2 text-sm text-slate-300 hover:bg-slate-700"
               >
-                Reiniciar
+                {mode === "blocks" ? T("Vaciar", "Clear") : "Reiniciar"}
               </button>
               {restored && !result && (
                 <span
