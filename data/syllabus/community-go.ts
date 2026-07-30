@@ -1168,3 +1168,249 @@ export const SYL_GO_COMMUNITY_5: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre interfaces. */
+const Q_INTERFACE = {
+  question: P(
+    "¿Qué es una `interface` en Go?",
+    "What is an `interface` in Go?",
+  ),
+  options: [
+    P("Un conjunto de firmas de método: un contrato de comportamiento", "A set of method signatures: a behavior contract"),
+    P("Una clase base con código", "A base class with code"),
+    P("Un struct con campos públicos", "A struct with public fields"),
+    P("Una función anónima", "An anonymous function"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una interfaz declara QUÉ métodos debe tener un tipo, sin decir cómo: `type Enemigo interface { Atacar() int }`. Cualquier tipo con ese método la cumple. Es un contrato de comportamiento, no de datos.",
+    "An interface declares WHAT methods a type must have, without saying how: `type Enemigo interface { Atacar() int }`. Any type with that method satisfies it. It's a behavior contract, not a data one.",
+  ),
+};
+const Q_IMPLICIT = {
+  question: P(
+    "¿Cómo declara un tipo de Go que implementa una interfaz?",
+    "How does a Go type declare that it implements an interface?",
+  ),
+  options: [
+    P("No lo declara: basta con tener sus métodos (implementación implícita)", "It doesn't: just having its methods is enough (implicit implementation)"),
+    P("Con `implements Enemigo`", "With `implements Enemigo`"),
+    P("Con `extends Enemigo`", "With `extends Enemigo`"),
+    P("Registrándolo en la interfaz", "By registering it in the interface"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Go usa «duck typing» estático: si un tipo tiene los métodos de una interfaz, la cumple automáticamente, sin declararlo. Esto desacopla: puedes crear tipos que satisfagan interfaces de librerías que no controlas.",
+    "Go uses static \"duck typing\": if a type has an interface's methods, it satisfies it automatically, without declaring it. This decouples: you can build types that satisfy interfaces from libraries you don't control.",
+  ),
+};
+const Q_POLY_GO = {
+  question: P(
+    "Tienes `func total(es []Enemigo) int`. ¿Qué puedes meter en ese slice?",
+    "You have `func total(es []Enemigo) int`. What can you put in that slice?",
+  ),
+  options: [
+    P("Cualquier tipo que tenga los métodos de Enemigo (Trasgo, Troll…)", "Any type that has Enemigo's methods (Trasgo, Troll…)"),
+    P("Sólo structs llamados Enemigo", "Only structs named Enemigo"),
+    P("Sólo un tipo, no mezclas", "Only one type, no mixing"),
+    P("Cualquier cosa: la interfaz no filtra", "Anything: the interface doesn't filter"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un `[]Enemigo` acepta valores de CUALQUIER tipo que cumpla `Enemigo`, mezclados. El código que los recorre llama `e.Atacar()` sin saber cuál es cada uno: eso es polimorfismo. Añadir un tipo nuevo no obliga a tocar `total`.",
+    "A `[]Enemigo` accepts values of ANY type satisfying `Enemigo`, mixed. The code iterating them calls `e.Atacar()` without knowing which is which: that's polymorphism. Adding a new type doesn't force touching `total`.",
+  ),
+};
+const Q_EMPTY_IFACE = {
+  question: P(
+    "¿Qué significa el tipo `interface{}` (o `any`)?",
+    "What does the type `interface{}` (or `any`) mean?",
+  ),
+  options: [
+    P("Cualquier valor: no exige ningún método", "Any value: it requires no methods"),
+    P("Ningún valor", "No value"),
+    P("Sólo structs", "Only structs"),
+    P("Sólo punteros", "Only pointers"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La interfaz vacía no pide métodos, así que TODO la cumple: `interface{}` (o su alias `any`) acepta cualquier valor. Para volver a usar el tipo concreto, haces una aserción `v.(int)` o un `switch v.(type)`.",
+    "The empty interface requires no methods, so EVERYTHING satisfies it: `interface{}` (or its alias `any`) accepts any value. To get the concrete type back, you do an assertion `v.(int)` or a `switch v.(type)`.",
+  ),
+};
+const Q_TYPESWITCH = {
+  question: P(
+    "¿Para qué sirve `switch v.(type) { case int: ...; case string: ... }`?",
+    "What is `switch v.(type) { case int: ...; case string: ... }` for?",
+  ),
+  options: [
+    P("Para ramificar según el TIPO concreto de un valor de interfaz", "To branch on the concrete TYPE of an interface value"),
+    P("Para convertir un int en string", "To convert an int to a string"),
+    P("Para recorrer un slice", "To iterate a slice"),
+    P("Para declarar una interfaz", "To declare an interface"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El «type switch» inspecciona el tipo dinámico de un valor `interface{}` y ejecuta la rama que corresponda. Es la forma segura de recuperar el tipo concreto tras haberlo guardado como `any`.",
+    "The \"type switch\" inspects the dynamic type of an `interface{}` value and runs the matching branch. It's the safe way to recover the concrete type after storing it as `any`.",
+  ),
+};
+
+/** Capítulo 6 · Interfaces (implícitas, polimorfismo). */
+export const SYL_GO_COMMUNITY_6: Syllabus = {
+  c6_trasgo_explorador: { kind: "battle", questions: [Q_INTERFACE, Q_IMPLICIT, Q_POLY_GO] },
+  c6_trol_cavernas: { kind: "battle", questions: [Q_EMPTY_IFACE, Q_TYPESWITCH, Q_INTERFACE] },
+  c6_capitan_trasgo: { kind: "battle", questions: [Q_IMPLICIT, Q_POLY_GO, Q_INTERFACE] },
+  c6_jefe_balrog: { kind: "battle", questions: [Q_POLY_GO, Q_IMPLICIT, Q_TYPESWITCH, Q_EMPTY_IFACE] },
+  pergamino_contratos: {
+    kind: "scroll",
+    title: P("El Pergamino de los Contratos", "The Scroll of Contracts"),
+    lore_intro: P(
+      "Gandalf despliega un pergamino de runas. «No preguntes de qué está hecha una cosa. Pregunta qué métodos tiene. En Go, eso basta.»",
+      "Gandalf unrolls a scroll of runes. \"Don't ask what a thing is made of. Ask what methods it has. In Go, that's enough.\"",
+    ),
+    scroll: {
+      topic: P("Interfaces implícitas y polimorfismo", "Implicit interfaces and polymorphism"),
+      sections: [
+        {
+          heading: P("Una interfaz es un contrato de métodos", "An interface is a method contract"),
+          body: P(
+            "Declara QUÉ métodos hacen falta, sin implementación. Un tipo la cumple SÓLO por tener esos métodos: no se declara nada (implementación implícita).",
+            "It declares WHICH methods are needed, with no implementation. A type satisfies it JUST by having those methods: nothing is declared (implicit implementation).",
+          ),
+          code: "type Enemigo interface {\n\tAtacar() int\n}\n\ntype Trasgo struct{}\nfunc (t Trasgo) Atacar() int { return 5 } // ya es un Enemigo",
+        },
+        {
+          heading: P("Polimorfismo", "Polymorphism"),
+          body: P(
+            "Un `[]Enemigo` mezcla cualquier tipo que cumpla el contrato. El código que lo recorre no sabe ni le importa qué son: llama al método y ya.",
+            "A `[]Enemigo` mixes any type that satisfies the contract. The code iterating it doesn't know or care what they are: it calls the method and that's it.",
+          ),
+          code: "func danioTotal(horda []Enemigo) int {\n\ttotal := 0\n\tfor _, e := range horda {\n\t\ttotal += e.Atacar()\n\t}\n\treturn total\n}",
+        },
+        {
+          heading: P("interface{} y type switch", "interface{} and type switch"),
+          body: P(
+            "`interface{}` (alias `any`) acepta cualquier valor. Para recuperar el tipo concreto, un `switch v.(type)` ramifica según lo que sea.",
+            "`interface{}` (alias `any`) accepts any value. To recover the concrete type, a `switch v.(type)` branches on what it is.",
+          ),
+          code: "func describir(v interface{}) string {\n\tswitch v.(type) {\n\tcase int:\n\t\treturn \"numero\"\n\tcase string:\n\t\treturn \"texto\"\n\tdefault:\n\t\treturn \"otro\"\n\t}\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "Programa contra interfaces: contratos de métodos que los tipos cumplen implícitamente. Un slice de interfaz da polimorfismo; `interface{}` acepta todo y el type switch recupera el tipo concreto.",
+        "Program against interfaces: method contracts that types satisfy implicitly. A slice of interface gives polymorphism; `interface{}` accepts anything and the type switch recovers the concrete type.",
+      ),
+    },
+  },
+  puertas_de_durin: {
+    kind: "challenge",
+    title: P("Las Puertas de Durin", "The Doors of Durin"),
+    lore_intro: P(
+      "«Habla, amigo, y entra.» La interfaz Descifrable ya existe; la puerta sólo debe tener su método para cumplirla — sin declararlo.",
+      "\"Speak, friend, and enter.\" The Descifrable interface already exists; the door just needs its method to satisfy it — without declaring so.",
+    ),
+    challenge: {
+      topic: P("Implementar una interfaz (implícito)", "Implementing an interface (implicit)"),
+      instructions: P(
+        "Ya existen la interfaz `Descifrable` (con `SusurrarPalabra(palabra string) bool`) y la función `abre(d Descifrable, palabra string) bool`. Crea el tipo `PuertaDurin` con el método `SusurrarPalabra` que devuelva `true` SÓLO con la palabra `\"mellon\"`.",
+        "The interface `Descifrable` (with `SusurrarPalabra(palabra string) bool`) and the function `abre(d Descifrable, palabra string) bool` already exist. Create the type `PuertaDurin` with the method `SusurrarPalabra` returning `true` ONLY for the word `\"mellon\"`.",
+      ),
+      support_code:
+        'package main\n\ntype Descifrable interface {\n\tSusurrarPalabra(palabra string) bool\n}\n\nfunc abre(d Descifrable, palabra string) bool {\n\treturn d.SusurrarPalabra(palabra)\n}',
+      starter_code:
+        "// Descifrable (interfaz) y abre(...) ya existen.\n\ntype PuertaDurin struct{}\n\nfunc (p PuertaDurin) SusurrarPalabra(palabra string) bool {\n\t// true sólo con \"mellon\"\n}\n",
+      hints: [
+        P("El método debe tener la MISMA firma que la interfaz para cumplirla.", "The method must have the SAME signature as the interface to satisfy it."),
+        P("`return palabra == \"mellon\"`.", "`return palabra == \"mellon\"`."),
+      ],
+      test_cases: [
+        { input: 'abre(PuertaDurin{}, "mellon")', expected: true, description: P("La palabra élfica abre", "The Elvish word opens it"), raw: true },
+        { input: 'abre(PuertaDurin{}, "amigo")', expected: false, description: P("En castellano no", "Not in Spanish"), raw: true },
+        { input: 'PuertaDurin{}.SusurrarPalabra("mellon")', expected: true, description: P("El método directo también", "The direct method too"), raw: true },
+      ],
+    },
+  },
+  camara_mazarbul: {
+    kind: "challenge",
+    title: P("La Cámara de Mazarbul", "The Chamber of Mazarbul"),
+    lore_intro: P(
+      "Trasgos y un troll irrumpen a la vez: criaturas distintas, un mismo contrato. La función que suma su daño no sabe qué son.",
+      "Goblins and a troll burst in at once: different creatures, one contract. The function summing their damage doesn't know what they are.",
+    ),
+    challenge: {
+      topic: P("Polimorfismo con interfaces", "Polymorphism with interfaces"),
+      instructions: P(
+        "Ya existen la interfaz `Enemigo` (con `Atacar() int`) y `DanioTotal(horda []Enemigo) int`. Crea DOS tipos que cumplan `Enemigo`: `Trasgo` (ataca con 5) y `Troll` (ataca con 20).",
+        "The interface `Enemigo` (with `Atacar() int`) and `DanioTotal(horda []Enemigo) int` already exist. Create TWO types satisfying `Enemigo`: `Trasgo` (attacks with 5) and `Troll` (attacks with 20).",
+      ),
+      support_code:
+        "package main\n\ntype Enemigo interface {\n\tAtacar() int\n}\n\nfunc DanioTotal(horda []Enemigo) int {\n\ttotal := 0\n\tfor _, e := range horda {\n\t\ttotal += e.Atacar()\n\t}\n\treturn total\n}",
+      starter_code:
+        "// Enemigo (interfaz) y DanioTotal(...) ya existen.\n\ntype Trasgo struct{}\n\nfunc (t Trasgo) Atacar() int {\n\t//\n}\n\ntype Troll struct{}\n\nfunc (t Troll) Atacar() int {\n\t//\n}\n",
+      hints: [
+        P("Cada tipo cumple `Enemigo` sólo por tener `Atacar() int`.", "Each type satisfies `Enemigo` just by having `Atacar() int`."),
+        P("`DanioTotal` los trata a todos como `Enemigo`: eso es polimorfismo.", "`DanioTotal` treats them all as `Enemigo`: that's polymorphism."),
+      ],
+      test_cases: [
+        { input: "Trasgo{}.Atacar()", expected: 5, description: P("El trasgo golpea flojo", "The goblin hits soft"), raw: true },
+        { input: "Troll{}.Atacar()", expected: 20, description: P("El troll golpea fuerte", "The troll hits hard"), raw: true },
+        { input: "DanioTotal([]Enemigo{Trasgo{}, Trasgo{}, Troll{}})", expected: 30, description: P("Suma la horda mezclada", "Sums the mixed horde"), raw: true },
+      ],
+    },
+  },
+  puente_khazad_dum: {
+    kind: "challenge",
+    title: P("El Puente de Khazad-dûm", "The Bridge of Khazad-dûm"),
+    lore_intro: P(
+      "«¡No puedes pasar!» Un hechizo es cualquier cosa que sepa lanzarse. Quien lo conjura no necesita saber cuál es.",
+      "\"You cannot pass!\" A spell is anything that knows how to be cast. Whoever conjures it needn't know which one it is.",
+    ),
+    challenge: {
+      topic: P("Interfaces como parámetro", "Interfaces as a parameter"),
+      instructions: P(
+        "Ya existen la interfaz `Hechizo` (con `Lanzar() string`), la función `conjurar(h Hechizo) string` y un tipo `Chispa`. Crea el tipo `PalabraDeMando` cuyo `Lanzar()` devuelva exactamente `\"¡No puedes pasar!\"`.",
+        "The interface `Hechizo` (with `Lanzar() string`), the function `conjurar(h Hechizo) string` and a type `Chispa` already exist. Create the type `PalabraDeMando` whose `Lanzar()` returns exactly `\"¡No puedes pasar!\"`.",
+      ),
+      support_code:
+        'package main\n\ntype Hechizo interface {\n\tLanzar() string\n}\n\nfunc conjurar(h Hechizo) string {\n\treturn h.Lanzar()\n}\n\ntype Chispa struct{}\n\nfunc (c Chispa) Lanzar() string { return "chispas" }',
+      starter_code:
+        "// Hechizo (interfaz), conjurar(...) y Chispa ya existen.\n\ntype PalabraDeMando struct{}\n\nfunc (p PalabraDeMando) Lanzar() string {\n\t//\n}\n",
+      hints: [
+        P("`conjurar` acepta cualquier `Hechizo`: tu tipo lo será por tener `Lanzar()`.", "`conjurar` accepts any `Hechizo`: your type will be one by having `Lanzar()`."),
+        P('`return "¡No puedes pasar!"` (con los signos de apertura y cierre).', '`return "¡No puedes pasar!"` (with the opening and closing marks).'),
+      ],
+      test_cases: [
+        { input: "conjurar(PalabraDeMando{})", expected: "¡No puedes pasar!", description: P("Gandalf conjura tu hechizo", "Gandalf casts your spell"), raw: true },
+        { input: "conjurar(Chispa{})", expected: "chispas", description: P("La misma función con otro Hechizo", "The same function with another Hechizo"), raw: true },
+        { input: "PalabraDeMando{}.Lanzar()", expected: "¡No puedes pasar!", description: P("El método directo", "The direct method"), raw: true },
+      ],
+    },
+  },
+  c6_galeria_de_mazarbul: {
+    kind: "challenge",
+    title: P("La galería sin fin", "The endless gallery"),
+    lore_intro: P(
+      "En la oscuridad, cada runa es de una clase distinta. Identifica qué es cada valor con un type switch sobre la interfaz vacía.",
+      "In the dark, each rune is of a different kind. Identify what each value is with a type switch over the empty interface.",
+    ),
+    challenge: {
+      topic: P("interface{} y type switch", "interface{} and type switch"),
+      instructions: P(
+        "Escribe `describir(v interface{}) string` que devuelva:\n• `\"numero\"` si `v` es un `int`,\n• `\"texto\"` si es un `string`,\n• `\"otro\"` en cualquier otro caso.\n\nUsa un `switch v.(type)`.",
+        "Write `describir(v interface{}) string` returning:\n• `\"numero\"` if `v` is an `int`,\n• `\"texto\"` if it's a `string`,\n• `\"otro\"` otherwise.\n\nUse a `switch v.(type)`.",
+      ),
+      starter_code:
+        'package main\n\nfunc describir(v interface{}) string {\n\tswitch v.(type) {\n\t// case int: ...  case string: ...  default: ...\n\t}\n}\n',
+      hints: [
+        P("`case int:` devuelve `\"numero\"`; `case string:` devuelve `\"texto\"`.", "`case int:` returns `\"numero\"`; `case string:` returns `\"texto\"`."),
+        P("`default:` recoge todo lo demás con `\"otro\"`.", "`default:` catches everything else with `\"otro\"`."),
+      ],
+      test_cases: [
+        { input: "describir(5)", expected: "numero", description: P("Un entero", "An integer"), raw: true },
+        { input: 'describir("mellon")', expected: "texto", description: P("Un texto", "A string"), raw: true },
+        { input: "describir(true)", expected: "otro", description: P("Un bool: otro", "A bool: other"), raw: true },
+      ],
+    },
+  },
+};
