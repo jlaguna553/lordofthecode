@@ -504,6 +504,11 @@ export default function GameCanvas({
               .setPadding(3, 1, 3, 1);
             const cont = this.add.container(cx, cy, [ring, dot, label]);
             cont.setDepth(90000);
+            // Guardamos lo necesario para reconciliar el candado en update()
+            // cuando el nodo se desbloquee (al ganar XP / resolver retos).
+            cont.setData("locked", cerrado);
+            cont.setData("icono", style.icon);
+            cont.setData("titulo", loc(node.title, lang));
             if (cerrado) {
               // Apagado y quieto: se ve que está ahí, pero que aún no toca.
               cont.setAlpha(0.45);
@@ -637,6 +642,26 @@ export default function GameCanvas({
           p.setDepth(p.y + frameSize * 0.45); // profundidad por los pies
 
           for (const [id, cont] of this.markers) {
+            // Reconcilia el candado: si un nodo estaba cerrado y ya se
+            // desbloqueó (ganaste XP / resolviste los retos), quítale el 🔒,
+            // devuélvele el brillo y arranca su pulso — sin recargar la escena.
+            if (
+              cont.getData("locked") === true &&
+              !lockedNodesRef.current[id]
+            ) {
+              cont.setData("locked", false);
+              cont.setAlpha(1);
+              const label = cont.list[2] as Phaser.GameObjects.Text;
+              label.setText(cont.getData("icono") + cont.getData("titulo"));
+              this.tweens.add({
+                targets: cont.list[0],
+                scale: 1.6,
+                alpha: 0,
+                duration: 1200,
+                repeat: -1,
+              });
+            }
+
             if (completedRef.current.has(id) && cont.getData("done") !== true) {
               cont.setData("done", true);
               cont.list[1].setFillStyle(0x4ade80);
