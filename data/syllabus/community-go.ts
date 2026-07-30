@@ -238,3 +238,237 @@ export const SYL_GO_COMMUNITY_1: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre slices. */
+const Q_SLICE_TYPE = {
+  question: P(
+    "¿Cómo se declara el tipo de un slice de strings en Go?",
+    "How do you declare the type of a slice of strings in Go?",
+  ),
+  options: [
+    P("[]string", "[]string"),
+    P("string[]", "string[]"),
+    P("Array<string>", "Array<string>"),
+    P("slice(string)", "slice(string)"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los corchetes van DELANTE del tipo: `[]string`, `[]int`. Un slice es una vista de tamaño dinámico sobre un array; es lo que se usa el 99% del tiempo (los arrays de tamaño fijo `[3]int` son raros).",
+    "The brackets go BEFORE the type: `[]string`, `[]int`. A slice is a dynamically-sized view over an array; it's what you use 99% of the time (fixed-size arrays `[3]int` are rare).",
+  ),
+};
+const Q_APPEND = {
+  question: P(
+    "¿Cómo se añade un elemento a un slice `xs`?",
+    "How do you add an element to a slice `xs`?",
+  ),
+  options: [
+    P("xs = append(xs, elem)", "xs = append(xs, elem)"),
+    P("xs.push(elem)", "xs.push(elem)"),
+    P("xs.add(elem)", "xs.add(elem)"),
+    P("xs[] = elem", "xs[] = elem"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`append` devuelve un slice NUEVO (puede reubicar la memoria), por eso hay que REASIGNAR: `xs = append(xs, elem)`. Olvidar el `xs =` es el error clásico de principiante en Go.",
+    "`append` returns a NEW slice (it may relocate memory), so you must REASSIGN: `xs = append(xs, elem)`. Forgetting the `xs =` is the classic beginner mistake in Go.",
+  ),
+};
+const Q_RANGE = {
+  question: P(
+    "¿Qué da `for i, v := range xs` en cada vuelta?",
+    "What does `for i, v := range xs` give each iteration?",
+  ),
+  options: [
+    P("El índice `i` y el valor `v` de cada elemento", "The index `i` and the value `v` of each element"),
+    P("Sólo el valor", "Only the value"),
+    P("Sólo el índice", "Only the index"),
+    P("Un puntero al elemento", "A pointer to the element"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`range` sobre un slice da (índice, valor). Si no quieres el índice, usa `for _, v := range xs` con el guion bajo. `for i := range xs` da sólo el índice. En Go el `_` descarta lo que no usas (y lo no usado es error).",
+    "`range` over a slice gives (index, value). If you don't want the index, use `for _, v := range xs` with the blank identifier. `for i := range xs` gives only the index. In Go `_` discards what you don't use (and unused vars are errors).",
+  ),
+};
+const Q_LEN = {
+  question: P(
+    "¿Cómo se obtiene la longitud de un slice `xs`?",
+    "How do you get the length of a slice `xs`?",
+  ),
+  options: [
+    P("len(xs)", "len(xs)"),
+    P("xs.length", "xs.length"),
+    P("xs.len()", "xs.len()"),
+    P("count(xs)", "count(xs)"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`len` es una función incorporada (builtin): `len(xs)` para slices, arrays, strings y maps. También existe `cap(xs)` para la capacidad. No son métodos: se llaman como funciones.",
+    "`len` is a builtin function: `len(xs)` for slices, arrays, strings and maps. There's also `cap(xs)` for capacity. They aren't methods: you call them as functions.",
+  ),
+};
+const Q_MAKE = {
+  question: P(
+    "¿Qué crea `make([]int, 0)` frente a `var xs []int`?",
+    "What does `make([]int, 0)` create versus `var xs []int`?",
+  ),
+  options: [
+    P("Un slice VACÍO no-nil; `var xs []int` deja un slice nil", "An empty non-nil slice; `var xs []int` leaves a nil slice"),
+    P("Lo mismo exactamente", "Exactly the same"),
+    P("Un array de tamaño fijo", "A fixed-size array"),
+    P("Un map", "A map"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`make([]int, 0)` (o `[]int{}`) es un slice vacío pero no nil; `var xs []int` es nil. Para `append` da igual (funciona con nil). Pero al serializar a JSON, un slice nil sale como `null` y uno vacío como `[]` — cuidado con eso.",
+    "`make([]int, 0)` (or `[]int{}`) is an empty but non-nil slice; `var xs []int` is nil. For `append` it doesn't matter (it works on nil). But when serializing to JSON, a nil slice becomes `null` and an empty one `[]` — mind that.",
+  ),
+};
+const Q_SLICING = {
+  question: P(
+    "Con `xs := []int{10, 20, 30, 40}`, ¿qué es `xs[1:3]`?",
+    "With `xs := []int{10, 20, 30, 40}`, what is `xs[1:3]`?",
+  ),
+  options: [
+    P("[20 30] — del índice 1 al 3 sin incluir el 3", "[20 30] — from index 1 up to but not including 3"),
+    P("[10 20 30]", "[10 20 30]"),
+    P("[20 30 40]", "[20 30 40]"),
+    P("[10 20]", "[10 20]"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El slicing `xs[inicio:fin]` incluye `inicio` y EXCLUYE `fin`: `xs[1:3]` son los índices 1 y 2 → [20 30]. Puedes omitir extremos: `xs[:2]` (desde el principio) o `xs[2:]` (hasta el final).",
+    "Slicing `xs[start:end]` includes `start` and EXCLUDES `end`: `xs[1:3]` is indices 1 and 2 → [20 30]. You can omit ends: `xs[:2]` (from the start) or `xs[2:]` (to the end).",
+  ),
+};
+
+/** Capítulo 2 · Slices: []T, append, range y len. */
+export const SYL_GO_COMMUNITY_2: Syllabus = {
+  c2_raiz: { kind: "battle", questions: [Q_SLICE_TYPE, Q_APPEND, Q_LEN] },
+  c2_niebla: { kind: "battle", questions: [Q_RANGE, Q_SLICING, Q_SLICE_TYPE] },
+  c2_sauce: { kind: "battle", questions: [Q_APPEND, Q_MAKE, Q_RANGE] },
+  c2_jefe_tumulario: { kind: "battle", questions: [Q_SLICING, Q_MAKE, Q_LEN, Q_APPEND] },
+  pergamino_ciclo_vida: {
+    kind: "scroll",
+    title: P("El Pergamino de las Listas", "The Scroll of Lists"),
+    lore_intro: P(
+      "En un claro del Bosque Viejo, un pergamino enseña a manejar MUCHAS cosas a la vez: los slices de Go.",
+      "In a clearing of the Old Forest, a scroll teaches how to handle MANY things at once: Go's slices.",
+    ),
+    scroll: {
+      topic: P("Slices: []T, append, range y len", "Slices: []T, append, range and len"),
+      sections: [
+        {
+          heading: P("Declarar y recorrer", "Declare and iterate"),
+          body: P(
+            "`[]T` es un slice (lista dinámica). Se recorre con `range`, que da índice y valor; usa `_` para descartar el que no necesites. `len(xs)` da la longitud.",
+            "`[]T` is a slice (dynamic list). Iterate with `range`, which gives index and value; use `_` to discard the one you don't need. `len(xs)` gives the length.",
+          ),
+          code:
+            'nombres := []string{"Frodo", "Sam"}\nfor _, n := range nombres {\n\tfmt.Println(n)\n}\nfmt.Println(len(nombres)) // 2',
+        },
+        {
+          heading: P("append: crece reasignando", "append: grows by reassigning"),
+          body: P(
+            "`append` devuelve un slice nuevo, así que hay que REASIGNAR: `xs = append(xs, v)`. Empieza con `[]T{}` (vacío no-nil) para acumular; un slice nil serializa a `null` y uno vacío a `[]`.",
+            "`append` returns a new slice, so you must REASSIGN: `xs = append(xs, v)`. Start with `[]T{}` (empty non-nil) to accumulate; a nil slice serializes to `null` and an empty one to `[]`.",
+          ),
+          code:
+            'out := []string{}\nfor _, n := range nombres {\n\tout = append(out, n+"!")\n}',
+        },
+        {
+          heading: P("Slicing", "Slicing"),
+          body: P(
+            "`xs[inicio:fin]` toma un sub-slice: incluye `inicio`, excluye `fin`. `xs[:2]` desde el principio; `xs[2:]` hasta el final. No copia: comparte memoria con el original.",
+            "`xs[start:end]` takes a sub-slice: includes `start`, excludes `end`. `xs[:2]` from the start; `xs[2:]` to the end. It doesn't copy: it shares memory with the original.",
+          ),
+          code:
+            "xs := []int{10, 20, 30, 40}\nxs[1:3] // [20 30]\nxs[:2]  // [10 20]\nxs[2:]  // [30 40]",
+        },
+      ],
+      keyTakeaway: P(
+        "`[]T` para listas; recorre con `range` (índice, valor; `_` descarta); crece con `xs = append(xs, v)` (¡reasigna!); mide con `len`; corta con `xs[a:b]` (excluye b). Empieza en `[]T{}` para no acabar en nil.",
+        "`[]T` for lists; iterate with `range` (index, value; `_` discards); grow with `xs = append(xs, v)` (reassign!); measure with `len`; cut with `xs[a:b]` (excludes b). Start at `[]T{}` to avoid ending up nil.",
+      ),
+    },
+  },
+  viejo_hombre_sauce: {
+    kind: "challenge",
+    title: P("El Viejo Hombre Sauce", "Old Man Willow"),
+    lore_intro: P(
+      "Las raíces del Sauce atrapan a los hobbits uno a uno. Recorre el slice de nombres y devuelve otro.",
+      "The Willow's roots snare the hobbits one by one. Iterate the slice of names and return another.",
+    ),
+    challenge: {
+      topic: P("Slices, range y append", "Slices, range and append"),
+      instructions: P(
+        'Escribe `atrapar(nombres []string) []string` que devuelva un slice NUEVO con cada nombre seguido de " queda atrapado". Empieza con `[]string{}` y usa `range` + `append`.\n\nEjemplo: `atrapar([]string{"Merry"})` → `["Merry queda atrapado"]`.',
+        'Write `atrapar(nombres []string) []string` returning a NEW slice with each name followed by " queda atrapado". Start with `[]string{}` and use `range` + `append`.\n\nExample: `atrapar([]string{"Merry"})` → `["Merry queda atrapado"]`.',
+      ),
+      starter_code:
+        'package main\n\nfunc atrapar(nombres []string) []string {\n\tresultado := []string{}\n\t// range + append\n\treturn resultado\n}\n',
+      hints: [
+        P("`for _, n := range nombres { ... }` recorre los valores.", "`for _, n := range nombres { ... }` iterates the values."),
+        P('Acumula: `resultado = append(resultado, n+" queda atrapado")`.', 'Accumulate: `resultado = append(resultado, n+" queda atrapado")`.'),
+      ],
+      test_cases: [
+        { input: 'atrapar([]string{"Merry", "Pippin"})', expected: ["Merry queda atrapado", "Pippin queda atrapado"], description: P("Cada nombre atrapado", "Each name snared"), raw: true },
+        { input: "atrapar([]string{})", expected: [], description: P("Slice vacío", "Empty slice"), raw: true },
+        { input: 'atrapar([]string{"Frodo"})', expected: ["Frodo queda atrapado"], description: P("Uno solo", "Just one"), raw: true },
+      ],
+    },
+  },
+  tumulo_espectro: {
+    kind: "challenge",
+    title: P("El Túmulo del Espectro", "The Wight's Barrow"),
+    lore_intro: P(
+      "El Tumulario drena la vida de cada hobbit. Aplica el drenaje a todo el slice de vidas, sin bajar de 0.",
+      "The Barrow-wight drains the life of each hobbit. Apply the drain to the whole slice of lives, never below 0.",
+    ),
+    challenge: {
+      topic: P("Slices de int y control de flujo", "Int slices and control flow"),
+      instructions: P(
+        "Escribe `drenarVarios(vidas []int, drenaje int) []int` que reste `drenaje` a cada vida, sin bajar nunca de 0. Empieza en `[]int{}`.\n\nEjemplo: `drenarVarios([]int{100, 20, 5}, 30)` → `[70, 0, 0]`.",
+        "Write `drenarVarios(vidas []int, drenaje int) []int` subtracting `drenaje` from each life, never below 0. Start at `[]int{}`.\n\nExample: `drenarVarios([]int{100, 20, 5}, 30)` → `[70, 0, 0]`.",
+      ),
+      starter_code:
+        "package main\n\nfunc drenarVarios(vidas []int, drenaje int) []int {\n\tresultado := []int{}\n\t// range + if para no bajar de 0\n\treturn resultado\n}\n",
+      hints: [
+        P("Por cada vida: `x := v - drenaje; if x < 0 { x = 0 }`.", "For each life: `x := v - drenaje; if x < 0 { x = 0 }`."),
+        P("`resultado = append(resultado, x)`.", "`resultado = append(resultado, x)`."),
+      ],
+      test_cases: [
+        { input: "drenarVarios([]int{100, 20, 5}, 30)", expected: [70, 0, 0], description: P("Resta acotada a 0", "Subtraction clamped at 0"), raw: true },
+        { input: "drenarVarios([]int{50}, 10)", expected: [40], description: P("Una sola vida", "A single life"), raw: true },
+        { input: "drenarVarios([]int{}, 10)", expected: [], description: P("Sin vidas", "No lives"), raw: true },
+      ],
+    },
+  },
+  canto_bombadil: {
+    kind: "challenge",
+    title: P("El Canto de Tom Bombadil", "Tom Bombadil's Song"),
+    lore_intro: P(
+      "El canto de Tom rompe el hechizo. Resume los versos: cuántos son y el canto entero unido.",
+      "Tom's song breaks the spell. Summarize the verses: how many there are and the whole song joined.",
+    ),
+    challenge: {
+      topic: P("len, strings.Join y fmt.Sprintf", "len, strings.Join and fmt.Sprintf"),
+      instructions: P(
+        'Escribe `resumen(versos []string) string` que devuelva "{n}: {canto}", donde `n` es cuántos versos hay y `canto` son todos unidos por un espacio (con `strings.Join`).\n\nEjemplo: `resumen([]string{"ho", "hey"})` → `"2: ho hey"`.',
+        'Write `resumen(versos []string) string` returning "{n}: {song}", where `n` is how many verses there are and `song` is all of them joined by a space (with `strings.Join`).\n\nExample: `resumen([]string{"ho", "hey"})` → `"2: ho hey"`.',
+      ),
+      starter_code:
+        'package main\n\nimport (\n\t"fmt"\n\t"strings"\n)\n\nfunc resumen(versos []string) string {\n\t// fmt.Sprintf con len(versos) y strings.Join(versos, " ")\n}\n',
+      hints: [
+        P("`len(versos)` cuenta; `strings.Join(versos, \" \")` une.", "`len(versos)` counts; `strings.Join(versos, \" \")` joins."),
+        P('`return fmt.Sprintf("%d: %s", len(versos), strings.Join(versos, " "))`.', '`return fmt.Sprintf("%d: %s", len(versos), strings.Join(versos, " "))`.'),
+      ],
+      test_cases: [
+        { input: 'resumen([]string{"ho", "hey"})', expected: "2: ho hey", description: P("Cantidad y canto", "Count and song"), raw: true },
+        { input: "resumen([]string{})", expected: "0: ", description: P("Sin versos", "No verses"), raw: true },
+        { input: 'resumen([]string{"solo"})', expected: "1: solo", description: P("Un verso", "One verse"), raw: true },
+      ],
+    },
+  },
+};
