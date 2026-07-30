@@ -971,3 +971,200 @@ export const SYL_GO_COMMUNITY_4: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre structs y métodos. */
+const Q_STRUCT = {
+  question: P(
+    "¿Qué es un `struct` en Go?",
+    "What is a `struct` in Go?",
+  ),
+  options: [
+    P("Un tipo que agrupa campos con nombre y tipo", "A type that groups named, typed fields"),
+    P("Una clase con herencia", "A class with inheritance"),
+    P("Una función con estado", "A function with state"),
+    P("Un tipo de map", "A kind of map"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un `struct` agrupa datos relacionados: `type Provision struct { Nombre string; Peso int }`. Se crea con `Provision{Nombre: \"x\", Peso: 1}` y se accede a los campos con el punto. Go no tiene clases: structs + métodos hacen su papel.",
+    "A `struct` groups related data: `type Provision struct { Nombre string; Peso int }`. Create it with `Provision{Nombre: \"x\", Peso: 1}` and access fields with a dot. Go has no classes: structs + methods do the job.",
+  ),
+};
+const Q_METHOD_RECV = {
+  question: P(
+    "¿Qué es el `(r Resistencia)` en `func (r Resistencia) Calor() int`?",
+    "What is the `(r Resistencia)` in `func (r Resistencia) Calor() int`?",
+  ),
+  options: [
+    P("El RECEPTOR: liga el método al tipo Resistencia", "The RECEIVER: it binds the method to the Resistencia type"),
+    P("Un parámetro normal más", "Just another normal parameter"),
+    P("El valor de retorno", "The return value"),
+    P("Una anotación opcional", "An optional annotation"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El receptor va ANTES del nombre del método y liga la función al tipo: se llama `r.Calor()`. Dentro, `r` es el valor sobre el que se invocó. Es como `this`/`self`, pero explícito y con nombre a tu elección.",
+    "The receiver goes BEFORE the method name and binds the function to the type: you call `r.Calor()`. Inside, `r` is the value it was invoked on. It's like `this`/`self`, but explicit and named as you like.",
+  ),
+};
+const Q_PTR_RECV = {
+  question: P(
+    "¿Cuándo usas un receptor por PUNTERO, `func (r *R) M()`, en vez de por valor?",
+    "When do you use a POINTER receiver, `func (r *R) M()`, instead of a value receiver?",
+  ),
+  options: [
+    P("Cuando el método debe MODIFICAR el struct (o para evitar copiarlo)", "When the method must MODIFY the struct (or to avoid copying it)"),
+    P("Nunca: siempre por valor", "Never: always by value"),
+    P("Sólo para structs vacíos", "Only for empty structs"),
+    P("Sólo en funciones main", "Only in main functions"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un receptor por valor recibe una COPIA: los cambios no se ven fuera. Con `*R` el método opera sobre el original y puede mutarlo. Regla práctica: si mutas o el struct es grande, usa puntero; si sólo lees algo pequeño, por valor.",
+    "A value receiver gets a COPY: changes aren't visible outside. With `*R` the method works on the original and can mutate it. Rule of thumb: if you mutate or the struct is large, use a pointer; to just read something small, by value.",
+  ),
+};
+const Q_CONSTRUCTOR = {
+  question: P(
+    "Go no tiene constructores. ¿Cómo se crea un struct ya inicializado idiomáticamente?",
+    "Go has no constructors. How do you idiomatically create an initialized struct?",
+  ),
+  options: [
+    P("Con una función `NuevaX(...) X` que devuelve el struct listo", "With a function `NuevaX(...) X` that returns the ready struct"),
+    P("Con `new X()`", "With `new X()`"),
+    P("Con un método `__init__`", "With an `__init__` method"),
+    P("No se puede inicializar", "You can't initialize it"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El patrón es una función «constructora» por convención: `func NuevaResistencia() Resistencia { return Resistencia{calor: 100} }`. Devuelve el struct con sus invariantes ya establecidas. `new(T)` existe, pero devuelve un puntero a un T con ceros.",
+    "The pattern is a \"constructor\" function by convention: `func NuevaResistencia() Resistencia { return Resistencia{calor: 100} }`. It returns the struct with its invariants set. `new(T)` exists, but returns a pointer to a zeroed T.",
+  ),
+};
+
+/** Capítulo 5 · Structs y métodos (receptores, encapsulación). */
+export const SYL_GO_COMMUNITY_5: Syllabus = {
+  c5_crebain: { kind: "battle", questions: [Q_STRUCT, Q_METHOD_RECV, Q_EXPORTED] },
+  c5_lobo_nieve: { kind: "battle", questions: [Q_PTR_RECV, Q_CONSTRUCTOR, Q_STRUCT] },
+  c5_jefe_caradhras: { kind: "battle", questions: [Q_METHOD_RECV, Q_PTR_RECV, Q_EXPORTED, Q_CONSTRUCTOR] },
+  c5_trasgo_montanes: { kind: "battle", questions: [Q_EXPORTED, Q_STRUCT, Q_METHOD_RECV] },
+  pergamino_hielo: {
+    kind: "scroll",
+    title: P("El Pergamino del Hielo", "The Scroll of Ice"),
+    lore_intro: P(
+      "Gandalf resguarda un pergamino. «Un objeto es datos con nombre (struct) y verbos que operan sobre ellos (métodos). Lo que no debe tocarse, escríbelo en minúscula.»",
+      "Gandalf shelters a scroll. \"An object is named data (a struct) and verbs that act on it (methods). What must not be touched, write it lowercase.\"",
+    ),
+    scroll: {
+      topic: P("Structs y métodos (receptores, encapsulación)", "Structs and methods (receivers, encapsulation)"),
+      sections: [
+        {
+          heading: P("Structs y constructores", "Structs and constructors"),
+          body: P(
+            "Un `struct` agrupa campos. Go no tiene constructores: por convención se usa una función `NuevaX(...) X` que devuelve el struct ya inicializado.",
+            "A `struct` groups fields. Go has no constructors: by convention you use a function `NuevaX(...) X` that returns the initialized struct.",
+          ),
+          code: "type Provision struct {\n\tNombre string\n\tPeso   int\n}\n\nfunc nuevaProvision(n string, p int) Provision {\n\treturn Provision{Nombre: n, Peso: p}\n}",
+        },
+        {
+          heading: P("Métodos y receptores", "Methods and receivers"),
+          body: P(
+            "Un método liga una función a un tipo mediante el RECEPTOR, antes del nombre. Por valor recibe una copia; por puntero (`*R`) opera sobre el original y puede mutarlo.",
+            "A method binds a function to a type via the RECEIVER, before the name. By value it gets a copy; by pointer (`*R`) it works on the original and can mutate it.",
+          ),
+          code: "type Resistencia struct{ calor int }\n\nfunc (r Resistencia) Calor() int { return r.calor } // lee (copia)\nfunc (r *Resistencia) Enfriar(g int) { r.calor -= g } // muta (original)",
+        },
+        {
+          heading: P("Encapsulación por inicial", "Encapsulation by initial letter"),
+          body: P(
+            "La visibilidad la marca la primera letra: `Nombre` (mayúscula) se exporta; `calor` (minúscula) es privado del paquete. Expón métodos, esconde el estado en minúscula.",
+            "Visibility is set by the first letter: `Nombre` (uppercase) is exported; `calor` (lowercase) is package-private. Expose methods, hide state in lowercase.",
+          ),
+          code: "type Temperatura struct{ grados int } // grados: privado\n\nfunc (t Temperatura) ConMas(g int) Temperatura {\n\treturn Temperatura{grados: t.grados + g} // copia nueva: inmutable\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "structs agrupan datos; los métodos los operan con un receptor (por valor copia, por puntero muta); la inicial mayúscula/minúscula marca lo público/privado; y `NuevaX(...)` hace de constructor.",
+        "structs group data; methods act on them via a receiver (by value copies, by pointer mutates); the uppercase/lowercase initial marks public/private; and `NuevaX(...)` acts as a constructor.",
+      ),
+    },
+  },
+  carga_de_bill: {
+    kind: "challenge",
+    title: P("La Carga de Bill el Poney", "Bill the Pony's Load"),
+    lore_intro: P(
+      "Una provisión es su nombre y su peso, juntos. Modela ese dato con un struct y una función que lo cree.",
+      "A provision is its name and its weight, together. Model that data with a struct and a function that creates it.",
+    ),
+    challenge: {
+      topic: P("Structs y constructores", "Structs and constructors"),
+      instructions: P(
+        "Declara el struct `Provision` con dos campos EXPORTADOS: `Nombre` (string) y `Peso` (int). Después escribe `nuevaProvision(nombre string, peso int) Provision` que lo cree con esos valores.\n\nEjemplo: `nuevaProvision(\"lembas\", 5).Peso` → `5`.",
+        "Declare the struct `Provision` with two EXPORTED fields: `Nombre` (string) and `Peso` (int). Then write `nuevaProvision(nombre string, peso int) Provision` creating it with those values.\n\nExample: `nuevaProvision(\"lembas\", 5).Peso` → `5`.",
+      ),
+      starter_code:
+        "package main\n\ntype Provision struct {\n\t// Nombre y Peso (exportados: en mayúscula)\n}\n\nfunc nuevaProvision(nombre string, peso int) Provision {\n\t// devuelve el struct con esos valores\n}\n",
+      hints: [
+        P("Campos exportados van en mayúscula: `Nombre string` y `Peso int`.", "Exported fields go uppercase: `Nombre string` and `Peso int`."),
+        P("Crea el struct con nombres de campo: `return Provision{Nombre: nombre, Peso: peso}`.", "Create the struct with field names: `return Provision{Nombre: nombre, Peso: peso}`."),
+      ],
+      test_cases: [
+        { input: 'nuevaProvision("lembas", 5).Peso', expected: 5, description: P("El peso", "The weight"), raw: true },
+        { input: 'nuevaProvision("lembas", 5).Nombre', expected: "lembas", description: P("El nombre", "The name"), raw: true },
+        { input: 'nuevaProvision("cuerda", 2).Peso', expected: 2, description: P("Con otros valores", "With other values"), raw: true },
+      ],
+    },
+  },
+  resistencia_comunidad: {
+    kind: "challenge",
+    title: P("La Resistencia de la Comunidad", "The Fellowship's Endurance"),
+    lore_intro: P(
+      "El calor de la Comunidad es un estado protegido. Escóndelo en minúscula y expón métodos que lo lean, sin bajar nunca de 0.",
+      "The Fellowship's warmth is a protected state. Hide it lowercase and expose methods that read it, never dropping below 0.",
+    ),
+    challenge: {
+      topic: P("Métodos, receptores y encapsulación", "Methods, receivers and encapsulation"),
+      instructions: P(
+        "Declara `Resistencia` con un campo PRIVADO `calor int`. Añade:\n• `NuevaResistencia() Resistencia` que lo cree con `calor` a 100,\n• el método `Calor() int` que lo devuelva,\n• el método `TrasEnfriar(grados int) int` que devuelva el calor tras restar `grados`, SIN bajar de 0.",
+        "Declare `Resistencia` with a PRIVATE field `calor int`. Add:\n• `NuevaResistencia() Resistencia` creating it with `calor` at 100,\n• the method `Calor() int` returning it,\n• the method `TrasEnfriar(grados int) int` returning the warmth after subtracting `grados`, never below 0.",
+      ),
+      starter_code:
+        "package main\n\ntype Resistencia struct {\n\tcalor int\n}\n\nfunc NuevaResistencia() Resistencia {\n\t// calor a 100\n}\n\nfunc (r Resistencia) Calor() int {\n\t// devuelve calor\n}\n\nfunc (r Resistencia) TrasEnfriar(grados int) int {\n\t// resta sin bajar de 0\n}\n",
+      hints: [
+        P("El constructor: `return Resistencia{calor: 100}`.", "The constructor: `return Resistencia{calor: 100}`."),
+        P("En `TrasEnfriar`: `c := r.calor - grados; if c < 0 { return 0 }; return c`.", "In `TrasEnfriar`: `c := r.calor - grados; if c < 0 { return 0 }; return c`."),
+      ],
+      test_cases: [
+        { input: "NuevaResistencia().Calor()", expected: 100, description: P("Parte con el calor intacto", "Starts with warmth intact"), raw: true },
+        { input: "NuevaResistencia().TrasEnfriar(50)", expected: 50, description: P("La ventisca muerde", "The blizzard bites"), raw: true },
+        { input: "NuevaResistencia().TrasEnfriar(200)", expected: 0, description: P("Nunca baja de 0", "Never below 0"), raw: true },
+      ],
+    },
+  },
+  temperatura_montana: {
+    kind: "challenge",
+    title: P("El Umbral de la Nieve", "The Snow Threshold"),
+    lore_intro: P(
+      "Una medida no se altera: si el frío cambia, tienes OTRA medida. Un método por valor devuelve una copia nueva: inmutabilidad.",
+      "A measurement isn't altered: if the cold changes, you have ANOTHER measurement. A value-receiver method returns a fresh copy: immutability.",
+    ),
+    challenge: {
+      topic: P("Value objects inmutables", "Immutable value objects"),
+      instructions: P(
+        "Declara `Temperatura` con un campo privado `grados int`. Añade:\n• `NuevaTemperatura(grados int) Temperatura`,\n• el método `Grados() int`,\n• el método `ConMas(g int) Temperatura` que devuelva una Temperatura NUEVA con los grados sumados (sin mutar la original: receptor por valor).",
+        "Declare `Temperatura` with a private field `grados int`. Add:\n• `NuevaTemperatura(grados int) Temperatura`,\n• the method `Grados() int`,\n• the method `ConMas(g int) Temperatura` returning a NEW Temperatura with the degrees added (without mutating the original: value receiver).",
+      ),
+      starter_code:
+        "package main\n\ntype Temperatura struct {\n\tgrados int\n}\n\nfunc NuevaTemperatura(grados int) Temperatura {\n\t//\n}\n\nfunc (t Temperatura) Grados() int {\n\t//\n}\n\nfunc (t Temperatura) ConMas(g int) Temperatura {\n\t// devuelve OTRA Temperatura con los grados sumados\n}\n",
+      hints: [
+        P("`ConMas` no muta: `return Temperatura{grados: t.grados + g}`.", "`ConMas` doesn't mutate: `return Temperatura{grados: t.grados + g}`."),
+        P("Como el receptor es por VALOR, `t` es una copia: la original nunca cambia.", "Since the receiver is by VALUE, `t` is a copy: the original never changes."),
+      ],
+      test_cases: [
+        { input: "NuevaTemperatura(-10).Grados()", expected: -10, description: P("La temperatura de partida", "The starting temperature"), raw: true },
+        { input: "NuevaTemperatura(-10).ConMas(-5).Grados()", expected: -15, description: P("ConMas devuelve una más fría", "ConMas returns a colder one"), raw: true },
+        { input: "NuevaTemperatura(-10).ConMas(-5).ConMas(-5).Grados()", expected: -20, description: P("Se puede encadenar", "It can be chained"), raw: true },
+      ],
+    },
+  },
+};
