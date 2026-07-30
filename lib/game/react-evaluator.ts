@@ -21,28 +21,43 @@ type TsModule = typeof import("typescript");
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ReactModule = any;
 type RenderFn = (el: unknown) => string;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type CreateRoot = (container: Element) => any;
+type FlushSync = (fn: () => void) => void;
+
+interface ReactBundle {
+  React: ReactModule;
+  render: RenderFn;
+  createRoot: CreateRoot;
+  flushSync: FlushSync;
+}
 
 let tsPromise: Promise<TsModule> | null = null;
-let reactPromise: Promise<{ React: ReactModule; render: RenderFn }> | null =
-  null;
+let reactPromise: Promise<ReactBundle> | null = null;
 
 function getTs(): Promise<TsModule> {
   if (!tsPromise) tsPromise = import("typescript");
   return tsPromise;
 }
 
-function getReact(): Promise<{ React: ReactModule; render: RenderFn }> {
+function getReact(): Promise<ReactBundle> {
   if (!reactPromise) {
     reactPromise = (async () => {
-      const [React, server] = await Promise.all([
+      const [React, server, client, dom] = await Promise.all([
         import("react").then((m) => m.default ?? m),
         // Build de navegador de react-dom/server: trae renderToStaticMarkup.
         import("react-dom/server.browser"),
+        // Cliente: createRoot para montar en un DOM y poder simular eventos.
+        import("react-dom/client"),
+        // flushSync para forzar el render inicial de forma síncrona.
+        import("react-dom"),
       ]);
       const render = (el: unknown) =>
         (server as { renderToStaticMarkup: (e: unknown) => string })
           .renderToStaticMarkup(el);
-      return { React, render };
+      const createRoot = (client as { createRoot: CreateRoot }).createRoot;
+      const flushSync = (dom as { flushSync: FlushSync }).flushSync;
+      return { React, render, createRoot, flushSync };
     })();
   }
   return reactPromise;
@@ -103,8 +118,13 @@ export async function runReactChallenge(
   let ts: TsModule;
   let React: ReactModule;
   let render: RenderFn;
+  let createRoot: CreateRoot;
+  let flushSync: FlushSync;
   try {
-    [ts, { React, render }] = await Promise.all([getTs(), getReact()]);
+    [ts, { React, render, createRoot, flushSync }] = await Promise.all([
+      getTs(),
+      getReact(),
+    ]);
   } catch (e) {
     return {
       ok: false,
@@ -129,7 +149,28 @@ export async function runReactChallenge(
     '"use strict";',
     "const __out = { results: [] };",
     'const __ser = (v) => (v === undefined ? "null" : JSON.stringify(v));',
+    // Hooks al alcance del jugador (normalmente vendrían de `import`).
+    "const { useState, useReducer, useMemo, useCallback } = React;",
+    // Render estático a HTML (caps 1-2): render(el) -> string.
     "const render = (el) => __render(el);",
+    // Montaje interactivo (useState y eventos): mount(el) renderiza en un DOM
+    // real y permite simular clicks. Los eventos "discretos" (click) los vacía
+    // React de forma síncrona, así que tras .click() el DOM ya está actualizado.
+    "const mount = (el) => {",
+    "  const __c = document.createElement('div');",
+    "  document.body.appendChild(__c);",
+    "  const __root = __createRoot(__c);",
+    "  __flushSync(() => __root.render(el));",
+    "  const __find = (sel) => (sel ? __c.querySelector(sel) : __c);",
+    "  const api = {",
+    "    html: () => __c.innerHTML,",
+    "    text: (sel) => { const n = __find(sel); return n ? n.textContent : null; },",
+    // El click dispara el handler de React (setState); flushSync fuerza el
+    // re-render de forma síncrona, así el DOM ya refleja el cambio al leerlo.
+    "    click: (sel) => { const n = sel ? __c.querySelector(sel) : __c.querySelector('button'); if (n) __flushSync(() => n.click()); return api; },",
+    "  };",
+    "  return api;",
+    "};",
     support.js,
     player.js,
   ];
@@ -144,8 +185,14 @@ export async function runReactChallenge(
   let out: HarnessOut;
   try {
     // eslint-disable-next-line @typescript-eslint/no-implied-eval
-    const fn = new Function("React", "__render", lines.join("\n"));
-    out = fn(React, render) as HarnessOut;
+    const fn = new Function(
+      "React",
+      "__render",
+      "__createRoot",
+      "__flushSync",
+      lines.join("\n"),
+    );
+    out = fn(React, render, createRoot, flushSync) as HarnessOut;
   } catch (e) {
     return {
       ok: false,

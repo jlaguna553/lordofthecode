@@ -443,3 +443,229 @@ export const SYL_REACT_COMMUNITY_2: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre estado con useState. */
+const Q_USESTATE = {
+  question: P(
+    "¿Qué devuelve `useState(0)`?",
+    "What does `useState(0)` return?",
+  ),
+  options: [
+    P(
+      "Un par `[valor, setValor]`: el estado actual y una función para cambiarlo",
+      "A pair `[value, setValue]`: the current state and a function to change it",
+    ),
+    P("Sólo el valor 0", "Just the value 0"),
+    P("Una promesa", "A promise"),
+    P("El componente", "The component"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`const [n, setN] = useState(0)` te da el valor actual (`n`, empieza en 0) y su actualizador (`setN`). Llamar a `setN(...)` re-renderiza el componente con el nuevo valor. El argumento es sólo el valor INICIAL.",
+    "`const [n, setN] = useState(0)` gives you the current value (`n`, starts at 0) and its updater (`setN`). Calling `setN(...)` re-renders the component with the new value. The argument is only the INITIAL value.",
+  ),
+};
+const Q_RERENDER = {
+  question: P(
+    "¿Qué pasa cuando llamas al actualizador de estado, como `setN(5)`?",
+    "What happens when you call the state updater, like `setN(5)`?",
+  ),
+  options: [
+    P(
+      "React vuelve a renderizar el componente con el nuevo estado",
+      "React re-renders the component with the new state",
+    ),
+    P("Cambia la variable pero no se ve hasta recargar", "It changes the variable but you won't see it until reload"),
+    P("Modifica el DOM directamente a mano", "It edits the DOM directly by hand"),
+    P("No hace nada hasta el próximo click", "It does nothing until the next click"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Cambiar el estado con el actualizador le dice a React que el componente debe re-renderizarse: React vuelve a llamar a tu función y pinta el resultado. NO modifiques el estado a mano (`n = 5`): no se enteraría.",
+    "Changing state with the updater tells React the component must re-render: React calls your function again and paints the result. Do NOT mutate state by hand (`n = 5`): React wouldn't notice.",
+  ),
+};
+const Q_UPDATER_FN = {
+  question: P(
+    "¿Por qué a veces se usa `setN(prev => prev + 1)` en vez de `setN(n + 1)`?",
+    "Why is `setN(prev => prev + 1)` sometimes used instead of `setN(n + 1)`?",
+  ),
+  options: [
+    P(
+      "El actualizador funcional recibe el valor MÁS RECIENTE: seguro si hay varias actualizaciones",
+      "The functional updater receives the MOST RECENT value: safe when there are several updates",
+    ),
+    P("Es más corto de escribir", "It's shorter to write"),
+    P("Sólo funciona con números", "It only works with numbers"),
+    P("No hay diferencia", "There's no difference"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`setN(prev => prev + 1)` calcula el nuevo estado a partir del anterior GARANTIZADO. Si haces varias actualizaciones seguidas (o dentro de callbacks), `setN(n + 1)` puede usar un `n` desfasado; la forma funcional no.",
+    "`setN(prev => prev + 1)` computes the new state from the GUARANTEED previous one. If you do several updates in a row (or inside callbacks), `setN(n + 1)` may use a stale `n`; the functional form doesn't.",
+  ),
+};
+const Q_ONCLICK = {
+  question: P(
+    "¿Cómo se maneja un click en un botón en React?",
+    "How do you handle a button click in React?",
+  ),
+  options: [
+    P("Con la prop `onClick={() => ...}`", "With the prop `onClick={() => ...}`"),
+    P('Con `onclick="..."` como en HTML', 'With `onclick="..."` as in HTML'),
+    P("Con `addEventListener` en el JSX", "With `addEventListener` in the JSX"),
+    P("Con `on:click`", "With `on:click`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En JSX los eventos van en camelCase y reciben una FUNCIÓN, no una cadena: `onClick={() => setN(n + 1)}`. Pasa la función, no la llames (`onClick={setN(...)}` la ejecutaría en el render).",
+    "In JSX events are camelCase and take a FUNCTION, not a string: `onClick={() => setN(n + 1)}`. Pass the function, don't call it (`onClick={setN(...)}` would run it during render).",
+  ),
+};
+const Q_STATE_LOCAL = {
+  question: P(
+    "¿A quién pertenece el estado creado con `useState` dentro de un componente?",
+    "Who owns the state created with `useState` inside a component?",
+  ),
+  options: [
+    P(
+      "A esa instancia del componente: cada una tiene su propio estado",
+      "To that component instance: each one has its own state",
+    ),
+    P("Es global, compartido por todos", "It's global, shared by all"),
+    P("Al componente padre", "To the parent component"),
+    P("Al navegador", "To the browser"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El estado es LOCAL y privado de cada instancia: dos `<Contador />` en pantalla cuentan por separado. Para compartir estado, se «sube» al componente padre común y se baja por props (lifting state up).",
+    "State is LOCAL and private to each instance: two `<Contador />` on screen count separately. To share state, you \"lift it up\" to a common parent and pass it down via props (lifting state up).",
+  ),
+};
+
+/** Capítulo 3 · Estado con useState. */
+export const SYL_REACT_COMMUNITY_3: Syllabus = {
+  c3_ferny: { kind: "battle", questions: [Q_USESTATE, Q_RERENDER, Q_ONCLICK] },
+  c3_espia_nazgul: { kind: "battle", questions: [Q_UPDATER_FN, Q_STATE_LOCAL, Q_USESTATE] },
+  c3_montaraz_falso: { kind: "battle", questions: [Q_ONCLICK, Q_RERENDER, Q_UPDATER_FN] },
+  c3_jefe_reybrujo: { kind: "battle", questions: [Q_USESTATE, Q_UPDATER_FN, Q_ONCLICK, Q_STATE_LOCAL] },
+  pergamino_herencia: {
+    kind: "scroll",
+    title: P("El Pergamino del Estado", "The Scroll of State"),
+    lore_intro: P(
+      "En el Póney Pisador, un pergamino enseña a que un componente RECUERDE y CAMBIE: el hook useState, y cómo un evento lo actualiza.",
+      "At the Prancing Pony, a scroll teaches a component to REMEMBER and CHANGE: the useState hook, and how an event updates it.",
+    ),
+    scroll: {
+      topic: P("Estado con useState", "State with useState"),
+      sections: [
+        {
+          heading: P("useState: recordar entre renders", "useState: remembering across renders"),
+          body: P(
+            "`useState(inicial)` devuelve `[valor, setValor]`. El componente pinta el `valor`; llamar a `setValor(...)` lo actualiza y hace que React re-renderice. El estado es local a cada instancia.",
+            "`useState(initial)` returns `[value, setValue]`. The component paints the `value`; calling `setValue(...)` updates it and makes React re-render. State is local to each instance.",
+          ),
+          code: "function Contador() {\n  const [n, setN] = useState(0);\n  return <button onClick={() => setN(n + 1)}>{n}</button>;\n}",
+        },
+        {
+          heading: P("Eventos: onClick", "Events: onClick"),
+          body: P(
+            "Los eventos van en camelCase y reciben una FUNCIÓN: `onClick={() => setN(n + 1)}`. Pásala, no la llames. Nunca cambies el estado a mano (`n = 5`): usa siempre el actualizador.",
+            "Events are camelCase and take a FUNCTION: `onClick={() => setN(n + 1)}`. Pass it, don't call it. Never mutate state by hand (`n = 5`): always use the updater.",
+          ),
+          code: "<button onClick={() => setOn(!on)}>\n  {on ? 'encendido' : 'apagado'}\n</button>",
+        },
+        {
+          heading: P("Actualizador funcional", "Functional updater"),
+          body: P(
+            "Cuando el nuevo estado depende del anterior, usa la forma funcional `setN(prev => prev + 1)`: recibe el valor más reciente, sin riesgo de usar uno desfasado.",
+            "When the new state depends on the previous one, use the functional form `setN(prev => prev + 1)`: it receives the most recent value, with no risk of using a stale one.",
+          ),
+          code: "setVida((v) => Math.max(0, v - 40)); // resta 40 sin bajar de 0",
+        },
+      ],
+      keyTakeaway: P(
+        "useState(inicial) da [valor, setValor]; setValor re-renderiza (nunca mutes el estado a mano). Los eventos son funciones en camelCase (onClick), y para actualizar a partir del valor previo, usa setValor(prev => ...).",
+        "useState(initial) gives [value, setValue]; setValue re-renders (never mutate state by hand). Events are camelCase functions (onClick), and to update from the previous value, use setValue(prev => ...).",
+      ),
+    },
+  },
+  poney_pisador: {
+    kind: "challenge",
+    title: P("Trancos, el Montaraz", "Strider the Ranger"),
+    lore_intro: P(
+      "Trancos lleva la cuenta de los pasos del camino. Un componente que recuerda y suma: eso es useState.",
+      "Strider keeps count of the steps on the road. A component that remembers and adds: that's useState.",
+    ),
+    challenge: {
+      topic: P("useState básico", "Basic useState"),
+      instructions: P(
+        "Escribe el componente `Contador` (sin props) que use `useState(0)` y devuelva un `<button>` que MUESTRE el número y, al hacer click, lo INCREMENTE en 1.\n\nEn los tests, `mount(el)` renderiza el componente; `.click()` pulsa el botón y `.text()` lee su texto. Así, `mount(<Contador />).click().text()` → `\"1\"`.",
+        "Write the component `Contador` (no props) that uses `useState(0)` and returns a `<button>` that SHOWS the number and, on click, INCREMENTS it by 1.\n\nIn the tests, `mount(el)` renders the component; `.click()` presses the button and `.text()` reads its text. So `mount(<Contador />).click().text()` → `\"1\"`.",
+      ),
+      starter_code:
+        "function Contador() {\n  const [n, setN] = useState(0);\n  // <button onClick={() => setN(n + 1)}>{n}</button>\n}\n",
+      hints: [
+        P("Lee y actualiza: `const [n, setN] = useState(0)`.", "Read and update: `const [n, setN] = useState(0)`."),
+        P("El botón muestra `{n}` y al click hace `setN(n + 1)`.", "The button shows `{n}` and on click does `setN(n + 1)`."),
+      ],
+      test_cases: [
+        { input: "mount(<Contador />).text()", expected: "0", description: P("Empieza en 0", "Starts at 0"), raw: true },
+        { input: "mount(<Contador />).click().text()", expected: "1", description: P("Un click: 1", "One click: 1"), raw: true },
+        { input: "mount(<Contador />).click().click().click().text()", expected: "3", description: P("Tres clicks: 3", "Three clicks: 3"), raw: true },
+      ],
+    },
+  },
+  hojas_de_tumulo: {
+    kind: "challenge",
+    title: P("Las Hojas de los Túmulos", "The Barrow-blades"),
+    lore_intro: P(
+      "La hoja encantada se enciende y se apaga. Un estado booleano que alterna con cada toque.",
+      "The enchanted blade lights up and goes dark. A boolean state that toggles with each touch.",
+    ),
+    challenge: {
+      topic: P("useState con prop inicial y toggle", "useState with an initial prop and toggle"),
+      instructions: P(
+        "Escribe `Interruptor` que reciba la prop `inicial` (booleano) y use `useState(inicial)`. Devuelve un `<button>` que muestre `\"encendido\"` si el estado es true o `\"apagado\"` si es false, y que al hacer click ALTERNE el valor.\n\n`mount(<Interruptor inicial={false} />).click().text()` → `\"encendido\"`.",
+        "Write `Interruptor` that takes the prop `inicial` (boolean) and uses `useState(inicial)`. Return a `<button>` showing `\"encendido\"` if the state is true or `\"apagado\"` if false, and that TOGGLES on click.\n\n`mount(<Interruptor inicial={false} />).click().text()` → `\"encendido\"`.",
+      ),
+      starter_code:
+        'function Interruptor({ inicial }) {\n  const [on, setOn] = useState(inicial);\n  // <button onClick={() => setOn(!on)}>{on ? "encendido" : "apagado"}</button>\n}\n',
+      hints: [
+        P("Alterna con la negación: `onClick={() => setOn(!on)}`.", "Toggle with negation: `onClick={() => setOn(!on)}`."),
+        P('Muestra según el estado: `{on ? "encendido" : "apagado"}`.', 'Show based on state: `{on ? "encendido" : "apagado"}`.'),
+      ],
+      test_cases: [
+        { input: "mount(<Interruptor inicial={false} />).text()", expected: "apagado", description: P("Empieza apagado", "Starts off"), raw: true },
+        { input: "mount(<Interruptor inicial={false} />).click().text()", expected: "encendido", description: P("Un click lo enciende", "One click turns it on"), raw: true },
+        { input: "mount(<Interruptor inicial={true} />).click().text()", expected: "apagado", description: P("Desde encendido, se apaga", "From on, it turns off"), raw: true },
+      ],
+    },
+  },
+  cima_de_los_vientos: {
+    kind: "challenge",
+    title: P("La Cima de los Vientos", "Weathertop"),
+    lore_intro: P(
+      "Cada golpe del Rey Brujo drena tu vida. Usa el actualizador funcional para restar sin bajar de 0.",
+      "Each blow from the Witch-king drains your life. Use the functional updater to subtract without going below 0.",
+    ),
+    challenge: {
+      topic: P("Actualizador funcional y clamp", "Functional updater and clamp"),
+      instructions: P(
+        "Escribe `Vida` (sin props) con `useState(100)`. Devuelve un `<button>` que muestre la vida y, al hacer click, le RESTE 40 sin bajar nunca de 0. Usa el actualizador funcional: `setVida(v => Math.max(0, v - 40))`.\n\n`mount(<Vida />).click().text()` → `\"60\"`.",
+        "Write `Vida` (no props) with `useState(100)`. Return a `<button>` showing the life and, on click, SUBTRACTING 40 without ever going below 0. Use the functional updater: `setVida(v => Math.max(0, v - 40))`.\n\n`mount(<Vida />).click().text()` → `\"60\"`.",
+      ),
+      starter_code:
+        "function Vida() {\n  const [vida, setVida] = useState(100);\n  // <button onClick={() => setVida(v => Math.max(0, v - 40))}>{vida}</button>\n}\n",
+      hints: [
+        P("El actualizador funcional recibe el valor previo: `setVida(v => ...)`.", "The functional updater receives the previous value: `setVida(v => ...)`."),
+        P("Resta sin bajar de 0: `Math.max(0, v - 40)`.", "Subtract without going below 0: `Math.max(0, v - 40)`."),
+      ],
+      test_cases: [
+        { input: "mount(<Vida />).text()", expected: "100", description: P("Vida llena", "Full life"), raw: true },
+        { input: "mount(<Vida />).click().text()", expected: "60", description: P("Un golpe: 60", "One blow: 60"), raw: true },
+        { input: "mount(<Vida />).click().click().click().text()", expected: "0", description: P("100→60→20→0: nunca negativo", "100→60→20→0: never negative"), raw: true },
+      ],
+    },
+  },
+};

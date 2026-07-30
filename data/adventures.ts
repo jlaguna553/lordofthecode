@@ -69,6 +69,7 @@ import {
 import {
   SYL_REACT_COMMUNITY_1,
   SYL_REACT_COMMUNITY_2,
+  SYL_REACT_COMMUNITY_3,
 } from "./syllabus/community-react";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
@@ -129,6 +130,11 @@ const REACT_COMMUNITY_1 = buildChapter(
 const REACT_COMMUNITY_2 = buildChapter(
   NARR_COMMUNITY_2,
   SYL_REACT_COMMUNITY_2,
+  "react",
+);
+const REACT_COMMUNITY_3 = buildChapter(
+  NARR_COMMUNITY_3,
+  SYL_REACT_COMMUNITY_3,
   "react",
 );
 
@@ -292,7 +298,7 @@ export const ADVENTURES: Adventure[] = [
     books: [
       {
         book: BOOK_FELLOWSHIP,
-        chapters: [REACT_COMMUNITY_1, REACT_COMMUNITY_2],
+        chapters: [REACT_COMMUNITY_1, REACT_COMMUNITY_2, REACT_COMMUNITY_3],
       },
     ],
   },
