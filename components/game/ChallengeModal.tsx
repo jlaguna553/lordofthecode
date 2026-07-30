@@ -166,9 +166,13 @@ export default function ChallengeModal({
           </button>
         </div>
 
-        <div className="grid min-h-0 flex-1 gap-0 lg:grid-cols-[1fr_1.2fr]">
+        {/*
+          En móvil: una sola columna que fluye y hace scroll como un todo.
+          En lg: dos columnas (narrativa | editor), cada una con su scroll.
+        */}
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto lg:grid lg:grid-cols-[1fr_1.2fr] lg:overflow-hidden">
           {/* Panel narrativo + instrucciones */}
-          <div className="overflow-auto border-r border-white/10 p-5">
+          <div className="shrink-0 border-b border-white/10 p-5 lg:shrink lg:overflow-auto lg:border-b-0 lg:border-r">
             <blockquote className="mb-4 border-l-2 border-amber-500/50 bg-amber-500/5 p-3 text-sm italic text-amber-100/90">
               {tc(node.lore_intro)}
             </blockquote>
@@ -271,7 +275,7 @@ export default function ChallengeModal({
           {/* Editor + acciones */}
           <div className="flex min-h-0 flex-col">
             {hasBlocks && (
-              <div className="flex items-center gap-1 border-b border-white/10 bg-slate-900/60 px-3 py-2">
+              <div className="flex shrink-0 items-center gap-1 border-b border-white/10 bg-slate-900/60 px-3 py-2">
                 <button
                   type="button"
                   onClick={() => setMode("blocks")}
@@ -286,7 +290,12 @@ export default function ChallengeModal({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setMode("editor")}
+                  onClick={() => {
+                    // Al pasar a teclear, si no hay nada montado, parte del
+                    // andamiaje en vez de un editor vacío.
+                    if (!code.trim()) setCode(c.starter_code);
+                    setMode("editor");
+                  }}
                   className={
                     "rounded-md px-2.5 py-1 text-xs font-semibold transition " +
                     (mode === "editor"
@@ -304,7 +313,17 @@ export default function ChallengeModal({
                 </span>
               </div>
             )}
-            <div className="min-h-[280px] flex-1">
+            <div
+              className={
+                // En móvil el editor de texto necesita una altura fija (Monaco
+                // no dimensiona solo); el de bloques fluye con su contenido.
+                // En lg, ambos rellenan la columna.
+                "lg:min-h-[280px] lg:flex-1 " +
+                (mode === "blocks" && hasBlocks
+                  ? "shrink-0"
+                  : "h-[52vh] shrink-0 lg:h-auto")
+              }
+            >
               {mode === "blocks" && hasBlocks ? (
                 <BlocksEditor
                   blocks={c.blocks!}
@@ -342,7 +361,7 @@ export default function ChallengeModal({
               )}
             </div>
 
-            <div className="flex items-center gap-3 border-t border-white/10 p-4">
+            <div className="sticky bottom-0 z-10 flex shrink-0 flex-wrap items-center gap-3 border-t border-white/10 bg-slate-900/95 p-4 backdrop-blur">
               <button
                 onClick={handleRun}
                 disabled={running}

@@ -70,7 +70,7 @@ export default function BlocksEditor({ blocks, onChange, resetKey = 0, lang }: P
     });
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-3 overflow-auto p-4">
+    <div className="flex flex-col gap-3 overflow-auto p-4 lg:h-full lg:min-h-0">
       {/* Código ensamblado */}
       <div>
         <h4 className="mb-1.5 text-xs font-bold uppercase tracking-wider text-slate-400">
