@@ -730,3 +730,244 @@ export const SYL_GO_COMMUNITY_3: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre maps y constantes. */
+const Q_MAP_TYPE = {
+  question: P(
+    "¿Cómo se declara en Go un diccionario de string a int?",
+    "How do you declare in Go a dictionary from string to int?",
+  ),
+  options: [
+    P("map[string]int", "map[string]int"),
+    P("dict<string, int>", "dict<string, int>"),
+    P("map<string, int>", "map<string, int>"),
+    P("[string]int", "[string]int"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un map se escribe `map[Clave]Valor`: `map[string]int`. Se crea con `map[string]int{}` o `make(map[string]int)`. Acceder a una clave que no existe devuelve el valor cero del tipo (0 para int), nunca un error.",
+    "A map is written `map[Key]Value`: `map[string]int`. Create it with `map[string]int{}` or `make(map[string]int)`. Accessing a missing key returns the type's zero value (0 for int), never an error.",
+  ),
+};
+const Q_MAP_COMMAOK = {
+  question: P(
+    "¿Qué hace `v, ok := m[\"clave\"]` en un map?",
+    "What does `v, ok := m[\"key\"]` do on a map?",
+  ),
+  options: [
+    P("`v` es el valor (o el cero) y `ok` es un bool: si la clave existía", "`v` is the value (or the zero) and `ok` is a bool: whether the key existed"),
+    P("Lanza un error si la clave falta", "Throws an error if the key is missing"),
+    P("`ok` es la clave siguiente", "`ok` is the next key"),
+    P("Borra la clave", "Deletes the key"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La forma «comma, ok» distingue «la clave vale 0» de «la clave no está»: `v, ok := m[k]`. Si `ok` es false, la clave no existía. Es la manera idiomática de comprobar presencia en un map.",
+    "The \"comma, ok\" form tells apart \"the key is 0\" from \"the key isn't there\": `v, ok := m[k]`. If `ok` is false, the key wasn't present. It's the idiomatic way to check for presence in a map.",
+  ),
+};
+const Q_MAP_RANGE = {
+  question: P(
+    "`for k, v := range m` sobre un map, ¿en qué orden recorre las claves?",
+    "`for k, v := range m` over a map iterates the keys in what order?",
+  ),
+  options: [
+    P("En orden ALEATORIO: los maps de Go no garantizan orden", "In RANDOM order: Go maps guarantee no order"),
+    P("Alfabético", "Alphabetical"),
+    P("El de inserción", "Insertion order"),
+    P("El inverso al de inserción", "Reverse insertion order"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El recorrido de un map es deliberadamente aleatorio en Go: no dependas del orden. Si necesitas un orden, extrae las claves a un slice y ordénalo con `sort.Strings`.",
+    "Map iteration is deliberately randomized in Go: don't rely on the order. If you need one, pull the keys into a slice and sort it with `sort.Strings`.",
+  ),
+};
+const Q_CONST = {
+  question: P(
+    "¿Qué distingue a una `const` de una variable en Go?",
+    "What sets a `const` apart from a variable in Go?",
+  ),
+  options: [
+    P("Su valor se fija en compilación y no puede cambiar", "Its value is fixed at compile time and cannot change"),
+    P("Ocupa más memoria", "It uses more memory"),
+    P("Sólo existe dentro de funciones", "It only exists inside functions"),
+    P("Se declara con `let`", "It's declared with `let`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una `const` es un valor inmutable conocido en compilación: `const VelocidadMaxima = 120`. No se le puede asignar en ejecución. Sirve para números mágicos con nombre y para los enums con `iota`.",
+    "A `const` is an immutable value known at compile time: `const VelocidadMaxima = 120`. You can't assign to it at runtime. It's used for named magic numbers and for `iota` enums.",
+  ),
+};
+const Q_IOTA = {
+  question: P(
+    "En `const ( A = iota; B; C )`, ¿qué valores toman A, B y C?",
+    "In `const ( A = iota; B; C )`, what values do A, B and C take?",
+  ),
+  options: [
+    P("0, 1 y 2: iota se autoincrementa por línea", "0, 1 and 2: iota auto-increments per line"),
+    P("1, 2 y 3", "1, 2 and 3"),
+    P("Los tres valen 0", "All three are 0"),
+    P("iota, iota+1, iota+2 sin evaluar", "iota, iota+1, iota+2 unevaluated"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`iota` empieza en 0 en cada bloque `const` y sube de 1 en 1 por cada línea. `B` y `C` heredan la expresión `= iota`, así que valen 1 y 2. Es la forma idiomática de crear enumeraciones en Go.",
+    "`iota` starts at 0 in each `const` block and increases by 1 per line. `B` and `C` inherit the `= iota` expression, so they're 1 and 2. It's the idiomatic way to build enumerations in Go.",
+  ),
+};
+
+/** Capítulo 4 · Maps y constantes (iota). */
+export const SYL_GO_COMMUNITY_4: Syllabus = {
+  c4_jinete_rezagado: { kind: "battle", questions: [Q_MAP_TYPE, Q_MAP_COMMAOK, Q_CONST] },
+  c4_lobo: { kind: "battle", questions: [Q_MAP_RANGE, Q_IOTA, Q_MAP_TYPE] },
+  c4_jefe_nueve: { kind: "battle", questions: [Q_CONST, Q_IOTA, Q_MAP_COMMAOK, Q_MAP_RANGE] },
+  c4_trasgo_montaraz: { kind: "battle", questions: [Q_MAP_COMMAOK, Q_MAP_TYPE, Q_IOTA] },
+  pergamino_estatico: {
+    kind: "scroll",
+    title: P("El Pergamino del Recuento", "The Scroll of the Reckoning"),
+    lore_intro: P(
+      "Antes del Vado, un pergamino enseña a nombrar lo que no cambia (constantes, enums con iota) y a contar por clave (maps).",
+      "Before the Ford, a scroll teaches how to name what doesn't change (constants, iota enums) and to count by key (maps).",
+    ),
+    scroll: {
+      topic: P("Maps y constantes (iota)", "Maps and constants (iota)"),
+      sections: [
+        {
+          heading: P("Maps: diccionarios por clave", "Maps: key-value dictionaries"),
+          body: P(
+            "`map[K]V` asocia claves con valores. Una clave ausente devuelve el valor cero (0, \"\", false…). La forma «comma, ok» distingue ausente de cero.",
+            "`map[K]V` associates keys with values. A missing key returns the zero value (0, \"\", false…). The \"comma, ok\" form tells absent apart from zero.",
+          ),
+          code: "conteo := map[string]int{}\nconteo[\"nazgul\"]++          // ausente → 0, luego 1\nv, ok := conteo[\"rey\"]      // v=0, ok=false: no estaba",
+        },
+        {
+          heading: P("Constantes", "Constants"),
+          body: P(
+            "Una `const` es un valor inmutable conocido en compilación. Da nombre a los números mágicos y no puede reasignarse.",
+            "A `const` is an immutable value known at compile time. It names magic numbers and can't be reassigned.",
+          ),
+          code: "const VelocidadMaxima = 120\n\nfunc galopar(deseada int) int {\n\tif deseada > VelocidadMaxima {\n\t\treturn VelocidadMaxima\n\t}\n\treturn deseada\n}",
+        },
+        {
+          heading: P("iota: enumeraciones", "iota: enumerations"),
+          body: P(
+            "Dentro de un bloque `const`, `iota` empieza en 0 y sube de 1 en 1 por línea. Es la forma idiomática de hacer enums en Go.",
+            "Inside a `const` block, `iota` starts at 0 and rises by 1 per line. It's the idiomatic way to make enums in Go.",
+          ),
+          code: "const (\n\tCalmo = iota // 0\n\tCrecido      // 1\n\tDesbordado   // 2\n)",
+        },
+      ],
+      keyTakeaway: P(
+        "`map[K]V` cuenta y busca por clave (con «comma, ok» para la presencia y orden ALEATORIO al recorrer); `const` da nombre a lo inmutable, e `iota` numera enums desde 0.",
+        "`map[K]V` counts and looks up by key (with \"comma, ok\" for presence and RANDOM iteration order); `const` names the immutable, and `iota` numbers enums from 0.",
+      ),
+    },
+  },
+  montura_asfaloth: {
+    kind: "challenge",
+    title: P("Asfaloth, el Corcel Élfico", "Asfaloth, the Elven Steed"),
+    lore_intro: P(
+      "Ningún corcel supera su límite. Ese límite no cambia: es una constante.",
+      "No steed exceeds its limit. That limit never changes: it's a constant.",
+    ),
+    challenge: {
+      topic: P("Constantes", "Constants"),
+      instructions: P(
+        "Declara la constante `VelocidadMaxima = 120` y escribe `galopar(deseada int) int` que devuelva la velocidad deseada SIN superar nunca la constante.\n\nEjemplo: `galopar(200)` → `120`.",
+        "Declare the constant `VelocidadMaxima = 120` and write `galopar(deseada int) int` returning the wanted speed WITHOUT ever exceeding the constant.\n\nExample: `galopar(200)` → `120`.",
+      ),
+      starter_code:
+        "package main\n\n// 1) const VelocidadMaxima = 120\n\nfunc galopar(deseada int) int {\n\t// 2) nunca por encima de la constante\n}\n",
+      hints: [
+        P("Declara la constante a nivel de paquete: `const VelocidadMaxima = 120`.", "Declare the constant at package level: `const VelocidadMaxima = 120`."),
+        P("Con un `if`: si `deseada > VelocidadMaxima`, devuelve la constante; si no, `deseada`.", "With an `if`: if `deseada > VelocidadMaxima`, return the constant; otherwise `deseada`."),
+      ],
+      test_cases: [
+        { input: "galopar(90)", expected: 90, description: P("Por debajo del límite", "Below the limit"), raw: true },
+        { input: "galopar(200)", expected: 120, description: P("Nunca supera el máximo", "Never above the max"), raw: true },
+        { input: "VelocidadMaxima", expected: 120, description: P("La constante es legible", "The constant is readable"), raw: true },
+      ],
+    },
+  },
+  recuento_de_los_nueve: {
+    kind: "challenge",
+    title: P("El Recuento de los Nueve", "The Reckoning of the Nine"),
+    lore_intro: P(
+      "Cuenta cuántas veces aparece cada jinete. Un map asocia cada nombre con su total.",
+      "Count how many times each rider appears. A map associates each name with its total.",
+    ),
+    challenge: {
+      topic: P("Maps: contar por clave", "Maps: counting by key"),
+      instructions: P(
+        "Escribe `contar(jinetes []string) map[string]int` que devuelva cuántas veces aparece cada nombre.\n\nEjemplo: `contar([]string{\"nazgul\", \"nazgul\", \"rey\"})` da un map con `\"nazgul\": 2` y `\"rey\": 1`.",
+        "Write `contar(jinetes []string) map[string]int` returning how many times each name appears.\n\nExample: `contar([]string{\"nazgul\", \"nazgul\", \"rey\"})` gives a map with `\"nazgul\": 2` and `\"rey\": 1`.",
+      ),
+      starter_code:
+        "package main\n\nfunc contar(jinetes []string) map[string]int {\n\t// crea el map, recorre y suma\n}\n",
+      hints: [
+        P("Empieza con `m := map[string]int{}`.", "Start with `m := map[string]int{}`."),
+        P("Por cada nombre: `m[j]++` (la clave ausente empieza en 0).", "For each name: `m[j]++` (a missing key starts at 0)."),
+      ],
+      test_cases: [
+        { input: 'contar([]string{"nazgul", "nazgul", "rey"})["nazgul"]', expected: 2, description: P("Dos nazgûl", "Two nazgûl"), raw: true },
+        { input: 'contar([]string{"nazgul", "nazgul", "rey"})["rey"]', expected: 1, description: P("Un rey", "One king"), raw: true },
+        { input: 'len(contar([]string{"a", "b", "a"}))', expected: 2, description: P("Dos claves distintas", "Two distinct keys"), raw: true },
+      ],
+    },
+  },
+  vado_de_bruinen: {
+    kind: "challenge",
+    title: P("El Vado de Bruinen", "The Ford of Bruinen"),
+    lore_intro: P(
+      "Cada punto del vado tiene su defensa; algunos, ninguna. Distingue «defensa 0» de «sin defensa» con «comma, ok».",
+      "Each point of the ford has its defense; some, none. Tell \"defense 0\" apart from \"no defense\" with \"comma, ok\".",
+    ),
+    challenge: {
+      topic: P("Maps: comma-ok", "Maps: comma-ok"),
+      instructions: P(
+        "Escribe `defensaDe(defensas map[string]int, nombre string) int` que devuelva la defensa del punto `nombre`. Si el punto NO está en el map, devuelve `-1` (usa la forma «comma, ok»).\n\nOjo: un punto puede tener defensa 0 y aun así existir.",
+        "Write `defensaDe(defensas map[string]int, nombre string) int` returning the defense of point `nombre`. If the point is NOT in the map, return `-1` (use the \"comma, ok\" form).\n\nNote: a point may have defense 0 and still exist.",
+      ),
+      starter_code:
+        "package main\n\nfunc defensaDe(defensas map[string]int, nombre string) int {\n\t// v, ok := defensas[nombre]; si !ok devuelve -1\n}\n",
+      hints: [
+        P("`v, ok := defensas[nombre]` te dice el valor y si existía.", "`v, ok := defensas[nombre]` gives you the value and whether it existed."),
+        P("`if !ok { return -1 }` y si no, `return v`.", "`if !ok { return -1 }` otherwise `return v`."),
+      ],
+      test_cases: [
+        { input: 'defensaDe(map[string]int{"vado": 50}, "vado")', expected: 50, description: P("Defensa presente", "Defense present"), raw: true },
+        { input: 'defensaDe(map[string]int{"vado": 0}, "vado")', expected: 0, description: P("Presente con valor 0 (no es -1)", "Present with value 0 (not -1)"), raw: true },
+        { input: 'defensaDe(map[string]int{}, "x")', expected: -1, description: P("Ausente: -1", "Absent: -1"), raw: true },
+      ],
+    },
+  },
+  c4_runas_del_vado: {
+    kind: "challenge",
+    title: P("Las runas del Vado", "The runes of the Ford"),
+    lore_intro: P(
+      "Tres estados del agua grabados en la roca: calmo, crecido, desbordado. Un enum con iota los numera desde 0.",
+      "Three states of the water carved in the rock: calm, risen, overflowing. An iota enum numbers them from 0.",
+    ),
+    challenge: {
+      topic: P("Constantes con iota (enums)", "Constants with iota (enums)"),
+      instructions: P(
+        "Declara un bloque `const` con `iota`: `Calmo` (0), `Crecido` (1) y `Desbordado` (2). Después escribe `estado(caudal int) int` que devuelva:\n• `Calmo` si el caudal es menor que 30,\n• `Crecido` si es menor que 70,\n• `Desbordado` en los demás casos.",
+        "Declare a `const` block with `iota`: `Calmo` (0), `Crecido` (1) and `Desbordado` (2). Then write `estado(caudal int) int` returning:\n• `Calmo` if the flow is under 30,\n• `Crecido` if under 70,\n• `Desbordado` otherwise.",
+      ),
+      starter_code:
+        "package main\n\nconst (\n\tCalmo = iota\n\t// Crecido, Desbordado\n)\n\nfunc estado(caudal int) int {\n\t// devuelve la constante según el caudal\n}\n",
+      hints: [
+        P("Tras `Calmo = iota`, basta listar `Crecido` y `Desbordado`: heredan `= iota` y valen 1 y 2.", "After `Calmo = iota`, just list `Crecido` and `Desbordado`: they inherit `= iota` and are 1 and 2."),
+        P("Dos `if` en cascada: `< 30` → Calmo, `< 70` → Crecido, y el resto Desbordado.", "Two cascading `if`s: `< 30` → Calmo, `< 70` → Crecido, and the rest Desbordado."),
+      ],
+      test_cases: [
+        { input: "estado(10)", expected: 0, description: P("Caudal bajo: Calmo (0)", "Low flow: Calmo (0)"), raw: true },
+        { input: "estado(50)", expected: 1, description: P("Caudal medio: Crecido (1)", "Medium flow: Crecido (1)"), raw: true },
+        { input: "estado(200)", expected: 2, description: P("El río contra los Nueve: Desbordado (2)", "The river against the Nine: Desbordado (2)"), raw: true },
+        { input: "Desbordado", expected: 2, description: P("iota lo numeró en 2", "iota numbered it 2"), raw: true },
+      ],
+    },
+  },
+};
