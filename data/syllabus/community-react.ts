@@ -186,8 +186,7 @@ export const SYL_REACT_COMMUNITY_1: Syllabus = {
         "Escribe el componente `Hobbit` que reciba la prop `nombre` y devuelva `<h1>Soy {nombre} de la Comarca</h1>`.\n\nEn los tests, `render(<Hobbit nombre=\"Frodo\" />)` devuelve el HTML `\"<h1>Soy Frodo de la Comarca</h1>\"`.",
         "Write the component `Hobbit` that takes the prop `nombre` and returns `<h1>Soy {nombre} de la Comarca</h1>`.\n\nIn the tests, `render(<Hobbit nombre=\"Frodo\" />)` returns the HTML `\"<h1>Soy Frodo de la Comarca</h1>\"`.",
       ),
-      starter_code:
-        "function Hobbit({ nombre }) {\n  // devuelve <h1>Soy {nombre} de la Comarca</h1>\n}\n",
+      starter_code: "function Hobbit({ nombre }) {\n}\n",
       hints: [
         P("Desestructura la prop en la firma: `function Hobbit({ nombre })`.", "Destructure the prop in the signature: `function Hobbit({ nombre })`."),
         P("Incrusta la variable con llaves: `<h1>Soy {nombre} de la Comarca</h1>`.", "Embed the variable with braces: `<h1>Soy {nombre} de la Comarca</h1>`."),
@@ -211,8 +210,7 @@ export const SYL_REACT_COMMUNITY_1: Syllabus = {
         "Escribe el componente `Sigilo` que reciba la prop `nivel` (número) y devuelva:\n• `<span>oculto</span>` si `nivel` es 50 o más,\n• `<span>visible</span>` si es menor.\n\nUsa el operador ternario.",
         "Write the component `Sigilo` that takes the prop `nivel` (number) and returns:\n• `<span>oculto</span>` if `nivel` is 50 or more,\n• `<span>visible</span>` if less.\n\nUse the ternary operator.",
       ),
-      starter_code:
-        "function Sigilo({ nivel }) {\n  // return nivel >= 50 ? ... : ...\n}\n",
+      starter_code: "function Sigilo({ nivel }) {\n}\n",
       hints: [
         P("El ternario devuelve uno u otro JSX: `return nivel >= 50 ? <span>oculto</span> : <span>visible</span>;`.", "The ternary returns one JSX or the other: `return nivel >= 50 ? <span>oculto</span> : <span>visible</span>;`."),
         P("Las props numéricas se pasan con llaves: `<Sigilo nivel={90} />`.", "Numeric props are passed with braces: `<Sigilo nivel={90} />`."),
@@ -379,8 +377,7 @@ export const SYL_REACT_COMMUNITY_2: Syllabus = {
         "Escribe el componente `Lista` que reciba la prop `nombres` (array de strings) y devuelva un `<ul>` con un `<li>` por cada nombre. Dale a cada `<li>` una `key` (usa el propio nombre).\n\n`render(<Lista nombres={[\"Merry\", \"Pippin\"]} />)` → `\"<ul><li>Merry</li><li>Pippin</li></ul>\"`.",
         "Write the component `Lista` that takes the prop `nombres` (array of strings) and returns a `<ul>` with one `<li>` per name. Give each `<li>` a `key` (use the name itself).\n\n`render(<Lista nombres={[\"Merry\", \"Pippin\"]} />)` → `\"<ul><li>Merry</li><li>Pippin</li></ul>\"`.",
       ),
-      starter_code:
-        "function Lista({ nombres }) {\n  // <ul>{nombres.map(n => <li key={n}>{n}</li>)}</ul>\n}\n",
+      starter_code: "function Lista({ nombres }) {\n}\n",
       hints: [
         P("Envuelve el map en un `<ul>`: `<ul>{nombres.map(...)}</ul>`.", "Wrap the map in a `<ul>`: `<ul>{nombres.map(...)}</ul>`."),
         P("Cada elemento lleva su key: `<li key={n}>{n}</li>`.", "Each element carries its key: `<li key={n}>{n}</li>`."),
@@ -405,8 +402,7 @@ export const SYL_REACT_COMMUNITY_2: Syllabus = {
         "Escribe el componente `Tumba` que envuelva su contenido (`children`) en un `<div>` con la clase CSS `tumba`.\n\nRecuerda: en JSX la clase se escribe `className`. `render(<Tumba>Frodo</Tumba>)` → `\"<div class=\\\"tumba\\\">Frodo</div>\"`.",
         "Write the component `Tumba` that wraps its content (`children`) in a `<div>` with the CSS class `tumba`.\n\nRemember: in JSX the class is written `className`. `render(<Tumba>Frodo</Tumba>)` → `\"<div class=\\\"tumba\\\">Frodo</div>\"`.",
       ),
-      starter_code:
-        'function Tumba({ children }) {\n  // <div className="tumba">{children}</div>\n}\n',
+      starter_code: 'function Tumba({ children }) {\n}\n',
       hints: [
         P("Desestructura `children` y colócalo dentro: `{children}`.", "Destructure `children` and place it inside: `{children}`."),
         P('La clase va con `className`, que React vuelca a `class`: `<div className="tumba">`.', 'The class goes with `className`, which React turns into `class`: `<div className="tumba">`.'),
@@ -430,8 +426,7 @@ export const SYL_REACT_COMMUNITY_2: Syllabus = {
         "Escribe DOS componentes:\n• `Verso` que reciba `texto` y devuelva `<li>{texto}</li>`,\n• `Canto` que reciba `versos` (array) y devuelva un `<ul>` renderizando un `<Verso />` por cada verso (con `key`).\n\n`render(<Canto versos={[\"ho\", \"hey\"]} />)` → `\"<ul><li>ho</li><li>hey</li></ul>\"`.",
         "Write TWO components:\n• `Verso` taking `texto` and returning `<li>{texto}</li>`,\n• `Canto` taking `versos` (array) and returning a `<ul>` rendering one `<Verso />` per verse (with `key`).\n\n`render(<Canto versos={[\"ho\", \"hey\"]} />)` → `\"<ul><li>ho</li><li>hey</li></ul>\"`.",
       ),
-      starter_code:
-        "function Verso({ texto }) {\n  // <li>{texto}</li>\n}\n\nfunction Canto({ versos }) {\n  // <ul>{versos.map(v => <Verso key={v} texto={v} />)}</ul>\n}\n",
+      starter_code: "function Verso({ texto }) {\n}\n\nfunction Canto({ versos }) {\n}\n",
       hints: [
         P("`Canto` usa a `Verso` como una etiqueta: `<Verso key={v} texto={v} />`.", "`Canto` uses `Verso` as a tag: `<Verso key={v} texto={v} />`."),
         P("`Verso` sólo devuelve `<li>{texto}</li>`.", "`Verso` just returns `<li>{texto}</li>`."),
@@ -603,8 +598,7 @@ export const SYL_REACT_COMMUNITY_3: Syllabus = {
         "Escribe el componente `Contador` (sin props) que use `useState(0)` y devuelva un `<button>` que MUESTRE el número y, al hacer click, lo INCREMENTE en 1.\n\nEn los tests, `mount(el)` renderiza el componente; `.click()` pulsa el botón y `.text()` lee su texto. Así, `mount(<Contador />).click().text()` → `\"1\"`.",
         "Write the component `Contador` (no props) that uses `useState(0)` and returns a `<button>` that SHOWS the number and, on click, INCREMENTS it by 1.\n\nIn the tests, `mount(el)` renders the component; `.click()` presses the button and `.text()` reads its text. So `mount(<Contador />).click().text()` → `\"1\"`.",
       ),
-      starter_code:
-        "function Contador() {\n  const [n, setN] = useState(0);\n  // <button onClick={() => setN(n + 1)}>{n}</button>\n}\n",
+      starter_code: "function Contador() {\n  const [n, setN] = useState(0);\n}\n",
       hints: [
         P("Lee y actualiza: `const [n, setN] = useState(0)`.", "Read and update: `const [n, setN] = useState(0)`."),
         P("El botón muestra `{n}` y al click hace `setN(n + 1)`.", "The button shows `{n}` and on click does `setN(n + 1)`."),
@@ -629,8 +623,7 @@ export const SYL_REACT_COMMUNITY_3: Syllabus = {
         "Escribe `Interruptor` que reciba la prop `inicial` (booleano) y use `useState(inicial)`. Devuelve un `<button>` que muestre `\"encendido\"` si el estado es true o `\"apagado\"` si es false, y que al hacer click ALTERNE el valor.\n\n`mount(<Interruptor inicial={false} />).click().text()` → `\"encendido\"`.",
         "Write `Interruptor` that takes the prop `inicial` (boolean) and uses `useState(inicial)`. Return a `<button>` showing `\"encendido\"` if the state is true or `\"apagado\"` if false, and that TOGGLES on click.\n\n`mount(<Interruptor inicial={false} />).click().text()` → `\"encendido\"`.",
       ),
-      starter_code:
-        'function Interruptor({ inicial }) {\n  const [on, setOn] = useState(inicial);\n  // <button onClick={() => setOn(!on)}>{on ? "encendido" : "apagado"}</button>\n}\n',
+      starter_code: 'function Interruptor({ inicial }) {\n  const [on, setOn] = useState(inicial);\n}\n',
       hints: [
         P("Alterna con la negación: `onClick={() => setOn(!on)}`.", "Toggle with negation: `onClick={() => setOn(!on)}`."),
         P('Muestra según el estado: `{on ? "encendido" : "apagado"}`.', 'Show based on state: `{on ? "encendido" : "apagado"}`.'),
@@ -655,8 +648,7 @@ export const SYL_REACT_COMMUNITY_3: Syllabus = {
         "Escribe `Vida` (sin props) con `useState(100)`. Devuelve un `<button>` que muestre la vida y, al hacer click, le RESTE 40 sin bajar nunca de 0. Usa el actualizador funcional: `setVida(v => Math.max(0, v - 40))`.\n\n`mount(<Vida />).click().text()` → `\"60\"`.",
         "Write `Vida` (no props) with `useState(100)`. Return a `<button>` showing the life and, on click, SUBTRACTING 40 without ever going below 0. Use the functional updater: `setVida(v => Math.max(0, v - 40))`.\n\n`mount(<Vida />).click().text()` → `\"60\"`.",
       ),
-      starter_code:
-        "function Vida() {\n  const [vida, setVida] = useState(100);\n  // <button onClick={() => setVida(v => Math.max(0, v - 40))}>{vida}</button>\n}\n",
+      starter_code: "function Vida() {\n  const [vida, setVida] = useState(100);\n}\n",
       hints: [
         P("El actualizador funcional recibe el valor previo: `setVida(v => ...)`.", "The functional updater receives the previous value: `setVida(v => ...)`."),
         P("Resta sin bajar de 0: `Math.max(0, v - 40)`.", "Subtract without going below 0: `Math.max(0, v - 40)`."),
@@ -826,8 +818,7 @@ export const SYL_REACT_COMMUNITY_4: Syllabus = {
         "Escribe `Eco` (sin props) con `useState(\"\")`. Devuelve un `<div>` con:\n• un `<input value={texto} onChange={e => setTexto(e.target.value)} />`,\n• un `<p>{texto}</p>` que muestre lo escrito.\n\nEn los tests, `.fill(sel, valor)` escribe en el input. `mount(<Eco />).fill(\"input\", \"hola\").text(\"p\")` → `\"hola\"`.",
         "Write `Eco` (no props) with `useState(\"\")`. Return a `<div>` with:\n• an `<input value={texto} onChange={e => setTexto(e.target.value)} />`,\n• a `<p>{texto}</p>` showing what was typed.\n\nIn the tests, `.fill(sel, value)` types into the input. `mount(<Eco />).fill(\"input\", \"hola\").text(\"p\")` → `\"hola\"`.",
       ),
-      starter_code:
-        'function Eco() {\n  const [texto, setTexto] = useState("");\n  return (\n    <div>\n      <input value={texto} onChange={(e) => setTexto(e.target.value)} />\n      <p>{texto}</p>\n    </div>\n  );\n}\n',
+      starter_code: 'function Eco() {\n  const [texto, setTexto] = useState("");\n  return (\n    <div>\n      <input value={texto} onChange={(e) => setTexto(e.target.value)} />\n      <p>{texto}</p>\n    </div>\n  );\n}\n',
       hints: [
         P("El input controlado ata `value` al estado y lo actualiza en `onChange`.", "The controlled input ties `value` to state and updates it in `onChange`."),
         P("Lee lo escrito con `e.target.value`.", "Read what's typed with `e.target.value`."),
@@ -852,8 +843,7 @@ export const SYL_REACT_COMMUNITY_4: Syllabus = {
         "Escribe `Recuento` (sin props) con `useState(0)`. Devuelve un `<div>` con:\n• un `<button className=\"menos\">` que RESTE 1 sin bajar de 0,\n• un `<span>{n}</span>`,\n• un `<button className=\"mas\">` que SUME 1.\n\n`mount(<Recuento />).click(\".mas\").click(\".mas\").text(\"span\")` → `\"2\"`.",
         "Write `Recuento` (no props) with `useState(0)`. Return a `<div>` with:\n• a `<button className=\"menos\">` that SUBTRACTS 1 without going below 0,\n• a `<span>{n}</span>`,\n• a `<button className=\"mas\">` that ADDS 1.\n\n`mount(<Recuento />).click(\".mas\").click(\".mas\").text(\"span\")` → `\"2\"`.",
       ),
-      starter_code:
-        'function Recuento() {\n  const [n, setN] = useState(0);\n  return (\n    <div>\n      <button className="menos" onClick={() => setN((m) => Math.max(0, m - 1))}>-</button>\n      <span>{n}</span>\n      <button className="mas" onClick={() => setN((m) => m + 1)}>+</button>\n    </div>\n  );\n}\n',
+      starter_code: 'function Recuento() {\n  const [n, setN] = useState(0);\n  return (\n    <div>\n      <button className="menos" onClick={() => setN((m) => Math.max(0, m - 1))}>-</button>\n      <span>{n}</span>\n      <button className="mas" onClick={() => setN((m) => m + 1)}>+</button>\n    </div>\n  );\n}\n',
       hints: [
         P("Cada botón lleva su `className` y su `onClick`.", "Each button has its `className` and its `onClick`."),
         P("El de restar usa clamp: `setN(m => Math.max(0, m - 1))`.", "The subtract one uses clamp: `setN(m => Math.max(0, m - 1))`."),
@@ -878,8 +868,7 @@ export const SYL_REACT_COMMUNITY_4: Syllabus = {
         "Escribe `Vadeable` (sin props) con `useState(false)`. Devuelve un `<div>` con:\n• un `<input type=\"checkbox\" checked={ok} onChange={e => setOk(e.target.checked)} />`,\n• un `<span>` que muestre `\"puede cruzar\"` si el estado es true, o `\"no puede\"` si es false.\n\nAl hacer click en la casilla se marca. `mount(<Vadeable />).click(\"input\").text(\"span\")` → `\"puede cruzar\"`.",
         "Write `Vadeable` (no props) with `useState(false)`. Return a `<div>` with:\n• an `<input type=\"checkbox\" checked={ok} onChange={e => setOk(e.target.checked)} />`,\n• a `<span>` showing `\"puede cruzar\"` if the state is true, or `\"no puede\"` if false.\n\nClicking the checkbox checks it. `mount(<Vadeable />).click(\"input\").text(\"span\")` → `\"puede cruzar\"`.",
       ),
-      starter_code:
-        'function Vadeable() {\n  const [ok, setOk] = useState(false);\n  return (\n    <div>\n      <input type="checkbox" checked={ok} onChange={(e) => setOk(e.target.checked)} />\n      <span>{ok ? "puede cruzar" : "no puede"}</span>\n    </div>\n  );\n}\n',
+      starter_code: 'function Vadeable() {\n  const [ok, setOk] = useState(false);\n  return (\n    <div>\n      <input type="checkbox" checked={ok} onChange={(e) => setOk(e.target.checked)} />\n      <span>{ok ? "puede cruzar" : "no puede"}</span>\n    </div>\n  );\n}\n',
       hints: [
         P("El checkbox se controla con `checked={ok}` y se lee con `e.target.checked`.", "The checkbox is controlled with `checked={ok}` and read with `e.target.checked`."),
         P('El span muestra según el estado: `{ok ? "puede cruzar" : "no puede"}`.', 'The span shows based on state: `{ok ? "puede cruzar" : "no puede"}`.'),
@@ -904,8 +893,7 @@ export const SYL_REACT_COMMUNITY_4: Syllabus = {
         "Escribe `Runas` (sin props) con `useState(0)` para el caudal. NO guardes el estado del agua en otro useState: CALCÚLALO en el render:\n• `\"calmo\"` si el caudal es menor que 3,\n• `\"crecido\"` si es menor que 6,\n• `\"desbordado\"` si es 6 o más.\n\nDevuelve un `<div>` con un `<button>` que suba el caudal en 1 y un `<span>` con el estado.\n\n`mount(<Runas />).click().click().click().text(\"span\")` → `\"crecido\"`.",
         "Write `Runas` (no props) with `useState(0)` for the flow. DON'T store the water's state in another useState: COMPUTE it in the render:\n• `\"calmo\"` if the flow is under 3,\n• `\"crecido\"` if under 6,\n• `\"desbordado\"` if 6 or more.\n\nReturn a `<div>` with a `<button>` that raises the flow by 1 and a `<span>` with the state.\n\n`mount(<Runas />).click().click().click().text(\"span\")` → `\"crecido\"`.",
       ),
-      starter_code:
-        'function Runas() {\n  const [caudal, setCaudal] = useState(0);\n  const estado = caudal < 3 ? "calmo" : caudal < 6 ? "crecido" : "desbordado";\n  return (\n    <div>\n      <button onClick={() => setCaudal((c) => c + 1)}>subir</button>\n      <span>{estado}</span>\n    </div>\n  );\n}\n',
+      starter_code: 'function Runas() {\n  const [caudal, setCaudal] = useState(0);\n  const estado = caudal < 3 ? "calmo" : caudal < 6 ? "crecido" : "desbordado";\n  return (\n    <div>\n      <button onClick={() => setCaudal((c) => c + 1)}>subir</button>\n      <span>{estado}</span>\n    </div>\n  );\n}\n',
       hints: [
         P("`estado` se calcula del caudal con un ternario encadenado, sin otro useState.", "`estado` is computed from the flow with a chained ternary, without another useState."),
         P("El botón sólo sube el caudal: `setCaudal(c => c + 1)`.", "The button only raises the flow: `setCaudal(c => c + 1)`."),

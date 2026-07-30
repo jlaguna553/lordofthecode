@@ -196,8 +196,7 @@ export const SYL_GO_COMMUNITY_1: Syllabus = {
         "Escribe la función `presentarse(nombre string) string` que devuelva, con `fmt.Sprintf`, el texto exacto:\n\n  Soy {nombre} de la Comarca\n\nEl código ya trae `package main` e `import \"fmt\"`. Por ejemplo, `presentarse(\"Frodo\")` devuelve `\"Soy Frodo de la Comarca\"`.",
         "Write the function `presentarse(nombre string) string` returning, with `fmt.Sprintf`, the exact text:\n\n  Soy {nombre} de la Comarca\n\nThe code already has `package main` and `import \"fmt\"`. For example, `presentarse(\"Frodo\")` returns `\"Soy Frodo de la Comarca\"`.",
       ),
-      starter_code:
-        'package main\n\nimport "fmt"\n\nfunc presentarse(nombre string) string {\n\t// usa fmt.Sprintf con el verbo %s\n}\n',
+      starter_code: 'package main\n\nimport "fmt"\n\nfunc presentarse(nombre string) string {\n}\n',
       blocks: [
         "package main",
         'import "fmt"',
@@ -231,8 +230,7 @@ export const SYL_GO_COMMUNITY_1: Syllabus = {
         "Escribe dos funciones (el `package main` ya está):\n\n• `ocultar(actual, n int) int` — suma `n` al sigilo `actual`, SIN pasar de 100. Usa un `if`.\n• `esVisible(sigilo, percepcion int) bool` — devuelve true si tu `sigilo` es MENOR que la `percepcion`.",
         "Write two functions (the `package main` is already there):\n\n• `ocultar(actual, n int) int` — adds `n` to the current stealth, WITHOUT exceeding 100. Use an `if`.\n• `esVisible(sigilo, percepcion int) bool` — returns true if your `sigilo` is LESS than `percepcion`.",
       ),
-      starter_code:
-        "package main\n\nfunc ocultar(actual, n int) int {\n\t// suma y limita a 100 con un if\n}\n\nfunc esVisible(sigilo, percepcion int) bool {\n\t// ...\n}\n",
+      starter_code: "package main\n\nfunc ocultar(actual, n int) int {\n}\n\nfunc esVisible(sigilo, percepcion int) bool {\n}\n",
       blocks: [
         "package main",
         "func ocultar(actual, n int) int {",
@@ -430,8 +428,7 @@ export const SYL_GO_COMMUNITY_2: Syllabus = {
         'Escribe `atrapar(nombres []string) []string` que devuelva un slice NUEVO con cada nombre seguido de " queda atrapado". Empieza con `[]string{}` y usa `range` + `append`.\n\nEjemplo: `atrapar([]string{"Merry"})` → `["Merry queda atrapado"]`.',
         'Write `atrapar(nombres []string) []string` returning a NEW slice with each name followed by " queda atrapado". Start with `[]string{}` and use `range` + `append`.\n\nExample: `atrapar([]string{"Merry"})` → `["Merry queda atrapado"]`.',
       ),
-      starter_code:
-        'package main\n\nfunc atrapar(nombres []string) []string {\n\tresultado := []string{}\n\t// range + append\n\treturn resultado\n}\n',
+      starter_code: 'package main\n\nfunc atrapar(nombres []string) []string {\n\tresultado := []string{}\n\treturn resultado\n}\n',
       blocks: [
         "package main",
         "func atrapar(nombres []string) []string {",
@@ -468,8 +465,7 @@ export const SYL_GO_COMMUNITY_2: Syllabus = {
         "Escribe `drenarVarios(vidas []int, drenaje int) []int` que reste `drenaje` a cada vida, sin bajar nunca de 0. Empieza en `[]int{}`.\n\nEjemplo: `drenarVarios([]int{100, 20, 5}, 30)` → `[70, 0, 0]`.",
         "Write `drenarVarios(vidas []int, drenaje int) []int` subtracting `drenaje` from each life, never below 0. Start at `[]int{}`.\n\nExample: `drenarVarios([]int{100, 20, 5}, 30)` → `[70, 0, 0]`.",
       ),
-      starter_code:
-        "package main\n\nfunc drenarVarios(vidas []int, drenaje int) []int {\n\tresultado := []int{}\n\t// range + if para no bajar de 0\n\treturn resultado\n}\n",
+      starter_code: "package main\n\nfunc drenarVarios(vidas []int, drenaje int) []int {\n\tresultado := []int{}\n\treturn resultado\n}\n",
       blocks: [
         "package main",
         "func drenarVarios(vidas []int, drenaje int) []int {",
@@ -510,8 +506,7 @@ export const SYL_GO_COMMUNITY_2: Syllabus = {
         'Escribe `resumen(versos []string) string` que devuelva "{n}: {canto}", donde `n` es cuántos versos hay y `canto` son todos unidos por un espacio (con `strings.Join`).\n\nEjemplo: `resumen([]string{"ho", "hey"})` → `"2: ho hey"`.',
         'Write `resumen(versos []string) string` returning "{n}: {song}", where `n` is how many verses there are and `song` is all of them joined by a space (with `strings.Join`).\n\nExample: `resumen([]string{"ho", "hey"})` → `"2: ho hey"`.',
       ),
-      starter_code:
-        'package main\n\nimport (\n\t"fmt"\n\t"strings"\n)\n\nfunc resumen(versos []string) string {\n\t// fmt.Sprintf con len(versos) y strings.Join(versos, " ")\n}\n',
+      starter_code: 'package main\n\nimport (\n\t"fmt"\n\t"strings"\n)\n\nfunc resumen(versos []string) string {\n}\n',
       blocks: [
         "package main",
         'import (\n\t"fmt"\n\t"strings"\n)',
@@ -664,8 +659,7 @@ export const SYL_GO_COMMUNITY_3: Syllabus = {
         "Escribe `sumarFuerzas(fuerzas ...int) int` que sume TODAS las fuerzas recibidas, sean cuantas sean. Con cero argumentos, devuelve 0.\n\nEjemplo: `sumarFuerzas(3, 5, 2)` → `10`.",
         "Write `sumarFuerzas(fuerzas ...int) int` that sums ALL the strengths received, however many. With zero arguments, return 0.\n\nExample: `sumarFuerzas(3, 5, 2)` → `10`.",
       ),
-      starter_code:
-        "package main\n\nfunc sumarFuerzas(fuerzas ...int) int {\n\t// recorre con range y acumula\n}\n",
+      starter_code: "package main\n\nfunc sumarFuerzas(fuerzas ...int) int {\n}\n",
       hints: [
         P("`fuerzas` es un `[]int`: recórrelo con `for _, f := range fuerzas`.", "`fuerzas` is a `[]int`: range over it with `for _, f := range fuerzas`."),
         P("Acumula en una variable que empiece en 0 y devuélvela.", "Accumulate in a variable starting at 0 and return it."),
@@ -690,8 +684,7 @@ export const SYL_GO_COMMUNITY_3: Syllabus = {
         "Escribe `aplicarDoble(fn func(int) int, x int) int` que llame a `fn` DOS veces sobre `x` y devuelva el resultado: `fn(fn(x))`.\n\nEjemplo: `aplicarDoble(func(n int) int { return n + 1 }, 5)` → `7`.",
         "Write `aplicarDoble(fn func(int) int, x int) int` that calls `fn` TWICE on `x` and returns the result: `fn(fn(x))`.\n\nExample: `aplicarDoble(func(n int) int { return n + 1 }, 5)` → `7`.",
       ),
-      starter_code:
-        "package main\n\nfunc aplicarDoble(fn func(int) int, x int) int {\n\t// llama fn sobre x, y otra vez sobre el resultado\n}\n",
+      starter_code: "package main\n\nfunc aplicarDoble(fn func(int) int, x int) int {\n}\n",
       hints: [
         P("`fn` es una función: la llamas con paréntesis, `fn(x)`.", "`fn` is a function: call it with parentheses, `fn(x)`."),
         P("`return fn(fn(x))`: el resultado de la primera llamada entra en la segunda.", "`return fn(fn(x))`: the first call's result feeds the second."),
@@ -716,8 +709,7 @@ export const SYL_GO_COMMUNITY_3: Syllabus = {
         "Escribe `crearGolpe(danio int) func() int` que DEVUELVA una función. Esa función, al llamarla sin argumentos, devuelve el `danio` con el que se creó.\n\nEjemplo: `crearGolpe(20)()` → `20`.",
         "Write `crearGolpe(danio int) func() int` that RETURNS a function. That function, called with no arguments, returns the `danio` it was created with.\n\nExample: `crearGolpe(20)()` → `20`.",
       ),
-      starter_code:
-        "package main\n\nfunc crearGolpe(danio int) func() int {\n\t// devuelve una func() int que devuelve danio\n}\n",
+      starter_code: "package main\n\nfunc crearGolpe(danio int) func() int {\n}\n",
       hints: [
         P("Devuelve una función literal: `return func() int { ... }`.", "Return a function literal: `return func() int { ... }`."),
         P("La función interior recuerda `danio` (clausura): `return func() int { return danio }`.", "The inner function remembers `danio` (closure): `return func() int { return danio }`."),
@@ -878,8 +870,7 @@ export const SYL_GO_COMMUNITY_4: Syllabus = {
         "Declara la constante `VelocidadMaxima = 120` y escribe `galopar(deseada int) int` que devuelva la velocidad deseada SIN superar nunca la constante.\n\nEjemplo: `galopar(200)` → `120`.",
         "Declare the constant `VelocidadMaxima = 120` and write `galopar(deseada int) int` returning the wanted speed WITHOUT ever exceeding the constant.\n\nExample: `galopar(200)` → `120`.",
       ),
-      starter_code:
-        "package main\n\n// 1) const VelocidadMaxima = 120\n\nfunc galopar(deseada int) int {\n\t// 2) nunca por encima de la constante\n}\n",
+      starter_code: "package main\n\nfunc galopar(deseada int) int {\n}\n",
       hints: [
         P("Declara la constante a nivel de paquete: `const VelocidadMaxima = 120`.", "Declare the constant at package level: `const VelocidadMaxima = 120`."),
         P("Con un `if`: si `deseada > VelocidadMaxima`, devuelve la constante; si no, `deseada`.", "With an `if`: if `deseada > VelocidadMaxima`, return the constant; otherwise `deseada`."),
@@ -904,8 +895,7 @@ export const SYL_GO_COMMUNITY_4: Syllabus = {
         "Escribe `contar(jinetes []string) map[string]int` que devuelva cuántas veces aparece cada nombre.\n\nEjemplo: `contar([]string{\"nazgul\", \"nazgul\", \"rey\"})` da un map con `\"nazgul\": 2` y `\"rey\": 1`.",
         "Write `contar(jinetes []string) map[string]int` returning how many times each name appears.\n\nExample: `contar([]string{\"nazgul\", \"nazgul\", \"rey\"})` gives a map with `\"nazgul\": 2` and `\"rey\": 1`.",
       ),
-      starter_code:
-        "package main\n\nfunc contar(jinetes []string) map[string]int {\n\t// crea el map, recorre y suma\n}\n",
+      starter_code: "package main\n\nfunc contar(jinetes []string) map[string]int {\n}\n",
       hints: [
         P("Empieza con `m := map[string]int{}`.", "Start with `m := map[string]int{}`."),
         P("Por cada nombre: `m[j]++` (la clave ausente empieza en 0).", "For each name: `m[j]++` (a missing key starts at 0)."),
@@ -930,8 +920,7 @@ export const SYL_GO_COMMUNITY_4: Syllabus = {
         "Escribe `defensaDe(defensas map[string]int, nombre string) int` que devuelva la defensa del punto `nombre`. Si el punto NO está en el map, devuelve `-1` (usa la forma «comma, ok»).\n\nOjo: un punto puede tener defensa 0 y aun así existir.",
         "Write `defensaDe(defensas map[string]int, nombre string) int` returning the defense of point `nombre`. If the point is NOT in the map, return `-1` (use the \"comma, ok\" form).\n\nNote: a point may have defense 0 and still exist.",
       ),
-      starter_code:
-        "package main\n\nfunc defensaDe(defensas map[string]int, nombre string) int {\n\t// v, ok := defensas[nombre]; si !ok devuelve -1\n}\n",
+      starter_code: "package main\n\nfunc defensaDe(defensas map[string]int, nombre string) int {\n}\n",
       hints: [
         P("`v, ok := defensas[nombre]` te dice el valor y si existía.", "`v, ok := defensas[nombre]` gives you the value and whether it existed."),
         P("`if !ok { return -1 }` y si no, `return v`.", "`if !ok { return -1 }` otherwise `return v`."),
@@ -956,8 +945,7 @@ export const SYL_GO_COMMUNITY_4: Syllabus = {
         "Declara un bloque `const` con `iota`: `Calmo` (0), `Crecido` (1) y `Desbordado` (2). Después escribe `estado(caudal int) int` que devuelva:\n• `Calmo` si el caudal es menor que 30,\n• `Crecido` si es menor que 70,\n• `Desbordado` en los demás casos.",
         "Declare a `const` block with `iota`: `Calmo` (0), `Crecido` (1) and `Desbordado` (2). Then write `estado(caudal int) int` returning:\n• `Calmo` if the flow is under 30,\n• `Crecido` if under 70,\n• `Desbordado` otherwise.",
       ),
-      starter_code:
-        "package main\n\nconst (\n\tCalmo = iota\n\t// Crecido, Desbordado\n)\n\nfunc estado(caudal int) int {\n\t// devuelve la constante según el caudal\n}\n",
+      starter_code: "package main\n\nconst (\n\tCalmo = iota\n)\n\nfunc estado(caudal int) int {\n}\n",
       hints: [
         P("Tras `Calmo = iota`, basta listar `Crecido` y `Desbordado`: heredan `= iota` y valen 1 y 2.", "After `Calmo = iota`, just list `Crecido` and `Desbordado`: they inherit `= iota` and are 1 and 2."),
         P("Dos `if` en cascada: `< 30` → Calmo, `< 70` → Crecido, y el resto Desbordado.", "Two cascading `if`s: `< 30` → Calmo, `< 70` → Crecido, and the rest Desbordado."),
@@ -1102,8 +1090,7 @@ export const SYL_GO_COMMUNITY_5: Syllabus = {
         "Declara el struct `Provision` con dos campos EXPORTADOS: `Nombre` (string) y `Peso` (int). Después escribe `nuevaProvision(nombre string, peso int) Provision` que lo cree con esos valores.\n\nEjemplo: `nuevaProvision(\"lembas\", 5).Peso` → `5`.",
         "Declare the struct `Provision` with two EXPORTED fields: `Nombre` (string) and `Peso` (int). Then write `nuevaProvision(nombre string, peso int) Provision` creating it with those values.\n\nExample: `nuevaProvision(\"lembas\", 5).Peso` → `5`.",
       ),
-      starter_code:
-        "package main\n\ntype Provision struct {\n\t// Nombre y Peso (exportados: en mayúscula)\n}\n\nfunc nuevaProvision(nombre string, peso int) Provision {\n\t// devuelve el struct con esos valores\n}\n",
+      starter_code: "package main\n\ntype Provision struct {\n}\n\nfunc nuevaProvision(nombre string, peso int) Provision {\n}\n",
       hints: [
         P("Campos exportados van en mayúscula: `Nombre string` y `Peso int`.", "Exported fields go uppercase: `Nombre string` and `Peso int`."),
         P("Crea el struct con nombres de campo: `return Provision{Nombre: nombre, Peso: peso}`.", "Create the struct with field names: `return Provision{Nombre: nombre, Peso: peso}`."),
@@ -1128,8 +1115,7 @@ export const SYL_GO_COMMUNITY_5: Syllabus = {
         "Declara `Resistencia` con un campo PRIVADO `calor int`. Añade:\n• `NuevaResistencia() Resistencia` que lo cree con `calor` a 100,\n• el método `Calor() int` que lo devuelva,\n• el método `TrasEnfriar(grados int) int` que devuelva el calor tras restar `grados`, SIN bajar de 0.",
         "Declare `Resistencia` with a PRIVATE field `calor int`. Add:\n• `NuevaResistencia() Resistencia` creating it with `calor` at 100,\n• the method `Calor() int` returning it,\n• the method `TrasEnfriar(grados int) int` returning the warmth after subtracting `grados`, never below 0.",
       ),
-      starter_code:
-        "package main\n\ntype Resistencia struct {\n\tcalor int\n}\n\nfunc NuevaResistencia() Resistencia {\n\t// calor a 100\n}\n\nfunc (r Resistencia) Calor() int {\n\t// devuelve calor\n}\n\nfunc (r Resistencia) TrasEnfriar(grados int) int {\n\t// resta sin bajar de 0\n}\n",
+      starter_code: "package main\n\ntype Resistencia struct {\n\tcalor int\n}\n\nfunc NuevaResistencia() Resistencia {\n}\n\nfunc (r Resistencia) Calor() int {\n}\n\nfunc (r Resistencia) TrasEnfriar(grados int) int {\n}\n",
       hints: [
         P("El constructor: `return Resistencia{calor: 100}`.", "The constructor: `return Resistencia{calor: 100}`."),
         P("En `TrasEnfriar`: `c := r.calor - grados; if c < 0 { return 0 }; return c`.", "In `TrasEnfriar`: `c := r.calor - grados; if c < 0 { return 0 }; return c`."),
@@ -1154,8 +1140,7 @@ export const SYL_GO_COMMUNITY_5: Syllabus = {
         "Declara `Temperatura` con un campo privado `grados int`. Añade:\n• `NuevaTemperatura(grados int) Temperatura`,\n• el método `Grados() int`,\n• el método `ConMas(g int) Temperatura` que devuelva una Temperatura NUEVA con los grados sumados (sin mutar la original: receptor por valor).",
         "Declare `Temperatura` with a private field `grados int`. Add:\n• `NuevaTemperatura(grados int) Temperatura`,\n• the method `Grados() int`,\n• the method `ConMas(g int) Temperatura` returning a NEW Temperatura with the degrees added (without mutating the original: value receiver).",
       ),
-      starter_code:
-        "package main\n\ntype Temperatura struct {\n\tgrados int\n}\n\nfunc NuevaTemperatura(grados int) Temperatura {\n\t//\n}\n\nfunc (t Temperatura) Grados() int {\n\t//\n}\n\nfunc (t Temperatura) ConMas(g int) Temperatura {\n\t// devuelve OTRA Temperatura con los grados sumados\n}\n",
+      starter_code: "package main\n\ntype Temperatura struct {\n\tgrados int\n}\n\nfunc NuevaTemperatura(grados int) Temperatura {\n}\n\nfunc (t Temperatura) Grados() int {\n}\n\nfunc (t Temperatura) ConMas(g int) Temperatura {\n}\n",
       hints: [
         P("`ConMas` no muta: `return Temperatura{grados: t.grados + g}`.", "`ConMas` doesn't mutate: `return Temperatura{grados: t.grados + g}`."),
         P("Como el receptor es por VALOR, `t` es una copia: la original nunca cambia.", "Since the receiver is by VALUE, `t` is a copy: the original never changes."),
@@ -1318,8 +1303,7 @@ export const SYL_GO_COMMUNITY_6: Syllabus = {
       ),
       support_code:
         'package main\n\ntype Descifrable interface {\n\tSusurrarPalabra(palabra string) bool\n}\n\nfunc abre(d Descifrable, palabra string) bool {\n\treturn d.SusurrarPalabra(palabra)\n}',
-      starter_code:
-        "// Descifrable (interfaz) y abre(...) ya existen.\n\ntype PuertaDurin struct{}\n\nfunc (p PuertaDurin) SusurrarPalabra(palabra string) bool {\n\t// true sólo con \"mellon\"\n}\n",
+      starter_code: "\ntype PuertaDurin struct{}\n\nfunc (p PuertaDurin) SusurrarPalabra(palabra string) bool {\n}\n",
       hints: [
         P("El método debe tener la MISMA firma que la interfaz para cumplirla.", "The method must have the SAME signature as the interface to satisfy it."),
         P("`return palabra == \"mellon\"`.", "`return palabra == \"mellon\"`."),
@@ -1346,8 +1330,7 @@ export const SYL_GO_COMMUNITY_6: Syllabus = {
       ),
       support_code:
         "package main\n\ntype Enemigo interface {\n\tAtacar() int\n}\n\nfunc DanioTotal(horda []Enemigo) int {\n\ttotal := 0\n\tfor _, e := range horda {\n\t\ttotal += e.Atacar()\n\t}\n\treturn total\n}",
-      starter_code:
-        "// Enemigo (interfaz) y DanioTotal(...) ya existen.\n\ntype Trasgo struct{}\n\nfunc (t Trasgo) Atacar() int {\n\t//\n}\n\ntype Troll struct{}\n\nfunc (t Troll) Atacar() int {\n\t//\n}\n",
+      starter_code: "\ntype Trasgo struct{}\n\nfunc (t Trasgo) Atacar() int {\n}\n\ntype Troll struct{}\n\nfunc (t Troll) Atacar() int {\n}\n",
       hints: [
         P("Cada tipo cumple `Enemigo` sólo por tener `Atacar() int`.", "Each type satisfies `Enemigo` just by having `Atacar() int`."),
         P("`DanioTotal` los trata a todos como `Enemigo`: eso es polimorfismo.", "`DanioTotal` treats them all as `Enemigo`: that's polymorphism."),
@@ -1374,8 +1357,7 @@ export const SYL_GO_COMMUNITY_6: Syllabus = {
       ),
       support_code:
         'package main\n\ntype Hechizo interface {\n\tLanzar() string\n}\n\nfunc conjurar(h Hechizo) string {\n\treturn h.Lanzar()\n}\n\ntype Chispa struct{}\n\nfunc (c Chispa) Lanzar() string { return "chispas" }',
-      starter_code:
-        "// Hechizo (interfaz), conjurar(...) y Chispa ya existen.\n\ntype PalabraDeMando struct{}\n\nfunc (p PalabraDeMando) Lanzar() string {\n\t//\n}\n",
+      starter_code: "\ntype PalabraDeMando struct{}\n\nfunc (p PalabraDeMando) Lanzar() string {\n}\n",
       hints: [
         P("`conjurar` acepta cualquier `Hechizo`: tu tipo lo será por tener `Lanzar()`.", "`conjurar` accepts any `Hechizo`: your type will be one by having `Lanzar()`."),
         P('`return "¡No puedes pasar!"` (con los signos de apertura y cierre).', '`return "¡No puedes pasar!"` (with the opening and closing marks).'),
@@ -1400,8 +1382,7 @@ export const SYL_GO_COMMUNITY_6: Syllabus = {
         "Escribe `describir(v interface{}) string` que devuelva:\n• `\"numero\"` si `v` es un `int`,\n• `\"texto\"` si es un `string`,\n• `\"otro\"` en cualquier otro caso.\n\nUsa un `switch v.(type)`.",
         "Write `describir(v interface{}) string` returning:\n• `\"numero\"` if `v` is an `int`,\n• `\"texto\"` if it's a `string`,\n• `\"otro\"` otherwise.\n\nUse a `switch v.(type)`.",
       ),
-      starter_code:
-        'package main\n\nfunc describir(v interface{}) string {\n\tswitch v.(type) {\n\t// case int: ...  case string: ...  default: ...\n\t}\n}\n',
+      starter_code: 'package main\n\nfunc describir(v interface{}) string {\n\tswitch v.(type) {\n\t}\n}\n',
       hints: [
         P("`case int:` devuelve `\"numero\"`; `case string:` devuelve `\"texto\"`.", "`case int:` returns `\"numero\"`; `case string:` returns `\"texto\"`."),
         P("`default:` recoge todo lo demás con `\"otro\"`.", "`default:` catches everything else with `\"otro\"`."),
@@ -1547,8 +1528,7 @@ export const SYL_GO_COMMUNITY_7: Syllabus = {
       ),
       support_code:
         'package main\n\ntype ObjetoMagico struct {\n\tNombre string\n}\n\nfunc (o ObjetoMagico) Describir() string {\n\treturn "Don de Galadriel: " + o.Nombre\n}',
-      starter_code:
-        "// ObjetoMagico (con Nombre y Describir()) ya existe.\n\ntype FrascoDeGaladriel struct {\n\t// embebe ObjetoMagico (sin nombre de campo)\n}\n\nfunc (f FrascoDeGaladriel) Usar() string {\n\t//\n}\n",
+      starter_code: "\ntype FrascoDeGaladriel struct {\n}\n\nfunc (f FrascoDeGaladriel) Usar() string {\n}\n",
       hints: [
         P("Para embeber, escribe el tipo sin nombre de campo: `struct { ObjetoMagico }`.", "To embed, write the type with no field name: `struct { ObjetoMagico }`."),
         P("`Usar()` devuelve el texto exacto; `Describir()` ya viene promovido.", "`Usar()` returns the exact text; `Describir()` is already promoted."),
@@ -1575,8 +1555,7 @@ export const SYL_GO_COMMUNITY_7: Syllabus = {
       ),
       support_code:
         'package main\n\ntype Camuflaje struct{}\n\nfunc (c Camuflaje) Ocultar() string {\n\treturn "te fundes con el bosque"\n}',
-      starter_code:
-        "// Camuflaje (con Ocultar()) ya existe.\n\ntype CapaElfica struct {\n\t// embebe Camuflaje\n}\n\ntype Barca struct {\n\t// embebe Camuflaje\n}\n",
+      starter_code: "\ntype CapaElfica struct {\n}\n\ntype Barca struct {\n}\n",
       hints: [
         P("Embeber = escribir `Camuflaje` sin nombre de campo dentro de cada struct.", "Embedding = writing `Camuflaje` with no field name inside each struct."),
         P("No escribas `Ocultar()` en ninguna: viene promovido del embebido.", "Don't write `Ocultar()` in either: it comes promoted from the embedded type."),
@@ -1602,8 +1581,7 @@ export const SYL_GO_COMMUNITY_7: Syllabus = {
       ),
       support_code:
         "package main\n\ntype Don interface {\n\tPoder() int\n}\n\ntype Bendicion struct{}\n\nfunc (b Bendicion) Bendecir() int { return 10 }\n\nfunc PoderTotal(dones []Don) int {\n\ttotal := 0\n\tfor _, d := range dones {\n\t\ttotal += d.Poder()\n\t}\n\treturn total\n}",
-      starter_code:
-        "// Don (interfaz), Bendicion (con Bendecir()) y PoderTotal(...) ya existen.\n\ntype Frasco struct {\n\tBendicion\n}\n\nfunc (f Frasco) Poder() int {\n\t// 5 + f.Bendecir()\n}\n\ntype Capa struct {\n\tBendicion\n}\n\nfunc (c Capa) Poder() int {\n\t// 2 + c.Bendecir()\n}\n",
+      starter_code: "\ntype Frasco struct {\n\tBendicion\n}\n\nfunc (f Frasco) Poder() int {\n}\n\ntype Capa struct {\n\tBendicion\n}\n\nfunc (c Capa) Poder() int {\n}\n",
       hints: [
         P("`Bendecir()` viene promovido del embebido: `f.Bendecir()` funciona.", "`Bendecir()` comes promoted from the embedded type: `f.Bendecir()` works."),
         P("Al tener `Poder()`, ambos cumplen `Don` y entran en `PoderTotal`.", "By having `Poder()`, both satisfy `Don` and fit into `PoderTotal`."),
@@ -1766,8 +1744,7 @@ export const SYL_GO_COMMUNITY_8: Syllabus = {
       ),
       support_code:
         'package main\n\nimport "errors"\n\nvar _ = errors.New\n\nfunc mensajeDe(t int) string {\n\ts, err := resistir(t)\n\tif err != nil {\n\t\treturn err.Error()\n\t}\n\treturn s\n}\n\nfunc fallaCon(t int) bool {\n\t_, err := resistir(t)\n\treturn err != nil\n}',
-      starter_code:
-        '// errors ya está importado. mensajeDe(t) y fallaCon(t) prueban tu función.\n\nfunc resistir(tentacion int) (string, error) {\n\t// > 80 → error; si no, "resiste", nil\n}\n',
+      starter_code: '\nfunc resistir(tentacion int) (string, error) {\n}\n',
       hints: [
         P("Guard clause: `if tentacion > 80 { return \"\", errors.New(\"El Anillo lo reclama\") }`.", "Guard clause: `if tentacion > 80 { return \"\", errors.New(\"El Anillo lo reclama\") }`."),
         P("El caso bueno: `return \"resiste\", nil`.", "The good case: `return \"resiste\", nil`."),
@@ -1795,8 +1772,7 @@ export const SYL_GO_COMMUNITY_8: Syllabus = {
       ),
       support_code:
         'package main\n\nimport "errors"\n\nfunc mirar(conAnillo bool) (string, error) {\n\tif conAnillo {\n\t\treturn "", errors.New("El Ojo te ve")\n\t}\n\treturn "ves las tierras de Rohan", nil\n}',
-      starter_code:
-        '// mirar(conAnillo) (string, error) ya existe.\n\nfunc observar(conAnillo bool) string {\n\tvision, err := mirar(conAnillo)\n\t// if err != nil { ... }\n}\n',
+      starter_code: '\nfunc observar(conAnillo bool) string {\n\tvision, err := mirar(conAnillo)\n}\n',
       hints: [
         P("`if err != nil { return \"te quitas el Anillo: \" + err.Error() }`.", "`if err != nil { return \"te quitas el Anillo: \" + err.Error() }`."),
         P("Si no hubo error, `return vision`.", "If there was no error, `return vision`."),
@@ -1822,8 +1798,7 @@ export const SYL_GO_COMMUNITY_8: Syllabus = {
       ),
       support_code:
         'package main\n\nimport "errors"\n\ntype Guerrero interface {\n\tResistenciaSol() int\n}\n\ntype Orco struct{}\n\nfunc (o Orco) ResistenciaSol() int { return 0 }\n\ntype UrukHai struct{}\n\nfunc (u UrukHai) ResistenciaSol() int { return 100 }\n\nvar _ = errors.New\n\nfunc resistenciaDe(tipo string) int {\n\tg, err := crear(tipo)\n\tif err != nil {\n\t\treturn -1\n\t}\n\treturn g.ResistenciaSol()\n}\n\nfunc fallaAl(tipo string) bool {\n\t_, err := crear(tipo)\n\treturn err != nil\n}',
-      starter_code:
-        '// Guerrero, Orco, UrukHai y los ayudantes ya existen. errors está importado.\n\nfunc crear(tipo string) (Guerrero, error) {\n\t// switch tipo { case "orco": ...; case "uruk": ...; default: nil, errors.New(...) }\n}\n',
+      starter_code: '\nfunc crear(tipo string) (Guerrero, error) {\n}\n',
       hints: [
         P("`switch tipo` con `case \"orco\": return Orco{}, nil` y `case \"uruk\": return UrukHai{}, nil`.", "`switch tipo` with `case \"orco\": return Orco{}, nil` and `case \"uruk\": return UrukHai{}, nil`."),
         P("`default: return nil, errors.New(\"tipo desconocido: \" + tipo)`.", "`default: return nil, errors.New(\"tipo desconocido: \" + tipo)`."),

@@ -240,8 +240,7 @@ class Hobbit {
       instructions:
         "Crea la clase Hobbit con un constructor que reciba $nombre (string) y guárdelo en una propiedad. Añade el método presentarse(): string que devuelva exactamente 'Soy {nombre} de la Comarca'.",
       sut: "new Hobbit('Frodo')",
-      starter_code:
-        "<?php\n\nclass Hobbit {\n    // 1) Declara la propiedad y el constructor con $nombre\n\n    // 2) Implementa presentarse(): string\n}\n",
+      starter_code: "<?php\n\nclass Hobbit {\n\n}\n",
       blocks: [
         "class Hobbit {",
         "    public function __construct(private string $nombre) {}",
@@ -275,8 +274,7 @@ class Hobbit {
       sut: "new Hobbit()",
       support_code:
         "class Nazgul {\n    public function __construct(private int $percepcion = 50) {}\n    public function getPercepcion(): int { return $this->percepcion; }\n}",
-      starter_code:
-        "<?php\n\nclass Hobbit {\n    // Protege $nivelSigilo (private) e implementa los tres métodos\n\n}\n",
+      starter_code: "<?php\n\nclass Hobbit {\n\n}\n",
       blocks: [
         "class Hobbit {",
         "    private int $nivelSigilo = 0;",
@@ -520,8 +518,7 @@ export const SYL_PHP_COMMUNITY_2: Syllabus = {
       instructions:
         "Crea la clase HombreSauce con un constructor que reciba $fuerza (int) y la guarde. Añade getFuerza(): int y atrapar(string $nombre): string, que devuelva exactamente '{nombre} queda atrapado entre las raíces'.",
       sut: "new HombreSauce(80)",
-      starter_code:
-        "<?php\n\nclass HombreSauce {\n    // 1) Constructor que reciba $fuerza\n\n    // 2) getFuerza(): int\n\n    // 3) atrapar(string $nombre): string\n}\n",
+      starter_code: "<?php\n\nclass HombreSauce {\n\n}\n",
       hints: [
         "__construct(private int $fuerza) {} declara la propiedad y la asigna de una vez.",
         'El texto debe coincidir exactamente: return "$nombre queda atrapado entre las raíces";',
@@ -542,8 +539,7 @@ export const SYL_PHP_COMMUNITY_2: Syllabus = {
       instructions:
         "Crea la clase Tumulario con un constructor que reciba $frio (int). Añade getFrio(): int y drenar(int $vida): int, que reste el frío a la vida devuelta, sin bajar nunca de 0.",
       sut: "new Tumulario(30)",
-      starter_code:
-        "<?php\n\nclass Tumulario {\n    // Constructor con $frio, getFrio() y drenar(int $vida): int\n}\n",
+      starter_code: "<?php\n\nclass Tumulario {\n}\n",
       hints: [
         "Guarda el frío con __construct(private int $frio) {}",
         "Para que nunca baje de cero: return max(0, $vida - $this->frio);",
@@ -567,8 +563,7 @@ export const SYL_PHP_COMMUNITY_2: Syllabus = {
       sut: "new TomBombadil()",
       support_code:
         "class Personaje {\n    public bool $paralizado = true;\n    public function estaParalizado(): bool { return $this->paralizado; }\n}\n\nclass Prueba {\n    public static ?Personaje $victima = null;\n    public static function nueva(): Personaje {\n        self::$victima = new Personaje();\n        return self::$victima;\n    }\n}",
-      starter_code:
-        "<?php\n\nclass EfectoHechizo {\n    // Constructor que reciba Personaje $objetivo\n\n    // __destruct(): pon $paralizado = false en el objetivo\n}\n\nclass TomBombadil {\n    // cantarConjuro(Personaje $p): void  — crea un EfectoHechizo LOCAL\n}\n",
+      starter_code: "<?php\n\nclass EfectoHechizo {\n\n}\n\nclass TomBombadil {\n}\n",
       hints: [
         "El constructor solo guarda la referencia: __construct(private Personaje $objetivo) {}",
         "El destructor se llama solo al morir el objeto: public function __destruct() { $this->objetivo->paralizado = false; }",
@@ -780,8 +775,7 @@ class Montaraz extends Viajero {
       sut: "new Montaraz('Trancos')",
       support_code:
         "class Viajero {\n    public function __construct(protected string $nombre) {}\n    public function viajar(string $destino): string {\n        return \"{$this->nombre} viaja hacia {$destino}\";\n    }\n}",
-      starter_code:
-        "<?php\n\n// Viajero ya existe: tiene $nombre (protected) y viajar(string $destino)\n\nclass Montaraz {\n    // 1) Haz que herede de Viajero\n\n    // 2) Añade rastrear(string $rastro): string\n}\n",
+      starter_code: "<?php\n\nclass Montaraz {\n\n}\n",
       hints: [
         "Para heredar: class Montaraz extends Viajero { … }",
         "$nombre es protected, así que la subclase puede usar $this->nombre directamente.",
@@ -805,8 +799,7 @@ class Montaraz extends Viajero {
       sut: "new HojaDeTumulo(15)",
       support_code:
         "class Arma {\n    public static int $llamadasAlPadre = 0;\n    public function __construct(protected int $danio) {}\n    public function atacar(): int {\n        self::$llamadasAlPadre++;\n        return $this->danio;\n    }\n}",
-      starter_code:
-        "<?php\n\n// Arma ya existe: constructor con $danio (protected) y atacar(): int\n\nclass HojaDeTumulo {\n    // Hereda de Arma y sobrescribe atacar() usando parent::atacar()\n}\n",
+      starter_code: "<?php\n\nclass HojaDeTumulo {\n}\n",
       hints: [
         "class HojaDeTumulo extends Arma { … }",
         "Dentro de atacar(), llama al padre así: return parent::atacar() * 2;",
@@ -831,8 +824,7 @@ class Montaraz extends Viajero {
       sut: "new HojaEncantada(20)",
       support_code:
         "class Espectro {\n    public bool $esInvisible = true;\n}\n\nclass Arma {\n    public function __construct(protected int $danio) {}\n    public function golpear(Espectro $e): int {\n        return $e->esInvisible ? 0 : $this->danio;\n    }\n}",
-      starter_code:
-        "<?php\n\n// Arma::golpear() devuelve 0 si el espectro es invisible\n\nclass HojaEncantada {\n    // Hereda de Arma y sobrescribe golpear(Espectro $e): int\n}\n",
+      starter_code: "<?php\n\nclass HojaEncantada {\n}\n",
       hints: [
         "class HojaEncantada extends Arma { … }",
         "$danio es protected: puedes devolverlo directamente con return $this->danio;",
@@ -1055,8 +1047,7 @@ echo RioBruinen::desbordar();`,
       instructions:
         "Crea la clase Asfaloth con una constante pública VELOCIDAD_MAXIMA = 120 y el método galopar(int $deseada): int, que devuelva la velocidad deseada SIN superar nunca la constante. Léela desde dentro con self::.",
       sut: "new Asfaloth()",
-      starter_code:
-        "<?php\n\nclass Asfaloth {\n    // 1) Constante pública VELOCIDAD_MAXIMA = 120\n\n    // 2) galopar(int $deseada): int  — nunca por encima de la constante\n}\n",
+      starter_code: "<?php\n\nclass Asfaloth {\n\n}\n",
       hints: [
         "Una constante de clase se declara así: public const VELOCIDAD_MAXIMA = 120;",
         "Desde dentro de la clase se lee con self::VELOCIDAD_MAXIMA (nunca con $this->).",
@@ -1078,8 +1069,7 @@ echo RioBruinen::desbordar();`,
       topic: "Propiedades estáticas (self::$prop)",
       instructions:
         "Crea la clase Caceria con una propiedad estática privada $jinetes que empiece en 0, y dos métodos ESTÁTICOS: sumar(int $n): void, que la incremente, y total(): int, que la devuelva. Todo se llama con Caceria::… sin instanciar.",
-      starter_code:
-        "<?php\n\nclass Caceria {\n    // 1) private static int $jinetes = 0;\n\n    // 2) public static function sumar(int $n): void\n\n    // 3) public static function total(): int\n}\n",
+      starter_code: "<?php\n\nclass Caceria {\n\n}\n",
       hints: [
         "Declara el estado compartido: private static int $jinetes = 0;",
         "Dentro de un método estático no hay $this: usa self::$jinetes += $n;",
@@ -1102,8 +1092,7 @@ echo RioBruinen::desbordar();`,
       topic: "Métodos estáticos (Clase::metodo)",
       instructions:
         "Crea la clase RioBruinen con la constante FUERZA_CRECIDA = 50 y el método ESTÁTICO desbordar(array $jinetes): int. Recibe un array con la fuerza de cada jinete y devuelve cuántos son arrastrados: los que tengan fuerza MENOR que la crecida. No debe hacer falta instanciar la clase.",
-      starter_code:
-        "<?php\n\nclass RioBruinen {\n    // 1) const FUERZA_CRECIDA = 50\n\n    // 2) public static function desbordar(array $jinetes): int\n}\n",
+      starter_code: "<?php\n\nclass RioBruinen {\n\n}\n",
       hints: [
         "El método debe ser estático: public static function desbordar(array $jinetes): int",
         "Dentro usa self::FUERZA_CRECIDA para comparar.",
@@ -1131,8 +1120,7 @@ echo RioBruinen::desbordar();`,
         "Añade:\n" +
         "• `esVadeable(): bool` — sólo el Vado Calmo se puede cruzar.\n" +
         "• `public static function segunCaudal(int $caudal): self` — devuelve `Calmo` si el caudal es menor que 30, `Crecido` si es menor que 70, y `Desbordado` en los demás casos. Usa `match (true)`.",
-      starter_code:
-        "<?php\n\nenum Vado: string\n{\n    // 1) los tres casos con su valor\n\n    public function esVadeable(): bool\n    {\n        // 2)\n    }\n\n    public static function segunCaudal(int $caudal): self\n    {\n        // 3) match (true) => ...\n    }\n}\n",
+      starter_code: "<?php\n\nenum Vado: string\n{\n\n    public function esVadeable(): bool\n    {\n    }\n\n    public static function segunCaudal(int $caudal): self\n    {\n    }\n}\n",
       hints: [
         "Un enum respaldado declara el tipo tras el nombre y cada caso lleva valor: `case Calmo = 'calmo';`",
         "`esVadeable()` es una comparación de identidad: `return $this === Vado::Calmo;`",
@@ -1390,8 +1378,7 @@ $p->peso = 99; // ❌ Error: Cannot modify readonly property`,
       instructions:
         "Crea la clase Provision con dos propiedades públicas de sólo lectura: $nombre (string) y $peso (int), asignadas en el constructor. Una vez creada, nadie debe poder modificarlas.",
       sut: "new Provision('lembas', 5)",
-      starter_code:
-        "<?php\n\nclass Provision {\n    // Constructor con $nombre (string) y $peso (int), ambos readonly\n}\n",
+      starter_code: "<?php\n\nclass Provision {\n}\n",
       hints: [
         "Puedes promover y marcar de sólo lectura a la vez: public readonly string $nombre",
         "El constructor completo: __construct(public readonly string $nombre, public readonly int $peso) {}",
@@ -1420,8 +1407,7 @@ $p->peso = 99; // ❌ Error: Cannot modify readonly property`,
       instructions:
         "Crea ResistenciaComunidad con la constante UMBRAL = 20 y la propiedad PRIVADA $calor iniciada en 100. Añade: getCalor(): int; enfriar(int $grados): void, que reste sin bajar nunca de 0 y lance InvalidArgumentException si le pasan un número negativo; y estaCongelada(): bool, true cuando el calor sea menor o igual al UMBRAL.",
       sut: "new ResistenciaComunidad()",
-      starter_code:
-        "<?php\n\nclass ResistenciaComunidad {\n    public const UMBRAL = 20;\n    // 1) private int $calor = 100;\n\n    // 2) getCalor(): int\n\n    // 3) enfriar(int $grados): void  — valida y nunca baja de 0\n\n    // 4) estaCongelada(): bool\n}\n",
+      starter_code: "<?php\n\nclass ResistenciaComunidad {\n    public const UMBRAL = 20;\n\n}\n",
       hints: [
         "Guard clause al principio: if ($grados < 0) throw new InvalidArgumentException('...');",
         "Para no bajar de cero: $this->calor = max(0, $this->calor - $grados);",
@@ -1461,8 +1447,7 @@ $p->peso = 99; // ❌ Error: Cannot modify readonly property`,
       instructions:
         "Crea la clase Temperatura con $grados readonly. El constructor debe lanzar InvalidArgumentException si los grados están fuera del rango -40..40. Añade conMas(int $g): Temperatura, que devuelva una INSTANCIA NUEVA con los grados sumados, dejando la original intacta.",
       sut: "new Temperatura(-10)",
-      starter_code:
-        "<?php\n\nclass Temperatura {\n    // 1) Constructor con public readonly int $grados y validación -40..40\n\n    // 2) conMas(int $g): Temperatura  — devuelve OTRA instancia\n}\n",
+      starter_code: "<?php\n\nclass Temperatura {\n\n}\n",
       hints: [
         "Valida dentro del constructor antes de nada: if ($grados < -40 || $grados > 40) throw new InvalidArgumentException('...');",
         "Como es readonly, conMas() no puede modificar: return new Temperatura($this->grados + $g);",
@@ -1722,8 +1707,7 @@ class PuertaDurin implements Descifrable {
       sut: "new PuertaDurin()",
       support_code:
         "interface Descifrable {\n    public function susurrarPalabra(string $palabra): bool;\n}",
-      starter_code:
-        "<?php\n\n// La interfaz Descifrable ya existe.\n\nclass PuertaDurin {\n    // Implementa el contrato: susurrarPalabra(string $palabra): bool\n}\n",
+      starter_code: "<?php\n\nclass PuertaDurin {\n}\n",
       hints: [
         "Declara que cumples el contrato: class PuertaDurin implements Descifrable",
         "Para ignorar mayúsculas: strtolower($palabra) === 'mellon'",
@@ -1753,8 +1737,7 @@ class PuertaDurin implements Descifrable {
         "Existe la interfaz Enemigo (nombre(): string y atacar(): int) y la clase Camara con el método estático danioTotal(). Crea DOS clases que implementen Enemigo: Trasgo, que se llame 'Trasgo' y ataque con 5, y Troll, que se llame 'Troll' y ataque con 20.",
       support_code:
         "interface Enemigo {\n    public function nombre(): string;\n    public function atacar(): int;\n}\n\nclass Camara {\n    /** @param Enemigo[] $horda */\n    public static function danioTotal(array $horda): int {\n        return array_sum(array_map(fn(Enemigo $e) => $e->atacar(), $horda));\n    }\n}",
-      starter_code:
-        "<?php\n\n// Enemigo (interfaz) y Camara::danioTotal() ya existen.\n\nclass Trasgo {\n    //\n}\n\nclass Troll {\n    //\n}\n",
+      starter_code: "<?php\n\nclass Trasgo {\n}\n\nclass Troll {\n}\n",
       hints: [
         "Ambas deben declarar el contrato: class Trasgo implements Enemigo",
         "Cada una implementa los DOS métodos de la interfaz: nombre() y atacar().",
@@ -1786,8 +1769,7 @@ class PuertaDurin implements Descifrable {
       sut: "new Gandalf()",
       support_code:
         "class Puente {\n    public bool $roto = false;\n}\n\ninterface ComandoMagico {\n    public function lanzar(Puente $p): string;\n}\n\nclass Gandalf {\n    public function ejecutar(ComandoMagico $hechizo, Puente $p): string {\n        return $hechizo->lanzar($p);\n    }\n}",
-      starter_code:
-        "<?php\n\n// ComandoMagico (interfaz), Puente y Gandalf ya existen.\n\nclass PalabraDeMando {\n    // Implementa ComandoMagico: rompe el puente y devuelve el grito\n}\n",
+      starter_code: "<?php\n\nclass PalabraDeMando {\n}\n",
       hints: [
         "class PalabraDeMando implements ComandoMagico { … }",
         "Dentro de lanzar() modifica el puente recibido: $p->roto = true;",
@@ -1828,8 +1810,7 @@ class PuertaDurin implements Descifrable {
         "• `agregar(string $sala): static` — añade una sala y devuelve `$this` (interfaz fluida).\n" +
         "• `getIterator(): Generator` — rinde las salas en orden con `yield from`. Una línea.\n" +
         "• `count(): int` — cuántas salas hay.",
-      starter_code:
-        "<?php\n\nfinal class Galeria implements IteratorAggregate, Countable\n{\n    private array $salas = [];\n\n    public function agregar(string $sala): static\n    {\n        // añade y devuelve $this\n    }\n\n    public function getIterator(): Generator\n    {\n        // yield from ...\n    }\n\n    public function count(): int\n    {\n        //\n    }\n}\n",
+      starter_code: "<?php\n\nfinal class Galeria implements IteratorAggregate, Countable\n{\n    private array $salas = [];\n\n    public function agregar(string $sala): static\n    {\n    }\n\n    public function getIterator(): Generator\n    {\n    }\n\n    public function count(): int\n    {\n    }\n}\n",
       hints: [
         "La interfaz fluida es `return $this;` al final del método que modifica.",
         "`getIterator()` puede ser un generador: `yield from $this->salas;` y ya está.",
@@ -2087,8 +2068,7 @@ class Barca        { use CamuflajeElfico; }  // sin parentesco alguno`,
       sut: "new FrascoDeGaladriel('Frasco')",
       support_code:
         "abstract class ObjetoMagico {\n    public function __construct(protected string $nombre) {}\n    abstract public function usar(): string;\n    public function describir(): string {\n        return \"Don de Galadriel: {$this->nombre}\";\n    }\n}",
-      starter_code:
-        "<?php\n\n// ObjetoMagico es abstracta: tiene $nombre, describir() y exige usar().\n\nclass FrascoDeGaladriel {\n    // Extiéndela e implementa usar(): string\n}\n",
+      starter_code: "<?php\n\nclass FrascoDeGaladriel {\n}\n",
       hints: [
         "class FrascoDeGaladriel extends ObjetoMagico { … }",
         "Sólo tienes que implementar usar(): describir() se hereda ya resuelto.",
@@ -2120,8 +2100,7 @@ class Barca        { use CamuflajeElfico; }  // sin parentesco alguno`,
       topic: "Traits (reuso horizontal)",
       instructions:
         "Crea el trait CamuflajeElfico con el método ocultar(): string, que devuelva 'te fundes con el bosque'. Después crea DOS clases sin parentesco entre sí, CapaElfica y Barca, que USEN ese trait.",
-      starter_code:
-        "<?php\n\ntrait CamuflajeElfico {\n    // ocultar(): string\n}\n\nclass CapaElfica {\n    // usa el trait\n}\n\nclass Barca {\n    // usa el trait\n}\n",
+      starter_code: "<?php\n\ntrait CamuflajeElfico {\n}\n\nclass CapaElfica {\n}\n\nclass Barca {\n}\n",
       hints: [
         "Dentro de una clase, incorporas el trait con: use CamuflajeElfico;",
         "El trait declara el método una sola vez y las dos clases lo obtienen.",
@@ -2146,8 +2125,7 @@ class Barca        { use CamuflajeElfico; }  // sin parentesco alguno`,
         "Existen la abstracta Don (exige poder(): int), el trait Bendecido (aporta bendicion(): int = 10) y Cofre::poderTotal(). Crea Frasco y Capa: ambas EXTIENDEN Don y USAN Bendecido. poder() debe devolver su base más la bendición: 5 para el Frasco (total 15) y 2 para la Capa (total 12).",
       support_code:
         "abstract class Don {\n    abstract public function poder(): int;\n}\n\ntrait Bendecido {\n    public function bendicion(): int { return 10; }\n}\n\nclass Cofre {\n    /** @param Don[] $dones */\n    public static function poderTotal(array $dones): int {\n        return array_sum(array_map(fn(Don $d) => $d->poder(), $dones));\n    }\n}",
-      starter_code:
-        "<?php\n\n// Don (abstracta), Bendecido (trait) y Cofre ya existen.\n\nclass Frasco {\n    // extiende Don y usa Bendecido; poder() = 5 + bendicion()\n}\n\nclass Capa {\n    // extiende Don y usa Bendecido; poder() = 2 + bendicion()\n}\n",
+      starter_code: "<?php\n\nclass Frasco {\n}\n\nclass Capa {\n}\n",
       hints: [
         "Se combinan así: class Frasco extends Don { use Bendecido; … }",
         "Dentro de poder() puedes llamar al método que aporta el trait: return 5 + $this->bendicion();",
@@ -2411,8 +2389,7 @@ public function resistir(int $tentacion): string {
       instructions:
         "Crea la excepción CorruptionException, que extienda Exception. Después crea Boromir con resistir(int $tentacion): string, que devuelva 'resiste' si la tentación es 80 o menos, y LANCE una CorruptionException con el mensaje 'El Anillo lo reclama' si es mayor que 80.",
       sut: "new Boromir()",
-      starter_code:
-        "<?php\n\nclass CorruptionException extends Exception {\n}\n\nclass Boromir {\n    // resistir(int $tentacion): string\n}\n",
+      starter_code: "<?php\n\nclass CorruptionException extends Exception {\n}\n\nclass Boromir {\n}\n",
       hints: [
         "Guard clause: if ($tentacion > 80) { throw new CorruptionException('El Anillo lo reclama'); }",
         "El mensaje se pasa al constructor de la excepción y se lee con getMessage().",
@@ -2454,8 +2431,7 @@ public function resistir(int $tentacion): string {
         "El Solio ya existe: mirar(bool $conAnillo) devuelve la visión, pero LANZA VisionException si miras con el Anillo puesto. Crea la función observar(Solio $s, bool $conAnillo): string, que capture esa excepción y devuelva 'te quitas el Anillo: ' seguido del mensaje de la excepción.",
       support_code:
         "class VisionException extends Exception {}\n\nclass Solio {\n    public function mirar(bool $conAnillo): string {\n        if ($conAnillo) {\n            throw new VisionException('El Ojo te ve');\n        }\n        return 'ves las tierras de Rohan';\n    }\n}",
-      starter_code:
-        "<?php\n\n// Solio::mirar() lanza VisionException si vas con el Anillo puesto.\n\nfunction observar(Solio $s, bool $conAnillo): string {\n    // Captura la excepción y devuelve el mensaje compuesto\n}\n",
+      starter_code: "<?php\n\nfunction observar(Solio $s, bool $conAnillo): string {\n}\n",
       hints: [
         "Envuelve la llamada: try { return $s->mirar($conAnillo); } catch (VisionException $e) { … }",
         "Dentro del catch, compón el texto: return 'te quitas el Anillo: ' . $e->getMessage();",
@@ -2478,8 +2454,7 @@ public function resistir(int $tentacion): string {
         "Existen la interfaz Guerrero y las clases Orco (resistencia al sol 0) y UrukHai (100). Crea FabricaDeHuestes con el método ESTÁTICO crear(string $tipo): Guerrero, que devuelva un Orco para 'orco', un UrukHai para 'uruk', y lance InvalidArgumentException con cualquier otro tipo.",
       support_code:
         "interface Guerrero {\n    public function resistenciaSol(): int;\n}\n\nclass Orco implements Guerrero {\n    public function resistenciaSol(): int { return 0; }\n}\n\nclass UrukHai implements Guerrero {\n    public function resistenciaSol(): int { return 100; }\n}",
-      starter_code:
-        "<?php\n\n// Guerrero (interfaz), Orco y UrukHai ya existen.\n\nclass FabricaDeHuestes {\n    // public static function crear(string $tipo): Guerrero\n}\n",
+      starter_code: "<?php\n\nclass FabricaDeHuestes {\n}\n",
       hints: [
         "En PHP 8 queda muy limpio con match: return match ($tipo) { 'orco' => new Orco(), … };",
         "El caso por defecto lanza: default => throw new InvalidArgumentException(\"Tipo desconocido: $tipo\"),",

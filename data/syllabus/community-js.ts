@@ -215,8 +215,7 @@ export const SYL_JS_COMMUNITY_1: Syllabus = {
         "Escribe `presentarse(nombre)` que devuelva una template string con el formato exacto:\n\n  Soy {nombre} de la Comarca\n\nPor ejemplo, `presentarse('Frodo')` devuelve `'Soy Frodo de la Comarca'`.",
         "Write `presentarse(nombre)` that returns a template string with the exact format:\n\n  Soy {name} de la Comarca\n\nFor example, `presentarse('Frodo')` returns `'Soy Frodo de la Comarca'`.",
       ),
-      starter_code:
-        "function presentarse(nombre) {\n  // devuelve `Soy ${nombre} de la Comarca`\n}\n",
+      starter_code: "function presentarse(nombre) {\n}\n",
       blocks: [
         "function presentarse(nombre) {",
         "  return `Soy ${nombre} de la Comarca`;",
@@ -263,8 +262,7 @@ export const SYL_JS_COMMUNITY_1: Syllabus = {
         "Escribe dos funciones:\n\n• `ocultar(actual, n)` — suma `n` al sigilo `actual`, SIN pasar de 100. Usa `Math.min`.\n• `esVisible(sigilo, percepcion)` — devuelve true si tu `sigilo` es MENOR que la `percepcion` del Nazgûl.",
         "Write two functions:\n\n• `ocultar(actual, n)` — adds `n` to the current stealth, capped at 100. Use `Math.min`.\n• `esVisible(sigilo, percepcion)` — returns true if your `sigilo` is LESS than the Nazgûl's `percepcion`.",
       ),
-      starter_code:
-        "function ocultar(actual, n) {\n  // Math.min(100, ...)\n}\n\nfunction esVisible(sigilo, percepcion) {\n  // ...\n}\n",
+      starter_code: "function ocultar(actual, n) {\n}\n\nfunction esVisible(sigilo, percepcion) {\n}\n",
       blocks: [
         "function ocultar(actual, n) {",
         "  return Math.min(100, actual + n);",
@@ -429,8 +427,7 @@ export const SYL_JS_COMMUNITY_2: Syllabus = {
         "Escribe `atrapar(nombres)` que reciba un array de nombres y devuelva un array nuevo donde cada nombre pasa a ser `'{nombre} queda atrapado'`.\n\nPor ejemplo, `atrapar(['Merry', 'Pippin'])` → `['Merry queda atrapado', 'Pippin queda atrapado']`.",
         "Write `atrapar(nombres)` that takes an array of names and returns a new array where each name becomes `'{name} queda atrapado'`.\n\nFor example, `atrapar(['Merry', 'Pippin'])` → `['Merry queda atrapado', 'Pippin queda atrapado']`.",
       ),
-      starter_code:
-        "function atrapar(nombres) {\n  const r = [];\n  // recorre y añade con push\n  return r;\n}\n",
+      starter_code: "function atrapar(nombres) {\n  const r = [];\n  return r;\n}\n",
       blocks: [
         "function atrapar(nombres) {",
         "  const r = [];",
@@ -466,8 +463,7 @@ export const SYL_JS_COMMUNITY_2: Syllabus = {
         "Escribe `drenarVarios(vidas, frio)` que reciba un array de vidas y un número `frio`, y devuelva un array nuevo con cada vida menos `frio`, SIN bajar de 0. Usa `Math.max(0, ...)`.\n\nEjemplo: `drenarVarios([100, 20, 5], 30)` → `[70, 0, 0]`.",
         "Write `drenarVarios(vidas, frio)` that takes an array of lives and a number `frio`, and returns a new array with each life minus `frio`, never below 0. Use `Math.max(0, ...)`.\n\nExample: `drenarVarios([100, 20, 5], 30)` → `[70, 0, 0]`.",
       ),
-      starter_code:
-        "function drenarVarios(vidas, frio) {\n  const r = [];\n  // recorre y resta, sin bajar de 0\n  return r;\n}\n",
+      starter_code: "function drenarVarios(vidas, frio) {\n  const r = [];\n  return r;\n}\n",
       blocks: [
         "function drenarVarios(vidas, frio) {",
         "  const r = [];",
@@ -503,8 +499,7 @@ export const SYL_JS_COMMUNITY_2: Syllabus = {
         "Escribe `romperHechizo(fuerza, golpe)` que devuelva cuántos versos (de valor `golpe`) hacen falta para reducir la `fuerza` del hechizo a 0 o menos.\n\nCada verso resta `golpe` a la fuerza. Cuenta los versos con un `while`. Si la fuerza ya es 0 o menos, hacen falta 0.",
         "Write `romperHechizo(fuerza, golpe)` that returns how many verses (of value `golpe`) it takes to reduce the spell's `fuerza` to 0 or less.\n\nEach verse subtracts `golpe`. Count the verses with a `while`. If `fuerza` is already 0 or less, it takes 0.",
       ),
-      starter_code:
-        "function romperHechizo(fuerza, golpe) {\n  let versos = 0;\n  // mientras el hechizo aguante, canta\n  return versos;\n}\n",
+      starter_code: "function romperHechizo(fuerza, golpe) {\n  let versos = 0;\n  return versos;\n}\n",
       blocks: [
         "function romperHechizo(fuerza, golpe) {",
         "  let versos = 0;",
@@ -663,8 +658,7 @@ export const SYL_JS_COMMUNITY_3: Syllabus = {
         "Escribe `saludar(nombre, saludo = 'Salve')` que devuelva `'{saludo}, {nombre}'`.\n\nSi no se pasa `saludo`, usa 'Salve'. Ejemplos: `saludar('Frodo')` → `'Salve, Frodo'`; `saludar('Sam', 'Hola')` → `'Hola, Sam'`.",
         "Write `saludar(nombre, saludo = 'Salve')` returning `'{saludo}, {nombre}'`.\n\nIf `saludo` isn't passed, use 'Salve'. Examples: `saludar('Frodo')` → `'Salve, Frodo'`; `saludar('Sam', 'Hola')` → `'Hola, Sam'`.",
       ),
-      starter_code:
-        "function saludar(nombre, saludo = 'Salve') {\n  // devuelve `${saludo}, ${nombre}`\n}\n",
+      starter_code: "function saludar(nombre, saludo = 'Salve') {\n}\n",
       hints: [
         P("El valor por defecto va en la firma: `(nombre, saludo = 'Salve')`.", "The default goes in the signature: `(nombre, saludo = 'Salve')`."),
         P("`return `${saludo}, ${nombre}``;", "`return `${saludo}, ${nombre}``;"),
@@ -689,8 +683,7 @@ export const SYL_JS_COMMUNITY_3: Syllabus = {
         "Escribe `aplicarDoble(fn, x)` que llame a la función `fn` DOS veces sobre `x` y devuelva el resultado: `fn(fn(x))`.\n\nEjemplo: `aplicarDoble((n) => n + 1, 5)` → `7`.",
         "Write `aplicarDoble(fn, x)` that calls the function `fn` TWICE on `x` and returns the result: `fn(fn(x))`.\n\nExample: `aplicarDoble((n) => n + 1, 5)` → `7`.",
       ),
-      starter_code:
-        "function aplicarDoble(fn, x) {\n  // llama fn sobre x, y otra vez sobre el resultado\n}\n",
+      starter_code: "function aplicarDoble(fn, x) {\n}\n",
       hints: [
         P("`fn` es una función: la llamas con paréntesis, `fn(x)`.", "`fn` is a function: call it with parentheses, `fn(x)`."),
         P("`return fn(fn(x));` — el resultado de la primera llamada entra en la segunda.", "`return fn(fn(x));` — the first call's result feeds the second."),
@@ -715,8 +708,7 @@ export const SYL_JS_COMMUNITY_3: Syllabus = {
         "Escribe `crearGolpe(danio)` que DEVUELVA una función. Esa función, al llamarla sin argumentos, devuelve el `danio` con el que se creó.\n\nEjemplo: `crearGolpe(20)()` → `20`.",
         "Write `crearGolpe(danio)` that RETURNS a function. That function, called with no arguments, returns the `danio` it was created with.\n\nExample: `crearGolpe(20)()` → `20`.",
       ),
-      starter_code:
-        "function crearGolpe(danio) {\n  // devuelve una función que devuelve danio\n}\n",
+      starter_code: "function crearGolpe(danio) {\n}\n",
       hints: [
         P("`crearGolpe` debe `return` una función, p. ej. una arrow.", "`crearGolpe` must `return` a function, e.g. an arrow."),
         P("`return () => danio;` — la función interior recuerda `danio` (closure).", "`return () => danio;` — the inner function remembers `danio` (closure)."),
@@ -876,8 +868,7 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
         "Escribe `crearMontura(velocidadMaxima)` que DEVUELVA un objeto con:\n• la propiedad `velocidadMaxima`,\n• el método `galopar(deseada)` que devuelva la velocidad deseada sin superar nunca `this.velocidadMaxima`.\n\nEjemplo: `crearMontura(120).galopar(200)` → `120`.",
         "Write `crearMontura(velocidadMaxima)` that RETURNS an object with:\n• the property `velocidadMaxima`,\n• the method `galopar(deseada)` returning the wanted speed never above `this.velocidadMaxima`.\n\nExample: `crearMontura(120).galopar(200)` → `120`.",
       ),
-      starter_code:
-        "function crearMontura(velocidadMaxima) {\n  // devuelve un objeto con velocidadMaxima y galopar(deseada)\n}\n",
+      starter_code: "function crearMontura(velocidadMaxima) {\n}\n",
       hints: [
         P("Devuelve un objeto literal: `return { velocidadMaxima, galopar(deseada) { ... } };`.", "Return an object literal: `return { velocidadMaxima, galopar(deseada) { ... } };`."),
         P("Dentro del método usa `this.velocidadMaxima` y `Math.min(...)`.", "Inside the method use `this.velocidadMaxima` and `Math.min(...)`."),
@@ -902,8 +893,7 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
         "Escribe `fuerzaTotal(fuerzas)` que reciba un array de números y devuelva su SUMA usando `reduce`. Con un array vacío, devuelve `0`.\n\nEjemplo: `fuerzaTotal([5, 4])` → `9`.",
         "Write `fuerzaTotal(fuerzas)` taking an array of numbers and returning their SUM using `reduce`. For an empty array, return `0`.\n\nExample: `fuerzaTotal([5, 4])` → `9`.",
       ),
-      starter_code:
-        "function fuerzaTotal(fuerzas) {\n  // suma el array con reduce, empezando en 0\n}\n",
+      starter_code: "function fuerzaTotal(fuerzas) {\n}\n",
       hints: [
         P("`reduce` recibe un acumulador y el elemento actual: `(a, b) => a + b`.", "`reduce` takes an accumulator and the current element: `(a, b) => a + b`."),
         P("No olvides el valor inicial: `fuerzas.reduce((a, b) => a + b, 0)`.", "Don't forget the initial value: `fuerzas.reduce((a, b) => a + b, 0)`."),
@@ -928,8 +918,7 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
         "La crecida tiene fuerza 50. Escribe `arrastrados(fuerzas)` que reciba un array con la fuerza de cada jinete y devuelva CUÁNTOS son arrastrados: los que tengan fuerza MENOR que 50.\n\nEjemplo: `arrastrados([10, 20, 80])` → `2`.",
         "The flood has strength 50. Write `arrastrados(fuerzas)` taking an array of each rider's strength and returning HOW MANY are swept away: those with strength LESS than 50.\n\nExample: `arrastrados([10, 20, 80])` → `2`.",
       ),
-      starter_code:
-        "function arrastrados(fuerzas) {\n  // cuenta los que tienen fuerza menor que 50\n}\n",
+      starter_code: "function arrastrados(fuerzas) {\n}\n",
       hints: [
         P("Primero selecciona: `fuerzas.filter(f => f < 50)`.", "First select: `fuerzas.filter(f => f < 50)`."),
         P("Luego cuenta con `.length`.", "Then count with `.length`."),
@@ -954,8 +943,7 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
         "Escribe `nombres(jinetes)` que reciba un array de objetos `{ nombre, fuerza }` y devuelva un array SÓLO con los `nombre`, en el mismo orden.\n\nEjemplo: `nombres([{ nombre: 'Khamûl', fuerza: 8 }])` → `['Khamûl']`.",
         "Write `nombres(jinetes)` taking an array of objects `{ nombre, fuerza }` and returning an array with ONLY the `nombre`s, in the same order.\n\nExample: `nombres([{ nombre: 'Khamûl', fuerza: 8 }])` → `['Khamûl']`.",
       ),
-      starter_code:
-        "function nombres(jinetes) {\n  // devuelve un array con el nombre de cada jinete\n}\n",
+      starter_code: "function nombres(jinetes) {\n}\n",
       hints: [
         P("`map` transforma cada elemento: `jinetes.map(j => ...)`.", "`map` transforms each element: `jinetes.map(j => ...)`."),
         P("De cada jinete quieres su nombre: `j => j.nombre`.", "From each rider you want its name: `j => j.nombre`."),
@@ -1116,8 +1104,7 @@ export const SYL_JS_COMMUNITY_5: Syllabus = {
         "Create class `Provision` with a `constructor(nombre, peso)` that stores both on `this` and calls `Object.freeze(this)` so they can't change afterwards.\n\nOnce created, `p.nombre` and `p.peso` read fine; assigning them throws.",
       ),
       sut: "new Provision('lembas', 5)",
-      starter_code:
-        "class Provision {\n  constructor(nombre, peso) {\n    // guarda nombre y peso en this, y congela el objeto\n  }\n}\n",
+      starter_code: "class Provision {\n  constructor(nombre, peso) {\n  }\n}\n",
       hints: [
         P("Asigna con `this.nombre = nombre;` y `this.peso = peso;`.", "Assign with `this.nombre = nombre;` and `this.peso = peso;`."),
         P("Al final del constructor: `Object.freeze(this);`.", "At the end of the constructor: `Object.freeze(this);`."),
@@ -1148,8 +1135,7 @@ export const SYL_JS_COMMUNITY_5: Syllabus = {
         "Create class `ResistenciaComunidad` with a `static UMBRAL = 20` and a private field `#calor = 100`. Add:\n• `getCalor()` returning it,\n• `enfriar(grados)` that subtracts without going below 0 and throws an `Error` if `grados` is negative,\n• `estaCongelada()` returning `true` when warmth is ≤ UMBRAL.",
       ),
       sut: "new ResistenciaComunidad()",
-      starter_code:
-        "class ResistenciaComunidad {\n  static UMBRAL = 20;\n  #calor = 100;\n\n  getCalor() {\n    // devuelve #calor\n  }\n  enfriar(grados) {\n    // valida (>= 0) y resta sin bajar de 0\n  }\n  estaCongelada() {\n    // true si #calor <= UMBRAL\n  }\n}\n",
+      starter_code: "class ResistenciaComunidad {\n  static UMBRAL = 20;\n  #calor = 100;\n\n  getCalor() {\n  }\n  enfriar(grados) {\n  }\n  estaCongelada() {\n  }\n}\n",
       hints: [
         P("Guard clause: `if (grados < 0) throw new Error('...');`.", "Guard clause: `if (grados < 0) throw new Error('...');`."),
         P("Sin bajar de 0: `this.#calor = Math.max(0, this.#calor - grados);`.", "No below 0: `this.#calor = Math.max(0, this.#calor - grados);`."),
@@ -1191,8 +1177,7 @@ export const SYL_JS_COMMUNITY_5: Syllabus = {
         "Create class `Temperatura`. The `constructor(grados)` must throw an `Error` if `grados` is outside -40..40; if valid, store it in `this.grados` and call `Object.freeze(this)`. Add `conMas(g)` returning a NEW INSTANCE with the added degrees, without touching the original.",
       ),
       sut: "new Temperatura(-10)",
-      starter_code:
-        "class Temperatura {\n  constructor(grados) {\n    // valida -40..40, guarda en this.grados y congela\n  }\n  conMas(g) {\n    // devuelve OTRA Temperatura con los grados sumados\n  }\n}\n",
+      starter_code: "class Temperatura {\n  constructor(grados) {\n  }\n  conMas(g) {\n  }\n}\n",
       hints: [
         P("Valida primero: `if (grados < -40 || grados > 40) throw new Error('...');`.", "Validate first: `if (grados < -40 || grados > 40) throw new Error('...');`."),
         P("Congela al final: `Object.freeze(this);`.", "Freeze at the end: `Object.freeze(this);`."),
@@ -1384,8 +1369,7 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
         "Create class `PuertaDurin` with method `susurrarPalabra(palabra)` returning `true` ONLY for the Elvish word 'mellon' (friend), case-insensitive.\n\nExample: `susurrarPalabra('Mellon')` → `true`.",
       ),
       sut: "new PuertaDurin()",
-      starter_code:
-        "class PuertaDurin {\n  susurrarPalabra(palabra) {\n    // true sólo con 'mellon', sin importar mayúsculas\n  }\n}\n",
+      starter_code: "class PuertaDurin {\n  susurrarPalabra(palabra) {\n  }\n}\n",
       hints: [
         P("Normaliza a minúsculas: `palabra.toLowerCase()`.", "Normalize to lowercase: `palabra.toLowerCase()`."),
         P("Compara: `return palabra.toLowerCase() === 'mellon';`.", "Compare: `return palabra.toLowerCase() === 'mellon';`."),
@@ -1412,8 +1396,7 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
       ),
       support_code:
         "const Camara = {\n  danioTotal(horda) {\n    return horda.reduce((s, e) => s + e.atacar(), 0);\n  },\n};",
-      starter_code:
-        "// Camara.danioTotal(horda) ya existe.\n\nclass Trasgo {\n  // nombre() y atacar()\n}\n\nclass Troll {\n  // nombre() y atacar()\n}\n",
+      starter_code: "\nclass Trasgo {\n}\n\nclass Troll {\n}\n",
       hints: [
         P("Cada clase define los dos métodos: `nombre()` devuelve el texto, `atacar()` el número.", "Each class defines both methods: `nombre()` returns the text, `atacar()` the number."),
         P("`Camara.danioTotal` no sabe si son trasgos o trolls: eso es polimorfismo por forma.", "`Camara.danioTotal` doesn't know if they're goblins or trolls: that's polymorphism by shape."),
@@ -1441,8 +1424,7 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
       ),
       support_code:
         "class Puente {\n  constructor() { this.roto = false; }\n}\nclass Hechizo {\n  constructor(nombre) { this.nombre = nombre; }\n  describir() { return `Hechizo: ${this.nombre}`; }\n  lanzar(puente) { return 'nada ocurre'; }\n}\nconst Gandalf = {\n  ejecutar(hechizo, puente) { return hechizo.lanzar(puente); },\n};",
-      starter_code:
-        "// Hechizo (base), Puente y Gandalf ya existen.\n\nclass PalabraDeMando extends Hechizo {\n  // constructor() con super(...), y lanzar(puente)\n}\n",
+      starter_code: "\nclass PalabraDeMando extends Hechizo {\n}\n",
       hints: [
         P("En el constructor, primero: `super('Palabra de Mando');`.", "In the constructor, first: `super('Palabra de Mando');`."),
         P("`lanzar` modifica el puente: `puente.roto = true;` y `return '¡No puedes pasar!';`.", "`lanzar` modifies the bridge: `puente.roto = true;` then `return '¡No puedes pasar!';`."),
@@ -1473,8 +1455,7 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
         "Crea la clase `Galeria` con las salas en un campo PRIVADO `#salas`:\n• `agregar(sala)` — añade la sala y devuelve `this` (interfaz fluida),\n• `*[Symbol.iterator]()` — un generador que rinde las salas en orden con `yield*`,\n• el getter `tamano` — cuántas salas hay.\n\nAsí `[...galeria]` y `for...of` la recorren.",
         "Create class `Galeria` with the halls in a PRIVATE field `#salas`:\n• `agregar(sala)` — adds the hall and returns `this` (fluent interface),\n• `*[Symbol.iterator]()` — a generator yielding the halls in order with `yield*`,\n• the getter `tamano` — how many halls there are.\n\nThen `[...galeria]` and `for...of` walk it.",
       ),
-      starter_code:
-        "class Galeria {\n  #salas = [];\n\n  agregar(sala) {\n    // añade y devuelve this\n  }\n\n  *[Symbol.iterator]() {\n    // yield* las salas\n  }\n\n  get tamano() {\n    // cuántas salas\n  }\n}\n",
+      starter_code: "class Galeria {\n  #salas = [];\n\n  agregar(sala) {\n  }\n\n  *[Symbol.iterator]() {\n  }\n\n  get tamano() {\n  }\n}\n",
       hints: [
         P("Fluida: al final de `agregar`, `return this;`.", "Fluent: at the end of `agregar`, `return this;`."),
         P("El generador delega: `yield* this.#salas;`.", "The generator delegates: `yield* this.#salas;`."),
@@ -1640,8 +1621,7 @@ export const SYL_JS_COMMUNITY_7: Syllabus = {
       sut: "new FrascoDeGaladriel('Frasco')",
       support_code:
         "class ObjetoMagico {\n  constructor(nombre) {\n    if (new.target === ObjetoMagico) throw new Error('ObjetoMagico es abstracta');\n    this.nombre = nombre;\n  }\n  usar() { throw new Error('usar() no implementado'); }\n  describir() { return `Don de Galadriel: ${this.nombre}`; }\n}",
-      starter_code:
-        "// ObjetoMagico ya existe: es abstracta, comparte describir() y exige usar().\n\nclass FrascoDeGaladriel extends ObjetoMagico {\n  // implementa usar(): string\n}\n",
+      starter_code: "\nclass FrascoDeGaladriel extends ObjetoMagico {\n}\n",
       hints: [
         P("Sólo implementa `usar()`: `describir()` se hereda ya resuelto.", "Just implement `usar()`: `describir()` is inherited already solved."),
         P("Devuelve el texto exacto: `return 'una luz en los lugares oscuros';`.", "Return the exact text: `return 'una luz en los lugares oscuros';`."),
@@ -1673,8 +1653,7 @@ export const SYL_JS_COMMUNITY_7: Syllabus = {
       ),
       support_code:
         "const CamuflajeElfico = {\n  ocultar() { return 'te fundes con el bosque'; },\n};",
-      starter_code:
-        "// El mixin CamuflajeElfico ya existe: { ocultar() {...} }\n\nclass CapaElfica {}\nclass Barca {}\n\n// aplica el mixin al prototipo de cada clase\n",
+      starter_code: "\nclass CapaElfica {}\nclass Barca {}\n",
       hints: [
         P("`Object.assign(CapaElfica.prototype, CamuflajeElfico);`.", "`Object.assign(CapaElfica.prototype, CamuflajeElfico);`."),
         P("Haz lo mismo con `Barca.prototype`. No copies el método a mano.", "Do the same with `Barca.prototype`. Don't hand-copy the method."),
@@ -1702,8 +1681,7 @@ export const SYL_JS_COMMUNITY_7: Syllabus = {
       ),
       support_code:
         "class Don {\n  constructor() { if (new.target === Don) throw new Error('Don es abstracta'); }\n  poder() { throw new Error('poder() no implementado'); }\n}\nconst Bendecido = { bendicion() { return 10; } };\nconst Cofre = {\n  poderTotal(dones) { return dones.reduce((s, d) => s + d.poder(), 0); },\n};",
-      starter_code:
-        "// Don (base), Bendecido (mixin) y Cofre ya existen.\n\nclass Frasco extends Don {\n  poder() { /* 5 + this.bendicion() */ }\n}\nclass Capa extends Don {\n  poder() { /* 2 + this.bendicion() */ }\n}\n\n// añade el mixin Bendecido al prototipo de cada una\n",
+      starter_code: "\nclass Frasco extends Don {\n  poder() { /* 5 + this.bendicion() */ }\n}\nclass Capa extends Don {\n  poder() { /* 2 + this.bendicion() */ }\n}\n",
       hints: [
         P("Dentro de `poder()` usa el método del mixin: `return 5 + this.bendicion();`.", "Inside `poder()` use the mixin's method: `return 5 + this.bendicion();`."),
         P("Aplica el mixin: `Object.assign(Frasco.prototype, Bendecido);` (y Capa).", "Apply the mixin: `Object.assign(Frasco.prototype, Bendecido);` (and Capa)."),
@@ -1870,8 +1848,7 @@ export const SYL_JS_COMMUNITY_8: Syllabus = {
         "Create `CorruptionError` EXTENDING `Error`. Then create class `Boromir` with `resistir(tentacion)` returning 'resiste' if temptation is 80 or less, and THROWING a `CorruptionError` with the message 'El Anillo lo reclama' if greater than 80.",
       ),
       sut: "new Boromir()",
-      starter_code:
-        "class CorruptionError extends Error {}\n\nclass Boromir {\n  resistir(tentacion) {\n    // 'resiste' si <= 80; si no, throw new CorruptionError(...)\n  }\n}\n",
+      starter_code: "class CorruptionError extends Error {}\n\nclass Boromir {\n  resistir(tentacion) {\n  }\n}\n",
       hints: [
         P("Guard clause: `if (tentacion > 80) throw new CorruptionError('El Anillo lo reclama');`.", "Guard clause: `if (tentacion > 80) throw new CorruptionError('El Anillo lo reclama');`."),
         P("El mensaje se lee con `e.message`.", "The message is read with `e.message`."),
@@ -1909,8 +1886,7 @@ export const SYL_JS_COMMUNITY_8: Syllabus = {
       ),
       support_code:
         "class VisionError extends Error {}\n\nclass Solio {\n  mirar(conAnillo) {\n    if (conAnillo) throw new VisionError('El Ojo te ve');\n    return 'ves las tierras de Rohan';\n  }\n}",
-      starter_code:
-        "// Solio.mirar(conAnillo) lanza VisionError si vas con el Anillo puesto.\n\nfunction observar(solio, conAnillo) {\n  // captura el error y devuelve el mensaje compuesto\n}\n",
+      starter_code: "\nfunction observar(solio, conAnillo) {\n}\n",
       hints: [
         P("Envuelve la llamada: `try { return solio.mirar(conAnillo); } catch (e) { ... }`.", "Wrap the call: `try { return solio.mirar(conAnillo); } catch (e) { ... }`."),
         P("En el catch: `return 'te quitas el Anillo: ' + e.message;`.", "In the catch: `return 'te quitas el Anillo: ' + e.message;`."),
@@ -1936,8 +1912,7 @@ export const SYL_JS_COMMUNITY_8: Syllabus = {
       ),
       support_code:
         "class Orco {\n  resistenciaSol() { return 0; }\n}\nclass UrukHai {\n  resistenciaSol() { return 100; }\n}",
-      starter_code:
-        "// Orco y UrukHai ya existen.\n\nclass FabricaDeHuestes {\n  static crear(tipo) {\n    // 'orco' -> new Orco(); 'uruk' -> new UrukHai(); si no, throw\n  }\n}\n",
+      starter_code: "\nclass FabricaDeHuestes {\n  static crear(tipo) {\n  }\n}\n",
       hints: [
         P("Compara el tipo y devuelve la instancia: `if (tipo === 'orco') return new Orco();`.", "Compare the type and return the instance: `if (tipo === 'orco') return new Orco();`."),
         P("Para lo desconocido: `throw new Error(`Tipo desconocido: ${tipo}`);`.", "For the unknown: `throw new Error(`Tipo desconocido: ${tipo}`);`."),

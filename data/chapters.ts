@@ -377,8 +377,7 @@ class Hobbit {
         instructions:
           "Crea la clase Hobbit con un constructor que reciba $nombre (string) y guárdelo en una propiedad. Añade el método presentarse(): string que devuelva exactamente 'Soy {nombre} de la Comarca'.",
         sut: "new Hobbit('Frodo')",
-        starter_code:
-          "<?php\n\nclass Hobbit {\n    // 1) Declara la propiedad y el constructor con $nombre\n\n    // 2) Implementa presentarse(): string\n}\n",
+        starter_code: "<?php\n\nclass Hobbit {\n\n}\n",
         hints: [
           "En PHP 8 puedes declarar y asignar la propiedad en el propio constructor: __construct(private string $nombre) {}",
           'Dentro de comillas dobles se interpola así: return "Soy {$this->nombre} de la Comarca";',
@@ -406,8 +405,7 @@ class Hobbit {
         sut: "new Hobbit()",
         support_code:
           "class Nazgul {\n    public function __construct(private int $percepcion = 50) {}\n    public function getPercepcion(): int { return $this->percepcion; }\n}",
-        starter_code:
-          "<?php\n\nclass Hobbit {\n    // Protege $nivelSigilo (private) e implementa los tres métodos\n\n}\n",
+        starter_code: "<?php\n\nclass Hobbit {\n\n}\n",
         hints: [
           "Declara la propiedad como private int $nivelSigilo = 0; para que nadie pueda tocarla desde fuera.",
           "ocultarse() debe SUMAR al sigilo actual, no reemplazarlo: min(100, $this->nivelSigilo + $n)",
@@ -789,8 +787,7 @@ export const CHAPTER_2: Chapter = {
         instructions:
           "Crea la clase HombreSauce con un constructor que reciba $fuerza (int) y la guarde. Añade getFuerza(): int y atrapar(string $nombre): string, que devuelva exactamente '{nombre} queda atrapado entre las raíces'.",
         sut: "new HombreSauce(80)",
-        starter_code:
-          "<?php\n\nclass HombreSauce {\n    // 1) Constructor que reciba $fuerza\n\n    // 2) getFuerza(): int\n\n    // 3) atrapar(string $nombre): string\n}\n",
+        starter_code: "<?php\n\nclass HombreSauce {\n\n}\n",
         hints: [
           "__construct(private int $fuerza) {} declara la propiedad y la asigna de una vez.",
           'El texto debe coincidir exactamente: return "$nombre queda atrapado entre las raíces";',
@@ -821,8 +818,7 @@ export const CHAPTER_2: Chapter = {
         instructions:
           "Crea la clase Tumulario con un constructor que reciba $frio (int). Añade getFrio(): int y drenar(int $vida): int, que reste el frío a la vida devuelta, sin bajar nunca de 0.",
         sut: "new Tumulario(30)",
-        starter_code:
-          "<?php\n\nclass Tumulario {\n    // Constructor con $frio, getFrio() y drenar(int $vida): int\n}\n",
+        starter_code: "<?php\n\nclass Tumulario {\n}\n",
         hints: [
           "Guarda el frío con __construct(private int $frio) {}",
           "Para que nunca baje de cero: return max(0, $vida - $this->frio);",
@@ -856,8 +852,7 @@ export const CHAPTER_2: Chapter = {
         sut: "new TomBombadil()",
         support_code:
           "class Personaje {\n    public bool $paralizado = true;\n    public function estaParalizado(): bool { return $this->paralizado; }\n}\n\nclass Prueba {\n    public static ?Personaje $victima = null;\n    public static function nueva(): Personaje {\n        self::$victima = new Personaje();\n        return self::$victima;\n    }\n}",
-        starter_code:
-          "<?php\n\nclass EfectoHechizo {\n    // Constructor que reciba Personaje $objetivo\n\n    // __destruct(): pon $paralizado = false en el objetivo\n}\n\nclass TomBombadil {\n    // cantarConjuro(Personaje $p): void  — crea un EfectoHechizo LOCAL\n}\n",
+        starter_code: "<?php\n\nclass EfectoHechizo {\n\n}\n\nclass TomBombadil {\n}\n",
         hints: [
           "El constructor solo guarda la referencia: __construct(private Personaje $objetivo) {}",
           "El destructor se llama solo al morir el objeto: public function __destruct() { $this->objetivo->paralizado = false; }",
@@ -1251,8 +1246,7 @@ class Montaraz extends Viajero {
         sut: "new Montaraz('Trancos')",
         support_code:
           "class Viajero {\n    public function __construct(protected string $nombre) {}\n    public function viajar(string $destino): string {\n        return \"{$this->nombre} viaja hacia {$destino}\";\n    }\n}",
-        starter_code:
-          "<?php\n\n// Viajero ya existe: tiene $nombre (protected) y viajar(string $destino)\n\nclass Montaraz {\n    // 1) Haz que herede de Viajero\n\n    // 2) Añade rastrear(string $rastro): string\n}\n",
+        starter_code: "<?php\n\nclass Montaraz {\n\n}\n",
         hints: [
           "Para heredar: class Montaraz extends Viajero { … }",
           "$nombre es protected, así que la subclase puede usar $this->nombre directamente.",
@@ -1285,8 +1279,7 @@ class Montaraz extends Viajero {
         sut: "new HojaDeTumulo(15)",
         support_code:
           "class Arma {\n    public static int $llamadasAlPadre = 0;\n    public function __construct(protected int $danio) {}\n    public function atacar(): int {\n        self::$llamadasAlPadre++;\n        return $this->danio;\n    }\n}",
-        starter_code:
-          "<?php\n\n// Arma ya existe: constructor con $danio (protected) y atacar(): int\n\nclass HojaDeTumulo {\n    // Hereda de Arma y sobrescribe atacar() usando parent::atacar()\n}\n",
+        starter_code: "<?php\n\nclass HojaDeTumulo {\n}\n",
         hints: [
           "class HojaDeTumulo extends Arma { … }",
           "Dentro de atacar(), llama al padre así: return parent::atacar() * 2;",
@@ -1327,8 +1320,7 @@ class Montaraz extends Viajero {
         sut: "new HojaEncantada(20)",
         support_code:
           "class Espectro {\n    public bool $esInvisible = true;\n}\n\nclass Arma {\n    public function __construct(protected int $danio) {}\n    public function golpear(Espectro $e): int {\n        return $e->esInvisible ? 0 : $this->danio;\n    }\n}",
-        starter_code:
-          "<?php\n\n// Arma::golpear() devuelve 0 si el espectro es invisible\n\nclass HojaEncantada {\n    // Hereda de Arma y sobrescribe golpear(Espectro $e): int\n}\n",
+        starter_code: "<?php\n\nclass HojaEncantada {\n}\n",
         hints: [
           "class HojaEncantada extends Arma { … }",
           "$danio es protected: puedes devolverlo directamente con return $this->danio;",
@@ -1698,8 +1690,7 @@ echo RioBruinen::desbordar();`,
         instructions:
           "Crea la clase Asfaloth con una constante pública VELOCIDAD_MAXIMA = 120 y el método galopar(int $deseada): int, que devuelva la velocidad deseada SIN superar nunca la constante. Léela desde dentro con self::.",
         sut: "new Asfaloth()",
-        starter_code:
-          "<?php\n\nclass Asfaloth {\n    // 1) Constante pública VELOCIDAD_MAXIMA = 120\n\n    // 2) galopar(int $deseada): int  — nunca por encima de la constante\n}\n",
+        starter_code: "<?php\n\nclass Asfaloth {\n\n}\n",
         hints: [
           "Una constante de clase se declara así: public const VELOCIDAD_MAXIMA = 120;",
           "Desde dentro de la clase se lee con self::VELOCIDAD_MAXIMA (nunca con $this->).",
@@ -1736,8 +1727,7 @@ echo RioBruinen::desbordar();`,
         topic: "Propiedades estáticas (self::$prop)",
         instructions:
           "Crea la clase Cacería con una propiedad estática privada $jinetes que empiece en 0, y dos métodos ESTÁTICOS: sumar(int $n): void, que la incremente, y total(): int, que la devuelva. Todo se llama con Cacería::… sin instanciar.",
-        starter_code:
-          "<?php\n\nclass Caceria {\n    // 1) private static int $jinetes = 0;\n\n    // 2) public static function sumar(int $n): void\n\n    // 3) public static function total(): int\n}\n",
+        starter_code: "<?php\n\nclass Caceria {\n\n}\n",
         hints: [
           "Declara el estado compartido: private static int $jinetes = 0;",
           "Dentro de un método estático no hay $this: usa self::$jinetes += $n;",
@@ -1777,8 +1767,7 @@ echo RioBruinen::desbordar();`,
         topic: "Métodos estáticos (Clase::metodo)",
         instructions:
           "Crea la clase RioBruinen con la constante FUERZA_CRECIDA = 50 y el método ESTÁTICO desbordar(array $jinetes): int. Recibe un array con la fuerza de cada jinete y devuelve cuántos son arrastrados: los que tengan fuerza MENOR que la crecida. No debe hacer falta instanciar la clase.",
-        starter_code:
-          "<?php\n\nclass RioBruinen {\n    // 1) const FUERZA_CRECIDA = 50\n\n    // 2) public static function desbordar(array $jinetes): int\n}\n",
+        starter_code: "<?php\n\nclass RioBruinen {\n\n}\n",
         hints: [
           "El método debe ser estático: public static function desbordar(array $jinetes): int",
           "Dentro usa self::FUERZA_CRECIDA para comparar.",
@@ -1824,8 +1813,7 @@ echo RioBruinen::desbordar();`,
           "Añade:\n" +
           "• `esVadeable(): bool` — sólo el Vado Calmo se puede cruzar.\n" +
           "• `public static function segunCaudal(int $caudal): self` — devuelve `Calmo` si el caudal es menor que 30, `Crecido` si es menor que 70, y `Desbordado` en los demás casos. Usa `match (true)`.",
-        starter_code:
-          "<?php\n\nenum Vado: string\n{\n    // 1) los tres casos con su valor\n\n    public function esVadeable(): bool\n    {\n        // 2)\n    }\n\n    public static function segunCaudal(int $caudal): self\n    {\n        // 3) match (true) => ...\n    }\n}\n",
+        starter_code: "<?php\n\nenum Vado: string\n{\n\n    public function esVadeable(): bool\n    {\n    }\n\n    public static function segunCaudal(int $caudal): self\n    {\n    }\n}\n",
         hints: [
           "Un enum respaldado declara el tipo tras el nombre y cada caso lleva valor: `case Calmo = 'calmo';`",
           "`esVadeable()` es una comparación de identidad: `return $this === Vado::Calmo;`",
@@ -2203,8 +2191,7 @@ $p->peso = 99; // ❌ Error: Cannot modify readonly property`,
         instructions:
           "Crea la clase Provision con dos propiedades públicas de sólo lectura: $nombre (string) y $peso (int), asignadas en el constructor. Una vez creada, nadie debe poder modificarlas.",
         sut: "new Provision('lembas', 5)",
-        starter_code:
-          "<?php\n\nclass Provision {\n    // Constructor con $nombre (string) y $peso (int), ambos readonly\n}\n",
+        starter_code: "<?php\n\nclass Provision {\n}\n",
         hints: [
           "Puedes promover y marcar de sólo lectura a la vez: public readonly string $nombre",
           "El constructor completo: __construct(public readonly string $nombre, public readonly int $peso) {}",
@@ -2242,8 +2229,7 @@ $p->peso = 99; // ❌ Error: Cannot modify readonly property`,
         instructions:
           "Crea ResistenciaComunidad con la constante UMBRAL = 20 y la propiedad PRIVADA $calor iniciada en 100. Añade: getCalor(): int; enfriar(int $grados): void, que reste sin bajar nunca de 0 y lance InvalidArgumentException si le pasan un número negativo; y estaCongelada(): bool, true cuando el calor sea menor o igual al UMBRAL.",
         sut: "new ResistenciaComunidad()",
-        starter_code:
-          "<?php\n\nclass ResistenciaComunidad {\n    public const UMBRAL = 20;\n    // 1) private int $calor = 100;\n\n    // 2) getCalor(): int\n\n    // 3) enfriar(int $grados): void  — valida y nunca baja de 0\n\n    // 4) estaCongelada(): bool\n}\n",
+        starter_code: "<?php\n\nclass ResistenciaComunidad {\n    public const UMBRAL = 20;\n\n}\n",
         hints: [
           "Guard clause al principio: if ($grados < 0) throw new InvalidArgumentException('...');",
           "Para no bajar de cero: $this->calor = max(0, $this->calor - $grados);",
@@ -2296,8 +2282,7 @@ $p->peso = 99; // ❌ Error: Cannot modify readonly property`,
         instructions:
           "Crea la clase Temperatura con $grados readonly. El constructor debe lanzar InvalidArgumentException si los grados están fuera del rango -40..40. Añade conMas(int $g): Temperatura, que devuelva una INSTANCIA NUEVA con los grados sumados, dejando la original intacta.",
         sut: "new Temperatura(-10)",
-        starter_code:
-          "<?php\n\nclass Temperatura {\n    // 1) Constructor con public readonly int $grados y validación -40..40\n\n    // 2) conMas(int $g): Temperatura  — devuelve OTRA instancia\n}\n",
+        starter_code: "<?php\n\nclass Temperatura {\n\n}\n",
         hints: [
           "Valida dentro del constructor antes de nada: if ($grados < -40 || $grados > 40) throw new InvalidArgumentException('...');",
           "Como es readonly, conMas() no puede modificar: return new Temperatura($this->grados + $g);",
@@ -2689,8 +2674,7 @@ class PuertaDurin implements Descifrable {
         sut: "new PuertaDurin()",
         support_code:
           "interface Descifrable {\n    public function susurrarPalabra(string $palabra): bool;\n}",
-        starter_code:
-          "<?php\n\n// La interfaz Descifrable ya existe.\n\nclass PuertaDurin {\n    // Implementa el contrato: susurrarPalabra(string $palabra): bool\n}\n",
+        starter_code: "<?php\n\nclass PuertaDurin {\n}\n",
         hints: [
           "Declara que cumples el contrato: class PuertaDurin implements Descifrable",
           "Para ignorar mayúsculas: strtolower($palabra) === 'mellon'",
@@ -2734,8 +2718,7 @@ class PuertaDurin implements Descifrable {
           "Existe la interfaz Enemigo (nombre(): string y atacar(): int) y la clase Camara con el método estático danioTotal(). Crea DOS clases que implementen Enemigo: Trasgo, que se llame 'Trasgo' y ataque con 5, y Troll, que se llame 'Troll' y ataque con 20.",
         support_code:
           "interface Enemigo {\n    public function nombre(): string;\n    public function atacar(): int;\n}\n\nclass Camara {\n    /** @param Enemigo[] $horda */\n    public static function danioTotal(array $horda): int {\n        return array_sum(array_map(fn(Enemigo $e) => $e->atacar(), $horda));\n    }\n}",
-        starter_code:
-          "<?php\n\n// Enemigo (interfaz) y Camara::danioTotal() ya existen.\n\nclass Trasgo {\n    //\n}\n\nclass Troll {\n    //\n}\n",
+        starter_code: "<?php\n\nclass Trasgo {\n}\n\nclass Troll {\n}\n",
         hints: [
           "Ambas deben declarar el contrato: class Trasgo implements Enemigo",
           "Cada una implementa los DOS métodos de la interfaz: nombre() y atacar().",
@@ -2790,8 +2773,7 @@ class PuertaDurin implements Descifrable {
         sut: "new Gandalf()",
         support_code:
           "class Puente {\n    public bool $roto = false;\n}\n\ninterface ComandoMagico {\n    public function lanzar(Puente $p): string;\n}\n\nclass Gandalf {\n    public function ejecutar(ComandoMagico $hechizo, Puente $p): string {\n        return $hechizo->lanzar($p);\n    }\n}",
-        starter_code:
-          "<?php\n\n// ComandoMagico (interfaz), Puente y Gandalf ya existen.\n\nclass PalabraDeMando {\n    // Implementa ComandoMagico: rompe el puente y devuelve el grito\n}\n",
+        starter_code: "<?php\n\nclass PalabraDeMando {\n}\n",
         hints: [
           "class PalabraDeMando implements ComandoMagico { … }",
           "Dentro de lanzar() modifica el puente recibido: $p->roto = true;",
@@ -2834,8 +2816,7 @@ class PuertaDurin implements Descifrable {
           "• `agregar(string $sala): static` — añade una sala y devuelve `$this` (interfaz fluida).\n" +
           "• `getIterator(): Generator` — rinde las salas en orden con `yield from`. Una línea.\n" +
           "• `count(): int` — cuántas salas hay.",
-        starter_code:
-          "<?php\n\nfinal class Galeria implements IteratorAggregate, Countable\n{\n    private array $salas = [];\n\n    public function agregar(string $sala): static\n    {\n        // añade y devuelve $this\n    }\n\n    public function getIterator(): Generator\n    {\n        // yield from ...\n    }\n\n    public function count(): int\n    {\n        //\n    }\n}\n",
+        starter_code: "<?php\n\nfinal class Galeria implements IteratorAggregate, Countable\n{\n    private array $salas = [];\n\n    public function agregar(string $sala): static\n    {\n    }\n\n    public function getIterator(): Generator\n    {\n    }\n\n    public function count(): int\n    {\n    }\n}\n",
         hints: [
           "La interfaz fluida es `return $this;` al final del método que modifica.",
           "`getIterator()` puede ser un generador: `yield from $this->salas;` y ya está.",
@@ -3213,8 +3194,7 @@ class Barca        { use CamuflajeElfico; }  // sin parentesco alguno`,
         sut: "new FrascoDeGaladriel('Frasco')",
         support_code:
           "abstract class ObjetoMagico {\n    public function __construct(protected string $nombre) {}\n    abstract public function usar(): string;\n    public function describir(): string {\n        return \"Don de Galadriel: {$this->nombre}\";\n    }\n}",
-        starter_code:
-          "<?php\n\n// ObjetoMagico es abstracta: tiene $nombre, describir() y exige usar().\n\nclass FrascoDeGaladriel {\n    // Extiéndela e implementa usar(): string\n}\n",
+        starter_code: "<?php\n\nclass FrascoDeGaladriel {\n}\n",
         hints: [
           "class FrascoDeGaladriel extends ObjetoMagico { … }",
           "Sólo tienes que implementar usar(): describir() se hereda ya resuelto.",
@@ -3252,8 +3232,7 @@ class Barca        { use CamuflajeElfico; }  // sin parentesco alguno`,
         topic: "Traits (reuso horizontal)",
         instructions:
           "Crea el trait CamuflajeElfico con el método ocultar(): string, que devuelva 'te fundes con el bosque'. Después crea DOS clases sin parentesco entre sí, CapaElfica y Barca, que USEN ese trait.",
-        starter_code:
-          "<?php\n\ntrait CamuflajeElfico {\n    // ocultar(): string\n}\n\nclass CapaElfica {\n    // usa el trait\n}\n\nclass Barca {\n    // usa el trait\n}\n",
+        starter_code: "<?php\n\ntrait CamuflajeElfico {\n}\n\nclass CapaElfica {\n}\n\nclass Barca {\n}\n",
         hints: [
           "Dentro de una clase, incorporas el trait con: use CamuflajeElfico;",
           "El trait declara el método una sola vez y las dos clases lo obtienen.",
@@ -3295,8 +3274,7 @@ class Barca        { use CamuflajeElfico; }  // sin parentesco alguno`,
           "Existen la abstracta Don (exige poder(): int), el trait Bendecido (aporta bendicion(): int = 10) y Cofre::poderTotal(). Crea Frasco y Capa: ambas EXTIENDEN Don y USAN Bendecido. poder() debe devolver su base más la bendición: 5 para el Frasco (total 15) y 2 para la Capa (total 12).",
         support_code:
           "abstract class Don {\n    abstract public function poder(): int;\n}\n\ntrait Bendecido {\n    public function bendicion(): int { return 10; }\n}\n\nclass Cofre {\n    /** @param Don[] $dones */\n    public static function poderTotal(array $dones): int {\n        return array_sum(array_map(fn(Don $d) => $d->poder(), $dones));\n    }\n}",
-        starter_code:
-          "<?php\n\n// Don (abstracta), Bendecido (trait) y Cofre ya existen.\n\nclass Frasco {\n    // extiende Don y usa Bendecido; poder() = 5 + bendicion()\n}\n\nclass Capa {\n    // extiende Don y usa Bendecido; poder() = 2 + bendicion()\n}\n",
+        starter_code: "<?php\n\nclass Frasco {\n}\n\nclass Capa {\n}\n",
         hints: [
           "Se combinan así: class Frasco extends Don { use Bendecido; … }",
           "Dentro de poder() puedes llamar al método que aporta el trait: return 5 + $this->bendicion();",
@@ -3690,8 +3668,7 @@ public function resistir(int $tentacion): string {
         instructions:
           "Crea la excepción CorruptionException, que extienda Exception. Después crea Boromir con resistir(int $tentacion): string, que devuelva 'resiste' si la tentación es 80 o menos, y LANCE una CorruptionException con el mensaje 'El Anillo lo reclama' si es mayor que 80.",
         sut: "new Boromir()",
-        starter_code:
-          "<?php\n\nclass CorruptionException extends Exception {\n}\n\nclass Boromir {\n    // resistir(int $tentacion): string\n}\n",
+        starter_code: "<?php\n\nclass CorruptionException extends Exception {\n}\n\nclass Boromir {\n}\n",
         hints: [
           "Guard clause: if ($tentacion > 80) { throw new CorruptionException('El Anillo lo reclama'); }",
           "El mensaje se pasa al constructor de la excepción y se lee con getMessage().",
@@ -3738,8 +3715,7 @@ public function resistir(int $tentacion): string {
           "El Solio ya existe: mirar(bool $conAnillo) devuelve la visión, pero LANZA VisionException si miras con el Anillo puesto. Crea la función observar(Solio $s, bool $conAnillo): string, que capture esa excepción y devuelva 'te quitas el Anillo: ' seguido del mensaje de la excepción.",
         support_code:
           "class VisionException extends Exception {}\n\nclass Solio {\n    public function mirar(bool $conAnillo): string {\n        if ($conAnillo) {\n            throw new VisionException('El Ojo te ve');\n        }\n        return 'ves las tierras de Rohan';\n    }\n}",
-        starter_code:
-          "<?php\n\n// Solio::mirar() lanza VisionException si vas con el Anillo puesto.\n\nfunction observar(Solio $s, bool $conAnillo): string {\n    // Captura la excepción y devuelve el mensaje compuesto\n}\n",
+        starter_code: "<?php\n\nfunction observar(Solio $s, bool $conAnillo): string {\n}\n",
         hints: [
           "Envuelve la llamada: try { return $s->mirar($conAnillo); } catch (VisionException $e) { … }",
           "Dentro del catch, compón el texto: return 'te quitas el Anillo: ' . $e->getMessage();",
@@ -3772,8 +3748,7 @@ public function resistir(int $tentacion): string {
           "Existen la interfaz Guerrero y las clases Orco (resistencia al sol 0) y UrukHai (100). Crea FabricaDeHuestes con el método ESTÁTICO crear(string $tipo): Guerrero, que devuelva un Orco para 'orco', un UrukHai para 'uruk', y lance InvalidArgumentException con cualquier otro tipo.",
         support_code:
           "interface Guerrero {\n    public function resistenciaSol(): int;\n}\n\nclass Orco implements Guerrero {\n    public function resistenciaSol(): int { return 0; }\n}\n\nclass UrukHai implements Guerrero {\n    public function resistenciaSol(): int { return 100; }\n}",
-        starter_code:
-          "<?php\n\n// Guerrero (interfaz), Orco y UrukHai ya existen.\n\nclass FabricaDeHuestes {\n    // public static function crear(string $tipo): Guerrero\n}\n",
+        starter_code: "<?php\n\nclass FabricaDeHuestes {\n}\n",
         hints: [
           "En PHP 8 queda muy limpio con match: return match ($tipo) { 'orco' => new Orco(), … };",
           "El caso por defecto lanza: default => throw new InvalidArgumentException(\"Tipo desconocido: $tipo\"),",
@@ -4071,8 +4046,7 @@ class ServicioPedido {
         sut: "new Carrito()",
         support_code:
           "interface Descuento {\n    public function aplicar(int $total): int;\n}\n\nclass Carrito {\n    public function total(int $base, Descuento $d): int {\n        return $d->aplicar($base);\n    }\n}",
-        starter_code:
-          "<?php\n\n// Descuento (interfaz) y Carrito ya existen y NO se tocan.\n\nclass DescuentoElfico {\n    // Implementa la interfaz Descuento con un 30% de rebaja\n}\n",
+        starter_code: "<?php\n\nclass DescuentoElfico {\n}\n",
         hints: [
           { es: "Para implementar un contrato: class DescuentoElfico implements Descuento { … }", en: "To implement a contract: class DescuentoElfico implements Descuento { … }" },
           { es: "El método debe llamarse igual que en la interfaz: aplicar(int $total): int", en: "The method must be named as in the interface: aplicar(int $total): int" },
@@ -4114,8 +4088,7 @@ class ServicioPedido {
         },
         support_code:
           "abstract class Ave {\n    abstract public function moverse(): string;\n}",
-        starter_code:
-          "<?php\n\n// Ave es abstracta y exige moverse(): string\n\nclass Aguila {\n    //\n}\n\nclass Pinguino {\n    //\n}\n",
+        starter_code: "<?php\n\nclass Aguila {\n}\n\nclass Pinguino {\n}\n",
         hints: [
           { es: "Ambas deben heredar: class Aguila extends Ave { … }", en: "Both must extend: class Aguila extends Ave { … }" },
           { es: "Implementa moverse() en cada una devolviendo 'vuela' y 'nada'.", en: "Implement moverse() in each returning 'vuela' and 'nada'." },
@@ -4161,8 +4134,7 @@ class ServicioPedido {
         sut: "new ServicioPedido(new PasarelaOro())",
         support_code:
           "interface Pasarela {\n    public function cobrar(int $monto): string;\n}\n\nclass PasarelaOro implements Pasarela {\n    public function cobrar(int $monto): string {\n        return \"cobrado {$monto} en oro\";\n    }\n}\n\nclass PasarelaPlata implements Pasarela {\n    public function cobrar(int $monto): string {\n        return \"cobrado {$monto} en plata\";\n    }\n}",
-        starter_code:
-          "<?php\n\n// Pasarela (interfaz), PasarelaOro y PasarelaPlata ya existen.\n\nclass ServicioPedido {\n    // 1) Constructor que reciba una Pasarela\n\n    // 2) pagar(int $monto): string que delegue en ella\n}\n",
+        starter_code: "<?php\n\nclass ServicioPedido {\n\n}\n",
         hints: [
           { es: "Inyección por constructor: public function __construct(private Pasarela $pasarela) {}", en: "Constructor injection: public function __construct(private Pasarela $pasarela) {}" },
           { es: "Tipa el parámetro con la INTERFAZ (Pasarela), no con PasarelaOro.", en: "Type the parameter with the INTERFACE (Pasarela), not with PasarelaOro." },
@@ -4273,8 +4245,7 @@ export const CHAPTER_ALGOS: Chapter = {
           es: "Implementa twoSum(array $nums, int $target): array, que devuelva los ÍNDICES de los dos números que suman el objetivo. Hay exactamente una solución y no puedes usar el mismo elemento dos veces.",
           en: "Given an array of integers and a target, return the indices of the two numbers that add up to the target. Exactly one solution; you can't use the same element twice. Implement twoSum(array $nums, int $target): array.",
         },
-        starter_code:
-          "<?php\n\nfunction twoSum(array $nums, int $target): array {\n    // Recorre una sola vez guardando lo ya visto\n}\n",
+        starter_code: "<?php\n\nfunction twoSum(array $nums, int $target): array {\n}\n",
         hints: [
           { es: "Guarda cada valor visto en un hash map valor => índice.", en: "Store each seen value in a hash map value => index." },
           { es: "Para cada número busca su complemento: $need = $target - $n; si ya lo viste, ahí está la pareja.", en: "For each number look for its complement: $need = $target - $n; if you've seen it, there's the pair." },
@@ -4302,8 +4273,7 @@ export const CHAPTER_ALGOS: Chapter = {
           es: "Implementa isPalindrome(string $s): bool. Devuelve true si la cadena es un palíndromo, contando sólo los caracteres alfanuméricos y sin distinguir mayúsculas.",
           en: "Return true if a string is a palindrome, considering only alphanumeric characters and ignoring case. Implement isPalindrome(string $s): bool.",
         },
-        starter_code:
-          "<?php\n\nfunction isPalindrome(string $s): bool {\n    // Normaliza y compara con su reverso\n}\n",
+        starter_code: "<?php\n\nfunction isPalindrome(string $s): bool {\n}\n",
         hints: [
           { es: "Normaliza primero: pásalo a minúsculas con strtolower().", en: "Normalize first: lowercase it with strtolower()." },
           { es: "Quita todo lo que no sea alfanumérico: preg_replace('/[^a-z0-9]/', '', $s)", en: "Strip everything non-alphanumeric: preg_replace('/[^a-z0-9]/', '', $s)" },
@@ -4335,8 +4305,7 @@ export const CHAPTER_ALGOS: Chapter = {
           es: "Implementa isValidParens(string $s): bool. Dada una cadena de ()[]{} , devuelve true si los símbolos están bien balanceados Y bien anidados.",
           en: "Given a string of ()[]{} , return true if every bracket is correctly opened and closed in order. Implement isValidParens(string $s): bool.",
         },
-        starter_code:
-          "<?php\n\nfunction isValidParens(string $s): bool {\n    // Una pila: apila las aperturas, desapila al cerrar\n}\n",
+        starter_code: "<?php\n\nfunction isValidParens(string $s): bool {\n}\n",
         hints: [
           { es: "Usa un array como pila: $stack[] = $c para apilar, array_pop($stack) para sacar.", en: "Use an array as a stack: $stack[] = $c to push, array_pop($stack) to pop." },
           { es: "Ten un mapa de cierres a aperturas: [')' => '(', ']' => '[', '}' => '{']", en: "Keep a map of closers to openers: [')' => '(', ']' => '[', '}' => '{']" },
@@ -4365,8 +4334,7 @@ export const CHAPTER_ALGOS: Chapter = {
           es: "Implementa binarySearch(array $a, int $t): int sobre un array YA ordenado. Devuelve el índice, o -1 si no está.",
           en: "Given a sorted array and a target, return its index or -1 if not present. Implement binarySearch(array $a, int $t): int over an ALREADY sorted array.",
         },
-        starter_code:
-          "<?php\n\nfunction binarySearch(array $a, int $t): int {\n    // Dos límites y descarta la mitad en cada vuelta\n}\n",
+        starter_code: "<?php\n\nfunction binarySearch(array $a, int $t): int {\n}\n",
         hints: [
           { es: "Empieza con $lo = 0 y $hi = count($a) - 1; el bucle va mientras $lo <= $hi.", en: "Start with $lo = 0 and $hi = count($a) - 1; loop while $lo <= $hi." },
           { es: "El medio con división entera: $mid = intdiv($lo + $hi, 2);", en: "The middle with integer division: $mid = intdiv($lo + $hi, 2);" },
@@ -4395,8 +4363,7 @@ export const CHAPTER_ALGOS: Chapter = {
           es: "Implementa coinChange(array $coins, int $amount): int — el mínimo número de monedas para formar el monto, o -1 si no se puede.",
           en: "Given coin denominations and an amount, return the fewest coins needed to make that amount, or -1 if impossible. Implement coinChange(array $coins, int $amount): int.",
         },
-        starter_code:
-          "<?php\n\nfunction coinChange(array $coins, int $amount): int {\n    // dp[a] = mínimo de monedas para el monto a\n}\n",
+        starter_code: "<?php\n\nfunction coinChange(array $coins, int $amount): int {\n}\n",
         hints: [
           { es: "Crea el array dp de tamaño $amount + 1 lleno de un valor 'infinito' ($amount + 1), y dp[0] = 0.", en: "Create the dp array of size $amount + 1 filled with an 'infinite' value ($amount + 1), and dp[0] = 0." },
           { es: "Para cada monto $a, prueba cada moneda $c que quepa: $dp[$a] = min($dp[$a], $dp[$a - $c] + 1);", en: "For each amount $a, try each coin $c that fits: $dp[$a] = min($dp[$a], $dp[$a - $c] + 1);" },
@@ -4518,8 +4485,7 @@ return $prev;`,
           es: "Implementa groupAnagrams(array $strs): array, que agrupe las palabras que son anagramas entre sí. El orden de los grupos no importa.",
           en: "Given an array of strings, group the anagrams together. Return a list of groups (order doesn't matter). Implement groupAnagrams(array $strs): array.",
         },
-        starter_code:
-          "<?php\n\nfunction groupAnagrams(array $strs): array {\n    // ¿Qué tienen en común dos anagramas?\n}\n",
+        starter_code: "<?php\n\nfunction groupAnagrams(array $strs): array {\n}\n",
         hints: [
           { es: "Dos anagramas comparten las MISMAS letras ordenadas: esa es la clave del grupo.", en: "Two anagrams share the SAME sorted letters: that's the group key." },
           { es: "Para construirla: $key = str_split($s); sort($key); $key = implode('', $key);", en: "To build it: $key = str_split($s); sort($key); $key = implode('', $key);" },
@@ -4561,8 +4527,7 @@ return $prev;`,
           es: "Implementa moveZeroes(array $nums): array — los ceros al final, conservando el orden relativo del resto de elementos.",
           en: "Move all zeroes to the end of the array while keeping the relative order of the non-zero elements. Implement moveZeroes(array $nums): array.",
         },
-        starter_code:
-          "<?php\n\nfunction moveZeroes(array $nums): array {\n    // Un puntero de escritura basta\n}\n",
+        starter_code: "<?php\n\nfunction moveZeroes(array $nums): array {\n}\n",
         hints: [
           { es: "Lleva un puntero de escritura $pos que empieza en 0.", en: "Keep a write pointer $pos starting at 0." },
           { es: "Recorre y copia hacia adelante sólo los distintos de cero: if ($n !== 0) $nums[$pos++] = $n;", en: "Iterate and copy forward only the non-zero ones: if ($n !== 0) $nums[$pos++] = $n;" },
@@ -4602,8 +4567,7 @@ return $prev;`,
           es: "Implementa lengthOfLongestSubstring(string $s): int — la longitud del substring más largo sin caracteres repetidos.",
           en: "Return the length of the longest substring without repeating characters. Implement lengthOfLongestSubstring(string $s): int.",
         },
-        starter_code:
-          "<?php\n\nfunction lengthOfLongestSubstring(string $s): int {\n    // Ventana [inicio..i] que se encoge al encontrar repetidos\n}\n",
+        starter_code: "<?php\n\nfunction lengthOfLongestSubstring(string $s): int {\n}\n",
         hints: [
           { es: "Guarda en un hash el ÚLTIMO índice visto de cada carácter.", en: "Store in a hash the LAST seen index of each character." },
           { es: "Si el carácter ya se vio dentro de la ventana actual, mueve el inicio: $start = $seen[$c] + 1;", en: "If the character was already seen within the current window, move the start: $start = $seen[$c] + 1;" },
@@ -4648,8 +4612,7 @@ return $prev;`,
           es: "Implementa fib(int $n, array &$memo = []): int — el n-ésimo Fibonacci, SIN recursión exponencial.",
           en: "Return the nth Fibonacci number efficiently. Implement fib(int $n, array &$memo = []): int, WITHOUT exponential recursion.",
         },
-        starter_code:
-          "<?php\n\nfunction fib(int $n, array &$memo = []): int {\n    // Casos base y memoización\n}\n",
+        starter_code: "<?php\n\nfunction fib(int $n, array &$memo = []): int {\n}\n",
         hints: [
           { es: "Casos base: si $n < 2, devuelve $n.", en: "Base cases: if $n < 2, return $n." },
           { es: "El operador ??= guarda y devuelve en una línea: return $memo[$n] ??= fib($n-1, $memo) + fib($n-2, $memo);", en: "The ??= operator stores and returns in one line: return $memo[$n] ??= fib($n-1, $memo) + fib($n-2, $memo);" },
@@ -4684,8 +4647,7 @@ return $prev;`,
         },
         support_code:
           "class ListNode {\n    public ?ListNode $next = null;\n    public function __construct(public int $val) {}\n}\n\nfunction listaDesde(array $vals): ?ListNode {\n    $head = null;\n    foreach (array_reverse($vals) as $v) {\n        $n = new ListNode($v);\n        $n->next = $head;\n        $head = $n;\n    }\n    return $head;\n}\n\nfunction listaAArray(?ListNode $h): array {\n    $out = [];\n    while ($h) { $out[] = $h->val; $h = $h->next; }\n    return $out;\n}",
-        starter_code:
-          "<?php\n\n// ListNode, listaDesde() y listaAArray() ya existen.\n\nfunction reverseList(?ListNode $head): ?ListNode {\n    // Tres punteros: prev, head y next\n}\n",
+        starter_code: "<?php\n\nfunction reverseList(?ListNode $head): ?ListNode {\n}\n",
         hints: [
           { es: "Empieza con $prev = null; y recorre mientras $head no sea null.", en: "Start with $prev = null; and loop while $head isn't null." },
           { es: "El orden importa: $next = $head->next; luego $head->next = $prev; luego avanza $prev = $head; $head = $next;", en: "Order matters: $next = $head->next; then $head->next = $prev; then advance $prev = $head; $head = $next;" },
@@ -4725,8 +4687,7 @@ return $prev;`,
           es: "Implementa numIslands(array $grid): int — cuenta las islas conectadas en 4 direcciones, siendo '1' tierra y '0' agua.",
           en: "Given a grid of '1' (land) and '0' (water), count the islands (land cells connected horizontally/vertically). Implement numIslands(array $grid): int.",
         },
-        starter_code:
-          "<?php\n\nfunction numIslands(array $grid): int {\n    // Al hallar un '1': cuenta +1 y hunde toda su isla\n}\n",
+        starter_code: "<?php\n\nfunction numIslands(array $grid): int {\n}\n",
         hints: [
           { es: "Recorre la grilla; cuando encuentres un '1', suma 1 al contador y lanza un DFS desde ahí.", en: "Walk the grid; when you find a '1', add 1 to the counter and launch a DFS from there." },
           { es: "El DFS marca la celda como '0' (visitada) y se llama a sí mismo en las 4 direcciones. Así no la recuentas.", en: "The DFS marks the cell as '0' (visited) and calls itself in the 4 directions. That way you don't recount it." },
@@ -5089,8 +5050,7 @@ export const CHAPTER_ALGOS_3: Chapter = {
         },
         support_code:
           "class TreeNode {\n    public ?TreeNode $left = null;\n    public ?TreeNode $right = null;\n    public function __construct(public int $val) {}\n}\n\n/** Construye un árbol desde un array por niveles (null = hueco). */\nfunction arbolDesde(array $vals): ?TreeNode {\n    if (empty($vals) || $vals[0] === null) return null;\n    $root = new TreeNode($vals[0]);\n    $cola = [$root];\n    $i = 1;\n    while ($i < count($vals) && $cola) {\n        $n = array_shift($cola);\n        if ($i < count($vals)) { $v = $vals[$i++]; if ($v !== null) { $n->left = new TreeNode($v); $cola[] = $n->left; } }\n        if ($i < count($vals)) { $v = $vals[$i++]; if ($v !== null) { $n->right = new TreeNode($v); $cola[] = $n->right; } }\n    }\n    return $root;\n}",
-        starter_code:
-          "<?php\n\n// TreeNode y arbolDesde() ya existen.\n\nfunction maxDepth(?TreeNode $root): int {\n    // Caso base + la profundidad de cada rama\n}\n",
+        starter_code: "<?php\n\nfunction maxDepth(?TreeNode $root): int {\n}\n",
         hints: [
           { es: "Caso base: un nodo nulo tiene profundidad 0.", en: "Base case: a null node has depth 0." },
           { es: "La profundidad de un nodo es 1 más la MAYOR de sus dos ramas.", en: "A node's depth is 1 plus the GREATER of its two branches." },
@@ -5127,8 +5087,7 @@ export const CHAPTER_ALGOS_3: Chapter = {
           es: "Implementa subsets(array $nums): array — todos los subconjuntos posibles (el conjunto potencia) de un array de enteros distintos. El orden no importa.",
           en: "Return all possible subsets of an array of distinct integers (the power set). Implement subsets(array $nums): array. Order doesn't matter.",
         },
-        starter_code:
-          "<?php\n\nfunction subsets(array $nums): array {\n    // Empieza con el conjunto vacío y ve duplicando\n}\n",
+        starter_code: "<?php\n\nfunction subsets(array $nums): array {\n}\n",
         hints: [
           { es: "Arranca con $res = [[]] — el conjunto vacío también es un subconjunto.", en: "Start with $res = [[]] — the empty set is a subset too." },
           { es: "Por cada número, DUPLICA cada subconjunto que ya tienes añadiéndole ese número.", en: "For each number, DUPLICATE every subset you already have, adding that number to it." },
@@ -5169,8 +5128,7 @@ export const CHAPTER_ALGOS_3: Chapter = {
           es: "Implementa maxArea(array $h): int — el área máxima de agua entre dos columnas (cada columna y el eje x forman un contenedor).",
           en: "Given heights, pick two lines that with the x-axis form a container holding the most water. Return the max area. Implement maxArea(array $h): int.",
         },
-        starter_code:
-          "<?php\n\nfunction maxArea(array $h): int {\n    // Dos punteros en los extremos, hacia dentro\n}\n",
+        starter_code: "<?php\n\nfunction maxArea(array $h): int {\n}\n",
         hints: [
           { es: "Empieza con un puntero en cada extremo: $l = 0 y $r = count($h) - 1.", en: "Start with a pointer at each end: $l = 0 and $r = count($h) - 1." },
           { es: "El área es min($h[$l], $h[$r]) * ($r - $l) — la limita la columna más baja.", en: "The area is min($h[$l], $h[$r]) * ($r - $l) — the shorter column limits it." },
@@ -5206,8 +5164,7 @@ export const CHAPTER_ALGOS_3: Chapter = {
           es: "Implementa topKFrequent(array $nums, int $k): array — los k elementos que más se repiten, del más frecuente al menos.",
           en: "Return the k most frequent elements of an array, from most to least frequent. Implement topKFrequent(array $nums, int $k): array.",
         },
-        starter_code:
-          "<?php\n\nfunction topKFrequent(array $nums, int $k): array {\n    // Cuenta, ordena por conteo y corta\n}\n",
+        starter_code: "<?php\n\nfunction topKFrequent(array $nums, int $k): array {\n}\n",
         hints: [
           { es: "array_count_values($nums) te da directamente valor => conteo.", en: "array_count_values($nums) gives you value => count directly." },
           { es: "arsort($c) ordena por conteo descendente CONSERVANDO las claves.", en: "arsort($c) sorts by count descending WHILE KEEPING the keys." },
@@ -5243,8 +5200,7 @@ export const CHAPTER_ALGOS_3: Chapter = {
           es: "Implementa countPrimes(int $n): int — cuántos primos hay estrictamente MENORES que n.",
           en: "Count the prime numbers strictly less than n. Implement countPrimes(int $n): int.",
         },
-        starter_code:
-          "<?php\n\nfunction countPrimes(int $n): int {\n    // Criba: marca los múltiplos en vez de comprobar uno a uno\n}\n",
+        starter_code: "<?php\n\nfunction countPrimes(int $n): int {\n}\n",
         hints: [
           { es: "Si $n < 3 no hay primos menores que n: devuelve 0.", en: "If $n < 3 there are no primes less than n: return 0." },
           { es: "Crea un array de booleanos con array_fill(0, $n, true) y marca 0 y 1 como false.", en: "Create a boolean array with array_fill(0, $n, true) and mark 0 and 1 as false." },
@@ -5273,8 +5229,7 @@ export const CHAPTER_ALGOS_3: Chapter = {
           es: "Implementa climbStairs(int $n): int. Puedes subir 1 o 2 peldaños a la vez: ¿de cuántas formas distintas subes n peldaños? Pista: es Fibonacci disfrazado.",
           en: "You can climb 1 or 2 steps at a time. In how many distinct ways can you climb n steps? Implement climbStairs(int $n): int. Hint: it's Fibonacci in disguise.",
         },
-        starter_code:
-          "<?php\n\nfunction climbStairs(int $n): int {\n    // Dos variables bastan: no hace falta un array\n}\n",
+        starter_code: "<?php\n\nfunction climbStairs(int $n): int {\n}\n",
         hints: [
           { es: "Para llegar al peldaño n vienes del n-1 (paso de 1) o del n-2 (paso de 2): formas(n) = formas(n-1) + formas(n-2).", en: "To reach step n you come from n-1 (a 1-step) or n-2 (a 2-step): ways(n) = ways(n-1) + ways(n-2)." },
           { es: "No necesitas guardar todo el array: con dos variables basta y el espacio queda en O(1).", en: "You don't need the whole array: two variables suffice and space stays O(1)." },
@@ -5384,8 +5339,7 @@ export const CHAPTER_CALENTAMIENTO: Chapter = {
           es: "Implementa fizzBuzz(int $n): array. Para 1..n: 'Fizz' si es divisible por 3, 'Buzz' si por 5, 'FizzBuzz' si por ambos, y si no, el número. Devuelve TODOS los valores como cadenas.",
           en: "For 1..n: 'Fizz' if divisible by 3, 'Buzz' if by 5, 'FizzBuzz' if by both, else the number (as a string). Implement fizzBuzz(int $n): array. Return ALL values as strings.",
         },
-        starter_code:
-          "<?php\n\nfunction fizzBuzz(int $n): array {\n    // Ojo con el orden de las comprobaciones\n}\n",
+        starter_code: "<?php\n\nfunction fizzBuzz(int $n): array {\n}\n",
         hints: [
           { es: "Comprueba PRIMERO el múltiplo de 15; si no, «FizzBuzz» nunca saldría.", en: "Check the multiple of 15 FIRST; otherwise \"FizzBuzz\" would never come out." },
           { es: "El número también va como cadena: (string)$i", en: "The number also goes as a string: (string)$i" },
@@ -5425,8 +5379,7 @@ export const CHAPTER_CALENTAMIENTO: Chapter = {
           es: "Implementa isAnagram(string $s, string $t): bool — true si la cadena t es un anagrama de s.",
           en: "Return true if string t is an anagram of string s. Implement isAnagram(string $s, string $t): bool.",
         },
-        starter_code:
-          "<?php\n\nfunction isAnagram(string $s, string $t): bool {\n    // Cuenta letras y réstalas\n}\n",
+        starter_code: "<?php\n\nfunction isAnagram(string $s, string $t): bool {\n}\n",
         hints: [
           { es: "Atajo inmediato: si las longitudes difieren, ya es false.", en: "Immediate shortcut: if the lengths differ, it's already false." },
           { es: "Cuenta las letras de $s con array_count_values(str_split($s)).", en: "Count the letters of $s with array_count_values(str_split($s))." },
@@ -5455,8 +5408,7 @@ export const CHAPTER_CALENTAMIENTO: Chapter = {
           es: "Implementa firstUniqChar(string $s): int — el índice del primer carácter que no se repite; -1 si no hay.",
           en: "Return the index of the first non-repeating character in a string, or -1 if none exists. Implement firstUniqChar(string $s): int.",
         },
-        starter_code:
-          "<?php\n\nfunction firstUniqChar(string $s): int {\n    // Dos pasadas: contar y luego buscar\n}\n",
+        starter_code: "<?php\n\nfunction firstUniqChar(string $s): int {\n}\n",
         hints: [
           { es: "Primera pasada: cuenta cuántas veces aparece cada carácter.", en: "First pass: count how many times each character appears." },
           { es: "Segunda pasada: recorre EN ORDEN y devuelve el primer índice cuyo conteo sea 1.", en: "Second pass: walk IN ORDER and return the first index whose count is 1." },
@@ -5489,8 +5441,7 @@ export const CHAPTER_CALENTAMIENTO: Chapter = {
           es: "Implementa searchInsert(array $a, int $t): int — dado un array ordenado y un objetivo, el índice donde está, o donde se insertaría para mantenerlo ordenado.",
           en: "Given a sorted array and a target, return the index where it is, or where it would be inserted to keep it sorted. Implement searchInsert(array $a, int $t): int.",
         },
-        starter_code:
-          "<?php\n\nfunction searchInsert(array $a, int $t): int {\n    // Búsqueda binaria de límite inferior\n}\n",
+        starter_code: "<?php\n\nfunction searchInsert(array $a, int $t): int {\n}\n",
         hints: [
           { es: "Es una binaria distinta: $hi empieza en count($a), NO en count($a)-1.", en: "It's a different binary search: $hi starts at count($a), NOT count($a)-1." },
           { es: "El bucle va mientras $lo < $hi (no <=), y al final $lo == $hi es la respuesta.", en: "The loop runs while $lo < $hi (not <=), and at the end $lo == $hi is the answer." },
@@ -5519,8 +5470,7 @@ export const CHAPTER_CALENTAMIENTO: Chapter = {
           es: "Implementa maxSumSubarray(array $nums, int $k): int — la suma máxima de cualquier subarray contiguo de tamaño k.",
           en: "Given an array and a number k, find the maximum sum of any contiguous subarray of size k. Implement maxSumSubarray(array $nums, int $k): int.",
         },
-        starter_code:
-          "<?php\n\nfunction maxSumSubarray(array $nums, int $k): int {\n    // Calcula la primera suma y luego desliza\n}\n",
+        starter_code: "<?php\n\nfunction maxSumSubarray(array $nums, int $k): int {\n}\n",
         hints: [
           { es: "Calcula la suma de los k primeros: array_sum(array_slice($nums, 0, $k)).", en: "Compute the sum of the first k: array_sum(array_slice($nums, 0, $k))." },
           { es: "Al desplazar la ventana, suma el que entra y resta el que sale — no recalcules toda la ventana.", en: "When sliding the window, add the one entering and subtract the one leaving — don't recompute the whole window." },
@@ -5561,8 +5511,7 @@ export const CHAPTER_CALENTAMIENTO: Chapter = {
           es: "Implementa reverseInt(int $x): int — invierte los dígitos de un entero con signo de 32 bits; devuelve 0 si el resultado se sale del rango de 32 bits.\n\nAVISO: este PHP es de 32 bits (PHP_INT_MAX = 2147483647). Comprueba el desbordamiento ANTES de convertir a int.",
           en: "Reverse the digits of a 32-bit signed integer. Return 0 if the result overflows the 32-bit range. Implement reverseInt(int $x): int.\n\nNOTE: this PHP is 32-bit (PHP_INT_MAX = 2147483647). Check for overflow BEFORE converting to int.",
         },
-        starter_code:
-          "<?php\n\nfunction reverseInt(int $x): int {\n    // Signo aparte, invierte, y valida el rango ANTES de castear a int\n}\n",
+        starter_code: "<?php\n\nfunction reverseInt(int $x): int {\n}\n",
         hints: [
           { es: "Guarda el signo primero y trabaja con abs($x); al final multiplicas.", en: "Save the sign first and work with abs($x); multiply at the end." },
           { es: "Invertir es más fácil como texto: strrev((string)abs($x))", en: "Reversing is easier as text: strrev((string)abs($x))" },
@@ -5732,8 +5681,7 @@ export const CHAPTER_GOLLUM: Chapter = {
             "For example, `presentarse('Frodo', 50)` must return `'Soy Frodo y tengo 50 años'`.\n\n" +
             "Mind the indentation: the function body is indented 4 spaces under the `def`.",
         },
-        starter_code:
-          "def presentarse(nombre, edad):\n    # devuelve la f-string con el formato pedido\n    ...\n",
+        starter_code: "def presentarse(nombre, edad):\n    ...\n",
         blocks: [
           "def presentarse(nombre, edad):",
           "    return f'Soy {nombre} y tengo {edad} años'",
@@ -5791,8 +5739,7 @@ export const CHAPTER_GOLLUM: Chapter = {
             "• `a_entero(texto)` — takes a text like `'42'` and returns its integer value (an `int`), not the text.\n\n" +
             "Remember: `int('42')` converts text to a number; `n % 2` gives the remainder of dividing by 2.",
         },
-        starter_code:
-          "def es_par(n):\n    ...\n\n\ndef a_entero(texto):\n    ...\n",
+        starter_code: "def es_par(n):\n    ...\n\ndef a_entero(texto):\n    ...\n",
         blocks: [
           "def es_par(n):",
           "    return n % 2 == 0",
@@ -5851,8 +5798,7 @@ export const CHAPTER_GOLLUM: Chapter = {
             "• `'gordo y feliz'` if it's 3 or more\n\n" +
             "Use the `if` / `elif` / `else` ladder. Remember: it's `elif`, not `else if`, and each branch is indented.",
         },
-        starter_code:
-          "def clasificar(peces):\n    if peces <= 0:\n        return 'hambriento'\n    # añade elif y else\n",
+        starter_code: "def clasificar(peces):\n    if peces <= 0:\n        return 'hambriento'\n",
         blocks: [
           "def clasificar(peces):",
           "    if peces <= 0:",
@@ -6122,8 +6068,7 @@ export const CHAPTER_HELM: Chapter = {
             "Write `suma_hasta(n)` that returns the sum of all integers from 1 to `n` (both included): 1 + 2 + … + n.\n\n" +
             "Use a `for` loop with `range` and an accumulator. With `n = 0` (or negative) there's nothing to add: return 0.",
         },
-        starter_code:
-          "def suma_hasta(n):\n    total = 0\n    # recorre de 1 a n y acumula\n    return total\n",
+        starter_code: "def suma_hasta(n):\n    total = 0\n    return total\n",
         hints: [
           { es: "`range(1, n + 1)` genera 1, 2, …, n. El `+ 1` es porque el final de range NO se incluye.", en: "`range(1, n + 1)` yields 1, 2, …, n. The `+ 1` is because range's end is NOT included." },
           { es: "Dentro del for, acumula: `total += i`.", en: "Inside the for, accumulate: `total += i`." },
@@ -6158,8 +6103,7 @@ export const CHAPTER_HELM: Chapter = {
             "Write `aguantar(resistencia, golpe)` that returns how many blows of strength `golpe` a wall with `resistencia` points withstands before falling (reaching 0 or less).\n\n" +
             "Each blow subtracts `golpe` from the resistance. Count the blows with a `while`. If the wall is already at 0 or less, it withstands 0 blows.",
         },
-        starter_code:
-          "def aguantar(resistencia, golpe):\n    turnos = 0\n    # mientras el muro siga en pie, recibe golpes\n    return turnos\n",
+        starter_code: "def aguantar(resistencia, golpe):\n    turnos = 0\n    return turnos\n",
         hints: [
           { es: "`while resistencia > 0:` repite mientras el muro aguante.", en: "`while resistencia > 0:` repeats while the wall holds." },
           { es: "Dentro: resta el golpe y suma un turno: `resistencia -= golpe` y `turnos += 1`.", en: "Inside: subtract the blow and add a turn: `resistencia -= golpe` and `turnos += 1`." },
@@ -6196,8 +6140,7 @@ export const CHAPTER_HELM: Chapter = {
             "For example, `filas_debiles([12, 3, 8, 20, 1], 10)` → `[1, 2, 4]` (stretches 1, 2 and 4 have fewer than 10).\n\n" +
             "Use `enumerate` to get the index and value at once.",
         },
-        starter_code:
-          "def filas_debiles(enemigos, umbral):\n    debiles = []\n    # recorre con enumerate y guarda los índices flojos\n    return debiles\n",
+        starter_code: "def filas_debiles(enemigos, umbral):\n    debiles = []\n    return debiles\n",
         hints: [
           { es: "`for i, n in enumerate(enemigos):` te da el índice `i` y el valor `n` en cada vuelta.", en: "`for i, n in enumerate(enemigos):` gives you the index `i` and value `n` each round." },
           { es: "Si `n < umbral`, añade el índice: `debiles.append(i)`.", en: "If `n < umbral`, add the index: `debiles.append(i)`." },
