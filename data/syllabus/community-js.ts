@@ -131,6 +131,34 @@ const Q_TERNARY = {
     "The ternary `cond ? a : b` is an EXPRESSION that returns `a` if the condition is true and `b` otherwise. Handy to assign a value based on a condition.",
   ),
 };
+const Q_MODULO = {
+  question: P("¿Qué devuelve `7 % 3` en JavaScript?", "What does `7 % 3` return in JavaScript?"),
+  options: [
+    P("1 (el RESTO de dividir 7 entre 3)", "1 (the REMAINDER of 7 divided by 3)"),
+    P("2 (el cociente)", "2 (the quotient)"),
+    P("2.33", "2.33"),
+    P("21", "21"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El operador `%` (módulo) da el RESTO de la división entera: `7 % 3` es 1. Muy usado para saber si un número es par (`n % 2 === 0`) o para ciclar índices.",
+    "The `%` (modulo) operator gives the REMAINDER of integer division: `7 % 3` is 1. Widely used to check if a number is even (`n % 2 === 0`) or to cycle indices.",
+  ),
+};
+const Q_STRING_METHODS = {
+  question: P("¿Qué devuelve `'mellon'.length`?", "What does `'mellon'.length` return?"),
+  options: [
+    P("6 (el número de caracteres)", "6 (the number of characters)"),
+    P("'mellon' (la cadena)", "'mellon' (the string)"),
+    P("true", "true"),
+    P("Un error: los strings no tienen length", "An error: strings have no length"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los strings tienen `.length` (número de caracteres) y métodos como `.toUpperCase()`, `.includes(...)` o `.slice(...)`. Son inmutables: los métodos devuelven una cadena NUEVA, no modifican la original.",
+    "Strings have `.length` (character count) and methods like `.toUpperCase()`, `.includes(...)` or `.slice(...)`. They're immutable: methods return a NEW string, they don't change the original.",
+  ),
+};
 
 export const SYL_JS_COMMUNITY_1: Syllabus = {
   c1_espia: {
@@ -143,7 +171,7 @@ export const SYL_JS_COMMUNITY_1: Syllabus = {
   },
   c1_perro_negro: {
     kind: "battle",
-    questions: [Q_TEMPLATE, Q_TYPEOF, Q_TERNARY],
+    questions: [Q_TERNARY, Q_MODULO, Q_STRING_METHODS],
   },
   c1_jefe_nazgul: {
     kind: "challenge",
@@ -387,12 +415,68 @@ const Q_LEN = {
     "`xs.length` is a PROPERTY (no parentheses), not a method. `count()` is PHP and `len()` is Python.",
   ),
 };
+const Q_ARRAY_INDEX = {
+  question: P("Con `const xs = [10, 20, 30]`, ¿qué es `xs[1]`?", "With `const xs = [10, 20, 30]`, what is `xs[1]`?"),
+  options: [
+    P("20 (los índices empiezan en 0)", "20 (indices start at 0)"),
+    P("10 (el primero)", "10 (the first)"),
+    P("30", "30"),
+    P("Un error", "An error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los arrays se indexan desde 0: `xs[0]` es 10, `xs[1]` es 20. Un índice fuera de rango (`xs[9]`) devuelve `undefined`, no un error.",
+    "Arrays are indexed from 0: `xs[0]` is 10, `xs[1]` is 20. An out-of-range index (`xs[9]`) returns `undefined`, not an error.",
+  ),
+};
+const Q_FOROF = {
+  question: P("¿Qué recorre `for (const x of xs)` sobre un array?", "What does `for (const x of xs)` iterate over an array?"),
+  options: [
+    P("Los VALORES del array, uno a uno", "The array's VALUES, one by one"),
+    P("Los ÍNDICES (0, 1, 2…)", "The INDICES (0, 1, 2…)"),
+    P("Las claves como texto", "The keys as text"),
+    P("Nada: no funciona con arrays", "Nothing: it doesn't work with arrays"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`for...of` recorre los VALORES (`x` es cada elemento). Si quieres los índices, usa `for...in` (da las claves) o `xs.forEach((x, i) => ...)`.",
+    "`for...of` iterates the VALUES (`x` is each element). If you want the indices, use `for...in` (gives the keys) or `xs.forEach((x, i) => ...)`.",
+  ),
+};
+const Q_CONTINUE = {
+  question: P("¿Qué hace `continue` dentro de un bucle?", "What does `continue` do inside a loop?"),
+  options: [
+    P("Salta a la SIGUIENTE iteración, sin salir del bucle", "Jumps to the NEXT iteration, without leaving the loop"),
+    P("Sale del bucle por completo", "Exits the loop entirely"),
+    P("Reinicia el bucle desde el principio", "Restarts the loop from the start"),
+    P("No hace nada", "Does nothing"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`continue` se salta el resto del cuerpo y pasa a la siguiente vuelta; `break` en cambio ABANDONA el bucle. Útil para ignorar ciertos elementos sin dejar de recorrer.",
+    "`continue` skips the rest of the body and moves to the next round; `break` instead LEAVES the loop. Handy to ignore certain elements without stopping the iteration.",
+  ),
+};
+const Q_ARRAY_NEW = {
+  question: P("¿Cómo se crea un array vacío al que ir añadiendo elementos?", "How do you create an empty array to keep adding elements to?"),
+  options: [
+    P("const r = [];", "const r = [];"),
+    P("const r = {};", "const r = {};"),
+    P("const r = new List();", "const r = new List();"),
+    P("const r = array();", "const r = array();"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`[]` es un array vacío; `{}` sería un OBJETO. Se le añaden elementos con `r.push(x)`. Es el patrón típico para construir un resultado dentro de un bucle.",
+    "`[]` is an empty array; `{}` would be an OBJECT. You add elements with `r.push(x)`. It's the usual pattern to build a result inside a loop.",
+  ),
+};
 
 /** Capítulo 2 · Control de flujo: bucles y arrays. */
 export const SYL_JS_COMMUNITY_2: Syllabus = {
   c2_raiz: { kind: "battle", questions: [Q_FOR, Q_PUSH, Q_LEN] },
-  c2_niebla: { kind: "battle", questions: [Q_WHILE, Q_BREAK, Q_FOR] },
-  c2_sauce: { kind: "battle", questions: [Q_PUSH, Q_LEN, Q_WHILE] },
+  c2_niebla: { kind: "battle", questions: [Q_WHILE, Q_BREAK, Q_CONTINUE] },
+  c2_sauce: { kind: "battle", questions: [Q_FOROF, Q_ARRAY_INDEX, Q_ARRAY_NEW] },
   c2_jefe_tumulario: {
     kind: "challenge",
     title: P("El Rey de los Túmulos", "The Barrow-king"),
@@ -642,12 +726,68 @@ const Q_RETURN = {
     "If a function runs no `return` (or does a bare `return;`), it returns `undefined`. Beware of using its result expecting a value.",
   ),
 };
+const Q_CLOSURE_JS3 = {
+  question: P("Una función devuelve otra función que usa una variable local de la primera. ¿Qué es?", "A function returns another function that uses a local variable of the first. What is it?"),
+  options: [
+    P("Una clausura: la función interior recuerda ese estado", "A closure: the inner function remembers that state"),
+    P("Una variable global", "A global variable"),
+    P("Un error: la variable ya no existe", "An error: the variable no longer exists"),
+    P("Una función pura", "A pure function"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una clausura captura las variables de su entorno y las mantiene vivas mientras exista. Por eso `crearContador()` puede devolver funciones que recuerdan su propio contador.",
+    "A closure captures the variables of its environment and keeps them alive while it exists. That's why `crearContador()` can return functions that remember their own counter.",
+  ),
+};
+const Q_REST = {
+  question: P("¿Qué hace `...nums` en `function suma(...nums) {}`?", "What does `...nums` do in `function suma(...nums) {}`?"),
+  options: [
+    P("Recoge TODOS los argumentos en un array `nums`", "Gathers ALL arguments into an array `nums`"),
+    P("Obliga a pasar exactamente tres", "Forces exactly three to be passed"),
+    P("Es un comentario", "It's a comment"),
+    P("Copia el primer argumento", "Copies the first argument"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El parámetro REST `...nums` mete todos los argumentos en un array: `suma(1, 2, 3)` hace `nums = [1, 2, 3]`. Va siempre el ÚLTIMO. No confundir con el spread, que hace lo contrario.",
+    "The REST parameter `...nums` puts all arguments into an array: `suma(1, 2, 3)` makes `nums = [1, 2, 3]`. It always goes LAST. Don't confuse it with spread, which does the opposite.",
+  ),
+};
+const Q_SPREAD = {
+  question: P("¿Qué hace `Math.max(...[3, 7, 2])`?", "What does `Math.max(...[3, 7, 2])` do?"),
+  options: [
+    P("Expande el array en argumentos: es como `Math.max(3, 7, 2)` → 7", "Spreads the array into arguments: like `Math.max(3, 7, 2)` → 7"),
+    P("Devuelve el array entero", "Returns the whole array"),
+    P("Da error", "Errors"),
+    P("Devuelve 3", "Returns 3"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El operador SPREAD `...` esparce los elementos de un array como argumentos sueltos. También sirve para copiar/combinar: `[...a, ...b]` o `{ ...obj }`.",
+    "The SPREAD operator `...` spreads an array's elements as separate arguments. It also copies/combines: `[...a, ...b]` or `{ ...obj }`.",
+  ),
+};
+const Q_CALLBACK = {
+  question: P("En `xs.map(n => n * 2)`, ¿qué es `n => n * 2`?", "In `xs.map(n => n * 2)`, what is `n => n * 2`?"),
+  options: [
+    P("Un callback: una función que `map` llama por cada elemento", "A callback: a function `map` calls for each element"),
+    P("Una variable", "A variable"),
+    P("Un bucle", "A loop"),
+    P("El array resultante", "The resulting array"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`map`, `filter`, `forEach`… reciben un CALLBACK y lo invocan por cada elemento. Pasas la función (no la llamas); la biblioteca decide cuándo ejecutarla. Es el corazón del estilo funcional.",
+    "`map`, `filter`, `forEach`… take a CALLBACK and invoke it per element. You pass the function (don't call it); the library decides when to run it. It's the heart of the functional style.",
+  ),
+};
 
 /** Capítulo 3 · Funciones: parámetros, arrow y orden superior. */
 export const SYL_JS_COMMUNITY_3: Syllabus = {
   c3_ferny: { kind: "battle", questions: [Q_DEF, Q_ARROW, Q_RETURN] },
-  c3_espia_nazgul: { kind: "battle", questions: [Q_DEFAULT, Q_HOF, Q_DEF] },
-  c3_montaraz_falso: { kind: "battle", questions: [Q_ARROW, Q_RETURN, Q_DEFAULT] },
+  c3_espia_nazgul: { kind: "battle", questions: [Q_DEFAULT, Q_HOF, Q_CALLBACK] },
+  c3_montaraz_falso: { kind: "battle", questions: [Q_CLOSURE_JS3, Q_REST, Q_SPREAD] },
   c3_jefe_reybrujo: {
     kind: "challenge",
     title: P("El Rey Brujo de Angmar", "The Witch-king of Angmar"),
@@ -875,11 +1015,53 @@ const Q_REDUCE = {
     "`reduce` combines the array into a single value. The `0` is the initial accumulator; each step `a` is the running total and `b` the current element.",
   ),
 };
+const Q_DESTRUCT = {
+  question: P("Con `const h = { nombre: 'Sam', edad: 38 }`, ¿qué hace `const { nombre } = h`?", "With `const h = { nombre: 'Sam', edad: 38 }`, what does `const { nombre } = h` do?"),
+  options: [
+    P("Extrae la propiedad `nombre` a una variable: `nombre === 'Sam'`", "Extracts the `nombre` property into a variable: `nombre === 'Sam'`"),
+    P("Copia el objeto entero", "Copies the whole object"),
+    P("Borra `nombre` del objeto", "Deletes `nombre` from the object"),
+    P("Da error", "Errors"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La DESESTRUCTURACIÓN saca propiedades a variables por nombre: `const { nombre, edad } = h`. Muy usada en los parámetros: `function f({ nombre }) { ... }`.",
+    "DESTRUCTURING pulls properties into variables by name: `const { nombre, edad } = h`. Widely used in parameters: `function f({ nombre }) { ... }`.",
+  ),
+};
+const Q_FIND = {
+  question: P("¿Qué devuelve `[3, 7, 2].find(n => n > 5)`?", "What does `[3, 7, 2].find(n => n > 5)` return?"),
+  options: [
+    P("7 (el PRIMER elemento que cumple)", "7 (the FIRST element that matches)"),
+    P("[7] (un array)", "[7] (an array)"),
+    P("true", "true"),
+    P("Todos los que cumplen", "All that match"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`find` devuelve el PRIMER elemento que cumple la condición (o `undefined` si ninguno). A diferencia de `filter`, que devuelve un ARRAY con todos los que cumplen.",
+    "`find` returns the FIRST element that matches the condition (or `undefined` if none). Unlike `filter`, which returns an ARRAY with all matches.",
+  ),
+};
+const Q_OBJ_SHORT = {
+  question: P("Si tienes una variable `nombre`, ¿qué crea `{ nombre }`?", "If you have a variable `nombre`, what does `{ nombre }` create?"),
+  options: [
+    P("Un objeto `{ nombre: nombre }` (abreviatura de propiedad)", "An object `{ nombre: nombre }` (property shorthand)"),
+    P("Un bloque de código", "A code block"),
+    P("Un array con un elemento", "An array with one element"),
+    P("Un error de sintaxis", "A syntax error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La abreviatura de propiedades: si la clave y la variable se llaman igual, `{ nombre }` equivale a `{ nombre: nombre }`. Ahorra repetir el nombre al construir objetos.",
+    "Property shorthand: if the key and the variable share a name, `{ nombre }` equals `{ nombre: nombre }`. Saves repeating the name when building objects.",
+  ),
+};
 
 /** Capítulo 4 · Objetos, métodos (this) y arrays (map, filter, reduce). */
 export const SYL_JS_COMMUNITY_4: Syllabus = {
   c4_jinete_rezagado: { kind: "battle", questions: [Q_OBJ, Q_PROP, Q_MAP] },
-  c4_lobo: { kind: "battle", questions: [Q_METHOD, Q_FILTER, Q_OBJ] },
+  c4_lobo: { kind: "battle", questions: [Q_METHOD, Q_FILTER, Q_DESTRUCT] },
   c4_jefe_nueve: {
     kind: "challenge",
     title: P("Los Nueve en el Vado", "The Nine at the Ford"),
@@ -905,7 +1087,7 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
       ],
     },
   },
-  c4_trasgo_montaraz: { kind: "battle", questions: [Q_PROP, Q_REDUCE, Q_MAP] },
+  c4_trasgo_montaraz: { kind: "battle", questions: [Q_REDUCE, Q_FIND, Q_OBJ_SHORT] },
   pergamino_estatico: {
     kind: "scroll",
     title: P("El Pergamino del Cartógrafo", "The Cartographer's Scroll"),
@@ -1134,11 +1316,53 @@ const Q_FREEZE = {
     "`Object.freeze` freezes the object: in strict mode any later `obj.prop = ...` throws a `TypeError`. It's how you build immutable value objects in JS, like `readonly` in PHP.",
   ),
 };
+const Q_NEW = {
+  question: P("¿Qué hace `new Hobbit('Frodo')`?", "What does `new Hobbit('Frodo')` do?"),
+  options: [
+    P("Crea una instancia y ejecuta su `constructor` con ese argumento", "Creates an instance and runs its `constructor` with that argument"),
+    P("Llama a una función normal llamada Hobbit", "Calls a normal function named Hobbit"),
+    P("Copia la clase Hobbit", "Copies the Hobbit class"),
+    P("Borra el objeto Hobbit", "Deletes the Hobbit object"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`new` crea un objeto nuevo a partir de la clase y ejecuta su `constructor`, pasándole los argumentos. Olvidar el `new` llama la clase como función y falla (o da `undefined`).",
+    "`new` creates a new object from the class and runs its `constructor`, passing the arguments. Forgetting `new` calls the class as a function and fails (or gives `undefined`).",
+  ),
+};
+const Q_GETTER = {
+  question: P("¿Cómo se lee un getter `get calor() { ... }` de una instancia `r`?", "How do you read a getter `get calor() { ... }` from an instance `r`?"),
+  options: [
+    P("Como una propiedad: `r.calor` (sin paréntesis)", "Like a property: `r.calor` (no parentheses)"),
+    P("Como un método: `r.calor()`", "Like a method: `r.calor()`"),
+    P("Con `get r.calor`", "With `get r.calor`"),
+    P("No se puede leer", "It can't be read"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un `get` se accede SIN paréntesis, como si fuera una propiedad: `r.calor`. Por dentro es una función que se ejecuta al leerlo. Útil para exponer valores calculados o de sólo lectura.",
+    "A `get` is accessed WITHOUT parentheses, as if it were a property: `r.calor`. Internally it's a function that runs when read. Handy to expose computed or read-only values.",
+  ),
+};
+const Q_METHOD_CLASS = {
+  question: P("¿Cómo se declara un método dentro de una `class`?", "How do you declare a method inside a `class`?"),
+  options: [
+    P("`golpear(x) { ... }` — sin la palabra `function`", "`golpear(x) { ... }` — without the `function` keyword"),
+    P("`function golpear(x) { ... }`", "`function golpear(x) { ... }`"),
+    P("`golpear: function(x) { ... }`", "`golpear: function(x) { ... }`"),
+    P("`def golpear(x): { ... }`", "`def golpear(x): { ... }`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Dentro de una clase los métodos van SIN `function` ni comas: `golpear(x) { ... }`. Comparten estado por `this`. Es distinto de los objetos literales, donde sí se separan con comas.",
+    "Inside a class, methods go WITHOUT `function` or commas: `golpear(x) { ... }`. They share state via `this`. It differs from object literals, where members are separated by commas.",
+  ),
+};
 
 /** Capítulo 5 · Clases: constructor, campos privados (#) e inmutabilidad. */
 export const SYL_JS_COMMUNITY_5: Syllabus = {
   c5_crebain: { kind: "battle", questions: [Q_CLASS, Q_CTOR, Q_THIS_CLASS] },
-  c5_lobo_nieve: { kind: "battle", questions: [Q_PRIVATE, Q_FREEZE, Q_CTOR] },
+  c5_lobo_nieve: { kind: "battle", questions: [Q_PRIVATE, Q_FREEZE, Q_NEW] },
   c5_jefe_caradhras: {
     kind: "challenge",
     title: P("La Voluntad de Caradhras", "The Will of Caradhras"),
@@ -1165,7 +1389,7 @@ export const SYL_JS_COMMUNITY_5: Syllabus = {
       ],
     },
   },
-  c5_trasgo_montanes: { kind: "battle", questions: [Q_THIS_CLASS, Q_STATIC_JS, Q_PRIVATE] },
+  c5_trasgo_montanes: { kind: "battle", questions: [Q_STATIC_JS, Q_GETTER, Q_METHOD_CLASS] },
   pergamino_hielo: {
     kind: "scroll",
     title: P("El Pergamino del Hielo", "The Scroll of Ice"),
@@ -1424,12 +1648,40 @@ const Q_GEN = {
     "`yield` emits a value and freezes the generator there; requesting the next resumes right after. This yields lazy sequences without building the whole list. `yield*` delegates to another iterable.",
   ),
 };
+const Q_DUCK = {
+  question: P("En JS, para llamar `x.volar()`, ¿qué necesita `x`?", "In JS, to call `x.volar()`, what does `x` need?"),
+  options: [
+    P("Sólo tener un método `volar()`; su clase da igual (duck typing)", "Just to have a `volar()` method; its class doesn't matter (duck typing)"),
+    P("Heredar de una clase Ave", "To inherit from an Ave class"),
+    P("Implementar una interfaz declarada", "To implement a declared interface"),
+    P("Ser del tipo exacto Ave", "To be exactly of type Ave"),
+  ],
+  correct: 0,
+  explanation: P(
+    "JS no tiene interfaces: el polimorfismo es por forma («si camina como pato…»). Cualquier objeto con `volar()` sirve, venga de la clase que venga. Honrar el contrato es responsabilidad tuya.",
+    "JS has no interfaces: polymorphism is by shape (\"if it walks like a duck…\"). Any object with `volar()` works, whatever class it's from. Honoring the contract is on you.",
+  ),
+};
+const Q_SPREAD_ITER = {
+  question: P("¿Qué hace `[...galeria]` si `galeria` es iterable?", "What does `[...galeria]` do if `galeria` is iterable?"),
+  options: [
+    P("Recorre el iterable y mete sus valores en un array nuevo", "Walks the iterable and puts its values into a new array"),
+    P("Copia el objeto tal cual", "Copies the object as is"),
+    P("Da error si no es un array", "Errors if it's not an array"),
+    P("Devuelve su longitud", "Returns its length"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El spread `[...x]` consume el protocolo de iteración (`[Symbol.iterator]`) y vuelca los valores en un array. Igual que `for...of`, funciona con cualquier iterable, no sólo arrays.",
+    "Spread `[...x]` consumes the iteration protocol (`[Symbol.iterator]`) and dumps the values into an array. Like `for...of`, it works with any iterable, not just arrays.",
+  ),
+};
 
 /** Capítulo 6 · Herencia (extends/super), polimorfismo (duck typing) e iterables. */
 export const SYL_JS_COMMUNITY_6: Syllabus = {
   c6_trasgo_explorador: { kind: "battle", questions: [Q_POLY_JS, Q_EXTENDS, Q_OVERRIDE] },
-  c6_trol_cavernas: { kind: "battle", questions: [Q_SUPER, Q_INSTANCEOF_JS, Q_POLY_JS] },
-  c6_capitan_trasgo: { kind: "battle", questions: [Q_OVERRIDE, Q_EXTENDS, Q_SUPER] },
+  c6_trol_cavernas: { kind: "battle", questions: [Q_SUPER, Q_INSTANCEOF_JS, Q_ITER] },
+  c6_capitan_trasgo: { kind: "battle", questions: [Q_GEN, Q_DUCK, Q_SPREAD_ITER] },
   c6_jefe_balrog: {
     kind: "challenge",
     title: P("El Balrog de Morgoth", "The Balrog of Morgoth"),
@@ -1700,12 +1952,54 @@ const Q_PROTO = {
     "A class's shared methods live on its `prototype`. Copying the mixin there makes every `new CapaElfica()` inherit them, just like `use Trait;` in PHP.",
   ),
 };
+const Q_ABSTRACT_METHOD = {
+  question: P("Una base define `usar() { throw new Error('no implementado'); }`. ¿Para qué?", "A base defines `usar() { throw new Error('not implemented'); }`. What for?"),
+  options: [
+    P("Obligar a las subclases a implementar `usar()`; si no, falla al llamarlo", "To force subclasses to implement `usar()`; if not, it fails when called"),
+    P("Para que `usar()` no exista", "So that `usar()` doesn't exist"),
+    P("Para borrar la clase", "To delete the class"),
+    P("Para que sea privado", "To make it private"),
+  ],
+  correct: 0,
+  explanation: P(
+    "JS no tiene métodos abstractos, así que se SIMULAN: la base lanza un error, y quien no sobrescriba `usar()` lo verá al llamarlo. Recuerda a un método abstracto obligatorio.",
+    "JS has no abstract methods, so you SIMULATE them: the base throws, and whoever doesn't override `usar()` hits it when calling. It mimics a required abstract method.",
+  ),
+};
+const Q_COMPOSITION_JS = {
+  question: P("«Composición sobre herencia»: ¿qué recomienda?", "\"Composition over inheritance\": what does it advise?"),
+  options: [
+    P("Combinar capacidades pequeñas (mixins) antes que jerarquías rígidas de clases", "Combine small capabilities (mixins) rather than rigid class hierarchies"),
+    P("No usar nunca clases", "Never use classes"),
+    P("Heredar de tantas clases como se pueda", "Inherit from as many classes as possible"),
+    P("Copiar y pegar el código", "Copy and paste the code"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En vez de una jerarquía profunda («es un»), montas objetos combinando piezas de comportamiento («tiene la capacidad de»). Los mixins son la forma en JS de componer sin cadenas de herencia frágiles.",
+    "Instead of a deep hierarchy (\"is a\"), you build objects by combining behavior pieces (\"has the ability to\"). Mixins are the JS way to compose without brittle inheritance chains.",
+  ),
+};
+const Q_MIXIN_MULTI = {
+  question: P("¿Puede una clase recibir VARIOS mixins?", "Can a class receive SEVERAL mixins?"),
+  options: [
+    P("Sí: aplicas cada mixin con `Object.assign` y suma sus métodos", "Yes: apply each mixin with `Object.assign` and it adds up their methods"),
+    P("No: sólo uno por clase", "No: only one per class"),
+    P("Sólo si heredan entre sí", "Only if they inherit from each other"),
+    P("Sólo dos como máximo", "Only two at most"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los mixins se acumulan: `Object.assign(C.prototype, A, B)` (o dos llamadas) le da a `C` los métodos de `A` y `B`. Es la ventaja frente a la herencia, que sólo admite un padre.",
+    "Mixins stack: `Object.assign(C.prototype, A, B)` (or two calls) gives `C` the methods of both `A` and `B`. That's the edge over inheritance, which allows only one parent.",
+  ),
+};
 
 /** Capítulo 7 · Bases abstractas (new.target, método plantilla) y mixins. */
 export const SYL_JS_COMMUNITY_7: Syllabus = {
   c7_orco_explorador: { kind: "battle", questions: [Q_ABSTRACT_JS, Q_NEWTARGET, Q_TEMPLATE_METHOD] },
   c7_trasgo_frontera: { kind: "battle", questions: [Q_MIXIN, Q_PROTO, Q_MIXIN_VS] },
-  c7_uruk_rastreador: { kind: "battle", questions: [Q_MIXIN_VS, Q_ABSTRACT_JS, Q_MIXIN] },
+  c7_uruk_rastreador: { kind: "battle", questions: [Q_ABSTRACT_METHOD, Q_COMPOSITION_JS, Q_MIXIN_MULTI] },
   c7_jefe_ugluk: {
     kind: "challenge",
     title: P("Uglúk, capitán de Isengard", "Uglúk, captain of Isengard"),
@@ -1955,12 +2249,54 @@ const Q_ERRVSRET = {
     "An error `null` slips forward disguised until it blows up far from the source (the famous 'cannot read property of null'). A thrown error is visible: either you catch it, or it stops the flow where it truly failed.",
   ),
 };
+const Q_ERR_MESSAGE = {
+  question: P("Capturas un error `e`. ¿Cómo lees su mensaje?", "You catch an error `e`. How do you read its message?"),
+  options: [
+    P("e.message", "e.message"),
+    P("e.text", "e.text"),
+    P("e.getMessage()", "e.getMessage()"),
+    P("e.value", "e.value"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un `Error` tiene `.message` (el texto) y `.name` (el tipo, p. ej. 'TypeError'). `getMessage()` es de PHP. En JS se accede como propiedades: `e.message`.",
+    "An `Error` has `.message` (the text) and `.name` (the type, e.g. 'TypeError'). `getMessage()` is PHP. In JS you access them as properties: `e.message`.",
+  ),
+};
+const Q_RETHROW = {
+  question: P("Capturas un error que no sabes resolver aquí. ¿Qué es lo correcto?", "You catch an error you can't resolve here. What's the right thing?"),
+  options: [
+    P("Relanzarlo (`throw e`) para que un nivel superior decida", "Rethrow it (`throw e`) so a higher level decides"),
+    P("Ignorarlo con un catch vacío", "Ignore it with an empty catch"),
+    P("Devolver null y seguir", "Return null and continue"),
+    P("Convertirlo en un console.log", "Turn it into a console.log"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Tragarse un error que no sabes manejar lo esconde y aparece más tarde y peor. Si no es tu responsabilidad, RELÁNZALO (`throw e`) o envuélvelo en otro con más contexto. Capturar no obliga a resolver ahí.",
+    "Swallowing an error you can't handle hides it, and it resurfaces later and worse. If it's not your responsibility, RETHROW it (`throw e`) or wrap it in another with more context. Catching doesn't oblige you to resolve it there.",
+  ),
+};
+const Q_ERR_INSTANCEOF = {
+  question: P("Dentro de un `catch (e)`, ¿cómo distingues si es un tipo de error concreto?", "Inside a `catch (e)`, how do you tell if it's a specific error type?"),
+  options: [
+    P("Con `if (e instanceof MiError) { ... }`", "With `if (e instanceof MiError) { ... }`"),
+    P("Con varios `catch` por tipo, como en PHP", "With several `catch` blocks by type, as in PHP"),
+    P("Con `switch (e.type)`", "With `switch (e.type)`"),
+    P("No se puede distinguir", "You can't tell them apart"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En JS hay UN solo `catch` que recibe cualquier error; distingues el tipo dentro con `instanceof` (o `e.name`). No existen los `catch` por tipo de PHP/Java.",
+    "In JS there's a SINGLE `catch` that receives any error; you tell the type inside with `instanceof` (or `e.name`). There are no per-type `catch` blocks like in PHP/Java.",
+  ),
+};
 
 /** Capítulo 8 · Errores (throw, try/catch/finally, Error propios) y factorías. */
 export const SYL_JS_COMMUNITY_8: Syllabus = {
   c8_uruk_arquero: { kind: "battle", questions: [Q_THROW, Q_ERRVSRET, Q_CUSTOMERR] },
-  c8_orco_saqueador: { kind: "battle", questions: [Q_TRYCATCH, Q_FINALLY, Q_CUSTOMERR] },
-  c8_uruk_espadachin: { kind: "battle", questions: [Q_FACTORY, Q_THROW, Q_TRYCATCH] },
+  c8_orco_saqueador: { kind: "battle", questions: [Q_TRYCATCH, Q_FINALLY, Q_ERR_MESSAGE] },
+  c8_uruk_espadachin: { kind: "battle", questions: [Q_FACTORY, Q_RETHROW, Q_ERR_INSTANCEOF] },
   c8_jefe_lurtz: {
     kind: "challenge",
     title: P("Lurtz, el primero de los Uruk-hai", "Lurtz, first of the Uruk-hai"),
