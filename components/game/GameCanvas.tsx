@@ -147,6 +147,19 @@ export default function GameCanvas({
         markers = new Map<string, any>();
         /** Nodo al alcance del jugador (para el indicador de interacción). */
         nearNode: string | null = null;
+        /**
+         * Nodos que se pueden REABRIR aunque estén completados (retos y
+         * pergaminos): se ven en solo lectura. Las batallas y quizzes resueltos
+         * no se reabren (no se re-pelean).
+         */
+        reabribles = new Set<string>(
+          chapter.nodes
+            .filter((n) => {
+              const k = n.kind ?? "challenge";
+              return k === "challenge" || k === "scroll";
+            })
+            .map((n) => n.node_id),
+        );
         /** Compañeros que siguen al jugador, en orden de fila. */
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         companions: { sprite: any; id: string; cols: number }[] = [];
@@ -278,7 +291,12 @@ export default function GameCanvas({
         interactuar() {
           if (lockedRef.current) return;
           const near = this.nearNode;
-          if (near && !completedRef.current.has(near)) {
+          // Abrible si está pendiente, o si está resuelto pero es reabrible
+          // (reto/pergamino: se muestra en solo lectura).
+          if (
+            near &&
+            (!completedRef.current.has(near) || this.reabribles.has(near))
+          ) {
             playSfx("interact");
             enterRef.current(near);
           }
@@ -733,9 +751,13 @@ export default function GameCanvas({
           }
           this.nearNode = near;
 
-          const pending = near !== null && !completedRef.current.has(near);
-          this.prompt.setVisible(pending);
-          if (pending) this.prompt.setPosition(nearPos.x, nearPos.y - 52);
+          // Mostramos el indicador si el nodo está pendiente, o si está resuelto
+          // pero se puede reabrir (reto/pergamino) para verlo en solo lectura.
+          const alcanzable =
+            near !== null &&
+            (!completedRef.current.has(near) || this.reabribles.has(near));
+          this.prompt.setVisible(alcanzable);
+          if (alcanzable) this.prompt.setPosition(nearPos.x, nearPos.y - 52);
 
           // El bocadillo flota sobre quien habla, sin salirse de la cámara.
           if (this.bubble.visible && this.bubbleTarget) {

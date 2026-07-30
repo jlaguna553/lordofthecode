@@ -46,18 +46,21 @@ export default function ChallengeModal({
       typeof window !== "undefined" &&
       window.matchMedia("(max-width: 1023px)").matches,
   );
+  // Un reto ya resuelto se abre en SOLO LECTURA: se puede ver (y volver a
+  // ejecutar para repasar), pero no editar. Siempre en modo editor.
   const [mode, setMode] = useState<"editor" | "blocks">(
-    hasBlocks && isMobile ? "blocks" : "editor",
+    solved ? "editor" : hasBlocks && isMobile ? "blocks" : "editor",
   );
   const [blocksResetKey, setBlocksResetKey] = useState(0);
   const T = (es: string, en: string) => (lang === "en" ? en : es);
 
   // Guardado con debounce: no escribimos en localStorage en cada tecla.
+  // En solo lectura (resuelto) no hay cambios que guardar.
   useEffect(() => {
-    if (!onCodeChange) return;
+    if (!onCodeChange || solved) return;
     const id = setTimeout(() => onCodeChange(node.node_id, code), 600);
     return () => clearTimeout(id);
-  }, [code, node.node_id, onCodeChange]);
+  }, [code, node.node_id, onCodeChange, solved]);
   const [result, setResult] = useState<EvalResult | null>(null);
   const [running, setRunning] = useState(false);
   const [attempts, setAttempts] = useState(0);
@@ -274,7 +277,16 @@ export default function ChallengeModal({
 
           {/* Editor + acciones */}
           <div className="flex min-h-0 flex-col">
-            {hasBlocks && (
+            {solved && (
+              <div className="flex shrink-0 items-center gap-2 border-b border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-300">
+                ✓{" "}
+                {T(
+                  "Reto resuelto · solo lectura",
+                  "Puzzle solved · read-only",
+                )}
+              </div>
+            )}
+            {hasBlocks && !solved && (
               <div className="flex shrink-0 items-center gap-1 border-b border-white/10 bg-slate-900/60 px-3 py-2">
                 <button
                   type="button"
@@ -319,12 +331,12 @@ export default function ChallengeModal({
                 // no dimensiona solo); el de bloques fluye con su contenido.
                 // En lg, ambos rellenan la columna.
                 "lg:min-h-[280px] lg:flex-1 " +
-                (mode === "blocks" && hasBlocks
+                (mode === "blocks" && hasBlocks && !solved
                   ? "shrink-0"
                   : "h-[52vh] shrink-0 lg:h-auto")
               }
             >
-              {mode === "blocks" && hasBlocks ? (
+              {mode === "blocks" && hasBlocks && !solved ? (
                 <BlocksEditor
                   blocks={c.blocks!}
                   onChange={setCode}
@@ -351,6 +363,7 @@ export default function ChallengeModal({
                   }}
                   onChange={(v) => setCode(v ?? "")}
                   options={{
+                    readOnly: solved,
                     fontSize: 14,
                     minimap: { enabled: false },
                     scrollBeyondLastLine: false,
@@ -367,26 +380,32 @@ export default function ChallengeModal({
                 disabled={running}
                 className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 disabled:opacity-50"
               >
-                {running ? "Pronunciando…" : "▶ Ejecutar runas"}
+                {running
+                  ? "Pronunciando…"
+                  : solved
+                    ? T("▶ Revisar", "▶ Review")
+                    : "▶ Ejecutar runas"}
               </button>
-              <button
-                onClick={() => {
-                  if (mode === "blocks") {
-                    // Rebaraja el pool y vacía la selección.
-                    setBlocksResetKey((k) => k + 1);
-                    setCode("");
-                  } else {
-                    // Editor no controlado: hay que escribirle el texto a mano.
-                    editorRef.current?.setValue(c.starter_code);
-                    setCode(c.starter_code);
-                  }
-                  setResult(null);
-                }}
-                className="rounded-lg bg-slate-800 px-3 py-2 text-sm text-slate-300 hover:bg-slate-700"
-              >
-                {mode === "blocks" ? T("Vaciar", "Clear") : "Reiniciar"}
-              </button>
-              {restored && !result && (
+              {!solved && (
+                <button
+                  onClick={() => {
+                    if (mode === "blocks") {
+                      // Rebaraja el pool y vacía la selección.
+                      setBlocksResetKey((k) => k + 1);
+                      setCode("");
+                    } else {
+                      // Editor no controlado: hay que escribirle el texto a mano.
+                      editorRef.current?.setValue(c.starter_code);
+                      setCode(c.starter_code);
+                    }
+                    setResult(null);
+                  }}
+                  className="rounded-lg bg-slate-800 px-3 py-2 text-sm text-slate-300 hover:bg-slate-700"
+                >
+                  {mode === "blocks" ? T("Vaciar", "Clear") : "Reiniciar"}
+                </button>
+              )}
+              {restored && !result && !solved && (
                 <span
                   className="text-xs text-slate-500"
                   title="Se retomó el código que escribiste la última vez"
