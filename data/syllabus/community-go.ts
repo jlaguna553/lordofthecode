@@ -533,3 +533,200 @@ export const SYL_GO_COMMUNITY_2: Syllabus = {
     },
   },
 };
+
+/** Preguntas de combate reutilizables sobre funciones en Go. */
+const Q_VARIADIC = {
+  question: P(
+    "¿Qué significa `func sumar(nums ...int) int`?",
+    "What does `func sumar(nums ...int) int` mean?",
+  ),
+  options: [
+    P("Recibe un número VARIABLE de int; dentro, `nums` es un []int", "Takes a VARIABLE number of ints; inside, `nums` is a []int"),
+    P("Recibe exactamente tres int", "Takes exactly three ints"),
+    P("Recibe un puntero a int", "Takes a pointer to int"),
+    P("Es un error de sintaxis", "It's a syntax error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los `...int` hacen la función variádica: `sumar(1,2,3)` o `sumar()` valen, y dentro `nums` es un slice `[]int` que recorres con `range`. Sólo el ÚLTIMO parámetro puede ser variádico.",
+    "The `...int` makes the function variadic: `sumar(1,2,3)` or `sumar()` both work, and inside `nums` is a slice `[]int` you range over. Only the LAST parameter can be variadic.",
+  ),
+};
+const Q_HOF_GO = {
+  question: P(
+    "¿Puede una función de Go recibir otra función como parámetro?",
+    "Can a Go function take another function as a parameter?",
+  ),
+  options: [
+    P("Sí: las funciones son valores de primera clase, p. ej. `fn func(int) int`", "Yes: functions are first-class values, e.g. `fn func(int) int`"),
+    P("No: Go no tiene funciones de orden superior", "No: Go has no higher-order functions"),
+    P("Sólo si se declara con `interface`", "Only if declared with `interface`"),
+    P("Sólo funciones sin retorno", "Only functions with no return"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En Go una función es un valor: puedes guardarla en una variable, pasarla como argumento (`fn func(int) int`) y devolverla. El tipo describe su firma. Es la base de callbacks y del estilo funcional.",
+    "In Go a function is a value: you can store it in a variable, pass it as an argument (`fn func(int) int`) and return it. The type describes its signature. It's the basis of callbacks and functional style.",
+  ),
+};
+const Q_CLOSURE_GO = {
+  question: P(
+    "Una función devuelve otra función que usa una variable local del padre. ¿Qué es?",
+    "A function returns another function that uses a local variable of the parent. What is that?",
+  ),
+  options: [
+    P("Una clausura (closure): la función interior recuerda ese estado", "A closure: the inner function remembers that state"),
+    P("Una variable global", "A global variable"),
+    P("Un puntero colgante", "A dangling pointer"),
+    P("Un error de compilación", "A compile error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una clausura captura las variables de su entorno y las mantiene vivas mientras exista. `func crearContador() func() int { n := 0; return func() int { n++; return n } }` devuelve funciones que recuerdan su propio `n`.",
+    "A closure captures the variables of its environment and keeps them alive as long as it exists. `func crearContador() func() int { n := 0; return func() int { n++; return n } }` returns functions that remember their own `n`.",
+  ),
+};
+const Q_NAMEDRET = {
+  question: P(
+    "¿Qué hace `func f() (total int) { total = 5; return }`?",
+    "What does `func f() (total int) { total = 5; return }` do?",
+  ),
+  options: [
+    P("Devuelve 5: `total` es un retorno con NOMBRE, y `return` a secas lo devuelve", "Returns 5: `total` is a NAMED return, and a bare `return` returns it"),
+    P("Da error: falta el valor en `return`", "Errors: the `return` is missing a value"),
+    P("Devuelve 0 siempre", "Always returns 0"),
+    P("Devuelve un puntero", "Returns a pointer"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los retornos con nombre declaran la variable de salida en la firma. Un `return` desnudo devuelve sus valores actuales. Útil para claridad, pero con moderación: en exceso confunden.",
+    "Named returns declare the output variable in the signature. A bare `return` returns their current values. Handy for clarity, but use sparingly: overused they confuse.",
+  ),
+};
+
+/** Capítulo 3 · Funciones: variádicas, orden superior y clausuras. */
+export const SYL_GO_COMMUNITY_3: Syllabus = {
+  c3_ferny: { kind: "battle", questions: [Q_VARIADIC, Q_MULTIRET, Q_HOF_GO] },
+  c3_espia_nazgul: { kind: "battle", questions: [Q_CLOSURE_GO, Q_HOF_GO, Q_VARIADIC] },
+  c3_montaraz_falso: { kind: "battle", questions: [Q_NAMEDRET, Q_MULTIRET, Q_CLOSURE_GO] },
+  c3_jefe_reybrujo: { kind: "battle", questions: [Q_HOF_GO, Q_VARIADIC, Q_CLOSURE_GO, Q_MULTIRET] },
+  pergamino_herencia: {
+    kind: "scroll",
+    title: P("El Pergamino de los Montaraces", "The Rangers' Scroll"),
+    lore_intro: P(
+      "En el Póney Pisador, un pergamino enseña a tratar las funciones como lo que son en Go: valores. Variádicas, de orden superior y clausuras.",
+      "At the Prancing Pony, a scroll teaches you to treat functions as what they are in Go: values. Variadic, higher-order and closures.",
+    ),
+    scroll: {
+      topic: P("Funciones: variádicas, orden superior y clausuras", "Functions: variadic, higher-order and closures"),
+      sections: [
+        {
+          heading: P("Variádicas y retornos múltiples", "Variadic and multiple returns"),
+          body: P(
+            "`...int` acepta un número variable de argumentos (dentro es un `[]int`). Y una función puede devolver varios valores: el patrón `(valor, error)` es el ADN de Go.",
+            "`...int` accepts a variable number of arguments (inside it's a `[]int`). And a function can return several values: the `(value, error)` pattern is Go's DNA.",
+          ),
+          code: "func sumar(nums ...int) int {\n\ttotal := 0\n\tfor _, n := range nums {\n\t\ttotal += n\n\t}\n\treturn total\n}\n\nfunc dividir(a, b int) (int, int) {\n\treturn a / b, a % b // cociente y resto\n}",
+        },
+        {
+          heading: P("Funciones de orden superior", "Higher-order functions"),
+          body: P(
+            "Una función es un valor: puedes pasarla como parámetro (`fn func(int) int`) o devolverla. Así se construyen callbacks y piezas reutilizables.",
+            "A function is a value: you can pass it as a parameter (`fn func(int) int`) or return it. That's how callbacks and reusable pieces are built.",
+          ),
+          code: "func aplicarDoble(fn func(int) int, x int) int {\n\treturn fn(fn(x)) // llama fn dos veces\n}\naplicarDoble(func(n int) int { return n + 1 }, 5) // 7",
+        },
+        {
+          heading: P("Clausuras: funciones que recuerdan", "Closures: functions that remember"),
+          body: P(
+            "Una función literal captura las variables de su entorno. La función devuelta las conserva vivas: eso es una clausura.",
+            "A function literal captures the variables of its environment. The returned function keeps them alive: that's a closure.",
+          ),
+          code: "func crearGolpe(danio int) func() int {\n\treturn func() int { return danio } // recuerda danio\n}\ngolpe := crearGolpe(20)\ngolpe() // 20",
+        },
+      ],
+      keyTakeaway: P(
+        "En Go las funciones son valores: variádicas con `...T`, retornos múltiples con `(A, B)`, y clausuras que capturan su entorno. Pásalas y devuélvelas como cualquier dato.",
+        "In Go functions are values: variadic with `...T`, multiple returns with `(A, B)`, and closures that capture their environment. Pass and return them like any data.",
+      ),
+    },
+  },
+  poney_pisador: {
+    kind: "challenge",
+    title: P("Trancos, el Montaraz", "Strider the Ranger"),
+    lore_intro: P(
+      "Un montaraz reúne la fuerza de cuantos viajeros haya, sean los que sean. Escribe una función variádica.",
+      "A ranger gathers the strength of however many travelers there are. Write a variadic function.",
+    ),
+    challenge: {
+      topic: P("Funciones variádicas (...int)", "Variadic functions (...int)"),
+      instructions: P(
+        "Escribe `sumarFuerzas(fuerzas ...int) int` que sume TODAS las fuerzas recibidas, sean cuantas sean. Con cero argumentos, devuelve 0.\n\nEjemplo: `sumarFuerzas(3, 5, 2)` → `10`.",
+        "Write `sumarFuerzas(fuerzas ...int) int` that sums ALL the strengths received, however many. With zero arguments, return 0.\n\nExample: `sumarFuerzas(3, 5, 2)` → `10`.",
+      ),
+      starter_code:
+        "package main\n\nfunc sumarFuerzas(fuerzas ...int) int {\n\t// recorre con range y acumula\n}\n",
+      hints: [
+        P("`fuerzas` es un `[]int`: recórrelo con `for _, f := range fuerzas`.", "`fuerzas` is a `[]int`: range over it with `for _, f := range fuerzas`."),
+        P("Acumula en una variable que empiece en 0 y devuélvela.", "Accumulate in a variable starting at 0 and return it."),
+      ],
+      test_cases: [
+        { input: "sumarFuerzas(3, 5, 2)", expected: 10, description: P("Varios argumentos", "Several arguments"), raw: true },
+        { input: "sumarFuerzas()", expected: 0, description: P("Ninguno: 0", "None: 0"), raw: true },
+        { input: "sumarFuerzas(7)", expected: 7, description: P("Uno solo", "Just one"), raw: true },
+      ],
+    },
+  },
+  hojas_de_tumulo: {
+    kind: "challenge",
+    title: P("Las Hojas de los Túmulos", "The Barrow-blades"),
+    lore_intro: P(
+      "Una hoja encantada aplica su filo dos veces. En Go, una función puede recibir otra y usarla.",
+      "An enchanted blade applies its edge twice. In Go, a function can take another and use it.",
+    ),
+    challenge: {
+      topic: P("Funciones de orden superior", "Higher-order functions"),
+      instructions: P(
+        "Escribe `aplicarDoble(fn func(int) int, x int) int` que llame a `fn` DOS veces sobre `x` y devuelva el resultado: `fn(fn(x))`.\n\nEjemplo: `aplicarDoble(func(n int) int { return n + 1 }, 5)` → `7`.",
+        "Write `aplicarDoble(fn func(int) int, x int) int` that calls `fn` TWICE on `x` and returns the result: `fn(fn(x))`.\n\nExample: `aplicarDoble(func(n int) int { return n + 1 }, 5)` → `7`.",
+      ),
+      starter_code:
+        "package main\n\nfunc aplicarDoble(fn func(int) int, x int) int {\n\t// llama fn sobre x, y otra vez sobre el resultado\n}\n",
+      hints: [
+        P("`fn` es una función: la llamas con paréntesis, `fn(x)`.", "`fn` is a function: call it with parentheses, `fn(x)`."),
+        P("`return fn(fn(x))`: el resultado de la primera llamada entra en la segunda.", "`return fn(fn(x))`: the first call's result feeds the second."),
+      ],
+      test_cases: [
+        { input: "aplicarDoble(func(n int) int { return n + 1 }, 5)", expected: 7, description: P("+1 dos veces", "+1 twice"), raw: true },
+        { input: "aplicarDoble(func(n int) int { return n * 2 }, 3)", expected: 12, description: P("×2 dos veces", "×2 twice"), raw: true },
+        { input: "aplicarDoble(func(n int) int { return n }, 9)", expected: 9, description: P("Identidad", "Identity"), raw: true },
+      ],
+    },
+  },
+  cima_de_los_vientos: {
+    kind: "challenge",
+    title: P("La Cima de los Vientos", "Weathertop"),
+    lore_intro: P(
+      "Forja un arma que recuerde su daño. Una función puede DEVOLVER otra función que lo conserva: una clausura.",
+      "Forge a weapon that remembers its damage. A function can RETURN another function that keeps it: a closure.",
+    ),
+    challenge: {
+      topic: P("Clausuras (closures)", "Closures"),
+      instructions: P(
+        "Escribe `crearGolpe(danio int) func() int` que DEVUELVA una función. Esa función, al llamarla sin argumentos, devuelve el `danio` con el que se creó.\n\nEjemplo: `crearGolpe(20)()` → `20`.",
+        "Write `crearGolpe(danio int) func() int` that RETURNS a function. That function, called with no arguments, returns the `danio` it was created with.\n\nExample: `crearGolpe(20)()` → `20`.",
+      ),
+      starter_code:
+        "package main\n\nfunc crearGolpe(danio int) func() int {\n\t// devuelve una func() int que devuelve danio\n}\n",
+      hints: [
+        P("Devuelve una función literal: `return func() int { ... }`.", "Return a function literal: `return func() int { ... }`."),
+        P("La función interior recuerda `danio` (clausura): `return func() int { return danio }`.", "The inner function remembers `danio` (closure): `return func() int { return danio }`."),
+      ],
+      test_cases: [
+        { input: "crearGolpe(20)()", expected: 20, description: P("Recuerda su daño", "Remembers its damage"), raw: true },
+        { input: "crearGolpe(7)()", expected: 7, description: P("Con otro valor", "With another value"), raw: true },
+        { input: "crearGolpe(0)()", expected: 0, description: P("También cero", "Zero too"), raw: true },
+      ],
+    },
+  },
+};

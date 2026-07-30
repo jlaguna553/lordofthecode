@@ -61,6 +61,18 @@ async function getGoEval(): Promise<GoEvalFn> {
       await new Promise((r) => setTimeout(r, 25));
     }
     if (!w.__goEval) throw new Error("El intérprete de Go no arrancó");
+    // Llamada de calentamiento desechable: la PRIMERA evaluación en un
+    // intérprete recién arrancado puede fallar con "call of nil function"
+    // (la maquinaria de Yaegi aún no está del todo lista). Con esto, la
+    // primera evaluación REAL del jugador ya parte en caliente.
+    try {
+      w.__goEval(
+        "package main\n\nfunc _calentar() int { return crear()() }\nfunc crear() func() int { return func() int { return 1 } }",
+        '["_calentar()"]',
+      );
+    } catch {
+      /* si el calentamiento falla, seguimos: no es crítico */
+    }
     return w.__goEval;
   })();
   return goPromise;
