@@ -108,6 +108,7 @@ const TS_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_TS_COMMUNITY_8, "types
 export const ADVENTURES: Adventure[] = [
   {
     id: "php",
+    category: "languages",
     tech: "PHP",
     icon: "🐘",
     accent: "violet",
@@ -146,6 +147,7 @@ export const ADVENTURES: Adventure[] = [
   },
   {
     id: "python",
+    category: "languages",
     tech: "Python",
     icon: "🐍",
     accent: "sky",
@@ -161,6 +163,7 @@ export const ADVENTURES: Adventure[] = [
   },
   {
     id: "javascript",
+    category: "languages",
     tech: "JavaScript",
     icon: "🟨",
     accent: "amber",
@@ -188,6 +191,7 @@ export const ADVENTURES: Adventure[] = [
   },
   {
     id: "typescript",
+    category: "languages",
     tech: "TypeScript",
     icon: "🔷",
     accent: "sky",
@@ -215,6 +219,7 @@ export const ADVENTURES: Adventure[] = [
   },
   {
     id: "sql",
+    category: "languages",
     tech: "SQL",
     icon: "🗄️",
     accent: "emerald",
@@ -228,6 +233,7 @@ export const ADVENTURES: Adventure[] = [
   },
   {
     id: "java",
+    category: "languages",
     tech: "Java",
     icon: "☕",
     accent: "orange",
@@ -241,6 +247,7 @@ export const ADVENTURES: Adventure[] = [
   },
   {
     id: "react",
+    category: "frameworks",
     tech: "React",
     icon: "⚛️",
     accent: "cyan",
@@ -254,6 +261,7 @@ export const ADVENTURES: Adventure[] = [
   },
   {
     id: "nextjs",
+    category: "frameworks",
     tech: "Next.js",
     icon: "▲",
     accent: "slate",
@@ -266,7 +274,22 @@ export const ADVENTURES: Adventure[] = [
     books: [],
   },
   {
+    id: "go",
+    category: "languages",
+    tech: "Go",
+    icon: "🐹",
+    accent: "cyan",
+    status: "soon",
+    name: { es: "Go", en: "Go" },
+    blurb: {
+      es: "El lenguaje de Google: simple, concurrente y compilado. Goroutines y canales.",
+      en: "Google's language: simple, concurrent and compiled. Goroutines and channels.",
+    },
+    books: [],
+  },
+  {
     id: "aws",
+    category: "cloud",
     tech: "AWS",
     icon: "☁️",
     accent: "amber",
@@ -275,6 +298,62 @@ export const ADVENTURES: Adventure[] = [
     blurb: {
       es: "La nube de Amazon: cómputo, almacenamiento y despliegue.",
       en: "Amazon's cloud: compute, storage and deployment.",
+    },
+    books: [],
+  },
+  {
+    id: "cloud",
+    category: "cloud",
+    tech: "Cloud",
+    icon: "🌩️",
+    accent: "sky",
+    status: "soon",
+    name: { es: "Fundamentos Cloud", en: "Cloud Fundamentals" },
+    blurb: {
+      es: "Conceptos de nube agnósticos: IaaS/PaaS/SaaS, regiones, escalado y coste.",
+      en: "Vendor-agnostic cloud concepts: IaaS/PaaS/SaaS, regions, scaling and cost.",
+    },
+    books: [],
+  },
+  {
+    id: "docker",
+    category: "devops",
+    tech: "Docker",
+    icon: "🐳",
+    accent: "sky",
+    status: "soon",
+    name: { es: "Docker", en: "Docker" },
+    blurb: {
+      es: "Contenedores desde cero: imágenes, Dockerfile, volúmenes y redes.",
+      en: "Containers from scratch: images, Dockerfile, volumes and networks.",
+    },
+    books: [],
+  },
+  {
+    id: "cicd",
+    category: "devops",
+    tech: "CI/CD",
+    icon: "🔁",
+    accent: "emerald",
+    status: "soon",
+    name: { es: "CI/CD", en: "CI/CD" },
+    blurb: {
+      es: "Integración y entrega continuas: pipelines, pruebas automáticas y despliegue.",
+      en: "Continuous integration and delivery: pipelines, automated tests and deployment.",
+    },
+    books: [],
+  },
+  {
+    id: "architecture",
+    category: "architecture",
+    tech: "Arquitectura",
+    icon: "🏛️",
+    accent: "indigo",
+    status: "soon",
+    name: { es: "Arquitectura de Software", en: "Software Architecture" },
+    blurb: {
+      es: "Patrones y decisiones: capas, hexagonal, microservicios, DDD y trade-offs.",
+      en: "Patterns and decisions: layers, hexagonal, microservices, DDD and trade-offs.",
     },
     books: [],
   },

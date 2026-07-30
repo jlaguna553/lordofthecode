@@ -20,6 +20,8 @@ export interface Adventure {
   id: string;
   /** Nombre corto de la tecnología, p. ej. "PHP". */
   tech: string;
+  /** Sección del selector a la que pertenece (lenguajes, nube, …). */
+  category: Category;
   /** Título de la aventura. */
   name: Localized<string>;
   /** Descripción breve para la pantalla de selección. */
@@ -33,6 +35,35 @@ export interface Adventure {
   /** Contenido agrupado por libro. Un libro sin capítulos simplemente no está. */
   books: AdventureBook[];
 }
+
+/** Secciones del selector de aventuras. */
+export type Category =
+  | "languages"
+  | "frameworks"
+  | "cloud"
+  | "devops"
+  | "architecture";
+
+export interface CategoryInfo {
+  id: Category;
+  /** Título de la sección, bilingüe. */
+  name: Localized<string>;
+  /** Emoji de la sección. */
+  icon: string;
+}
+
+/** Secciones en el orden en que se muestran en el selector. */
+export const CATEGORIES: CategoryInfo[] = [
+  { id: "languages", icon: "📜", name: { es: "Lenguajes", en: "Languages" } },
+  { id: "frameworks", icon: "🧩", name: { es: "Frameworks", en: "Frameworks" } },
+  { id: "cloud", icon: "☁️", name: { es: "Nube", en: "Cloud" } },
+  { id: "devops", icon: "⚙️", name: { es: "DevOps", en: "DevOps" } },
+  {
+    id: "architecture",
+    icon: "🏛️",
+    name: { es: "Arquitectura", en: "Architecture" },
+  },
+];
 
 /** Todos los capítulos de una aventura, aplanados en orden de libro. */
 export function allChapters(a: Adventure): Chapter[] {
