@@ -122,59 +122,27 @@ export const SYL_PHP_COMMUNITY_1: Syllabus = {
     ],
   },
   c1_jefe_nazgul: {
-    kind: "battle",
-    questions: [
-      {
-        question:
-          "Una clase declara `private string $palabra = 'Mellon';` y un método `public function decir(): string { return $this->palabra; }`. ¿Qué imprime `echo (new Puerta())->decir();`?",
-        options: [
-          "Mellon",
-          "Error: $palabra es privada",
-          "Nada, cadena vacía",
-          "El nombre de la propiedad",
-        ],
-        correct: 0,
-        explanation:
-          "`decir()` es público y vive DENTRO de la clase, así que ve la propiedad privada sin problema. Ése es el patrón: el dato se cierra y se expone una puerta controlada.",
-      },
-      {
-        question: "¿Cuál es la diferencia entre `protected` y `private`?",
-        options: [
-          "protected lo heredan las clases hijas; private no",
-          "protected es visible desde fuera; private no",
-          "Son sinónimos",
-          "private sólo aplica a métodos y protected sólo a propiedades",
-        ],
-        correct: 0,
-        explanation:
-          "Los dos cierran el acceso desde fuera. La diferencia está en la herencia: una hija usa los `protected` del padre, pero no los `private`.",
-      },
-      {
-        question:
-          "¿Qué devuelve `$a === $b` si `$a = new Hobbit(); $b = new Hobbit();`?",
-        options: [
-          "false: son dos objetos distintos aunque sean de la misma clase",
-          "true: tienen los mismos valores",
-          "Error: los objetos no se comparan con ===",
-          "true: son de la misma clase",
-        ],
-        correct: 0,
-        explanation:
-          "Con objetos, `===` pregunta si son LA MISMA instancia. `==` sí compara clase y valores. Dos objetos con idénticos datos son `==` pero nunca `===`.",
-      },
-      {
-        question: "¿Para qué sirve el constructor `__construct()`?",
-        options: [
-          "Para dejar el objeto en un estado válido en el momento de nacer",
-          "Para destruir el objeto al terminar",
-          "Para declarar las propiedades",
-          "Es opcional y no hace nada especial",
-        ],
-        correct: 0,
-        explanation:
-          "Se ejecuta solo al hacer `new` y es tu única oportunidad de exigir lo imprescindible. Si un Hobbit no puede existir sin nombre, pídelo en el constructor.",
-      },
-    ],
+    kind: "challenge",
+    title: "El Jinete Negro",
+    lore_intro:
+      "El Nazgûl acorrala a Frodo. Sólo la VOLUNTAD lo detiene: encapsula ese estado en una clase y mide si resistes.",
+    challenge: {
+      topic: "Clases, encapsulamiento y métodos",
+      instructions:
+        "Crea la clase Portador con una propiedad PRIVADA $voluntad iniciada en 100. Añade getVoluntad(): int; y resistir(int $tentacion): string, que devuelva 'sucumbe' si la tentación es mayor o igual que la voluntad, o 'resiste con {N} de voluntad' (donde N es voluntad menos tentación) en caso contrario.",
+      sut: "new Portador()",
+      starter_code:
+        "<?php\n\nclass Portador {\n}\n",
+      hints: [
+        "La propiedad va privada: private int $voluntad = 100;",
+        "En el else compón el texto: return 'resiste con ' . ($this->voluntad - $tentacion) . ' de voluntad';",
+      ],
+      test_cases: [
+        { input: "getVoluntad()", expected: 100, description: "La voluntad parte intacta" },
+        { input: "resistir(30)", expected: "resiste con 70 de voluntad", description: "Resiste y le queda voluntad" },
+        { input: "resistir(100)", expected: "sucumbe", description: "Al igualar la voluntad, sucumbe" },
+      ],
+    },
   },
   pergamino_clases: {
     kind: "scroll",
@@ -421,53 +389,27 @@ export const SYL_PHP_COMMUNITY_2: Syllabus = {
     ],
   },
   c2_jefe_tumulario: {
-    kind: "battle",
-    questions: [
-      {
-        question:
-          "¿Qué imprime?\n```\nclass A { public function __construct() { echo '1'; } public function __destruct() { echo '3'; } }\n$a = new A(); echo '2'; unset($a);\n```",
-        options: ["123", "132", "213", "321"],
-        correct: 0,
-        explanation:
-          "El constructor sale al hacer `new` (1), luego el echo (2), y el destructor al soltar la referencia con unset (3).",
-      },
-      {
-        question: "¿Cuál es la diferencia entre un método y una función suelta?",
-        options: [
-          "El método pertenece a una clase y tiene acceso a `$this`",
-          "El método no puede recibir parámetros",
-          "La función no puede devolver valores",
-          "Ninguna: son sinónimos",
-        ],
-        correct: 0,
-        explanation:
-          "Un método vive dentro de una clase y puede leer y modificar el estado del objeto a través de `$this`.",
-      },
-      {
-        question: "Quieres que sea IMPOSIBLE crear un Hobbit sin nombre. ¿Dónde lo garantizas?",
-        options: [
-          "Exigiendo el nombre como parámetro obligatorio del constructor",
-          "Comprobándolo en cada método que use el nombre",
-          "Poniendo la propiedad como public para que se la asignen",
-          "Documentándolo en un comentario",
-        ],
-        correct: 0,
-        explanation:
-          "Si el constructor lo exige, un Hobbit sin nombre no llega a existir: el error salta en el punto exacto del fallo.",
-      },
-      {
-        question: "¿Qué pasa si una clase hija define `__construct()` y NO llama a `parent::__construct()`?",
-        options: [
-          "El constructor del padre no se ejecuta y su inicialización se pierde",
-          "PHP llama al del padre automáticamente antes",
-          "Error fatal al instanciar",
-          "Se ejecutan los dos, en orden padre→hijo",
-        ],
-        correct: 0,
-        explanation:
-          "PHP NO encadena constructores solo: el de la hija sustituye al del padre. Tienes que llamar tú a `parent::__construct()`.",
-      },
-    ],
+    kind: "challenge",
+    title: "El Rey de los Túmulos",
+    lore_intro:
+      "El Tumulario cuenta las horas de sus prisioneros. Modela un cronómetro: un objeto que nace con un valor y avanza con sus métodos.",
+    challenge: {
+      topic: "Ciclo de vida: constructor y métodos",
+      instructions:
+        "Crea la clase Cronometro con una propiedad PRIVADA $segundos, un constructor que reciba el valor inicial, avanzar(int $n): void que le sume $n, y leer(): int que devuelva el valor actual.",
+      sut: "new Cronometro(10)",
+      starter_code:
+        "<?php\n\nclass Cronometro {\n}\n",
+      hints: [
+        "El constructor guarda el inicial: public function __construct(int $inicial) { $this->segundos = $inicial; }",
+        "avanzar() no devuelve nada (void); leer() devuelve el estado.",
+      ],
+      test_cases: [
+        { input: "leer()", expected: 10, description: "Nace con el valor inicial" },
+        { input: "avanzar(5)", expected: null, description: "avanzar() no devuelve nada (void)" },
+        { input: "leer()", expected: 15, description: "Tras avanzar 5, marca 15" },
+      ],
+    },
   },
   pergamino_ciclo_vida: {
     kind: "scroll",
@@ -682,39 +624,29 @@ export const SYL_PHP_COMMUNITY_3: Syllabus = {
     ],
   },
   c3_jefe_reybrujo: {
-    kind: "battle",
-    questions: [
-      {
-        question:
-          "```\nclass A { public function saludo() { return 'A'; } }\nclass B extends A { public function saludo() { return parent::saludo() . 'B'; } }\necho (new B())->saludo();\n```",
-        options: ["AB", "BA", "B", "A"],
-        correct: 0,
-        explanation:
-          "`parent::saludo()` devuelve 'A' y la hija le concatena su 'B'. Patrón «extender, no reemplazar».",
-      },
-      {
-        question: "¿Qué significa marcar una clase como `final`?",
-        options: ["Que nadie puede extenderla", "Que no se puede instanciar", "Que sus métodos no se pueden llamar dos veces", "Que todas sus propiedades son readonly"],
-        correct: 0,
-        explanation:
-          "`final class` cierra la herencia; `final function` cierra la sobrescritura de ese método. Si una clase no está pensada para extenderse, decirlo lo evita.",
-      },
-      {
-        question:
-          "El padre declara `public function golpe(int $fuerza): int`. ¿Puede la hija declarar `public function golpe(int $fuerza, string $arma): int`?",
-        options: ["No: cambiar la firma obligatoria rompe el contrato del padre", "Sí, siempre", "Sí, pero sólo si el padre es abstracto", "Sí, si el parámetro extra va el primero"],
-        correct: 0,
-        explanation:
-          "Quien tenga un `A` y llame a `golpe(5)` debe funcionar aunque por dentro sea `B`. Un parámetro OBLIGATORIO extra lo rompe. Con valor por defecto sí sería compatible.",
-      },
-      {
-        question: "¿Cuándo es preferible la COMPOSICIÓN a la herencia?",
-        options: ["Casi siempre: hereda sólo cuando hay un «es un» real y estable", "Nunca: la herencia siempre es mejor", "Sólo cuando no puedes modificar la clase padre", "Sólo en lenguajes sin herencia múltiple"],
-        correct: 0,
-        explanation:
-          "La herencia ata a la hija a los detalles del padre para siempre. La composición («tiene un») intercambia piezas sin tocar nada. Si dudas entre «es un» o «tiene un», es «tiene un».",
-      },
-    ],
+    kind: "challenge",
+    title: "El Rey Brujo de Angmar",
+    lore_intro:
+      "«Ningún hombre vivo puede detenerme.» Forja una hoja mágica que HEREDE de un arma normal y AMPLÍE su golpe con parent::.",
+    challenge: {
+      topic: "Herencia y parent::",
+      instructions:
+        "La clase Arma ya existe (constructor con $danio protegido y atacar(): int). Crea HojaMagica que extienda Arma y SOBRESCRIBA atacar() para devolver el DOBLE, reutilizando el cálculo del padre con parent::atacar().",
+      sut: "new HojaMagica(15)",
+      support_code:
+        "class Arma {\n    public function __construct(protected int $danio) {}\n    public function atacar(): int { return $this->danio; }\n}",
+      starter_code:
+        "<?php\n\n// Arma ya existe: constructor con $danio (protected) y atacar(): int\n\nclass HojaMagica {\n}\n",
+      hints: [
+        "class HojaMagica extends Arma { … }",
+        "Reutiliza al padre: return parent::atacar() * 2;",
+      ],
+      test_cases: [
+        { input: "atacar()", expected: 30, description: "Duplica el daño base (15 → 30)" },
+        { input: "(new HojaMagica(7))->atacar()", raw: true, expected: 14, description: "Funciona con cualquier daño (7 → 14)" },
+        { input: "(new HojaMagica(1)) instanceof Arma", raw: true, expected: true, description: "Una HojaMagica ES un Arma" },
+      ],
+    },
   },
   pergamino_herencia: {
     kind: "scroll",
@@ -914,49 +846,27 @@ export const SYL_PHP_COMMUNITY_4: Syllabus = {
     ],
   },
   c4_jefe_nueve: {
-    kind: "battle",
-    questions: [
-      {
-        question:
-          "```\nclass N { public static int $vistos = 0;\n  public function __construct() { self::$vistos++; } }\nnew N(); new N(); new N();\necho N::$vistos;\n```",
-        options: ["3", "1", "0", "Error: no se puede leer desde fuera"],
-        correct: 0,
-        explanation:
-          "La propiedad estática es una sola para toda la clase, así que los tres constructores incrementan el MISMO contador. Es el uso clásico y legítimo de un estático: contar instancias. Y siendo `public` se lee desde fuera con `N::$vistos`.",
-      },
-      {
-        question: "¿Se puede cambiar el valor de una `const` en tiempo de ejecución?",
-        options: [
-          "No: se fija al declararla y es inmutable",
-          "Sí, con self::CONST = nuevo",
-          "Sí, sólo dentro de la clase",
-          "Sí, si la clase no es final",
-        ],
-        correct: 0,
-        explanation:
-          "Una constante de clase es inmutable por definición. Si el valor tiene que poder cambiar, no es una constante: usa una propiedad estática, o mejor una normal inyectada por constructor.",
-      },
-      {
-        question: "¿Cuál es un buen uso de un método estático?",
-        options: [
-          "Un constructor con nombre: Fecha::desdeTexto('2026-07-22')",
-          "Guardar la conexión a la base de datos para todo el programa",
-          "Cualquier método que no use $this",
-          "Reemplazar a las funciones sueltas",
-        ],
-        correct: 0,
-        explanation:
-          "Los constructores con nombre son ideales: crean y devuelven una instancia, expresan la intención mejor que un `new` con cinco argumentos, y no guardan estado global. Lo contrario es el singleton de conexión: estado compartido escondido, imposible de sustituir en un test.",
-      },
-      {
-        question:
-          "Una clase padre tiene `public static function crear(): static { return new static(); }`. ¿Qué devuelve `Hija::crear()`?",
-        options: ["Una instancia de Hija", "Una instancia del padre", "Error: new static no existe", "null"],
-        correct: 0,
-        explanation:
-          "`new static()` usa resolución estática tardía: construye la clase con la que se hizo la llamada. Con `new self()` habrías obtenido siempre el padre. Es exactamente lo que permite escribir un factory una vez en el padre y que funcione en todas las hijas.",
-      },
-    ],
+    kind: "challenge",
+    title: "Los Nueve en el Vado",
+    lore_intro:
+      "El recuento de los Nueve no pertenece a ninguno: es de la Sombra entera. Un contador compartido por toda la clase es estado ESTÁTICO.",
+    challenge: {
+      topic: "Propiedades y métodos estáticos",
+      instructions:
+        "Crea la clase Caceria con una propiedad estática PRIVADA $jinetes iniciada en 0, y dos métodos ESTÁTICOS: sumar(int $n): void, que la incremente, y total(): int, que la devuelva. Todo se llama con Caceria::… sin instanciar.",
+      starter_code:
+        "<?php\n\nclass Caceria {\n}\n",
+      hints: [
+        "Estado compartido: private static int $jinetes = 0;",
+        "En un método estático no hay $this: usa self::$jinetes += $n;",
+      ],
+      test_cases: [
+        { input: "Caceria::total()", raw: true, expected: 0, description: "Empieza sin jinetes contados" },
+        { input: "Caceria::sumar(5)", raw: true, expected: null, description: "Cinco en la Cima de los Vientos…" },
+        { input: "Caceria::sumar(4)", raw: true, expected: null, description: "…y los cuatro restantes" },
+        { input: "Caceria::total()", raw: true, expected: 9, description: "El estado es compartido: son los Nueve" },
+      ],
+    },
   },
   c4_trasgo_montaraz: {
     kind: "battle",
@@ -1225,59 +1135,28 @@ export const SYL_PHP_COMMUNITY_5: Syllabus = {
     ],
   },
   c5_jefe_caradhras: {
-    kind: "battle",
-    questions: [
-      {
-        question:
-          "```\nclass Temp {\n  public function __construct(public readonly int $grados) {}\n}\n$t = new Temp(-5);\n$t->grados = 0;\n```\n¿Qué ocurre en la última línea?",
-        options: [
-          "Error: no se puede modificar una propiedad readonly ya inicializada",
-          "Se asigna 0 sin problema",
-          "Se ignora en silencio",
-          "Error: -5 no es válido",
-        ],
-        correct: 0,
-        explanation:
-          "La promoción ya inicializó `$grados` con -5 en el constructor. Cualquier escritura posterior —incluso al mismo valor— lanza «Cannot modify readonly property». Es justo la garantía que buscas: una vez creado, el objeto no cambia.",
-      },
-      {
-        question:
-          "Un constructor recibe un porcentaje y hace `if ($p < 0 || $p > 100) throw new InvalidArgumentException();`. ¿Qué consigue?",
-        options: [
-          "Que no exista ningún objeto con un porcentaje fuera de rango",
-          "Que el porcentaje se ajuste solo al rango válido",
-          "Que la propiedad sea readonly",
-          "Que el método sea más rápido",
-        ],
-        correct: 0,
-        explanation:
-          "Validar en el constructor y lanzar si algo no cuadra hace IMPOSIBLE construir un objeto inválido: el error salta en el punto exacto del fallo, no tres capas más abajo. Es la base de los objetos de valor: si existe, es válido.",
-      },
-      {
-        question: "¿Qué es un «objeto de valor» (value object)?",
-        options: [
-          "Un objeto pequeño e inmutable que representa un valor (Dinero, Fecha, Coordenada)",
-          "Cualquier objeto con propiedades públicas",
-          "Un objeto que sólo tiene métodos estáticos",
-          "El objeto principal de la aplicación",
-        ],
-        correct: 0,
-        explanation:
-          "Un value object encapsula un concepto (un Dinero, un Email, una Temperatura) validándolo al crearlo y sin permitir cambios después. Dos son iguales si sus valores coinciden, no por identidad. `readonly` + validación en el constructor es exactamente la receta.",
-      },
-      {
-        question: "¿Cuál es la diferencia entre `private` y `readonly`?",
-        options: [
-          "private controla QUIÉN accede; readonly controla CUÁNDO se puede escribir",
-          "Son sinónimos",
-          "readonly impide la lectura; private no",
-          "private sólo aplica a métodos",
-        ],
-        correct: 0,
-        explanation:
-          "Son ejes distintos y combinables. `private` es visibilidad: desde dónde se ve. `readonly` es mutabilidad: cuántas veces se escribe. Una propiedad puede ser `private readonly` (oculta e inmutable) o `public readonly` (visible pero inmutable).",
-      },
-    ],
+    kind: "challenge",
+    title: "La Voluntad de Caradhras",
+    lore_intro:
+      "La montaña no negocia. Una medida no se altera: si el frío cambia, tienes OTRA medida. Forja un objeto de valor inmutable con readonly.",
+    challenge: {
+      topic: "Objetos de valor inmutables (readonly)",
+      instructions:
+        "Crea la clase Temperatura con $grados readonly (promovido en el constructor). El constructor debe lanzar InvalidArgumentException si los grados están fuera de -40..40. Añade conMas(int $g): Temperatura, que devuelva una INSTANCIA NUEVA con los grados sumados, sin tocar la original.",
+      sut: "new Temperatura(-10)",
+      starter_code:
+        "<?php\n\nclass Temperatura {\n}\n",
+      hints: [
+        "Promueve y marca readonly: public function __construct(public readonly int $grados) { … }",
+        "conMas() no muta: return new Temperatura($this->grados + $g);",
+      ],
+      test_cases: [
+        { input: "grados", expected: -10, description: "La temperatura de partida" },
+        { input: "(new Temperatura(-10))->conMas(-5)->grados", raw: true, expected: -15, description: "conMas() devuelve una más fría" },
+        { input: "(function() { $t = new Temperatura(-10); $t->conMas(-5); return $t->grados; })()", raw: true, expected: -10, description: "La ORIGINAL no cambia: inmutabilidad" },
+        { input: "(function() { try { new Temperatura(-100); return false; } catch (\\InvalidArgumentException $e) { return true; } })()", raw: true, expected: true, description: "Rechaza valores fuera de rango" },
+      ],
+    },
   },
   c5_trasgo_montanes: {
     kind: "battle",
@@ -1604,55 +1483,28 @@ export const SYL_PHP_COMMUNITY_6: Syllabus = {
     ],
   },
   c6_jefe_balrog: {
-    kind: "battle",
-    questions: [
-      {
-        question:
-          "```\ninterface Arma { public function golpe(): int; }\nclass Espada implements Arma { public function golpe(): int { return 10; } }\nclass Hacha  implements Arma { public function golpe(): int { return 15; } }\n$armas = [new Espada(), new Hacha()];\necho array_sum(array_map(fn(Arma $a) => $a->golpe(), $armas));\n```",
-        options: ["25", "10", "15", "Error: tipos distintos en el array"],
-        correct: 0,
-        explanation:
-          "Espada y Hacha son de clases distintas, pero AMBAS son `Arma`. El array las mezcla sin problema y `array_map` llama `golpe()` en cada una: 10 + 15 = 25. Eso es polimorfismo: un mismo código opera sobre formas distintas.",
-      },
-      {
-        question:
-          "Quieres añadir una `Lanza` al juego. Con un buen diseño de interfaces, ¿qué código existente hay que tocar?",
-        options: [
-          "Ninguno: creas Lanza implements Arma y ya funciona en todas partes",
-          "Todos los sitios que reciben un Arma, para añadir el caso Lanza",
-          "La interfaz Arma, para registrar la lanza",
-          "El array de armas y cada bucle que lo recorre",
-        ],
-        correct: 0,
-        explanation:
-          "Ésa es la victoria de programar contra la interfaz: si `Lanza implements Arma`, todo lo que ya trabajaba con `Arma` la acepta sin cambios. Si tuvieras que tocar diez `switch` por tipo, tu diseño estaría pidiendo a gritos una interfaz.",
-      },
-      {
-        question: "¿Cuál es la diferencia entre una interfaz y una clase abstracta?",
-        options: [
-          "La interfaz sólo declara firmas; la abstracta puede traer código y estado",
-          "No hay diferencia práctica",
-          "La interfaz puede instanciarse; la abstracta no",
-          "La abstracta sólo tiene métodos estáticos",
-        ],
-        correct: 0,
-        explanation:
-          "La interfaz es un contrato puro, sin implementación, y una clase puede cumplir muchas. La abstracta puede aportar métodos ya escritos y propiedades, pero sólo se hereda UNA. Regla práctica: interfaz para «puede hacer X», abstracta para «es un tipo de Y con base común».",
-      },
-      {
-        question:
-          "Una interfaz `Contable` exige `contar(): int`. ¿Qué garantiza sobre un objeto de tipo `Contable`?",
-        options: [
-          "Que puedes llamar $obj->contar() y recibir un int, sea cual sea su clase",
-          "Que el objeto tiene una propiedad $contador",
-          "Que el objeto es inmutable",
-          "Que hereda de una clase Contable",
-        ],
-        correct: 0,
-        explanation:
-          "El contrato garantiza el MÉTODO, no cómo lo cumpla cada clase. Uno contará elementos de un array, otro filas de una base de datos: a quien recibe el `Contable` le da igual. Confía en la firma, no en la implementación.",
-      },
-    ],
+    kind: "challenge",
+    title: "El Balrog de Morgoth",
+    lore_intro:
+      "Sombra y fuego. El Balrog es un Enemigo más para el código que lo enfrenta… pero golpea diez veces más fuerte. Implementa el contrato Enemigo.",
+    challenge: {
+      topic: "Interfaces y polimorfismo",
+      instructions:
+        "Existen la interfaz Enemigo (atacar(): int), la clase Orco (ataca con 10) y la función danioTotal(array $enemigos). Crea Balrog, que implemente Enemigo y ataque con 100. danioTotal debe poder sumar orcos y balrogs por igual.",
+      support_code:
+        "interface Enemigo {\n    public function atacar(): int;\n}\n\nclass Orco implements Enemigo {\n    public function atacar(): int { return 10; }\n}\n\nfunction danioTotal(array $enemigos): int {\n    return array_sum(array_map(fn(Enemigo $e) => $e->atacar(), $enemigos));\n}",
+      starter_code:
+        "<?php\n\n// Enemigo (interfaz), Orco y danioTotal() ya existen.\n\nclass Balrog {\n}\n",
+      hints: [
+        "Declara el contrato: class Balrog implements Enemigo { … }",
+        "Implementa atacar() devolviendo 100.",
+      ],
+      test_cases: [
+        { input: "(new Balrog())->atacar()", raw: true, expected: 100, description: "El Balrog golpea fortísimo" },
+        { input: "danioTotal([new Orco(), new Balrog()])", raw: true, expected: 110, description: "La misma función suma orco y balrog: polimorfismo" },
+        { input: "(new Balrog()) instanceof Enemigo", raw: true, expected: true, description: "Cumple el contrato Enemigo" },
+      ],
+    },
   },
   pergamino_contratos: {
     kind: "scroll",
@@ -1961,56 +1813,28 @@ export const SYL_PHP_COMMUNITY_7: Syllabus = {
     ],
   },
   c7_jefe_ugluk: {
-    kind: "battle",
-    questions: [
-      {
-        question:
-          "```\nabstract class Personaje {\n  abstract public function nombre(): string;\n  public function saludo(): string { return 'Soy ' . $this->nombre(); }\n}\nclass Elfo extends Personaje {\n  public function nombre(): string { return 'Legolas'; }\n}\necho (new Elfo())->saludo();\n```",
-        options: ["Soy Legolas", "Error: Personaje es abstracta", "Soy ", "Soy Elfo"],
-        correct: 0,
-        explanation:
-          "La abstracta aporta `saludo()` ya escrito, que llama al método abstracto `nombre()`. La hija Elfo rellena `nombre()`, así que `saludo()` funciona y devuelve «Soy Legolas». Es el patrón «método plantilla»: la base define el esqueleto, la hija completa los huecos.",
-      },
-      {
-        question:
-          "Necesitas que Espada y Hechizo compartan un método `registrarUso()` idéntico, pero no tienen ancestro común y no quieres uno artificial. ¿Qué usas?",
-        options: [
-          "Un trait con registrarUso(), que ambas hacen use",
-          "Herencia: creo una clase padre común",
-          "Copio y pego el método en las dos",
-          "Una interfaz con el método",
-        ],
-        correct: 0,
-        explanation:
-          "El trait es exactamente para esto: compartir implementación entre clases sin parentesco, sin inventar una superclase forzada ni duplicar código. La interfaz sólo declararía la firma (tendrías que escribir el cuerpo dos veces); la herencia ataría clases que no son «la misma cosa».",
-      },
-      {
-        question:
-          "¿Puede una clase abstracta tener un constructor y propiedades con estado?",
-        options: [
-          "Sí: aporta a las hijas ese constructor y esas propiedades",
-          "No: las abstractas no tienen estado",
-          "Sólo propiedades estáticas",
-          "Sólo si no tiene métodos abstractos",
-        ],
-        correct: 0,
-        explanation:
-          "Una abstracta es una clase de pleno derecho salvo por el `new` directo: tiene constructor, propiedades, métodos concretos y abstractos. Las hijas heredan todo eso y llaman a `parent::__construct()` como con cualquier padre. Es su ventaja sobre la interfaz, que no puede aportar estado.",
-      },
-      {
-        question:
-          "Regla práctica: ¿cuándo interfaz, cuándo abstracta, cuándo trait?",
-        options: [
-          "Interfaz = contrato (puede-hacer); abstracta = base con identidad (es-un); trait = código compartido sin jerarquía",
-          "Da igual, los tres son intercambiables",
-          "Interfaz para todo; los otros dos están obsoletos",
-          "Trait para contratos, abstracta para código, interfaz para estado",
-        ],
-        correct: 0,
-        explanation:
-          "Interfaz cuando sólo importa QUE cumpla un contrato (Comparable, Contable). Abstracta cuando hay una relación «es-un» real con base común (Personaje → Hobbit). Trait cuando varias clases sin parentesco necesitan el MISMO código (registrar, serializar). No compiten: se combinan.",
-      },
-    ],
+    kind: "challenge",
+    title: "Uglúk, capitán de Isengard",
+    lore_intro:
+      "El capitán porta una reliquia bendecida. Combina la FAMILIA (una abstracta) con la CAPACIDAD compartida (un trait) en una sola clase.",
+    challenge: {
+      topic: "Clases abstractas + traits",
+      instructions:
+        "Existen la abstracta Don (exige poder(): int) y el trait Bendecido (aporta bendicion(): int = 10). Crea Reliquia, que EXTIENDA Don y USE Bendecido, cuyo poder() devuelva 5 más la bendición (total 15).",
+      support_code:
+        "abstract class Don {\n    abstract public function poder(): int;\n}\n\ntrait Bendecido {\n    public function bendicion(): int { return 10; }\n}",
+      starter_code:
+        "<?php\n\n// Don (abstracta) y Bendecido (trait) ya existen.\n\nclass Reliquia {\n}\n",
+      hints: [
+        "Se combinan así: class Reliquia extends Don { use Bendecido; … }",
+        "En poder() llama al método del trait: return 5 + $this->bendicion();",
+      ],
+      test_cases: [
+        { input: "(new Reliquia())->poder()", raw: true, expected: 15, description: "5 propios + 10 de bendición" },
+        { input: "(new Reliquia()) instanceof Don", raw: true, expected: true, description: "Hereda de la abstracta Don" },
+        { input: "in_array('Bendecido', class_uses('Reliquia'))", raw: true, expected: true, description: "Y usa el trait Bendecido" },
+      ],
+    },
   },
   pergamino_dones: {
     kind: "scroll",
@@ -2280,55 +2104,28 @@ export const SYL_PHP_COMMUNITY_8: Syllabus = {
     ],
   },
   c8_jefe_lurtz: {
-    kind: "battle",
-    questions: [
-      {
-        question:
-          "```\ntry {\n  throw new RuntimeException('caída');\n} catch (LogicException $e) {\n  echo 'A';\n} catch (RuntimeException $e) {\n  echo 'B';\n} finally {\n  echo 'C';\n}\n```",
-        options: ["BC", "AC", "ABC", "C"],
-        correct: 0,
-        explanation:
-          "La excepción es `RuntimeException`, así que el primer catch (LogicException) no encaja y se salta; el segundo sí, imprime 'B'. Y `finally` se ejecuta SIEMPRE, imprima o no algún catch: añade 'C'. Resultado: BC.",
-      },
-      {
-        question: "¿Para qué sirve el bloque `finally`?",
-        options: [
-          "Para código que debe ejecutarse haya o no excepción (limpieza, cierre)",
-          "Para capturar la excepción que los catch no cogieron",
-          "Para relanzar la excepción",
-          "Sólo se ejecuta si no hubo excepción",
-        ],
-        correct: 0,
-        explanation:
-          "`finally` es la garantía de limpieza: corre tanto si el try acaba bien como si salta una excepción (incluso si el catch relanza o hay un return). Es donde cierras el fichero, sueltas el candado o devuelves la conexión, sin duplicar ese código en cada rama.",
-      },
-      {
-        question:
-          "Una Factory decide qué crear según un parámetro. Si mañana añades un tipo nuevo, ¿qué principio SOLID te conviene respetar?",
-        options: [
-          "Abierto/Cerrado: extender la fábrica sin reescribir a quien la usa",
-          "Ninguno: las fábricas no siguen SOLID",
-          "Herencia múltiple",
-          "Que todo sea estático",
-        ],
-        correct: 0,
-        explanation:
-          "El principio Abierto/Cerrado: el código debería estar abierto a extensión pero cerrado a modificación. Una buena fábrica te deja añadir un tipo tocándola a ella (o registrando el nuevo), sin que quien pide `Arma` cambie ni una línea. Lo verás a fondo en el Libro II (SOLID).",
-      },
-      {
-        question:
-          "Capturas una excepción, registras el error, pero no puedes resolverlo aquí. ¿Qué haces?",
-        options: [
-          "Relanzarla (throw) para que un nivel superior decida, quizá envuelta en otra",
-          "Devolver null y seguir como si nada",
-          "Ignorarla: ya la registraste",
-          "Convertirla en un echo",
-        ],
-        correct: 0,
-        explanation:
-          "Tragarse una excepción que no sabes resolver esconde el fallo. El patrón correcto es registrar y RELANZAR (`throw`), o envolverla en una excepción de más alto nivel que dé contexto, para que quien pueda decidir lo haga. Capturar no obliga a resolver ahí mismo.",
-      },
-    ],
+    kind: "challenge",
+    title: "Lurtz, el primero de los Uruk-hai",
+    lore_intro:
+      "El último enemigo de la Comunidad. Monta la fábrica que crea la hueste de Isengard — y que ante lo desconocido, LANZA en vez de mentir.",
+    challenge: {
+      topic: "Patrón Factory y excepciones",
+      instructions:
+        "Existen la interfaz Guerrero (fuerza(): int), Orco (fuerza 10) y UrukHai (fuerza 30). Crea FabricaDeHuestes con el método ESTÁTICO crear(string $tipo): Guerrero, que devuelva un Orco para 'orco', un UrukHai para 'uruk', y lance InvalidArgumentException con cualquier otro tipo.",
+      support_code:
+        "interface Guerrero {\n    public function fuerza(): int;\n}\n\nclass Orco implements Guerrero {\n    public function fuerza(): int { return 10; }\n}\n\nclass UrukHai implements Guerrero {\n    public function fuerza(): int { return 30; }\n}",
+      starter_code:
+        "<?php\n\n// Guerrero (interfaz), Orco y UrukHai ya existen.\n\nclass FabricaDeHuestes {\n}\n",
+      hints: [
+        "En PHP 8 queda limpio con match: return match ($tipo) { 'orco' => new Orco(), … };",
+        "El caso por defecto lanza: default => throw new InvalidArgumentException(\"Tipo desconocido: $tipo\"),",
+      ],
+      test_cases: [
+        { input: "FabricaDeHuestes::crear('orco')->fuerza()", raw: true, expected: 10, description: "El orco común" },
+        { input: "FabricaDeHuestes::crear('uruk')->fuerza()", raw: true, expected: 30, description: "El Uruk-hai" },
+        { input: "(function() { try { FabricaDeHuestes::crear('elfo'); return false; } catch (\\InvalidArgumentException $e) { return true; } })()", raw: true, expected: true, description: "Un tipo desconocido se rechaza" },
+      ],
+    },
   },
   pergamino_fallos: {
     kind: "scroll",
