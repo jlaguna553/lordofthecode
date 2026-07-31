@@ -131,10 +131,39 @@ const Q_ANY = {
 };
 
 /** Capítulo 1 · TypeScript desde cero: tipos, anotaciones e inferencia. */
+const Q_VOID = {
+  question: P("¿Qué significa el tipo de retorno `: void` en una función?", "What does the return type `: void` mean on a function?"),
+  options: [
+    P("Que la función NO devuelve nada útil", "That the function returns nothing useful"),
+    P("Que devuelve null", "That it returns null"),
+    P("Que devuelve un vacío `[]`", "That it returns an empty `[]`"),
+    P("Que no tiene parámetros", "That it has no parameters"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`void` marca funciones que se ejecutan por su EFECTO, no por su valor (como registrar algo). Devuelven `undefined`; anotarlo lo deja claro.",
+    "`void` marks functions run for their SIDE EFFECT, not their value (like logging). They return `undefined`; annotating it makes that clear.",
+  ),
+};
+const Q_NULL_UNDEF = {
+  question: P("¿Cómo declaras que un valor puede ser un `string` o faltar?", "How do you declare that a value can be a `string` or be missing?"),
+  options: [
+    P("string | undefined  (o string | null)", "string | undefined  (or string | null)"),
+    P("string?", "string?"),
+    P("optional string", "optional string"),
+    P("string | void", "string | void"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La ausencia se modela con una unión: `string | undefined`. Con `strictNullChecks`, TS te OBLIGA a comprobar antes de usarlo, evitando el clásico error de `undefined`.",
+    "Absence is modeled with a union: `string | undefined`. With `strictNullChecks`, TS FORCES you to check before using it, avoiding the classic `undefined` error.",
+  ),
+};
+
 export const SYL_TS_COMMUNITY_1: Syllabus = {
   c1_espia: { kind: "battle", questions: [Q_ANNOTATION, Q_PRIMITIVES, Q_INFERENCE] },
-  c1_jinete_rastreador: { kind: "battle", questions: [Q_FUNC_TYPE, Q_WHY_TS, Q_PRIMITIVES] },
-  c1_perro_negro: { kind: "battle", questions: [Q_INFERENCE, Q_UNION, Q_ANY] },
+  c1_jinete_rastreador: { kind: "battle", questions: [Q_FUNC_TYPE, Q_WHY_TS, Q_UNION] },
+  c1_perro_negro: { kind: "battle", questions: [Q_ANY, Q_VOID, Q_NULL_UNDEF] },
   c1_jefe_nazgul: {
     kind: "challenge",
     title: P("El Jinete Negro", "The Black Rider"),
@@ -401,10 +430,53 @@ const Q_MIXED_ARR = {
 };
 
 /** Capítulo 2 · Arrays y tuplas tipados. */
+const Q_ARRAY_GENERIC = {
+  question: P("Además de `number[]`, ¿qué otra sintaxis declara un array de números?", "Besides `number[]`, what other syntax declares an array of numbers?"),
+  options: [
+    P("Array<number>", "Array<number>"),
+    P("List<number>", "List<number>"),
+    P("number[Array]", "number[Array]"),
+    P("[number]", "[number]"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`number[]` y `Array<number>` son EQUIVALENTES. La forma genérica `Array<T>` es útil cuando `T` es complejo. `[number]` NO es un array: es una tupla de un solo número.",
+    "`number[]` and `Array<number>` are EQUIVALENT. The generic form `Array<T>` helps when `T` is complex. `[number]` is NOT an array: it's a tuple of a single number.",
+  ),
+};
+const Q_TUPLE_ACCESS = {
+  question: P("Con `const par: [number, string] = [1, 'a']`, ¿de qué tipo es `par[1]`?", "With `const par: [number, string] = [1, 'a']`, what type is `par[1]`?"),
+  options: [
+    P("string (cada posición de la tupla tiene su tipo)", "string (each tuple position has its own type)"),
+    P("number", "number"),
+    P("number | string", "number | string"),
+    P("any", "any"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En una tupla, TS sabe el tipo EXACTO de cada posición: `par[0]` es number y `par[1]` es string. También puedes desestructurar: `const [n, s] = par`.",
+    "In a tuple, TS knows the EXACT type of each position: `par[0]` is number and `par[1]` is string. You can also destructure: `const [n, s] = par`.",
+  ),
+};
+const Q_ARRAY_OF_OBJ = {
+  question: P("¿Cómo se tipa un array de objetos con `nombre` y `poder`?", "How do you type an array of objects with `nombre` and `poder`?"),
+  options: [
+    P("{ nombre: string; poder: number }[]", "{ nombre: string; poder: number }[]"),
+    P("[nombre: string, poder: number]", "[nombre: string, poder: number]"),
+    P("Array{ nombre, poder }", "Array{ nombre, poder }"),
+    P("object[]", "object[]"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Pones el tipo del objeto y le añades `[]`: `{ nombre: string; poder: number }[]`. Si el objeto se repite, conviene un `type` o `interface` con nombre y usar `Guerrero[]`.",
+    "You write the object type and add `[]`: `{ nombre: string; poder: number }[]`. If the object repeats, use a named `type` or `interface` and write `Guerrero[]`.",
+  ),
+};
+
 export const SYL_TS_COMMUNITY_2: Syllabus = {
   c2_raiz: { kind: "battle", questions: [Q_ARR_TYPE, Q_ARR_INFER, Q_ARR_METHOD] },
-  c2_niebla: { kind: "battle", questions: [Q_TUPLE, Q_MIXED_ARR, Q_ARR_TYPE] },
-  c2_sauce: { kind: "battle", questions: [Q_ARR_METHOD, Q_READONLY_ARR, Q_ARR_INFER] },
+  c2_niebla: { kind: "battle", questions: [Q_TUPLE, Q_MIXED_ARR, Q_READONLY_ARR] },
+  c2_sauce: { kind: "battle", questions: [Q_ARRAY_GENERIC, Q_TUPLE_ACCESS, Q_ARRAY_OF_OBJ] },
   c2_jefe_tumulario: {
     kind: "challenge",
     title: P("El Rey de los Túmulos", "The Barrow-king"),
@@ -677,10 +749,53 @@ const Q_STRUCTURAL = {
 };
 
 /** Capítulo 3 · Interfaces y tipos de objeto. */
+const Q_IFACE_VS_ALIAS = {
+  question: P("¿Diferencia práctica entre `interface X {}` y `type X = {}`?", "Practical difference between `interface X {}` and `type X = {}`?"),
+  options: [
+    P("Casi ninguna para objetos; la interface se puede REABRIR y extender, el type sirve además para uniones", "Almost none for objects; an interface can be REOPENED and extended, a type also covers unions"),
+    P("El type no existe en TS", "type doesn't exist in TS"),
+    P("La interface es más lenta", "interfaces are slower"),
+    P("El type no admite propiedades", "type can't have properties"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Para describir la forma de un objeto son intercambiables. La `interface` admite «declaration merging» (reabrirla) y `extends`; el `type` es más flexible (uniones, intersecciones, mapeados).",
+    "To describe an object's shape they're interchangeable. `interface` allows declaration merging (reopening) and `extends`; `type` is more flexible (unions, intersections, mapped types).",
+  ),
+};
+const Q_READONLY_PROP = {
+  question: P("¿Qué hace `readonly` en `interface P { readonly id: number }`?", "What does `readonly` do in `interface P { readonly id: number }`?"),
+  options: [
+    P("La propiedad se asigna una vez y no se puede reasignar después", "The property is set once and can't be reassigned afterwards"),
+    P("La oculta del exterior", "It hides it from outside"),
+    P("La hace opcional", "It makes it optional"),
+    P("La convierte en método", "It turns it into a method"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`readonly` marca una propiedad como inmutable tras crearse: `p.id = 2` da error de compilación. Es la versión a nivel de propiedad de la inmutabilidad, sólo en tiempo de tipos.",
+    "`readonly` marks a property as immutable after creation: `p.id = 2` errors at compile time. It's the property-level version of immutability, at the type level only.",
+  ),
+};
+const Q_EXTENDS_IFACE = {
+  question: P("¿Qué permite `interface Guerrero extends Persona {}`?", "What does `interface Guerrero extends Persona {}` allow?"),
+  options: [
+    P("Que Guerrero herede las propiedades de Persona y añada las suyas", "Guerrero inherits Persona's properties and adds its own"),
+    P("Que Persona use a Guerrero", "Persona uses Guerrero"),
+    P("Crear una instancia de Persona", "Create a Persona instance"),
+    P("Nada: las interfaces no se extienden", "Nothing: interfaces can't extend"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una interfaz puede EXTENDER otra (o varias) y reunir sus propiedades: `Guerrero` tendrá lo de `Persona` más lo suyo. Compone contratos sin repetir.",
+    "An interface can EXTEND another (or several) and gather its properties: `Guerrero` will have `Persona`'s plus its own. It composes contracts without repetition.",
+  ),
+};
+
 export const SYL_TS_COMMUNITY_3: Syllabus = {
   c3_ferny: { kind: "battle", questions: [Q_INTERFACE, Q_OBJ_TYPE, Q_OPTIONAL] },
-  c3_espia_nazgul: { kind: "battle", questions: [Q_STRUCTURAL, Q_METHOD_SIG, Q_INTERFACE] },
-  c3_montaraz_falso: { kind: "battle", questions: [Q_OPTIONAL, Q_TYPE_ALIAS, Q_OBJ_TYPE] },
+  c3_espia_nazgul: { kind: "battle", questions: [Q_STRUCTURAL, Q_METHOD_SIG, Q_TYPE_ALIAS] },
+  c3_montaraz_falso: { kind: "battle", questions: [Q_IFACE_VS_ALIAS, Q_READONLY_PROP, Q_EXTENDS_IFACE] },
   c3_jefe_reybrujo: {
     kind: "challenge",
     title: P("El Rey Brujo de Angmar", "The Witch-king of Angmar"),
@@ -916,9 +1031,66 @@ const Q_ENUM_NUMERIC = {
 };
 
 /** Capítulo 4 · Enums y tipos literales. */
+const Q_STRING_ENUM = {
+  question: P("¿Qué es `enum Color { Rojo = 'rojo', Azul = 'azul' }`?", "What is `enum Color { Rojo = 'rojo', Azul = 'azul' }`?"),
+  options: [
+    P("Un enum de STRING: cada caso tiene un valor de texto legible", "A STRING enum: each case has a readable text value"),
+    P("Un objeto normal", "A plain object"),
+    P("Una unión de literales", "A literal union"),
+    P("Un error: los enums son numéricos", "An error: enums are numeric"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un enum respaldado por string da a cada caso un valor de texto (`Color.Rojo === 'rojo'`), más legible al depurar o serializar que los numéricos, que empiezan en 0.",
+    "A string-backed enum gives each case a text value (`Color.Rojo === 'rojo'`), more readable when debugging or serializing than numeric ones, which start at 0.",
+  ),
+};
+const Q_CONST_ENUM = {
+  question: P("¿Qué hace `const enum` frente a un `enum` normal?", "What does `const enum` do vs a normal `enum`?"),
+  options: [
+    P("Se INLINEA en compilación: no genera objeto en el JS final", "It's INLINED at compile time: no object is generated in the final JS"),
+    P("No se puede leer", "It can't be read"),
+    P("Es de sólo lectura en ejecución", "It's read-only at runtime"),
+    P("No existe", "It doesn't exist"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un `const enum` desaparece del JS: cada uso se sustituye por su valor literal, sin crear el objeto del enum. Más ligero, aunque con alguna limitación de herramientas.",
+    "A `const enum` vanishes from the JS: each use is replaced by its literal value, without creating the enum object. Lighter, though with some tooling caveats.",
+  ),
+};
+const Q_UNION_NARROW = {
+  question: P("Con `type E = 'a' | 'b'` y `x: E`, ¿qué comprueba `if (x === 'a')`?", "With `type E = 'a' | 'b'` and `x: E`, what does `if (x === 'a')` check?"),
+  options: [
+    P("Estrecha `x` a `'a'` dentro del if; el resto es `'b'`", "Narrows `x` to `'a'` inside the if; the rest is `'b'`"),
+    P("Nada: no se puede comparar", "Nothing: you can't compare"),
+    P("Convierte x en booleano", "Turns x into a boolean"),
+    P("Da error", "Errors"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Comparar con un literal ESTRECHA el tipo: en la rama del `if`, TS sabe que `x` es `'a'`; en el `else`, `'b'`. Es la base del manejo exhaustivo de una unión.",
+    "Comparing with a literal NARROWS the type: in the `if` branch, TS knows `x` is `'a'`; in the `else`, `'b'`. It's the basis of exhaustively handling a union.",
+  ),
+};
+const Q_AS_CONST = {
+  question: P("¿Qué hace `as const` en `const dir = 'norte' as const`?", "What does `as const` do in `const dir = 'norte' as const`?"),
+  options: [
+    P("Fija el tipo al LITERAL `'norte'`, no al genérico `string`", "Pins the type to the LITERAL `'norte'`, not the general `string`"),
+    P("Lo convierte en constante en ejecución", "Makes it a runtime constant"),
+    P("Lo hace readonly y ya", "Just makes it readonly"),
+    P("Nada", "Nothing"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`as const` le dice a TS que infiera el tipo más ESTRECHO posible: `'norte'` en vez de `string`. En objetos/arrays, los vuelve `readonly` y con tipos literales.",
+    "`as const` tells TS to infer the NARROWEST type: `'norte'` instead of `string`. On objects/arrays, it makes them `readonly` with literal types.",
+  ),
+};
+
 export const SYL_TS_COMMUNITY_4: Syllabus = {
   c4_jinete_rezagado: { kind: "battle", questions: [Q_LITERAL, Q_ENUM, Q_ENUM_VS_LITERAL] },
-  c4_lobo: { kind: "battle", questions: [Q_ENUM_NUMERIC, Q_EXHAUSTIVE, Q_LITERAL] },
+  c4_lobo: { kind: "battle", questions: [Q_ENUM_NUMERIC, Q_EXHAUSTIVE, Q_STRING_ENUM] },
   c4_jefe_nueve: {
     kind: "challenge",
     title: P("Los Nueve en el Vado", "The Nine at the Ford"),
@@ -945,7 +1117,7 @@ export const SYL_TS_COMMUNITY_4: Syllabus = {
       ],
     },
   },
-  c4_trasgo_montaraz: { kind: "battle", questions: [Q_EXHAUSTIVE, Q_ENUM_NUMERIC, Q_ENUM] },
+  c4_trasgo_montaraz: { kind: "battle", questions: [Q_CONST_ENUM, Q_UNION_NARROW, Q_AS_CONST] },
   pergamino_estatico: {
     kind: "scroll",
     title: P("El Pergamino de los Estados Cerrados", "The Scroll of Closed States"),
@@ -1198,9 +1370,52 @@ const Q_STATIC_TS = {
 };
 
 /** Capítulo 5 · Clases tipadas: campos, readonly, acceso y propiedades de parámetro. */
+const Q_CONSTRUCTOR_TS = {
+  question: P("En TS, ¿cómo tipa el constructor sus parámetros?", "In TS, how does the constructor type its parameters?"),
+  options: [
+    P("Como cualquier función: `constructor(nombre: string, edad: number)`", "Like any function: `constructor(nombre: string, edad: number)`"),
+    P("No se pueden tipar", "They can't be typed"),
+    P("Con `constructor<string>`", "With `constructor<string>`"),
+    P("Sólo con any", "Only with any"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El `constructor` tipa sus parámetros como cualquier método. Y con modificadores (`private`, `readonly`) delante de un parámetro, además declara y asigna la propiedad de golpe (property promotion).",
+    "The `constructor` types its parameters like any method. And with modifiers (`private`, `readonly`) before a parameter, it also declares and assigns the property at once (property promotion).",
+  ),
+};
+const Q_ABSTRACT_TS = {
+  question: P("¿Qué es una `abstract class` en TypeScript?", "What is an `abstract class` in TypeScript?"),
+  options: [
+    P("Una clase que no se puede instanciar; puede tener métodos `abstract` que las hijas implementan", "A class that can't be instantiated; it may have `abstract` methods the children implement"),
+    P("Una interfaz con otro nombre", "An interface by another name"),
+    P("Una clase sin propiedades", "A class with no properties"),
+    P("Una clase final", "A final class"),
+  ],
+  correct: 0,
+  explanation: P(
+    "TS SÍ tiene `abstract`: la clase base no se instancia con `new`, y sus métodos `abstract` (sin cuerpo) obligan a las subclases a implementarlos. Combina base compartida + contrato.",
+    "TS DOES have `abstract`: the base class isn't instantiated with `new`, and its `abstract` methods (no body) force subclasses to implement them. It combines shared base + contract.",
+  ),
+};
+const Q_GETTER_TS = {
+  question: P("¿Cómo se declara una propiedad calculada de sólo lectura en una clase TS?", "How do you declare a read-only computed property in a TS class?"),
+  options: [
+    P("Con un getter: `get area(): number { ... }`", "With a getter: `get area(): number { ... }`"),
+    P("Con `readonly area()`", "With `readonly area()`"),
+    P("Con `area: get`", "With `area: get`"),
+    P("No se puede", "You can't"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un `get area()` se accede como propiedad (`obj.area`, sin paréntesis) y calcula su valor al leerlo. Con un `set` correspondiente, controlas también la escritura.",
+    "A `get area()` is accessed as a property (`obj.area`, no parentheses) and computes its value on read. With a matching `set`, you also control writes.",
+  ),
+};
+
 export const SYL_TS_COMMUNITY_5: Syllabus = {
   c5_crebain: { kind: "battle", questions: [Q_CLASS_FIELD, Q_PARAM_PROP, Q_READONLY_TS] },
-  c5_lobo_nieve: { kind: "battle", questions: [Q_ACCESS, Q_STATIC_TS, Q_CLASS_FIELD] },
+  c5_lobo_nieve: { kind: "battle", questions: [Q_ACCESS, Q_STATIC_TS, Q_CLASS_IMPL] },
   c5_jefe_caradhras: {
     kind: "challenge",
     title: P("La Voluntad de Caradhras", "The Will of Caradhras"),
@@ -1228,7 +1443,7 @@ export const SYL_TS_COMMUNITY_5: Syllabus = {
       ],
     },
   },
-  c5_trasgo_montanes: { kind: "battle", questions: [Q_STATIC_TS, Q_CLASS_IMPL, Q_PARAM_PROP] },
+  c5_trasgo_montanes: { kind: "battle", questions: [Q_CONSTRUCTOR_TS, Q_ABSTRACT_TS, Q_GETTER_TS] },
   pergamino_hielo: {
     kind: "scroll",
     title: P("El Pergamino del Hielo Tipado", "The Scroll of Typed Ice"),
@@ -1458,10 +1673,53 @@ const Q_WHY_GENERIC = {
 };
 
 /** Capítulo 6 · Genéricos. */
+const Q_GENERIC_MULTIPLE = {
+  question: P("¿Qué significan los DOS parámetros de `function f<T, U>(x: T): U`?", "What do the TWO parameters mean in `function f<T, U>(x: T): U`?"),
+  options: [
+    P("Dos tipos independientes: T la entrada y U la salida, resueltos por separado", "Two independent types: T the input and U the output, resolved separately"),
+    P("Que T y U son iguales", "That T and U are the same"),
+    P("Que hay dos funciones", "That there are two functions"),
+    P("Un error: sólo se permite un tipo", "An error: only one type is allowed"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Puedes declarar varios parámetros de tipo. `mapear<T, U>(xs: T[], fn: (x: T) => U): U[]` relaciona entrada y salida sin fijarlas: cada llamada las concreta.",
+    "You can declare several type parameters. `mapear<T, U>(xs: T[], fn: (x: T) => U): U[]` relates input and output without fixing them: each call resolves them.",
+  ),
+};
+const Q_GENERIC_DEFAULT = {
+  question: P("¿Qué hace `T = string` en `class Caja<T = string> {}`?", "What does `T = string` do in `class Caja<T = string> {}`?"),
+  options: [
+    P("Da a T un tipo POR DEFECTO si no se especifica", "Gives T a DEFAULT type if none is specified"),
+    P("Obliga a que T sea string", "Forces T to be string"),
+    P("Convierte T en string siempre", "Always turns T into string"),
+    P("Es un error", "It's an error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un valor por defecto para el parámetro de tipo: `new Caja()` usa `string`, pero `new Caja<number>()` lo cambia. Cómodo cuando hay un tipo habitual.",
+    "A default for the type parameter: `new Caja()` uses `string`, but `new Caja<number>()` changes it. Handy when there's a common type.",
+  ),
+};
+const Q_GENERIC_ARRAY = {
+  question: P("En `function primero<T>(xs: T[]): T`, ¿qué relaciona el genérico?", "In `function primero<T>(xs: T[]): T`, what does the generic relate?"),
+  options: [
+    P("El tipo del array con el del valor devuelto: mismo T", "The array's type with the returned value's: same T"),
+    P("Nada, T es any", "Nothing, T is any"),
+    P("Obliga a que el array sea de números", "Forces the array to be numbers"),
+    P("Convierte el array en tupla", "Turns the array into a tuple"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El genérico ATA el tipo: si le pasas `string[]`, devuelve `string`; si `number[]`, `number`. Sin él tendrías que devolver `any` y perderías el tipo.",
+    "The generic TIES the type: pass it `string[]` and it returns `string`; pass `number[]` and it returns `number`. Without it you'd return `any` and lose the type.",
+  ),
+};
+
 export const SYL_TS_COMMUNITY_6: Syllabus = {
   c6_trasgo_explorador: { kind: "battle", questions: [Q_GENERIC, Q_GENERIC_INFER, Q_WHY_GENERIC] },
-  c6_trol_cavernas: { kind: "battle", questions: [Q_GENERIC_FN, Q_GENERIC_CONSTRAINT, Q_GENERIC] },
-  c6_capitan_trasgo: { kind: "battle", questions: [Q_GENERIC_CONSTRAINT, Q_GENERIC_CLASS, Q_GENERIC_INFER] },
+  c6_trol_cavernas: { kind: "battle", questions: [Q_GENERIC_FN, Q_GENERIC_CONSTRAINT, Q_GENERIC_CLASS] },
+  c6_capitan_trasgo: { kind: "battle", questions: [Q_GENERIC_DEFAULT, Q_GENERIC_MULTIPLE, Q_GENERIC_ARRAY] },
   c6_jefe_balrog: {
     kind: "challenge",
     title: P("El Balrog de Morgoth", "The Balrog of Morgoth"),
@@ -1739,10 +1997,53 @@ const Q_READONLY_UTIL = {
 };
 
 /** Capítulo 7 · Tipos utilitarios e intersecciones. */
+const Q_OMIT = {
+  question: P("¿Qué es `Omit<Guerrero, 'poder'>`?", "What is `Omit<Guerrero, 'poder'>`?"),
+  options: [
+    P("El tipo Guerrero SIN la propiedad `poder`", "The Guerrero type WITHOUT the `poder` property"),
+    P("Sólo la propiedad `poder`", "Only the `poder` property"),
+    P("Guerrero con `poder` opcional", "Guerrero with optional `poder`"),
+    P("Un error", "An error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`Omit<T, K>` construye un tipo con todas las propiedades de `T` MENOS las de `K`. Es el complemento de `Pick<T, K>`, que se queda sólo con esas.",
+    "`Omit<T, K>` builds a type with all of `T`'s properties EXCEPT those in `K`. It's the complement of `Pick<T, K>`, which keeps only those.",
+  ),
+};
+const Q_REQUIRED = {
+  question: P("¿Qué hace `Required<T>` sobre un tipo con propiedades opcionales?", "What does `Required<T>` do to a type with optional properties?"),
+  options: [
+    P("Las vuelve TODAS obligatorias (lo contrario de Partial)", "Makes them ALL required (the opposite of Partial)"),
+    P("Las hace opcionales", "Makes them optional"),
+    P("Las hace readonly", "Makes them readonly"),
+    P("Las borra", "Deletes them"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`Required<T>` quita los `?` de todas las propiedades: lo contrario de `Partial<T>`, que se los pone. Son tipos utilitarios «mapeados» que transforman otro tipo.",
+    "`Required<T>` removes the `?` from all properties: the opposite of `Partial<T>`, which adds them. They're \"mapped\" utility types that transform another type.",
+  ),
+};
+const Q_RETURNTYPE = {
+  question: P("¿Qué extrae `ReturnType<typeof f>`?", "What does `ReturnType<typeof f>` extract?"),
+  options: [
+    P("El tipo que DEVUELVE la función `f`", "The type that function `f` RETURNS"),
+    P("Los parámetros de f", "f's parameters"),
+    P("El nombre de f", "f's name"),
+    P("Si f es async", "Whether f is async"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`ReturnType<typeof f>` te da el tipo de retorno de `f` sin escribirlo a mano; si `f` cambia, el tipo se ajusta solo. `Parameters<typeof f>` hace lo mismo con los argumentos.",
+    "`ReturnType<typeof f>` gives you `f`'s return type without writing it by hand; if `f` changes, the type follows. `Parameters<typeof f>` does the same for the arguments.",
+  ),
+};
+
 export const SYL_TS_COMMUNITY_7: Syllabus = {
   c7_orco_explorador: { kind: "battle", questions: [Q_INTERSECTION, Q_UTILITY, Q_PARTIAL] },
-  c7_trasgo_frontera: { kind: "battle", questions: [Q_RECORD, Q_PICK, Q_INTERSECTION] },
-  c7_uruk_rastreador: { kind: "battle", questions: [Q_PARTIAL, Q_READONLY_UTIL, Q_UTILITY] },
+  c7_trasgo_frontera: { kind: "battle", questions: [Q_RECORD, Q_PICK, Q_READONLY_UTIL] },
+  c7_uruk_rastreador: { kind: "battle", questions: [Q_OMIT, Q_REQUIRED, Q_RETURNTYPE] },
   c7_jefe_ugluk: {
     kind: "challenge",
     title: P("Uglúk, capitán de Isengard", "Uglúk, captain of Isengard"),
@@ -1994,10 +2295,53 @@ const Q_NARROW_WHY = {
 };
 
 /** Capítulo 8 · Narrowing, uniones discriminadas y type guards. */
+const Q_TYPEOF_NARROW = {
+  question: P("Con `x: string | number`, ¿qué hace `if (typeof x === 'string')`?", "With `x: string | number`, what does `if (typeof x === 'string')` do?"),
+  options: [
+    P("Estrecha `x` a `string` dentro del if; en el else es `number`", "Narrows `x` to `string` inside the if; in the else it's `number`"),
+    P("Convierte x en string", "Converts x to a string"),
+    P("Da error", "Errors"),
+    P("No cambia el tipo", "Doesn't change the type"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`typeof` es la guarda de tipo más común para primitivos: dentro del `if`, TS sabe que `x` es `string` y te deja usar sus métodos; en el `else`, `number`.",
+    "`typeof` is the most common type guard for primitives: inside the `if`, TS knows `x` is `string` and lets you use its methods; in the `else`, `number`.",
+  ),
+};
+const Q_INSTANCEOF_NARROW = {
+  question: P("¿Para qué sirve `if (e instanceof RangeError)` al capturar un error?", "What is `if (e instanceof RangeError)` for when catching an error?"),
+  options: [
+    P("Estrecha el tipo a RangeError en esa rama, con sus propiedades", "Narrows the type to RangeError in that branch, with its properties"),
+    P("Crea un RangeError", "Creates a RangeError"),
+    P("Comprueba el nombre por texto", "Checks the name by text"),
+    P("Nada útil", "Nothing useful"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`instanceof` estrecha a un tipo de CLASE: útil con `unknown` o uniones de objetos (`Perro | Gato`) y para distinguir errores dentro de un `catch`.",
+    "`instanceof` narrows to a CLASS type: useful with `unknown` or object unions (`Perro | Gato`) and to tell errors apart inside a `catch`.",
+  ),
+};
+const Q_TRUTHY_NARROW = {
+  question: P("Con `x: string | undefined`, ¿qué consigue `if (x) { ... }`?", "With `x: string | undefined`, what does `if (x) { ... }` achieve?"),
+  options: [
+    P("Descarta `undefined` (y ''): dentro, `x` es un `string`", "Rules out `undefined` (and ''): inside, `x` is a `string`"),
+    P("Convierte x en booleano permanente", "Turns x into a permanent boolean"),
+    P("Da error si x es undefined", "Errors if x is undefined"),
+    P("Nada", "Nothing"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La comprobación de veracidad estrecha quitando los valores «falsy» (`undefined`, `null`, `''`, `0`). Ojo: también descarta la cadena vacía, no sólo `undefined`.",
+    "The truthiness check narrows by removing \"falsy\" values (`undefined`, `null`, `''`, `0`). Note: it also rules out the empty string, not just `undefined`.",
+  ),
+};
+
 export const SYL_TS_COMMUNITY_8: Syllabus = {
   c8_uruk_arquero: { kind: "battle", questions: [Q_NARROW, Q_UNKNOWN, Q_NARROW_WHY] },
-  c8_orco_saqueador: { kind: "battle", questions: [Q_DISCRIMINATED, Q_IN_OPERATOR, Q_NARROW] },
-  c8_uruk_espadachin: { kind: "battle", questions: [Q_TYPE_PREDICATE, Q_UNKNOWN, Q_DISCRIMINATED] },
+  c8_orco_saqueador: { kind: "battle", questions: [Q_DISCRIMINATED, Q_IN_OPERATOR, Q_TYPEOF_NARROW] },
+  c8_uruk_espadachin: { kind: "battle", questions: [Q_TYPE_PREDICATE, Q_INSTANCEOF_NARROW, Q_TRUTHY_NARROW] },
   c8_jefe_lurtz: {
     kind: "challenge",
     title: P("Lurtz, el primero de los Uruk-hai", "Lurtz, first of the Uruk-hai"),
