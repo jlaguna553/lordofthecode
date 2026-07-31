@@ -426,6 +426,20 @@ export const ADVENTURES: Adventure[] = [
     books: [],
   },
   {
+    id: "design-patterns",
+    category: "architecture",
+    tech: "Patrones",
+    icon: "♟️",
+    accent: "rose",
+    status: "soon",
+    name: { es: "Patrones de Diseño", en: "Design Patterns" },
+    blurb: {
+      es: "Los patrones de la Banda de los Cuatro: Singleton, Factory, Strategy, Observer, Decorator y más.",
+      en: "The Gang of Four patterns: Singleton, Factory, Strategy, Observer, Decorator and more.",
+    },
+    books: [],
+  },
+  {
     id: "react-native",
     category: "frameworks",
     tech: "React Native",
