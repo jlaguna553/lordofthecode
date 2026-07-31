@@ -135,7 +135,32 @@ export const SYL_GO_COMMUNITY_1: Syllabus = {
   c1_espia: { kind: "battle", questions: [Q_FUNC_GO, Q_TYPE_AFTER, Q_PACKAGE] },
   c1_jinete_rastreador: { kind: "battle", questions: [Q_VAR_GO, Q_NO_SEMI, Q_FUNC_GO] },
   c1_perro_negro: { kind: "battle", questions: [Q_EXPORTED, Q_MULTIRET, Q_TYPE_AFTER] },
-  c1_jefe_nazgul: { kind: "battle", questions: [Q_PACKAGE, Q_VAR_GO, Q_MULTIRET, Q_EXPORTED] },
+  c1_jefe_nazgul: {
+    kind: "challenge",
+    title: P("El Jinete Negro", "The Black Rider"),
+    lore_intro: P(
+      "El Nazgûl acorrala a Frodo. Sólo la VOLUNTAD lo detiene: escribe la función que mide si resistes o sucumbes.",
+      "The Nazgûl corners Frodo. Only WILL stops it: write the function that measures whether you resist or succumb.",
+    ),
+    challenge: {
+      topic: P("Funciones y fmt.Sprintf", "Functions and fmt.Sprintf"),
+      instructions: P(
+        "Escribe `resistir(nombre string, tentacion int) string`:\n• si `tentacion` es 100 o más, devuelve `'{nombre} sucumbe'`,\n• si no, devuelve `'{nombre} resiste con {100 - tentacion} de voluntad'`. Usa `fmt.Sprintf`.\n\nEjemplo: `resistir(\"Frodo\", 30)` → `\"Frodo resiste con 70 de voluntad\"`.",
+        "Write `resistir(nombre string, tentacion int) string`:\n• if `tentacion` is 100 or more, return `'{nombre} sucumbe'`,\n• otherwise, return `'{nombre} resiste con {100 - tentacion} de voluntad'`. Use `fmt.Sprintf`.\n\nExample: `resistir(\"Frodo\", 30)` → `\"Frodo resiste con 70 de voluntad\"`.",
+      ),
+      starter_code:
+        'package main\n\nimport "fmt"\n\nfunc resistir(nombre string, tentacion int) string {\n}\n',
+      hints: [
+        P("Un `if` para el caso de sucumbir; el resto, resistir.", "An `if` for the succumb case; the rest, resist."),
+        P('Formatea con `fmt.Sprintf("%s resiste con %d de voluntad", nombre, 100-tentacion)`.', 'Format with `fmt.Sprintf("%s resiste con %d de voluntad", nombre, 100-tentacion)`.'),
+      ],
+      test_cases: [
+        { input: 'resistir("Frodo", 30)', expected: "Frodo resiste con 70 de voluntad", description: P("Resiste", "Resists"), raw: true },
+        { input: 'resistir("Boromir", 100)', expected: "Boromir sucumbe", description: P("Sucumbe al llegar a 100", "Succumbs at 100"), raw: true },
+        { input: 'resistir("Sam", 0)', expected: "Sam resiste con 100 de voluntad", description: P("Voluntad plena", "Full will"), raw: true },
+      ],
+    },
+  },
   pergamino_clases: {
     kind: "scroll",
     title: P("El Pergamino del Gopher", "The Gopher's Scroll"),
@@ -370,7 +395,32 @@ export const SYL_GO_COMMUNITY_2: Syllabus = {
   c2_raiz: { kind: "battle", questions: [Q_SLICE_TYPE, Q_APPEND, Q_LEN] },
   c2_niebla: { kind: "battle", questions: [Q_RANGE, Q_SLICING, Q_SLICE_TYPE] },
   c2_sauce: { kind: "battle", questions: [Q_APPEND, Q_MAKE, Q_RANGE] },
-  c2_jefe_tumulario: { kind: "battle", questions: [Q_SLICING, Q_MAKE, Q_LEN, Q_APPEND] },
+  c2_jefe_tumulario: {
+    kind: "challenge",
+    title: P("El Rey de los Túmulos", "The Barrow-king"),
+    lore_intro: P(
+      "El Tumulario alza su horda. Recorre el slice y quédate sólo con los golpes que de verdad hieren: range + append.",
+      "The Barrow-wight raises its horde. Walk the slice and keep only the blows that truly harm: range + append.",
+    ),
+    challenge: {
+      topic: P("Slices, range y append", "Slices, range and append"),
+      instructions: P(
+        "Escribe `filtrarFuertes(danios []int, minimo int) []int` que devuelva un slice NUEVO con los daños MAYORES O IGUALES que `minimo`. Empieza en `[]int{}` y usa `range` + `append`.\n\nEjemplo: `filtrarFuertes([]int{3, 7, 2, 9}, 5)` → `[7, 9]`.",
+        "Write `filtrarFuertes(danios []int, minimo int) []int` returning a NEW slice with the damages GREATER THAN OR EQUAL to `minimo`. Start at `[]int{}` and use `range` + `append`.\n\nExample: `filtrarFuertes([]int{3, 7, 2, 9}, 5)` → `[7, 9]`.",
+      ),
+      starter_code:
+        "package main\n\nfunc filtrarFuertes(danios []int, minimo int) []int {\n}\n",
+      hints: [
+        P("Empieza con `r := []int{}` y recórrelos con `for _, d := range danios`.", "Start with `r := []int{}` and iterate with `for _, d := range danios`."),
+        P("`if d >= minimo { r = append(r, d) }`.", "`if d >= minimo { r = append(r, d) }`."),
+      ],
+      test_cases: [
+        { input: "filtrarFuertes([]int{3, 7, 2, 9}, 5)", expected: [7, 9], description: P("Sólo los fuertes", "Only the strong ones"), raw: true },
+        { input: "filtrarFuertes([]int{1, 2}, 5)", expected: [], description: P("Ninguno llega", "None reaches it"), raw: true },
+        { input: "filtrarFuertes([]int{5, 6}, 5)", expected: [5, 6], description: P("El 5 entra (>=)", "5 counts (>=)"), raw: true },
+      ],
+    },
+  },
   pergamino_ciclo_vida: {
     kind: "scroll",
     title: P("El Pergamino de las Listas", "The Scroll of Lists"),
@@ -604,7 +654,32 @@ export const SYL_GO_COMMUNITY_3: Syllabus = {
   c3_ferny: { kind: "battle", questions: [Q_VARIADIC, Q_MULTIRET, Q_HOF_GO] },
   c3_espia_nazgul: { kind: "battle", questions: [Q_CLOSURE_GO, Q_HOF_GO, Q_VARIADIC] },
   c3_montaraz_falso: { kind: "battle", questions: [Q_NAMEDRET, Q_MULTIRET, Q_CLOSURE_GO] },
-  c3_jefe_reybrujo: { kind: "battle", questions: [Q_HOF_GO, Q_VARIADIC, Q_CLOSURE_GO, Q_MULTIRET] },
+  c3_jefe_reybrujo: {
+    kind: "challenge",
+    title: P("El Rey Brujo de Angmar", "The Witch-king of Angmar"),
+    lore_intro: P(
+      "«Ningún hombre vivo puede detenerme.» Forja una cuenta que RECUERDE cada golpe: una función que devuelve otra con memoria — una clausura.",
+      "\"No living man can hinder me.\" Forge a tally that REMEMBERS each blow: a function that returns another with memory — a closure.",
+    ),
+    challenge: {
+      topic: P("Clausuras (closures)", "Closures"),
+      instructions: P(
+        "Escribe `crearCuenta(inicio int) func() int` que DEVUELVA una función. Cada vez que se llame a esa función, incrementa en 1 el valor (que empieza en `inicio`) y lo devuelve.\n\nEjemplo: `crearCuenta(10)()` → `11`.",
+        "Write `crearCuenta(inicio int) func() int` that RETURNS a function. Each time that function is called, it increments the value (starting at `inicio`) by 1 and returns it.\n\nExample: `crearCuenta(10)()` → `11`.",
+      ),
+      starter_code:
+        "package main\n\nfunc crearCuenta(inicio int) func() int {\n}\n",
+      hints: [
+        P("Guarda el estado en una variable local y devuelve una función que la usa.", "Keep the state in a local variable and return a function that uses it."),
+        P("`n := inicio; return func() int { n++; return n }`.", "`n := inicio; return func() int { n++; return n }`."),
+      ],
+      test_cases: [
+        { input: "crearCuenta(10)()", expected: 11, description: P("Desde 10, una llamada: 11", "From 10, one call: 11"), raw: true },
+        { input: "crearCuenta(0)()", expected: 1, description: P("Desde 0: 1", "From 0: 1"), raw: true },
+        { input: "crearCuenta(100)()", expected: 101, description: P("Con otro inicio", "With another start"), raw: true },
+      ],
+    },
+  },
   pergamino_herencia: {
     kind: "scroll",
     title: P("El Pergamino de los Montaraces", "The Rangers' Scroll"),
@@ -814,7 +889,32 @@ const Q_IOTA = {
 export const SYL_GO_COMMUNITY_4: Syllabus = {
   c4_jinete_rezagado: { kind: "battle", questions: [Q_MAP_TYPE, Q_MAP_COMMAOK, Q_CONST] },
   c4_lobo: { kind: "battle", questions: [Q_MAP_RANGE, Q_IOTA, Q_MAP_TYPE] },
-  c4_jefe_nueve: { kind: "battle", questions: [Q_CONST, Q_IOTA, Q_MAP_COMMAOK, Q_MAP_RANGE] },
+  c4_jefe_nueve: {
+    kind: "challenge",
+    title: P("Los Nueve en el Vado", "The Nine at the Ford"),
+    lore_intro: P(
+      "Los Nueve entran en el agua. Cuenta cuántas veces aparece cada jinete: un map asocia cada nombre con su total.",
+      "The Nine enter the water. Count how many times each rider appears: a map associates each name with its total.",
+    ),
+    challenge: {
+      topic: P("Maps: contar por clave", "Maps: counting by key"),
+      instructions: P(
+        "Escribe `contar(jinetes []string) map[string]int` que devuelva cuántas veces aparece cada nombre.\n\nEjemplo: `contar([]string{\"nazgul\", \"nazgul\", \"rey\"})` da un map con `\"nazgul\": 2` y `\"rey\": 1`.",
+        "Write `contar(jinetes []string) map[string]int` returning how many times each name appears.\n\nExample: `contar([]string{\"nazgul\", \"nazgul\", \"rey\"})` gives a map with `\"nazgul\": 2` and `\"rey\": 1`.",
+      ),
+      starter_code:
+        "package main\n\nfunc contar(jinetes []string) map[string]int {\n}\n",
+      hints: [
+        P("Empieza con `m := map[string]int{}`.", "Start with `m := map[string]int{}`."),
+        P("Por cada nombre: `m[j]++` (la clave ausente empieza en 0).", "For each name: `m[j]++` (a missing key starts at 0)."),
+      ],
+      test_cases: [
+        { input: 'contar([]string{"nazgul", "nazgul", "rey"})["nazgul"]', expected: 2, description: P("Dos nazgûl", "Two nazgûl"), raw: true },
+        { input: 'contar([]string{"nazgul", "nazgul", "rey"})["rey"]', expected: 1, description: P("Un rey", "One king"), raw: true },
+        { input: 'len(contar([]string{"a", "b", "a"}))', expected: 2, description: P("Dos claves distintas", "Two distinct keys"), raw: true },
+      ],
+    },
+  },
   c4_trasgo_montaraz: { kind: "battle", questions: [Q_MAP_COMMAOK, Q_MAP_TYPE, Q_IOTA] },
   pergamino_estatico: {
     kind: "scroll",
@@ -1034,7 +1134,32 @@ const Q_CONSTRUCTOR = {
 export const SYL_GO_COMMUNITY_5: Syllabus = {
   c5_crebain: { kind: "battle", questions: [Q_STRUCT, Q_METHOD_RECV, Q_EXPORTED] },
   c5_lobo_nieve: { kind: "battle", questions: [Q_PTR_RECV, Q_CONSTRUCTOR, Q_STRUCT] },
-  c5_jefe_caradhras: { kind: "battle", questions: [Q_METHOD_RECV, Q_PTR_RECV, Q_EXPORTED, Q_CONSTRUCTOR] },
+  c5_jefe_caradhras: {
+    kind: "challenge",
+    title: P("La Voluntad de Caradhras", "The Will of Caradhras"),
+    lore_intro: P(
+      "La montaña es el enemigo. Forja una espada con su filo, y un método que golpee sin dañar de menos que cero.",
+      "The mountain is the enemy. Forge a sword with its edge, and a method that strikes without dealing below zero.",
+    ),
+    challenge: {
+      topic: P("Structs y métodos", "Structs and methods"),
+      instructions: P(
+        "Define un struct `Espada` con un campo `Filo int`. Añade el método `Golpear(objetivo int) int` (receptor de valor) que devuelva `objetivo - Filo`, sin bajar de 0.\n\nEjemplo: `Espada{Filo: 10}.Golpear(30)` → `20`.",
+        "Define a struct `Espada` with a field `Filo int`. Add the method `Golpear(objetivo int) int` (value receiver) returning `objetivo - Filo`, never below 0.\n\nExample: `Espada{Filo: 10}.Golpear(30)` → `20`.",
+      ),
+      starter_code:
+        "package main\n\ntype Espada struct {\n\tFilo int\n}\n",
+      hints: [
+        P("El método lleva receptor: `func (e Espada) Golpear(objetivo int) int { … }`.", "The method has a receiver: `func (e Espada) Golpear(objetivo int) int { … }`."),
+        P("No bajes de 0: calcula `objetivo - e.Filo` y si es negativo devuelve 0.", "Don't go below 0: compute `objetivo - e.Filo` and if negative return 0."),
+      ],
+      test_cases: [
+        { input: "Espada{Filo: 10}.Golpear(30)", expected: 20, description: P("30 − 10", "30 − 10"), raw: true },
+        { input: "Espada{Filo: 10}.Golpear(5)", expected: 0, description: P("Nunca negativo", "Never negative"), raw: true },
+        { input: "Espada{Filo: 10}.Filo", expected: 10, description: P("El campo se lee directo", "The field reads directly"), raw: true },
+      ],
+    },
+  },
   c5_trasgo_montanes: { kind: "battle", questions: [Q_EXPORTED, Q_STRUCT, Q_METHOD_RECV] },
   pergamino_hielo: {
     kind: "scroll",
@@ -1246,7 +1371,33 @@ export const SYL_GO_COMMUNITY_6: Syllabus = {
   c6_trasgo_explorador: { kind: "battle", questions: [Q_INTERFACE, Q_IMPLICIT, Q_POLY_GO] },
   c6_trol_cavernas: { kind: "battle", questions: [Q_EMPTY_IFACE, Q_TYPESWITCH, Q_INTERFACE] },
   c6_capitan_trasgo: { kind: "battle", questions: [Q_IMPLICIT, Q_POLY_GO, Q_INTERFACE] },
-  c6_jefe_balrog: { kind: "battle", questions: [Q_POLY_GO, Q_IMPLICIT, Q_TYPESWITCH, Q_EMPTY_IFACE] },
+  c6_jefe_balrog: {
+    kind: "challenge",
+    title: P("El Balrog de Morgoth", "The Balrog of Morgoth"),
+    lore_intro: P(
+      "Sombra y fuego. El Balrog es un Enemigo más para quien lo enfrenta… pero golpea con 100. Cumple el contrato Enemigo (implícitamente).",
+      "Shadow and flame. The Balrog is just another Enemy to whoever faces it… but it strikes with 100. Satisfy the Enemigo contract (implicitly).",
+    ),
+    challenge: {
+      topic: P("Interfaces implícitas y polimorfismo", "Implicit interfaces and polymorphism"),
+      instructions: P(
+        "Existen la interfaz `Enemigo` (con `Atacar() int`), el tipo `Orco` (ataca con 10) y `danioTotal([]Enemigo) int`. Define un tipo `Balrog` con el método `Atacar() int` que devuelva 100. No hace falta declarar que implementa Enemigo: en Go es implícito.\n\n`Balrog{}.Atacar()` → `100`.",
+        "The interface `Enemigo` (with `Atacar() int`), the type `Orco` (attacks with 10) and `danioTotal([]Enemigo) int` exist. Define a type `Balrog` with the method `Atacar() int` returning 100. No need to declare it implements Enemigo: in Go it's implicit.\n\n`Balrog{}.Atacar()` → `100`.",
+      ),
+      support_code:
+        "package main\n\ntype Enemigo interface {\n\tAtacar() int\n}\n\ntype Orco struct{}\n\nfunc (o Orco) Atacar() int { return 10 }\n\nfunc danioTotal(es []Enemigo) int {\n\tt := 0\n\tfor _, e := range es {\n\t\tt += e.Atacar()\n\t}\n\treturn t\n}",
+      starter_code:
+        "// Enemigo (interfaz), Orco y danioTotal ya existen.\n\ntype Balrog struct{}\n",
+      hints: [
+        P("Basta con un método con la firma correcta: `func (b Balrog) Atacar() int { return 100 }`.", "Just a method with the right signature: `func (b Balrog) Atacar() int { return 100 }`."),
+        P("`danioTotal` trata a Orco y Balrog por igual: eso es polimorfismo.", "`danioTotal` treats Orco and Balrog alike: that's polymorphism."),
+      ],
+      test_cases: [
+        { input: "Balrog{}.Atacar()", expected: 100, description: P("Golpe brutal", "Brutal blow"), raw: true },
+        { input: "danioTotal([]Enemigo{Orco{}, Balrog{}})", expected: 110, description: P("Suma orco y balrog: polimorfismo", "Sums orc and balrog: polymorphism"), raw: true },
+      ],
+    },
+  },
   pergamino_contratos: {
     kind: "scroll",
     title: P("El Pergamino de los Contratos", "The Scroll of Contracts"),
@@ -1471,7 +1622,33 @@ export const SYL_GO_COMMUNITY_7: Syllabus = {
   c7_orco_explorador: { kind: "battle", questions: [Q_EMBED, Q_PROMOTION, Q_COMPOSITION] },
   c7_trasgo_frontera: { kind: "battle", questions: [Q_COMPOSITION, Q_EMBED_IFACE, Q_EMBED] },
   c7_uruk_rastreador: { kind: "battle", questions: [Q_PROMOTION, Q_EMBED_IFACE, Q_COMPOSITION] },
-  c7_jefe_ugluk: { kind: "battle", questions: [Q_EMBED, Q_PROMOTION, Q_EMBED_IFACE, Q_COMPOSITION] },
+  c7_jefe_ugluk: {
+    kind: "challenge",
+    title: P("Uglúk, capitán de Isengard", "Uglúk, captain of Isengard"),
+    lore_intro: P(
+      "El capitán se compone de un linaje base más lo suyo. En Go no se hereda: se EMBEBE. Compón un guerrero embebiendo la base.",
+      "The captain is composed of a base lineage plus his own. In Go you don't inherit: you EMBED. Compose a warrior by embedding the base.",
+    ),
+    challenge: {
+      topic: P("Embedding y promoción de métodos", "Embedding and method promotion"),
+      instructions: P(
+        "Existe el struct `Base` con campo `Nombre` y método `Saludar() string`. Define `Guerrero` que EMBEBA `Base` (sin nombre de campo) y añada un campo `Arma string`. Al embeber, el `Guerrero` obtiene `Nombre` y `Saludar()` como propios (promoción).\n\n`Guerrero{Base: Base{Nombre: \"Aragorn\"}}.Saludar()` → `\"soy Aragorn\"`.",
+        "The struct `Base` with a `Nombre` field and a `Saludar() string` method exists. Define `Guerrero` that EMBEDS `Base` (no field name) and adds an `Arma string` field. By embedding, `Guerrero` gains `Nombre` and `Saludar()` as its own (promotion).\n\n`Guerrero{Base: Base{Nombre: \"Aragorn\"}}.Saludar()` → `\"soy Aragorn\"`.",
+      ),
+      support_code:
+        'package main\n\ntype Base struct {\n\tNombre string\n}\n\nfunc (b Base) Saludar() string { return "soy " + b.Nombre }',
+      starter_code:
+        "// Base (con Nombre y Saludar()) ya existe.\n\ntype Guerrero struct {\n}\n",
+      hints: [
+        P("Embeber es poner el tipo SIN nombre de campo: `type Guerrero struct { Base; Arma string }`.", "Embedding is writing the type WITHOUT a field name: `type Guerrero struct { Base; Arma string }`."),
+        P("El método `Saludar()` de Base queda promovido a Guerrero: se llama directo.", "Base's `Saludar()` method is promoted to Guerrero: call it directly."),
+      ],
+      test_cases: [
+        { input: 'Guerrero{Base: Base{Nombre: "Aragorn"}, Arma: "Andúril"}.Saludar()', expected: "soy Aragorn", description: P("Saludar() promovido de Base", "Saludar() promoted from Base"), raw: true },
+        { input: 'Guerrero{Base: Base{Nombre: "Aragorn"}}.Nombre', expected: "Aragorn", description: P("El campo Nombre también se promueve", "The Nombre field is promoted too"), raw: true },
+      ],
+    },
+  },
   pergamino_dones: {
     kind: "scroll",
     title: P("El Pergamino de Galadriel", "Galadriel's Scroll"),
@@ -1687,7 +1864,35 @@ export const SYL_GO_COMMUNITY_8: Syllabus = {
   c8_uruk_arquero: { kind: "battle", questions: [Q_ERROR_IFACE, Q_ERR_CHECK, Q_ERRORS_NEW] },
   c8_orco_saqueador: { kind: "battle", questions: [Q_NIL_ERR, Q_ERR_CHECK, Q_ERROR_IFACE] },
   c8_uruk_espadachin: { kind: "battle", questions: [Q_FACTORY_GO, Q_ERRORS_NEW, Q_NIL_ERR] },
-  c8_jefe_lurtz: { kind: "battle", questions: [Q_ERR_CHECK, Q_FACTORY_GO, Q_ERROR_IFACE, Q_ERRORS_NEW] },
+  c8_jefe_lurtz: {
+    kind: "challenge",
+    title: P("Lurtz, el primero de los Uruk-hai", "Lurtz, first of the Uruk-hai"),
+    lore_intro: P(
+      "El último enemigo de la Comunidad. Monta la fábrica que crea la hueste de Isengard — y que ante lo desconocido devuelve un error, no un guerrero falso.",
+      "The Fellowship's last foe. Build the factory that creates the host of Isengard — and that, faced with the unknown, returns an error, not a fake warrior.",
+    ),
+    challenge: {
+      topic: P("Constructor con (valor, error)", "Constructor with (value, error)"),
+      instructions: P(
+        "Existen la interfaz `Guerrero` (con `Fuerza() int`), los tipos `Orco` (fuerza 10) y `UrukHai` (fuerza 30), y el error `ErrDesconocido`. Escribe `Crear(tipo string) (Guerrero, error)` que devuelva un `Orco` para `\"orco\"`, un `UrukHai` para `\"uruk\"` (con `nil` de error), y `nil, ErrDesconocido` para cualquier otro tipo.",
+        "The interface `Guerrero` (with `Fuerza() int`), the types `Orco` (strength 10) and `UrukHai` (strength 30), and the error `ErrDesconocido` exist. Write `Crear(tipo string) (Guerrero, error)` returning an `Orco` for `\"orco\"`, a `UrukHai` for `\"uruk\"` (with `nil` error), and `nil, ErrDesconocido` for any other type.",
+      ),
+      support_code:
+        'package main\n\nimport "errors"\n\ntype Guerrero interface {\n\tFuerza() int\n}\n\ntype Orco struct{}\n\nfunc (o Orco) Fuerza() int { return 10 }\n\ntype UrukHai struct{}\n\nfunc (u UrukHai) Fuerza() int { return 30 }\n\nvar ErrDesconocido = errors.New("tipo desconocido")\n\nfunc fuerzaDe(tipo string) int { g, _ := Crear(tipo); return g.Fuerza() }\n\nfunc esError(tipo string) bool { _, err := Crear(tipo); return err != nil }',
+      starter_code:
+        "// Guerrero, Orco, UrukHai y ErrDesconocido ya existen.\n\nfunc Crear(tipo string) (Guerrero, error) {\n}\n",
+      hints: [
+        P("Un `switch tipo` con un `case` por cada guerrero, devolviendo `(guerrero, nil)`.", "A `switch tipo` with a `case` per warrior, returning `(guerrero, nil)`."),
+        P("El `default` devuelve el error: `return nil, ErrDesconocido`.", "The `default` returns the error: `return nil, ErrDesconocido`."),
+      ],
+      test_cases: [
+        { input: 'fuerzaDe("orco")', expected: 10, description: P("El orco", "The orc"), raw: true },
+        { input: 'fuerzaDe("uruk")', expected: 30, description: P("El Uruk-hai", "The Uruk-hai"), raw: true },
+        { input: 'esError("elfo")', expected: true, description: P("Un tipo desconocido da error", "An unknown type returns an error"), raw: true },
+        { input: 'esError("orco")', expected: false, description: P("Uno válido, sin error", "A valid one, no error"), raw: true },
+      ],
+    },
+  },
   pergamino_fallos: {
     kind: "scroll",
     title: P("El Pergamino de lo que Puede Fallar", "The Scroll of What Can Go Wrong"),
