@@ -127,11 +127,77 @@ const Q_CONDITIONAL = {
 };
 
 /** Capítulo 1 · Componentes, props y JSX. */
+const Q_FRAGMENT = {
+  question: P("¿Qué es `<>...</>` en JSX?", "What is `<>...</>` in JSX?"),
+  options: [
+    P("Un fragmento: agrupa elementos SIN añadir un nodo extra al HTML", "A fragment: groups elements WITHOUT adding an extra node to the HTML"),
+    P("Un comentario", "A comment"),
+    P("Una etiqueta HTML nueva", "A new HTML tag"),
+    P("Un componente vacío", "An empty component"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un componente debe devolver UN solo elemento raíz. El fragmento `<>...</>` agrupa varios hijos sin envolverlos en un `<div>` de más, manteniendo el HTML limpio.",
+    "A component must return ONE root element. The fragment `<>...</>` groups several children without wrapping them in an extra `<div>`, keeping the HTML clean.",
+  ),
+};
+const Q_SELF_CLOSE = {
+  question: P("En JSX, ¿cómo se escribe una etiqueta sin hijos como una imagen?", "In JSX, how do you write a tag with no children like an image?"),
+  options: [
+    P("Autocerrada: `<img src=\"...\" />`", "Self-closing: `<img src=\"...\" />`"),
+    P("`<img src=\"...\">` sin cerrar", "`<img src=\"...\">` unclosed"),
+    P("`<img></img>` obligatoriamente", "`<img></img>` mandatorily"),
+    P("`[img src=...]`", "`[img src=...]`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En JSX TODA etiqueta debe cerrarse: las que no tienen hijos se autocierran con `/>` (`<img />`, `<br />`, `<input />`). Olvidar la barra es un error de sintaxis.",
+    "In JSX EVERY tag must be closed: those with no children self-close with `/>` (`<img />`, `<br />`, `<input />`). Forgetting the slash is a syntax error.",
+  ),
+};
+const Q_PROPS_MULTIPLE = {
+  question: P("¿Cómo se pasan varias props a un componente?", "How do you pass several props to a component?"),
+  options: [
+    P("Como atributos separados: `<Ficha nombre=\"Sam\" edad={38} />`", "As separate attributes: `<Ficha nombre=\"Sam\" edad={38} />`"),
+    P("En un array: `<Ficha [nombre, edad] />`", "In an array: `<Ficha [nombre, edad] />`"),
+    P("Separadas por comas dentro de la etiqueta", "Comma-separated inside the tag"),
+    P("Sólo se puede pasar una", "You can only pass one"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Cada prop es un atributo: texto entre comillas (`nombre=\"Sam\"`) y cualquier otra expresión entre llaves (`edad={38}`). Dentro llegan juntas en el objeto `props`.",
+    "Each prop is an attribute: text in quotes (`nombre=\"Sam\"`) and any other expression in braces (`edad={38}`). Inside they arrive together in the `props` object.",
+  ),
+};
+
 export const SYL_REACT_COMMUNITY_1: Syllabus = {
   c1_espia: { kind: "battle", questions: [Q_COMPONENT, Q_JSX, Q_PROPS] },
-  c1_jinete_rastreador: { kind: "battle", questions: [Q_EXPR, Q_CAPITAL, Q_COMPONENT] },
-  c1_perro_negro: { kind: "battle", questions: [Q_PROPS, Q_JSX, Q_CONDITIONAL] },
-  c1_jefe_nazgul: { kind: "battle", questions: [Q_JSX, Q_EXPR, Q_PROPS, Q_COMPONENT] },
+  c1_jinete_rastreador: { kind: "battle", questions: [Q_EXPR, Q_CAPITAL, Q_CONDITIONAL] },
+  c1_perro_negro: { kind: "battle", questions: [Q_FRAGMENT, Q_SELF_CLOSE, Q_PROPS_MULTIPLE] },
+  c1_jefe_nazgul: {
+    kind: "challenge",
+    title: P("El Jinete Negro", "The Black Rider"),
+    lore_intro: P(
+      "El Nazgûl aparece y desaparece entre las sombras. Escribe el componente que lo muestra según lleve o no el rostro oculto: props + JSX condicional.",
+      "The Nazgûl appears and vanishes among the shadows. Write the component that shows it based on whether its face is hidden: props + conditional JSX.",
+    ),
+    challenge: {
+      topic: P("Componentes, props y JSX condicional", "Components, props and conditional JSX"),
+      instructions: P(
+        "Escribe el componente `Jinete` que reciba las props `nombre` (string) y `oculto` (booleano), y devuelva un `<h1>` que muestre `'sombra'` si `oculto` es true, o el `nombre` si es false.\n\n`render(<Jinete nombre=\"Nazgûl\" oculto={false} />)` → `\"<h1>Nazgûl</h1>\"`.",
+        "Write the component `Jinete` taking the props `nombre` (string) and `oculto` (boolean), returning an `<h1>` that shows `'sombra'` if `oculto` is true, or the `nombre` if false.\n\n`render(<Jinete nombre=\"Nazgûl\" oculto={false} />)` → `\"<h1>Nazgûl</h1>\"`.",
+      ),
+      starter_code: "function Jinete({ nombre, oculto }) {\n}\n",
+      hints: [
+        P("Ternario en el JSX: `<h1>{oculto ? 'sombra' : nombre}</h1>`.", "Ternary in the JSX: `<h1>{oculto ? 'sombra' : nombre}</h1>`."),
+        P("Las props booleanas se pasan con llaves: `oculto={true}`.", "Boolean props are passed with braces: `oculto={true}`."),
+      ],
+      test_cases: [
+        { input: 'render(<Jinete nombre="Nazgûl" oculto={false} />)', expected: "<h1>Nazgûl</h1>", description: P("A la vista: el nombre", "In sight: the name"), raw: true },
+        { input: 'render(<Jinete nombre="Nazgûl" oculto={true} />)', expected: "<h1>sombra</h1>", description: P("Oculto: sombra", "Hidden: shadow"), raw: true },
+      ],
+    },
+  },
   pergamino_clases: {
     kind: "scroll",
     title: P("El Pergamino de las Formas", "The Scroll of Shapes"),
@@ -318,11 +384,92 @@ const Q_CLASSNAME = {
 };
 
 /** Capítulo 2 · Listas, children y composición. */
+const Q_KEY_WHY = {
+  question: P("¿Por qué NO usar el índice del array como `key` si la lista cambia?", "Why NOT use the array index as `key` if the list changes?"),
+  options: [
+    P("Al reordenar/insertar, los índices se desplazan y React confunde los elementos (y su estado)", "On reorder/insert, indices shift and React confuses the elements (and their state)"),
+    P("El índice es más lento", "The index is slower"),
+    P("El índice no es un número", "The index isn't a number"),
+    P("Da error siempre", "It always errors"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La `key` debe ser una identidad ESTABLE de cada dato (un id). El índice cambia al insertar/reordenar, y React reutiliza el nodo equivocado, arrastrando estado o inputs a otra fila.",
+    "The `key` must be a STABLE identity of each item (an id). The index changes on insert/reorder, and React reuses the wrong node, dragging state or inputs to another row.",
+  ),
+};
+const Q_CLASSNAME_WHY = {
+  question: P("¿Por qué en JSX es `className` y no `class`?", "Why is it `className` and not `class` in JSX?"),
+  options: [
+    P("`class` es palabra reservada de JavaScript; React la traduce a `class` en el HTML", "`class` is a reserved JavaScript word; React translates it to `class` in the HTML"),
+    P("Por gusto de los creadores", "Just the creators' preference"),
+    P("`class` no existe en HTML", "`class` doesn't exist in HTML"),
+    P("Para que sea más largo", "To make it longer"),
+  ],
+  correct: 0,
+  explanation: P(
+    "JSX es JavaScript, y `class` ya significa «declarar una clase». Por eso se usa `className` (y `htmlFor` en vez de `for`); React lo convierte al atributo real del HTML.",
+    "JSX is JavaScript, and `class` already means \"declare a class\". So `className` is used (and `htmlFor` instead of `for`); React converts it to the real HTML attribute.",
+  ),
+};
+const Q_MAP_RETURN = {
+  question: P("En `{items.map(x => <li>{x}</li>)}`, ¿qué produce el map?", "In `{items.map(x => <li>{x}</li>)}`, what does the map produce?"),
+  options: [
+    P("Un ARRAY de elementos JSX, que React renderiza en orden", "An ARRAY of JSX elements, which React renders in order"),
+    P("Un solo elemento", "A single element"),
+    P("Un string con todo junto", "A string with everything joined"),
+    P("Nada visible", "Nothing visible"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`map` devuelve un array de elementos, y React sabe renderizar arrays de JSX uno tras otro. Por eso `map` (y no `forEach`) es la forma de pintar listas.",
+    "`map` returns an array of elements, and React knows how to render arrays of JSX one after another. That's why `map` (not `forEach`) is the way to paint lists.",
+  ),
+};
+const Q_CHILDREN_MULTIPLE = {
+  question: P("Si pones VARIOS elementos entre `<Marco>...</Marco>`, ¿qué es `children`?", "If you put SEVERAL elements between `<Marco>...</Marco>`, what is `children`?"),
+  options: [
+    P("Un array con todos ellos (React lo recorre solo al renderizar)", "An array with all of them (React renders it on its own)"),
+    P("Sólo el primero", "Only the first one"),
+    P("Un error: sólo se permite uno", "An error: only one is allowed"),
+    P("Un string concatenado", "A concatenated string"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`children` puede ser un solo hijo o un array de hijos; React renderiza ambos casos igual con `{children}`. No necesitas recorrerlo a mano para mostrarlo.",
+    "`children` can be a single child or an array of children; React renders both the same with `{children}`. You don't need to iterate it by hand to show it.",
+  ),
+};
+
 export const SYL_REACT_COMMUNITY_2: Syllabus = {
   c2_raiz: { kind: "battle", questions: [Q_LIST, Q_KEY, Q_CLASSNAME] },
-  c2_niebla: { kind: "battle", questions: [Q_CHILDREN, Q_COMPOSE, Q_LIST] },
-  c2_sauce: { kind: "battle", questions: [Q_KEY, Q_CLASSNAME, Q_CHILDREN] },
-  c2_jefe_tumulario: { kind: "battle", questions: [Q_LIST, Q_KEY, Q_COMPOSE, Q_CHILDREN] },
+  c2_niebla: { kind: "battle", questions: [Q_CHILDREN, Q_COMPOSE, Q_MAP_RETURN] },
+  c2_sauce: { kind: "battle", questions: [Q_KEY_WHY, Q_CLASSNAME_WHY, Q_CHILDREN_MULTIPLE] },
+  c2_jefe_tumulario: {
+    kind: "challenge",
+    title: P("El Rey de los Túmulos", "The Barrow-king"),
+    lore_intro: P(
+      "El Tumulario alza a su horda de muertos. Compón la lista a partir de un componente pequeño: composición + map + key.",
+      "The Barrow-wight raises its horde of dead. Compose the list from a small component: composition + map + key.",
+    ),
+    challenge: {
+      topic: P("Composición y listas", "Composition and lists"),
+      instructions: P(
+        "Escribe DOS componentes:\n• `Muerto` que reciba `nombre` y devuelva `<li>{nombre}</li>`,\n• `Horda` que reciba `nombres` (array) y devuelva un `<ul>` renderizando un `<Muerto />` por cada nombre (con `key`).\n\n`render(<Horda nombres={[\"Tumulario\", \"Espectro\"]} />)` → `\"<ul><li>Tumulario</li><li>Espectro</li></ul>\"`.",
+        "Write TWO components:\n• `Muerto` taking `nombre` and returning `<li>{nombre}</li>`,\n• `Horda` taking `nombres` (array) and returning a `<ul>` rendering one `<Muerto />` per name (with `key`).\n\n`render(<Horda nombres={[\"Tumulario\", \"Espectro\"]} />)` → `\"<ul><li>Tumulario</li><li>Espectro</li></ul>\"`.",
+      ),
+      starter_code:
+        "function Muerto({ nombre }) {\n}\n\nfunction Horda({ nombres }) {\n}\n",
+      hints: [
+        P("`Horda` usa a `Muerto` como etiqueta: `<Muerto key={n} nombre={n} />`.", "`Horda` uses `Muerto` as a tag: `<Muerto key={n} nombre={n} />`."),
+        P("`Muerto` sólo devuelve `<li>{nombre}</li>`.", "`Muerto` just returns `<li>{nombre}</li>`."),
+      ],
+      test_cases: [
+        { input: 'render(<Horda nombres={["Tumulario", "Espectro"]} />)', expected: "<ul><li>Tumulario</li><li>Espectro</li></ul>", description: P("Horda compuesta", "Composed horde"), raw: true },
+        { input: "render(<Horda nombres={[]} />)", expected: "<ul></ul>", description: P("Sin muertos", "No dead"), raw: true },
+      ],
+    },
+  },
   pergamino_ciclo_vida: {
     kind: "scroll",
     title: P("El Pergamino de las Muchas Formas", "The Scroll of Many Shapes"),
@@ -539,11 +686,93 @@ const Q_STATE_LOCAL = {
 };
 
 /** Capítulo 3 · Estado con useState. */
+const Q_HOOK_RULES = {
+  question: P("¿Dónde se pueden llamar los hooks como `useState`?", "Where can hooks like `useState` be called?"),
+  options: [
+    P("En el nivel superior del componente, SIEMPRE en el mismo orden (no dentro de if/bucles)", "At the top level of the component, ALWAYS in the same order (not inside if/loops)"),
+    P("En cualquier sitio, incluso dentro de un if", "Anywhere, even inside an if"),
+    P("Sólo dentro de un onClick", "Only inside an onClick"),
+    P("Fuera del componente", "Outside the component"),
+  ],
+  correct: 0,
+  explanation: P(
+    "React distingue los hooks por el ORDEN de llamada, así que deben ejecutarse siempre igual: en el nivel superior, nunca dentro de condicionales o bucles. Es la «regla de los hooks».",
+    "React tells hooks apart by CALL ORDER, so they must run the same every time: at the top level, never inside conditionals or loops. It's the \"rules of hooks\".",
+  ),
+};
+const Q_STATE_ASYNC = {
+  question: P("Tras `setN(5)`, ¿la variable `n` vale 5 en la siguiente línea?", "After `setN(5)`, is `n` equal to 5 on the next line?"),
+  options: [
+    P("No: `n` no cambia hasta el PRÓXIMO render", "No: `n` doesn't change until the NEXT render"),
+    P("Sí, inmediatamente", "Yes, immediately"),
+    P("Sólo si usas await", "Only if you use await"),
+    P("Da error", "It errors"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El actualizador programa un re-render con el nuevo valor; la variable `n` de este render NO cambia. Si el nuevo valor depende del anterior, usa la forma funcional `setN(prev => ...)`.",
+    "The updater schedules a re-render with the new value; this render's `n` does NOT change. If the new value depends on the previous one, use the functional form `setN(prev => ...)`.",
+  ),
+};
+const Q_INITIAL_STATE = {
+  question: P("El argumento de `useState(inicial)`, ¿cuándo se usa?", "When is the argument of `useState(inicial)` used?"),
+  options: [
+    P("Sólo en el PRIMER render; luego React ignora ese valor y conserva el estado", "Only on the FIRST render; afterwards React ignores it and keeps the state"),
+    P("En cada render", "On every render"),
+    P("Nunca", "Never"),
+    P("Sólo al hacer click", "Only on click"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El valor inicial se usa una vez, al montar. En renders posteriores el estado ya existe y `useState` devuelve el actual, no el inicial. Por eso pasar `useState(props.x)` no «sigue» a la prop.",
+    "The initial value is used once, on mount. On later renders the state already exists and `useState` returns the current one, not the initial. That's why `useState(props.x)` doesn't \"follow\" the prop.",
+  ),
+};
+const Q_MULTIPLE_USESTATE = {
+  question: P("¿Puede un componente tener VARIOS `useState`?", "Can a component have SEVERAL `useState` hooks?"),
+  options: [
+    P("Sí: uno por cada porción de estado independiente", "Yes: one per independent piece of state"),
+    P("No: sólo uno por componente", "No: only one per component"),
+    P("Sólo si son del mismo tipo", "Only if they're the same type"),
+    P("Sólo dos", "Only two"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Llamas a `useState` tantas veces como necesites: `const [nombre, setNombre] = useState('')` y `const [n, setN] = useState(0)`. React los distingue por el orden (de ahí la regla de los hooks).",
+    "You call `useState` as many times as needed: `const [nombre, setNombre] = useState('')` and `const [n, setN] = useState(0)`. React tells them apart by order (hence the rules of hooks).",
+  ),
+};
+
 export const SYL_REACT_COMMUNITY_3: Syllabus = {
   c3_ferny: { kind: "battle", questions: [Q_USESTATE, Q_RERENDER, Q_ONCLICK] },
-  c3_espia_nazgul: { kind: "battle", questions: [Q_UPDATER_FN, Q_STATE_LOCAL, Q_USESTATE] },
-  c3_montaraz_falso: { kind: "battle", questions: [Q_ONCLICK, Q_RERENDER, Q_UPDATER_FN] },
-  c3_jefe_reybrujo: { kind: "battle", questions: [Q_USESTATE, Q_UPDATER_FN, Q_ONCLICK, Q_STATE_LOCAL] },
+  c3_espia_nazgul: { kind: "battle", questions: [Q_UPDATER_FN, Q_STATE_LOCAL, Q_HOOK_RULES] },
+  c3_montaraz_falso: { kind: "battle", questions: [Q_STATE_ASYNC, Q_INITIAL_STATE, Q_MULTIPLE_USESTATE] },
+  c3_jefe_reybrujo: {
+    kind: "challenge",
+    title: P("El Rey Brujo de Angmar", "The Witch-king of Angmar"),
+    lore_intro: P(
+      "«Ningún hombre vivo puede detenerme.» Lleva la cuenta de los golpes con estado: sube con un botón y reiníciala con otro.",
+      "\"No living man can hinder me.\" Track the blows with state: raise it with one button and reset it with another.",
+    ),
+    challenge: {
+      topic: P("useState y varios manejadores", "useState and multiple handlers"),
+      instructions: P(
+        "Escribe `Contador` (sin props) con `useState(0)`. Devuelve un `<div>` con:\n• un `<button className=\"mas\">` que SUME 1,\n• un `<span>{n}</span>`,\n• un `<button className=\"reset\">` que ponga la cuenta a 0.\n\n`mount(<Contador />).click(\".mas\").click(\".mas\").text(\"span\")` → `\"2\"`; luego `.click(\".reset\")` → `\"0\"`.",
+        "Write `Contador` (no props) with `useState(0)`. Return a `<div>` with:\n• a `<button className=\"mas\">` that ADDS 1,\n• a `<span>{n}</span>`,\n• a `<button className=\"reset\">` that sets the count to 0.\n\n`mount(<Contador />).click(\".mas\").click(\".mas\").text(\"span\")` → `\"2\"`; then `.click(\".reset\")` → `\"0\"`.",
+      ),
+      starter_code:
+        'function Contador() {\n  const [n, setN] = useState(0);\n}\n',
+      hints: [
+        P("Cada botón lleva su `className` y su `onClick`.", "Each button has its `className` and its `onClick`."),
+        P("Reiniciar es `onClick={() => setN(0)}`.", "Reset is `onClick={() => setN(0)}`."),
+      ],
+      test_cases: [
+        { input: 'mount(<Contador />).click(".mas").click(".mas").text("span")', expected: "2", description: P("Dos veces más", "Twice up"), raw: true },
+        { input: 'mount(<Contador />).click(".mas").click(".reset").text("span")', expected: "0", description: P("Reset vuelve a 0", "Reset back to 0"), raw: true },
+        { input: 'mount(<Contador />).text("span")', expected: "0", description: P("Empieza en 0", "Starts at 0"), raw: true },
+      ],
+    },
+  },
   pergamino_herencia: {
     kind: "scroll",
     title: P("El Pergamino del Estado", "The Scroll of State"),
@@ -759,11 +988,93 @@ const Q_CHECKBOX = {
 };
 
 /** Capítulo 4 · Inputs controlados y estado múltiple/derivado. */
+const Q_UNCONTROLLED = {
+  question: P("¿Qué diferencia a un input CONTROLADO de uno NO controlado?", "What sets a CONTROLLED input apart from an UNCONTROLLED one?"),
+  options: [
+    P("El controlado usa `value` + `onChange` (el estado manda); el no controlado usa `defaultValue` y lo lleva el DOM", "The controlled uses `value` + `onChange` (state rules); the uncontrolled uses `defaultValue` and the DOM keeps it"),
+    P("No hay diferencia", "There's no difference"),
+    P("El no controlado es de sólo lectura", "The uncontrolled is read-only"),
+    P("El controlado no se puede escribir", "The controlled can't be typed into"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Controlado: React es la fuente de verdad (`value={x}` + `onChange`). No controlado: el DOM guarda el valor y lo lees con una ref; `defaultValue` sólo fija el inicial. Se recomienda controlado.",
+    "Controlled: React is the source of truth (`value={x}` + `onChange`). Uncontrolled: the DOM keeps the value and you read it via a ref; `defaultValue` only sets the initial. Controlled is recommended.",
+  ),
+};
+const Q_FORM_SUBMIT = {
+  question: P("En un `<form onSubmit={...}>`, ¿qué hace `e.preventDefault()`?", "In a `<form onSubmit={...}>`, what does `e.preventDefault()` do?"),
+  options: [
+    P("Evita que el navegador recargue la página al enviar", "Prevents the browser from reloading the page on submit"),
+    P("Cancela el estado", "Cancels the state"),
+    P("Borra el formulario", "Clears the form"),
+    P("Envía el formulario dos veces", "Submits the form twice"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Por defecto, enviar un formulario RECARGA la página. `e.preventDefault()` lo impide para manejar el envío en JS (leer el estado, llamar a una API…) sin perder la app.",
+    "By default, submitting a form RELOADS the page. `e.preventDefault()` stops it so you can handle the submit in JS (read state, call an API…) without losing the app.",
+  ),
+};
+const Q_INPUT_NUMBER = {
+  question: P("El `value` de un `<input>`, ¿de qué tipo llega en `onChange`?", "The `value` of an `<input>`, what type does it come as in `onChange`?"),
+  options: [
+    P("Siempre string, aunque el input sea `type=\"number\"`", "Always a string, even if the input is `type=\"number\"`"),
+    P("number si es type number", "number if it's type number"),
+    P("boolean", "boolean"),
+    P("Depende del navegador", "Depends on the browser"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`e.target.value` es SIEMPRE un string. Si necesitas un número, conviértelo con `Number(...)` o `parseInt(...)`. Es un fallo típico sumar dos «números» y obtener una concatenación.",
+    "`e.target.value` is ALWAYS a string. If you need a number, convert it with `Number(...)` or `parseInt(...)`. A classic bug is adding two \"numbers\" and getting a concatenation.",
+  ),
+};
+const Q_SELECT = {
+  question: P("¿Cómo se controla un `<select>` en React?", "How do you control a `<select>` in React?"),
+  options: [
+    P("Con `value={x}` en el `<select>` y un `onChange` que actualiza el estado", "With `value={x}` on the `<select>` and an `onChange` that updates state"),
+    P("Con `selected` en cada `<option>`", "With `selected` on each `<option>`"),
+    P("No se puede controlar", "It can't be controlled"),
+    P("Con `checked`", "With `checked`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Igual que un input de texto: el `<select>` lleva `value={x}` (el valor de la opción elegida) y un `onChange`. React NO usa el atributo `selected` de las `<option>`, sino el `value` del select.",
+    "Just like a text input: the `<select>` takes `value={x}` (the chosen option's value) and an `onChange`. React does NOT use the `<option>`'s `selected` attribute, but the select's `value`.",
+  ),
+};
+
 export const SYL_REACT_COMMUNITY_4: Syllabus = {
   c4_jinete_rezagado: { kind: "battle", questions: [Q_CONTROLLED, Q_ONCHANGE, Q_MULTI_STATE] },
-  c4_lobo: { kind: "battle", questions: [Q_DERIVED, Q_CHECKBOX, Q_CONTROLLED] },
-  c4_jefe_nueve: { kind: "battle", questions: [Q_CONTROLLED, Q_ONCHANGE, Q_DERIVED, Q_MULTI_STATE] },
-  c4_trasgo_montaraz: { kind: "battle", questions: [Q_MULTI_STATE, Q_CHECKBOX, Q_ONCHANGE] },
+  c4_lobo: { kind: "battle", questions: [Q_DERIVED, Q_CHECKBOX, Q_UNCONTROLLED] },
+  c4_jefe_nueve: {
+    kind: "challenge",
+    title: P("Los Nueve en el Vado", "The Nine at the Ford"),
+    lore_intro: P(
+      "Los Nueve exigen un nombre. Un input controlado guarda lo que escribes, y el saludo se CALCULA de ese estado.",
+      "The Nine demand a name. A controlled input stores what you type, and the greeting is COMPUTED from that state.",
+    ),
+    challenge: {
+      topic: P("Input controlado y estado derivado", "Controlled input and derived state"),
+      instructions: P(
+        "Escribe `Saludo` (sin props) con `useState(\"\")`. Devuelve un `<div>` con:\n• un `<input value={nombre} onChange={e => setNombre(e.target.value)} />`,\n• un `<p>` que muestre `'Hola, {nombre}'` si hay nombre, o `'extraño'` si está vacío.\n\n`mount(<Saludo />).fill(\"input\", \"Frodo\").text(\"p\")` → `\"Hola, Frodo\"`.",
+        "Write `Saludo` (no props) with `useState(\"\")`. Return a `<div>` with:\n• an `<input value={nombre} onChange={e => setNombre(e.target.value)} />`,\n• a `<p>` showing `'Hola, {nombre}'` if there's a name, or `'extraño'` if empty.\n\n`mount(<Saludo />).fill(\"input\", \"Frodo\").text(\"p\")` → `\"Hola, Frodo\"`.",
+      ),
+      starter_code:
+        'function Saludo() {\n  const [nombre, setNombre] = useState("");\n}\n',
+      hints: [
+        P("El input controlado ata `value` al estado y lo actualiza en `onChange`.", "The controlled input ties `value` to state and updates it in `onChange`."),
+        P("El saludo se calcula: `{nombre ? `Hola, ${nombre}` : 'extraño'}`.", "The greeting is computed: `{nombre ? `Hola, ${nombre}` : 'extraño'}`."),
+      ],
+      test_cases: [
+        { input: 'mount(<Saludo />).text("p")', expected: "extraño", description: P("Vacío: extraño", "Empty: stranger"), raw: true },
+        { input: 'mount(<Saludo />).fill("input", "Frodo").text("p")', expected: "Hola, Frodo", description: P("Con nombre: saludo derivado", "With a name: derived greeting"), raw: true },
+        { input: 'mount(<Saludo />).fill("input", "Sam").text("p")', expected: "Hola, Sam", description: P("Otro nombre", "Another name"), raw: true },
+      ],
+    },
+  },
+  c4_trasgo_montaraz: { kind: "battle", questions: [Q_FORM_SUBMIT, Q_INPUT_NUMBER, Q_SELECT] },
   pergamino_estatico: {
     kind: "scroll",
     title: P("El Pergamino de la Voz", "The Scroll of the Voice"),
