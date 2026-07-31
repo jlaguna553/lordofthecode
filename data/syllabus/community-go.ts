@@ -131,10 +131,39 @@ const Q_NO_SEMI = {
 };
 
 /** Capítulo 1 · Go desde cero: paquetes, funciones tipadas y tipos básicos. */
+const Q_SHORT_DECL = {
+  question: P("¿Qué hace `n := 5` en Go?", "What does `n := 5` do in Go?"),
+  options: [
+    P("Declara `n` e infiere su tipo (int) a la vez: es `:=`, la forma corta", "Declares `n` and infers its type (int) at once: it's `:=`, the short form"),
+    P("Compara n con 5", "Compares n with 5"),
+    P("Sólo asigna a una `n` ya declarada", "Only assigns to an already-declared `n`"),
+    P("Da error: falta `var`", "Errors: `var` is missing"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`:=` declara e infiere el tipo en una línea, dentro de funciones. `var n int = 5` es la forma larga. Fuera de funciones (nivel de paquete) sólo vale `var`.",
+    "`:=` declares and infers the type in one line, inside functions. `var n int = 5` is the long form. Outside functions (package level) only `var` works.",
+  ),
+};
+const Q_GO_IF = {
+  question: P("¿Cómo se escribe un `if` en Go?", "How do you write an `if` in Go?"),
+  options: [
+    P("if x > 0 { ... }  — sin paréntesis, con llaves obligatorias", "if x > 0 { ... }  — no parentheses, braces required"),
+    P("if (x > 0) then ...", "if (x > 0) then ..."),
+    P("if (x > 0): ...", "if (x > 0): ..."),
+    P("if x > 0 do ... end", "if x > 0 do ... end"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En Go la condición va SIN paréntesis y las llaves son OBLIGATORIAS aunque haya una sola sentencia. La llave de apertura va en la misma línea (lo exige gofmt).",
+    "In Go the condition has NO parentheses and the braces are REQUIRED even for a single statement. The opening brace goes on the same line (gofmt requires it).",
+  ),
+};
+
 export const SYL_GO_COMMUNITY_1: Syllabus = {
   c1_espia: { kind: "battle", questions: [Q_FUNC_GO, Q_TYPE_AFTER, Q_PACKAGE] },
-  c1_jinete_rastreador: { kind: "battle", questions: [Q_VAR_GO, Q_NO_SEMI, Q_FUNC_GO] },
-  c1_perro_negro: { kind: "battle", questions: [Q_EXPORTED, Q_MULTIRET, Q_TYPE_AFTER] },
+  c1_jinete_rastreador: { kind: "battle", questions: [Q_VAR_GO, Q_NO_SEMI, Q_MULTIRET] },
+  c1_perro_negro: { kind: "battle", questions: [Q_EXPORTED, Q_SHORT_DECL, Q_GO_IF] },
   c1_jefe_nazgul: {
     kind: "challenge",
     title: P("El Jinete Negro", "The Black Rider"),
@@ -391,10 +420,53 @@ const Q_SLICING = {
 };
 
 /** Capítulo 2 · Slices: []T, append, range y len. */
+const Q_SLICE_INDEX = {
+  question: P("Con `xs := []int{10, 20, 30}`, ¿qué es `xs[1]`?", "With `xs := []int{10, 20, 30}`, what is `xs[1]`?"),
+  options: [
+    P("20 (los índices empiezan en 0)", "20 (indices start at 0)"),
+    P("10", "10"),
+    P("30", "30"),
+    P("Panic", "Panic"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los slices se indexan desde 0: `xs[0]` es 10, `xs[1]` es 20. Un índice fuera de rango SÍ provoca un panic en tiempo de ejecución (a diferencia de leer un map ausente).",
+    "Slices are indexed from 0: `xs[0]` is 10, `xs[1]` is 20. An out-of-range index DOES cause a runtime panic (unlike reading a missing map key).",
+  ),
+};
+const Q_RANGE_INDEX = {
+  question: P("En `for i, v := range xs`, ¿qué son `i` y `v`?", "In `for i, v := range xs`, what are `i` and `v`?"),
+  options: [
+    P("`i` es el índice y `v` el valor de cada elemento", "`i` is the index and `v` the value of each element"),
+    P("Ambos son el valor", "Both are the value"),
+    P("`i` es el valor y `v` el índice", "`i` is the value and `v` the index"),
+    P("`i` es la longitud", "`i` is the length"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`range` sobre un slice da índice y valor. Si sólo quieres el valor, descarta el índice con `_`: `for _, v := range xs`. Si sólo el índice: `for i := range xs`.",
+    "`range` over a slice gives index and value. If you only want the value, discard the index with `_`: `for _, v := range xs`. If only the index: `for i := range xs`.",
+  ),
+};
+const Q_NIL_SLICE = {
+  question: P("¿Qué valor tiene un slice sin inicializar, `var xs []int`?", "What value does an uninitialized slice have, `var xs []int`?"),
+  options: [
+    P("nil, pero se le puede hacer `append` y `len` sin problema (da 0)", "nil, but you can `append` and `len` it fine (gives 0)"),
+    P("Un array vacío que no admite append", "An empty array that can't be appended to"),
+    P("Panic al usarlo", "Panic when used"),
+    P("[]int{} exactamente", "Exactly []int{}"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un slice nil es utilizable: `len(xs)` es 0 y `append(xs, 1)` funciona (crea el respaldo). Por eso muchas funciones empiezan con `var r []T` en vez de `[]T{}`.",
+    "A nil slice is usable: `len(xs)` is 0 and `append(xs, 1)` works (creates the backing array). That's why many functions start with `var r []T` instead of `[]T{}`.",
+  ),
+};
+
 export const SYL_GO_COMMUNITY_2: Syllabus = {
   c2_raiz: { kind: "battle", questions: [Q_SLICE_TYPE, Q_APPEND, Q_LEN] },
-  c2_niebla: { kind: "battle", questions: [Q_RANGE, Q_SLICING, Q_SLICE_TYPE] },
-  c2_sauce: { kind: "battle", questions: [Q_APPEND, Q_MAKE, Q_RANGE] },
+  c2_niebla: { kind: "battle", questions: [Q_RANGE, Q_SLICING, Q_MAKE] },
+  c2_sauce: { kind: "battle", questions: [Q_SLICE_INDEX, Q_RANGE_INDEX, Q_NIL_SLICE] },
   c2_jefe_tumulario: {
     kind: "challenge",
     title: P("El Rey de los Túmulos", "The Barrow-king"),
@@ -650,10 +722,67 @@ const Q_NAMEDRET = {
 };
 
 /** Capítulo 3 · Funciones: variádicas, orden superior y clausuras. */
+const Q_FUNC_VALUE = {
+  question: P("¿Se puede guardar una función en una variable en Go?", "Can you store a function in a variable in Go?"),
+  options: [
+    P("Sí: las funciones son valores. `f := suma; f(2, 3)`", "Yes: functions are values. `f := suma; f(2, 3)`"),
+    P("No: sólo se pueden llamar por su nombre", "No: they can only be called by name"),
+    P("Sólo si son métodos", "Only if they're methods"),
+    P("Sólo con punteros", "Only with pointers"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En Go una función es un valor de primera clase: puedes asignarla (`f := suma`), pasarla como argumento y devolverla. El tipo de `f` sería `func(int, int) int`.",
+    "In Go a function is a first-class value: you can assign it (`f := suma`), pass it as an argument and return it. The type of `f` would be `func(int, int) int`.",
+  ),
+};
+const Q_FUNC_LITERAL = {
+  question: P("¿Qué es `func(x int) int { return x * 2 }` sin nombre?", "What is `func(x int) int { return x * 2 }` with no name?"),
+  options: [
+    P("Una función literal (anónima): se usa o se pasa al momento", "A function literal (anonymous): used or passed on the spot"),
+    P("Un error: toda función necesita nombre", "An error: every function needs a name"),
+    P("Una declaración de tipo", "A type declaration"),
+    P("Un método", "A method"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una función literal no tiene nombre; se asigna a una variable, se pasa como argumento o se invoca en el sitio. Si captura variables de su entorno, se convierte en una clausura.",
+    "A function literal has no name; you assign it to a variable, pass it as an argument or invoke it on the spot. If it captures variables from its environment, it becomes a closure.",
+  ),
+};
+const Q_DEFER = {
+  question: P("¿Qué hace `defer f()` dentro de una función?", "What does `defer f()` do inside a function?"),
+  options: [
+    P("Aplaza la llamada a `f()` hasta que la función que la contiene termine", "Postpones the call to `f()` until the enclosing function returns"),
+    P("Ejecuta f() en otra goroutine", "Runs f() in another goroutine"),
+    P("Cancela la llamada a f()", "Cancels the call to f()"),
+    P("Llama a f() de inmediato", "Calls f() immediately"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`defer` retrasa la ejecución hasta el retorno de la función, pase lo que pase. Se usa para limpiar recursos (cerrar un fichero) justo al lado de donde se abren. Los defer se ejecutan en orden inverso.",
+    "`defer` delays execution until the function returns, no matter what. It's used to clean up resources (close a file) right next to where they open. Deferred calls run in reverse order.",
+  ),
+};
+const Q_BLANK_RET = {
+  question: P("Con retornos nombrados `func f() (total int)`, ¿qué devuelve un `return` a secas?", "With named returns `func f() (total int)`, what does a bare `return` return?"),
+  options: [
+    P("El valor actual de `total`", "The current value of `total`"),
+    P("0 siempre", "Always 0"),
+    P("nil", "nil"),
+    P("Da error de compilación", "A compile error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Con retornos nombrados, un `return` desnudo devuelve los valores actuales de esas variables. Útil para claridad, pero en exceso confunde: úsalo con moderación.",
+    "With named returns, a bare `return` returns the current values of those variables. Handy for clarity, but overused it confuses: use it sparingly.",
+  ),
+};
+
 export const SYL_GO_COMMUNITY_3: Syllabus = {
   c3_ferny: { kind: "battle", questions: [Q_VARIADIC, Q_MULTIRET, Q_HOF_GO] },
-  c3_espia_nazgul: { kind: "battle", questions: [Q_CLOSURE_GO, Q_HOF_GO, Q_VARIADIC] },
-  c3_montaraz_falso: { kind: "battle", questions: [Q_NAMEDRET, Q_MULTIRET, Q_CLOSURE_GO] },
+  c3_espia_nazgul: { kind: "battle", questions: [Q_CLOSURE_GO, Q_NAMEDRET, Q_FUNC_VALUE] },
+  c3_montaraz_falso: { kind: "battle", questions: [Q_FUNC_LITERAL, Q_DEFER, Q_BLANK_RET] },
   c3_jefe_reybrujo: {
     kind: "challenge",
     title: P("El Rey Brujo de Angmar", "The Witch-king of Angmar"),
@@ -886,9 +1015,66 @@ const Q_IOTA = {
 };
 
 /** Capítulo 4 · Maps y constantes (iota). */
+const Q_MAP_MAKE = {
+  question: P("¿Qué diferencia hay entre `map[string]int{}` y `make(map[string]int)`?", "What's the difference between `map[string]int{}` and `make(map[string]int)`?"),
+  options: [
+    P("Ninguna práctica: ambos crean un map vacío y USABLE", "None in practice: both create an empty, USABLE map"),
+    P("make crea uno nil", "make creates a nil one"),
+    P("El literal no admite claves", "The literal can't take keys"),
+    P("make es sólo para slices", "make is only for slices"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Ambos crean un map listo para usar. Lo importante: un `var m map[string]int` (SIN inicializar) es nil y escribir en él provoca panic. Siempre inicializa el map antes de asignar claves.",
+    "Both create a ready-to-use map. The key point: a `var m map[string]int` (UNINITIALIZED) is nil and writing to it panics. Always initialize the map before assigning keys.",
+  ),
+};
+const Q_MAP_DELETE = {
+  question: P("¿Cómo se borra una clave de un map?", "How do you delete a key from a map?"),
+  options: [
+    P("delete(m, clave)", "delete(m, clave)"),
+    P("m.delete(clave)", "m.delete(clave)"),
+    P("remove(m, clave)", "remove(m, clave)"),
+    P("m[clave] = nil", "m[clave] = nil"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`delete(m, clave)` es una función incorporada: quita la entrada. Si la clave no existe, no hace nada (no da error). `m[clave] = 0` NO la borra: la deja con valor 0.",
+    "`delete(m, clave)` is a built-in function: it removes the entry. If the key doesn't exist, it does nothing (no error). `m[clave] = 0` does NOT delete it: it leaves it with value 0.",
+  ),
+};
+const Q_CONST_BLOCK = {
+  question: P("¿Se puede reasignar una `const` en Go en tiempo de ejecución?", "Can you reassign a `const` in Go at runtime?"),
+  options: [
+    P("No: su valor se fija en compilación y es inmutable", "No: its value is fixed at compile time and immutable"),
+    P("Sí, con `:=`", "Yes, with `:=`"),
+    P("Sólo dentro de funciones", "Only inside functions"),
+    P("Sólo si es exportada", "Only if exported"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una `const` es inmutable y debe conocerse en compilación (no puede venir de una llamada en ejecución). Da nombre a números mágicos y, con `iota`, forma enumeraciones.",
+    "A `const` is immutable and must be known at compile time (it can't come from a runtime call). It names magic numbers and, with `iota`, forms enumerations.",
+  ),
+};
+const Q_IOTA_START = {
+  question: P("En `const ( A = iota; B; C )`, ¿cuánto vale `C`?", "In `const ( A = iota; B; C )`, what is `C`?"),
+  options: [
+    P("2 (iota empieza en 0 y sube por línea)", "2 (iota starts at 0 and rises per line)"),
+    P("3", "3"),
+    P("iota", "iota"),
+    P("0", "0"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`iota` empieza en 0 en cada bloque `const` y aumenta 1 por línea. `A`=0, `B`=1, `C`=2. `B` y `C` heredan la expresión `= iota`. Es la forma idiomática de hacer enums en Go.",
+    "`iota` starts at 0 in each `const` block and rises by 1 per line. `A`=0, `B`=1, `C`=2. `B` and `C` inherit the `= iota` expression. It's the idiomatic way to make enums in Go.",
+  ),
+};
+
 export const SYL_GO_COMMUNITY_4: Syllabus = {
   c4_jinete_rezagado: { kind: "battle", questions: [Q_MAP_TYPE, Q_MAP_COMMAOK, Q_CONST] },
-  c4_lobo: { kind: "battle", questions: [Q_MAP_RANGE, Q_IOTA, Q_MAP_TYPE] },
+  c4_lobo: { kind: "battle", questions: [Q_MAP_RANGE, Q_IOTA, Q_MAP_MAKE] },
   c4_jefe_nueve: {
     kind: "challenge",
     title: P("Los Nueve en el Vado", "The Nine at the Ford"),
@@ -915,7 +1101,7 @@ export const SYL_GO_COMMUNITY_4: Syllabus = {
       ],
     },
   },
-  c4_trasgo_montaraz: { kind: "battle", questions: [Q_MAP_COMMAOK, Q_MAP_TYPE, Q_IOTA] },
+  c4_trasgo_montaraz: { kind: "battle", questions: [Q_MAP_DELETE, Q_CONST_BLOCK, Q_IOTA_START] },
   pergamino_estatico: {
     kind: "scroll",
     title: P("El Pergamino del Recuento", "The Scroll of the Reckoning"),
@@ -1131,9 +1317,66 @@ const Q_CONSTRUCTOR = {
 };
 
 /** Capítulo 5 · Structs y métodos (receptores, encapsulación). */
+const Q_STRUCT_LITERAL = {
+  question: P("¿Cómo se crea un valor de `type Punto struct { X, Y int }`?", "How do you create a value of `type Punto struct { X, Y int }`?"),
+  options: [
+    P("Punto{X: 1, Y: 2}  (o Punto{1, 2})", "Punto{X: 1, Y: 2}  (or Punto{1, 2})"),
+    P("new Punto(1, 2)", "new Punto(1, 2)"),
+    P("Punto(1, 2)", "Punto(1, 2)"),
+    P("{X: 1, Y: 2}", "{X: 1, Y: 2}"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un literal de struct: `Punto{X: 1, Y: 2}` (por nombre, recomendado) o `Punto{1, 2}` (por posición). Go no tiene `new` con argumentos como constructor; para eso se usa una función `NuevoPunto`.",
+    "A struct literal: `Punto{X: 1, Y: 2}` (by name, recommended) or `Punto{1, 2}` (by position). Go has no `new` with constructor args; for that you use a `NuevoPunto` function.",
+  ),
+};
+const Q_ZERO_VALUE = {
+  question: P("Si creas `var p Punto` sin inicializar campos, ¿qué valen `p.X` y `p.Y`?", "If you create `var p Punto` without initializing fields, what are `p.X` and `p.Y`?"),
+  options: [
+    P("0: cada campo toma el VALOR CERO de su tipo", "0: each field takes its type's ZERO VALUE"),
+    P("nil", "nil"),
+    P("Basura de memoria", "Memory garbage"),
+    P("Da error", "It errors"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Go inicializa todo a su valor cero: 0 para números, \"\" para strings, false para bool, nil para punteros/slices/maps. Por eso un struct recién creado es siempre utilizable.",
+    "Go initializes everything to its zero value: 0 for numbers, \"\" for strings, false for bool, nil for pointers/slices/maps. That's why a freshly created struct is always usable.",
+  ),
+};
+const Q_METHOD_VS_FUNC = {
+  question: P("¿Qué distingue a un método de una función normal en Go?", "What sets a method apart from a plain function in Go?"),
+  options: [
+    P("El método lleva un RECEPTOR: `func (e Espada) Golpear()`", "The method has a RECEIVER: `func (e Espada) Golpear()`"),
+    P("El método va en otro fichero", "The method goes in another file"),
+    P("El método no tiene parámetros", "The method has no parameters"),
+    P("No hay diferencia", "There's no difference"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un método es una función con un RECEPTOR entre `func` y el nombre: `func (e Espada) Golpear() int`. Se llama con `esp.Golpear()`. Así se asocia comportamiento a un tipo.",
+    "A method is a function with a RECEIVER between `func` and the name: `func (e Espada) Golpear() int`. You call it with `esp.Golpear()`. That's how behavior is tied to a type.",
+  ),
+};
+const Q_STRUCT_COPY = {
+  question: P("Si pasas un struct a una función por VALOR y esta cambia un campo, ¿cambia el original?", "If you pass a struct to a function by VALUE and it changes a field, does the original change?"),
+  options: [
+    P("No: se pasa una COPIA. Para mutar el original, pasa un puntero `*Struct`", "No: a COPY is passed. To mutate the original, pass a pointer `*Struct`"),
+    P("Sí, siempre", "Yes, always"),
+    P("Sólo si el campo es exportado", "Only if the field is exported"),
+    P("Da error", "It errors"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En Go los structs se pasan por valor (copia). Cambiar la copia no toca el original. Para modificarlo, pasa `*Struct` (puntero); por eso muchos métodos usan receptor de puntero.",
+    "In Go structs are passed by value (a copy). Changing the copy doesn't touch the original. To modify it, pass `*Struct` (a pointer); that's why many methods use a pointer receiver.",
+  ),
+};
+
 export const SYL_GO_COMMUNITY_5: Syllabus = {
   c5_crebain: { kind: "battle", questions: [Q_STRUCT, Q_METHOD_RECV, Q_EXPORTED] },
-  c5_lobo_nieve: { kind: "battle", questions: [Q_PTR_RECV, Q_CONSTRUCTOR, Q_STRUCT] },
+  c5_lobo_nieve: { kind: "battle", questions: [Q_PTR_RECV, Q_CONSTRUCTOR, Q_STRUCT_LITERAL] },
   c5_jefe_caradhras: {
     kind: "challenge",
     title: P("La Voluntad de Caradhras", "The Will of Caradhras"),
@@ -1160,7 +1403,7 @@ export const SYL_GO_COMMUNITY_5: Syllabus = {
       ],
     },
   },
-  c5_trasgo_montanes: { kind: "battle", questions: [Q_EXPORTED, Q_STRUCT, Q_METHOD_RECV] },
+  c5_trasgo_montanes: { kind: "battle", questions: [Q_ZERO_VALUE, Q_METHOD_VS_FUNC, Q_STRUCT_COPY] },
   pergamino_hielo: {
     kind: "scroll",
     title: P("El Pergamino del Hielo", "The Scroll of Ice"),
@@ -1367,10 +1610,67 @@ const Q_TYPESWITCH = {
 };
 
 /** Capítulo 6 · Interfaces (implícitas, polimorfismo). */
+const Q_IFACE_SMALL = {
+  question: P("¿Por qué en Go se prefieren interfaces PEQUEÑAS (uno o dos métodos)?", "Why does Go prefer SMALL interfaces (one or two methods)?"),
+  options: [
+    P("Más fáciles de implementar y de combinar; muchos tipos las cumplen sin querer", "Easier to implement and combine; many types satisfy them without even trying"),
+    P("Porque las grandes no compilan", "Because large ones don't compile"),
+    P("Para ahorrar memoria", "To save memory"),
+    P("Porque Go limita a dos métodos", "Because Go caps them at two methods"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Cuanto más pequeña la interfaz, más tipos la satisfacen y más fácil es reutilizarla (`io.Reader` tiene UN método). El proverbio Go: «la interfaz más grande, la abstracción más débil».",
+    "The smaller the interface, the more types satisfy it and the easier it is to reuse (`io.Reader` has ONE method). The Go proverb: \"the bigger the interface, the weaker the abstraction\".",
+  ),
+};
+const Q_IFACE_NIL = {
+  question: P("¿Qué es el valor cero de una interfaz?", "What is the zero value of an interface?"),
+  options: [
+    P("nil: no apunta a ningún valor todavía", "nil: it points to no value yet"),
+    P("Una struct vacía", "An empty struct"),
+    P("0", "0"),
+    P("Un puntero a sí misma", "A pointer to itself"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una interfaz sin valor asignado es `nil`; llamar un método sobre ella provoca panic. Es el patrón habitual: `func(...) (Guerrero, error)` devuelve `nil` como interfaz cuando falla.",
+    "An interface with no assigned value is `nil`; calling a method on it panics. It's the usual pattern: `func(...) (Guerrero, error)` returns `nil` as the interface when it fails.",
+  ),
+};
+const Q_TYPE_ASSERT = {
+  question: P("¿Qué hace `v, ok := x.(Espada)` sobre una interfaz `x`?", "What does `v, ok := x.(Espada)` do on an interface `x`?"),
+  options: [
+    P("Type assertion: `v` es el valor como Espada y `ok` si de verdad lo era", "Type assertion: `v` is the value as an Espada and `ok` whether it truly was"),
+    P("Convierte x en un número", "Converts x into a number"),
+    P("Crea una Espada nueva", "Creates a new Espada"),
+    P("Compara tipos por texto", "Compares types by text"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La aserción de tipo saca el valor concreto de una interfaz. Con la forma «coma, ok» no hace panic si el tipo no coincide: `ok` es false. Es lo que usa por dentro el `type switch`.",
+    "The type assertion pulls the concrete value out of an interface. With the \"comma, ok\" form it won't panic if the type doesn't match: `ok` is false. It's what the `type switch` uses under the hood.",
+  ),
+};
+const Q_IFACE_CONTRACT = {
+  question: P("Una función pide `func atacar(e Enemigo)`. ¿Qué acepta?", "A function takes `func atacar(e Enemigo)`. What does it accept?"),
+  options: [
+    P("Cualquier tipo que tenga los métodos de Enemigo (implícitamente)", "Any type that has Enemigo's methods (implicitly)"),
+    P("Sólo un valor creado como Enemigo", "Only a value created as an Enemigo"),
+    P("Cualquier cosa: la interfaz no obliga", "Anything: the interface doesn't enforce"),
+    P("Sólo punteros", "Only pointers"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Programar contra la interfaz acepta CUALQUIER implementación. En Go no se declara `implements`: si el tipo tiene los métodos, ya vale. Añadir un enemigo nuevo no toca `atacar()`.",
+    "Programming to the interface accepts ANY implementation. In Go you don't declare `implements`: if the type has the methods, it already qualifies. Adding a new enemy doesn't touch `atacar()`.",
+  ),
+};
+
 export const SYL_GO_COMMUNITY_6: Syllabus = {
   c6_trasgo_explorador: { kind: "battle", questions: [Q_INTERFACE, Q_IMPLICIT, Q_POLY_GO] },
-  c6_trol_cavernas: { kind: "battle", questions: [Q_EMPTY_IFACE, Q_TYPESWITCH, Q_INTERFACE] },
-  c6_capitan_trasgo: { kind: "battle", questions: [Q_IMPLICIT, Q_POLY_GO, Q_INTERFACE] },
+  c6_trol_cavernas: { kind: "battle", questions: [Q_EMPTY_IFACE, Q_TYPESWITCH, Q_TYPE_ASSERT] },
+  c6_capitan_trasgo: { kind: "battle", questions: [Q_IFACE_SMALL, Q_IFACE_NIL, Q_IFACE_CONTRACT] },
   c6_jefe_balrog: {
     kind: "challenge",
     title: P("El Balrog de Morgoth", "The Balrog of Morgoth"),
@@ -1618,10 +1918,81 @@ const Q_EMBED_IFACE = {
 };
 
 /** Capítulo 7 · Embedding y composición. */
+const Q_NO_INHERIT = {
+  question: P("¿Tiene Go herencia de clases como Java o PHP?", "Does Go have class inheritance like Java or PHP?"),
+  options: [
+    P("No: usa COMPOSICIÓN (embedding) en su lugar", "No: it uses COMPOSITION (embedding) instead"),
+    P("Sí, con `extends`", "Yes, with `extends`"),
+    P("Sí, con `class`", "Yes, with `class`"),
+    P("Sólo herencia múltiple", "Only multiple inheritance"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Go no tiene clases ni herencia. Reutiliza comportamiento EMBEBIENDO un tipo dentro de otro (composición) y cumpliendo interfaces. «Composición sobre herencia» es aquí la única vía.",
+    "Go has no classes or inheritance. It reuses behavior by EMBEDDING one type inside another (composition) and satisfying interfaces. \"Composition over inheritance\" is here the only way.",
+  ),
+};
+const Q_EMBED_SYNTAX = {
+  question: P("¿Cómo se embebe `Base` dentro de `Guerrero`?", "How do you embed `Base` inside `Guerrero`?"),
+  options: [
+    P("Poniendo el tipo SIN nombre de campo: `struct { Base; Arma string }`", "By writing the type WITHOUT a field name: `struct { Base; Arma string }`"),
+    P("Con `Guerrero extends Base`", "With `Guerrero extends Base`"),
+    P("Con `base Base` (con nombre)", "With `base Base` (named)"),
+    P("Con `embed Base`", "With `embed Base`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Embeber es declarar el tipo sin nombre de campo. Si le pones nombre (`base Base`) es composición NORMAL: tendrías que escribir `g.base.Saludar()` en vez de `g.Saludar()`.",
+    "Embedding is declaring the type with no field name. If you name it (`base Base`) it's PLAIN composition: you'd write `g.base.Saludar()` instead of `g.Saludar()`.",
+  ),
+};
+const Q_PROMOTION_OVERRIDE = {
+  question: P("Si `Guerrero` embebe `Base` y define su propio `Saludar()`, ¿cuál se llama?", "If `Guerrero` embeds `Base` and defines its own `Saludar()`, which is called?"),
+  options: [
+    P("El de Guerrero: el método propio TAPA al promovido", "Guerrero's: its own method SHADOWS the promoted one"),
+    P("El de Base siempre", "Base's always"),
+    P("Los dos", "Both"),
+    P("Da error de ambigüedad", "An ambiguity error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El método definido en el tipo exterior tiene prioridad sobre el promovido del embebido. Aún puedes llamar al de Base explícitamente con `g.Base.Saludar()`.",
+    "The method defined on the outer type takes precedence over the embedded promoted one. You can still call Base's explicitly with `g.Base.Saludar()`.",
+  ),
+};
+const Q_EMBED_SATISFY = {
+  question: P("Si `Base` cumple la interfaz `Saludador` y `Guerrero` embebe `Base`, ¿cumple `Guerrero` también?", "If `Base` satisfies interface `Saludador` and `Guerrero` embeds `Base`, does `Guerrero` satisfy it too?"),
+  options: [
+    P("Sí: hereda los métodos promovidos, así que satisface la interfaz", "Yes: it gains the promoted methods, so it satisfies the interface"),
+    P("No: hay que reimplementarla", "No: you must reimplement it"),
+    P("Sólo si lo declara", "Only if it declares it"),
+    P("Nunca", "Never"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Como los métodos de `Base` se promueven, `Guerrero` los tiene y por tanto satisface cualquier interfaz que cumpliera `Base`. Embeber + interfaces implícitas es la composición idiomática de Go.",
+    "Since `Base`'s methods are promoted, `Guerrero` has them and thus satisfies any interface `Base` satisfied. Embedding + implicit interfaces is Go's idiomatic composition.",
+  ),
+};
+const Q_EMBED_AMBIG = {
+  question: P("Si embebes DOS tipos que tienen un método con el mismo nombre, ¿qué pasa al llamarlo sin cualificar?", "If you embed TWO types that have a method with the same name, what happens when you call it unqualified?"),
+  options: [
+    P("Error de ambigüedad: debes cualificar cuál, `g.A.M()` o `g.B.M()`", "Ambiguity error: you must qualify which, `g.A.M()` or `g.B.M()`"),
+    P("Gana el primero", "The first wins"),
+    P("Se ejecutan los dos", "Both run"),
+    P("Se fusionan", "They merge"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Si dos embebidos aportan el MISMO nombre de método, la llamada sin cualificar es ambigua y no compila: tienes que decir de cuál, `g.A.M()`. Go prefiere el error explícito a adivinar.",
+    "If two embedded types provide the SAME method name, the unqualified call is ambiguous and won't compile: you must say which, `g.A.M()`. Go prefers an explicit error over guessing.",
+  ),
+};
+
 export const SYL_GO_COMMUNITY_7: Syllabus = {
   c7_orco_explorador: { kind: "battle", questions: [Q_EMBED, Q_PROMOTION, Q_COMPOSITION] },
-  c7_trasgo_frontera: { kind: "battle", questions: [Q_COMPOSITION, Q_EMBED_IFACE, Q_EMBED] },
-  c7_uruk_rastreador: { kind: "battle", questions: [Q_PROMOTION, Q_EMBED_IFACE, Q_COMPOSITION] },
+  c7_trasgo_frontera: { kind: "battle", questions: [Q_EMBED_IFACE, Q_NO_INHERIT, Q_EMBED_SYNTAX] },
+  c7_uruk_rastreador: { kind: "battle", questions: [Q_PROMOTION_OVERRIDE, Q_EMBED_SATISFY, Q_EMBED_AMBIG] },
   c7_jefe_ugluk: {
     kind: "challenge",
     title: P("Uglúk, capitán de Isengard", "Uglúk, captain of Isengard"),
@@ -1860,10 +2231,67 @@ const Q_FACTORY_GO = {
 };
 
 /** Capítulo 8 · Errores y constructores (factory). */
+const Q_ERRORF = {
+  question: P("¿Qué aporta `fmt.Errorf(\"fallo con %s\", nombre)` frente a `errors.New`?", "What does `fmt.Errorf(\"failed with %s\", name)` add over `errors.New`?"),
+  options: [
+    P("Un error con MENSAJE FORMATEADO (interpola valores)", "An error with a FORMATTED MESSAGE (interpolates values)"),
+    P("Un error más rápido", "A faster error"),
+    P("Un error que no se puede capturar", "An error that can't be caught"),
+    P("Nada, son idénticos", "Nothing, they're identical"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`fmt.Errorf` crea un error con un mensaje formateado como `Sprintf`. Con el verbo `%w` además ENVUELVE otro error para conservar la causa (`errors.Is`/`errors.As` la recuperan).",
+    "`fmt.Errorf` builds an error with a `Sprintf`-formatted message. With the `%w` verb it also WRAPS another error to keep the cause (`errors.Is`/`errors.As` recover it).",
+  ),
+};
+const Q_ERR_LAST = {
+  question: P("Por convención, ¿dónde va el `error` en los valores de retorno?", "By convention, where does the `error` go in the return values?"),
+  options: [
+    P("El ÚLTIMO: `func f() (T, error)`", "LAST: `func f() (T, error)`"),
+    P("El primero", "First"),
+    P("En medio", "In the middle"),
+    P("Da igual", "It doesn't matter"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El error es siempre el último valor devuelto, y se comprueba de inmediato: `v, err := f(); if err != nil { return err }`. Esta convención está por toda la stdlib.",
+    "The error is always the last returned value, checked right away: `v, err := f(); if err != nil { return err }`. This convention is all over the stdlib.",
+  ),
+};
+const Q_PANIC = {
+  question: P("¿Cuándo se usa `panic` en Go en vez de devolver un `error`?", "When is `panic` used in Go instead of returning an `error`?"),
+  options: [
+    P("Sólo para fallos IRRECUPERABLES o bugs del programador; los errores esperables se devuelven", "Only for UNRECOVERABLE failures or programmer bugs; expected errors are returned"),
+    P("Siempre que algo falla", "Whenever something fails"),
+    P("Para validar la entrada del usuario", "To validate user input"),
+    P("Nunca existe", "It doesn't exist"),
+  ],
+  correct: 0,
+  explanation: P(
+    "En Go los fallos ESPERABLES se devuelven como `error`. `panic` se reserva para lo irrecuperable (un estado imposible, un bug). Abusar de `panic` como excepción es antiidiomático.",
+    "In Go, EXPECTED failures are returned as `error`. `panic` is reserved for the unrecoverable (an impossible state, a bug). Abusing `panic` as an exception is unidiomatic.",
+  ),
+};
+const Q_ERRORS_IS = {
+  question: P("¿Para qué sirve `errors.Is(err, ErrNoEncontrado)`?", "What is `errors.Is(err, ErrNotFound)` for?"),
+  options: [
+    P("Comprobar si `err` ES (o envuelve) ese error concreto", "Check whether `err` IS (or wraps) that specific error"),
+    P("Crear un error nuevo", "Create a new error"),
+    P("Convertir err en texto", "Convert err to text"),
+    P("Lanzar el error", "Throw the error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`errors.Is` compara con un error centinela recorriendo la cadena de envueltos (`%w`). Así distingues «no encontrado» de otros fallos sin comparar textos. `errors.As` extrae un tipo concreto.",
+    "`errors.Is` compares against a sentinel error walking the wrapped chain (`%w`). That's how you tell \"not found\" from other failures without comparing strings. `errors.As` extracts a concrete type.",
+  ),
+};
+
 export const SYL_GO_COMMUNITY_8: Syllabus = {
   c8_uruk_arquero: { kind: "battle", questions: [Q_ERROR_IFACE, Q_ERR_CHECK, Q_ERRORS_NEW] },
-  c8_orco_saqueador: { kind: "battle", questions: [Q_NIL_ERR, Q_ERR_CHECK, Q_ERROR_IFACE] },
-  c8_uruk_espadachin: { kind: "battle", questions: [Q_FACTORY_GO, Q_ERRORS_NEW, Q_NIL_ERR] },
+  c8_orco_saqueador: { kind: "battle", questions: [Q_NIL_ERR, Q_FACTORY_GO, Q_ERRORF] },
+  c8_uruk_espadachin: { kind: "battle", questions: [Q_ERR_LAST, Q_PANIC, Q_ERRORS_IS] },
   c8_jefe_lurtz: {
     kind: "challenge",
     title: P("Lurtz, el primero de los Uruk-hai", "Lurtz, first of the Uruk-hai"),
