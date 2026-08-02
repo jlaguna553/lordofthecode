@@ -110,6 +110,16 @@ import {
   SYL_SQL_7,
   SYL_SQL_8,
 } from "./syllabus/sql";
+import {
+  SYL_DP_1,
+  SYL_DP_2,
+  SYL_DP_3,
+  SYL_DP_4,
+  SYL_DP_5,
+  SYL_DP_6,
+  SYL_DP_7,
+  SYL_DP_8,
+} from "./syllabus/design-patterns";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -193,6 +203,14 @@ const SQL_5 = buildChapter(NARR_COMMUNITY_5, SYL_SQL_5, "sql");
 const SQL_6 = buildChapter(NARR_COMMUNITY_6, SYL_SQL_6, "sql");
 const SQL_7 = buildChapter(NARR_COMMUNITY_7, SYL_SQL_7, "sql");
 const SQL_8 = buildChapter(NARR_COMMUNITY_8, SYL_SQL_8, "sql");
+const DP_1 = buildChapter(NARR_COMMUNITY_1, SYL_DP_1, "typescript");
+const DP_2 = buildChapter(NARR_COMMUNITY_2, SYL_DP_2, "typescript");
+const DP_3 = buildChapter(NARR_COMMUNITY_3, SYL_DP_3, "typescript");
+const DP_4 = buildChapter(NARR_COMMUNITY_4, SYL_DP_4, "typescript");
+const DP_5 = buildChapter(NARR_COMMUNITY_5, SYL_DP_5, "typescript");
+const DP_6 = buildChapter(NARR_COMMUNITY_6, SYL_DP_6, "typescript");
+const DP_7 = buildChapter(NARR_COMMUNITY_7, SYL_DP_7, "typescript");
+const DP_8 = buildChapter(NARR_COMMUNITY_8, SYL_DP_8, "typescript");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -526,13 +544,18 @@ export const ADVENTURES: Adventure[] = [
     tech: "Patrones",
     icon: "♟️",
     accent: "rose",
-    status: "soon",
+    status: "available",
     name: { es: "Patrones de Diseño", en: "Design Patterns" },
     blurb: {
-      es: "Los patrones de la Banda de los Cuatro: Singleton, Factory, Strategy, Observer, Decorator y más.",
-      en: "The Gang of Four patterns: Singleton, Factory, Strategy, Observer, Decorator and more.",
+      es: "Patrones de la Banda de los Cuatro en TypeScript, ejecutables: Factory, Strategy, Observer, Singleton, Decorator, Adapter, Command y Composite.",
+      en: "Gang of Four patterns in TypeScript, executable: Factory, Strategy, Observer, Singleton, Decorator, Adapter, Command and Composite.",
     },
-    books: [],
+    books: [
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [DP_1, DP_2, DP_3, DP_4, DP_5, DP_6, DP_7, DP_8],
+      },
+    ],
   },
   {
     id: "react-native",
