@@ -65,6 +65,10 @@ import {
   SYL_REACT_COMMUNITY_2,
   SYL_REACT_COMMUNITY_3,
   SYL_REACT_COMMUNITY_4,
+  SYL_REACT_COMMUNITY_5,
+  SYL_REACT_COMMUNITY_6,
+  SYL_REACT_COMMUNITY_7,
+  SYL_REACT_COMMUNITY_8,
 } from "./syllabus/community-react";
 import {
   SYL_PY_COMMUNITY_1,
@@ -173,6 +177,10 @@ const REACT_COMMUNITY_4 = buildChapter(
   SYL_REACT_COMMUNITY_4,
   "react",
 );
+const REACT_COMMUNITY_5 = buildChapter(NARR_COMMUNITY_5, SYL_REACT_COMMUNITY_5, "react");
+const REACT_COMMUNITY_6 = buildChapter(NARR_COMMUNITY_6, SYL_REACT_COMMUNITY_6, "react");
+const REACT_COMMUNITY_7 = buildChapter(NARR_COMMUNITY_7, SYL_REACT_COMMUNITY_7, "react");
+const REACT_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_REACT_COMMUNITY_8, "react");
 
 /**
  * Catálogo de aventuras. Las `available` son jugables; las `soon` aparecen en
@@ -351,6 +359,10 @@ export const ADVENTURES: Adventure[] = [
           REACT_COMMUNITY_2,
           REACT_COMMUNITY_3,
           REACT_COMMUNITY_4,
+          REACT_COMMUNITY_5,
+          REACT_COMMUNITY_6,
+          REACT_COMMUNITY_7,
+          REACT_COMMUNITY_8,
         ],
       },
     ],

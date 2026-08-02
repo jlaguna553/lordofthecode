@@ -1217,3 +1217,1253 @@ export const SYL_REACT_COMMUNITY_4: Syllabus = {
     },
   },
 };
+
+
+/* ===================================================================== *
+ * Capítulo 5 · Renderizado condicional
+ * ===================================================================== */
+const Q_R5_TERNARY = {
+  question: P("¿Cómo muestras una cosa u otra en JSX según una condición?", "How do you show one thing or another in JSX based on a condition?"),
+  options: [
+    P("Con el ternario: `{cond ? <A/> : <B/>}`", "With the ternary: `{cond ? <A/> : <B/>}`"),
+    P("Con un `if` dentro del JSX", "With an `if` inside the JSX"),
+    P("Con un bucle for", "With a for loop"),
+    P("No se puede", "You can't"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Dentro del JSX sólo caben EXPRESIONES, no sentencias. El ternario `cond ? A : B` es una expresión y sirve para elegir entre dos vistas; un `if` iría FUERA del return.",
+    "Inside JSX only EXPRESSIONS fit, not statements. The ternary `cond ? A : B` is an expression and chooses between two views; an `if` would go OUTSIDE the return.",
+  ),
+};
+const Q_R5_AND = {
+  question: P("¿Qué hace `{visible && <span>hola</span>}`?", "What does `{visible && <span>hola</span>}` do?"),
+  options: [
+    P("Muestra el `<span>` sólo si `visible` es true", "Shows the `<span>` only if `visible` is true"),
+    P("Muestra siempre el span", "Always shows the span"),
+    P("Da error", "Errors"),
+    P("Muestra 'true' o 'false'", "Shows 'true' or 'false'"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El `&&` es el atajo para 'mostrar sólo si': si la izquierda es true, se pinta la derecha; si es false, no se pinta nada. Ideal cuando no hay un 'else'.",
+    "The `&&` is the shortcut for 'show only if': if the left is true, the right renders; if false, nothing renders. Ideal when there's no 'else'.",
+  ),
+};
+const Q_R5_FALSE = {
+  question: P("¿Qué pinta React cuando una expresión da `false`, `null` o `undefined`?", "What does React render when an expression is `false`, `null` or `undefined`?"),
+  options: [
+    P("Nada (no muestra ningún texto)", "Nothing (it shows no text)"),
+    P("La palabra 'false'/'null'", "The word 'false'/'null'"),
+    P("Un espacio en blanco", "A blank space"),
+    P("Un error", "An error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "React IGNORA `false`, `null` y `undefined` al renderizar: no pintan nada. Por eso `{cond && <X/>}` no deja rastro cuando `cond` es false. Cuidado: `0` SÍ se pinta.",
+    "React IGNORES `false`, `null` and `undefined` when rendering: they show nothing. That's why `{cond && <X/>}` leaves no trace when `cond` is false. Careful: `0` DOES render.",
+  ),
+};
+const Q_R5_ZERO = {
+  question: P("¿Por qué `{items.length && <Lista/>}` puede pintar un `0` inesperado?", "Why can `{items.length && <Lista/>}` render an unexpected `0`?"),
+  options: [
+    P("Si length es 0, `&&` devuelve 0, y React SÍ pinta el 0", "If length is 0, `&&` returns 0, and React DOES render the 0"),
+    P("Porque length nunca es 0", "Because length is never 0"),
+    P("Porque && no funciona con números", "Because && doesn't work with numbers"),
+    P("Es un bug de React", "It's a React bug"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`0 && algo` es `0`, y React pinta el número 0 (a diferencia de false). Por eso se usa `items.length > 0 && ...` o un ternario: convertir a booleano evita el 0 fantasma.",
+    "`0 && something` is `0`, and React renders the number 0 (unlike false). Use `items.length > 0 && ...` or a ternary: converting to boolean avoids the ghost 0.",
+  ),
+};
+const Q_R5_NOIF = {
+  question: P("¿Se puede escribir un `if (...) { }` DENTRO del JSX del return?", "Can you write an `if (...) { }` INSIDE the return's JSX?"),
+  options: [
+    P("No: en JSX sólo van expresiones; el `if` va antes del return", "No: JSX only takes expressions; the `if` goes before the return"),
+    P("Sí, igual que en HTML", "Yes, just like in HTML"),
+    P("Sí, con `{if (...)}`", "Yes, with `{if (...)}`"),
+    P("Sólo con `else`", "Only with `else`"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Las llaves de JSX aceptan EXPRESIONES, y `if` es una sentencia. Para ramificar dentro del JSX se usa el ternario o `&&`; para lógica más larga, un `if` ANTES del return o un early return.",
+    "JSX braces accept EXPRESSIONS, and `if` is a statement. To branch inside JSX use the ternary or `&&`; for longer logic, an `if` BEFORE the return or an early return.",
+  ),
+};
+const Q_R5_EARLY = {
+  question: P("¿Qué es un 'early return' en un componente?", "What is an 'early return' in a component?"),
+  options: [
+    P("Devolver un JSX distinto antes del return principal según una condición", "Returning a different JSX before the main return based on a condition"),
+    P("Un return sin valor", "A return with no value"),
+    P("Un return dentro del JSX", "A return inside the JSX"),
+    P("Un error de sintaxis", "A syntax error"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`if (cargando) return <Spinner/>;` corta pronto y evita anidar ternarios. Es muy común para estados de carga o error antes de pintar el contenido normal.",
+    "`if (cargando) return <Spinner/>;` bails out early and avoids nested ternaries. Very common for loading or error states before painting the normal content.",
+  ),
+};
+const Q_R5_CLASS_COND = {
+  question: P("¿Cómo pones una clase CSS según una condición?", "How do you set a CSS class based on a condition?"),
+  options: [
+    P("`className={activo ? 'on' : 'off'}`", "`className={activo ? 'on' : 'off'}`"),
+    P("`class={activo ? 'on' : 'off'}`", "`class={activo ? 'on' : 'off'}`"),
+    P("`className=activo`", "`className=activo`"),
+    P("No se puede condicionar la clase", "You can't make the class conditional"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`className` acepta una expresión entre llaves, así que un ternario elige la clase. En JSX es `className` (no `class`) porque `class` es palabra reservada de JavaScript.",
+    "`className` accepts an expression in braces, so a ternary picks the class. In JSX it's `className` (not `class`) because `class` is a reserved JavaScript word.",
+  ),
+};
+const Q_R5_NULL = {
+  question: P("Si un componente hace `return null`, ¿qué se ve?", "If a component does `return null`, what shows?"),
+  options: [
+    P("Nada: es la forma de no pintar nada", "Nothing: it's the way to render nothing"),
+    P("La palabra 'null'", "The word 'null'"),
+    P("Un error", "An error"),
+    P("Un div vacío", "An empty div"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`return null` es válido y no pinta nada: útil cuando un componente decide no mostrarse. No confundir con `return;` (que devuelve undefined y también funciona, pero es menos claro).",
+    "`return null` is valid and renders nothing: useful when a component decides not to show. Don't confuse it with `return;` (returns undefined, also works, but less clear).",
+  ),
+};
+const Q_R5_ELEMENTS = {
+  question: P("¿Puede el ternario elegir entre dos ELEMENTOS distintos, no sólo textos?", "Can the ternary choose between two different ELEMENTS, not just texts?"),
+  options: [
+    P("Sí: `{ok ? <Exito/> : <Error/>}` es habitual", "Yes: `{ok ? <Exito/> : <Error/>}` is common"),
+    P("No, sólo entre textos", "No, only between texts"),
+    P("Sólo entre números", "Only between numbers"),
+    P("Sólo si tienen la misma etiqueta", "Only if they have the same tag"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El ternario devuelve cualquier expresión, incluidos elementos JSX completos. Es la forma más directa de alternar entre dos vistas (éxito/error, abierto/cerrado).",
+    "The ternary returns any expression, including whole JSX elements. It's the most direct way to switch between two views (success/error, open/closed).",
+  ),
+};
+
+export const SYL_REACT_COMMUNITY_5: Syllabus = {
+  c5_crebain: { kind: "battle", questions: [Q_R5_TERNARY, Q_R5_AND, Q_R5_FALSE] },
+  c5_lobo_nieve: { kind: "battle", questions: [Q_R5_ZERO, Q_R5_NOIF, Q_R5_EARLY] },
+  c5_trasgo_montanes: { kind: "battle", questions: [Q_R5_CLASS_COND, Q_R5_NULL, Q_R5_ELEMENTS] },
+  c5_jefe_caradhras: {
+    kind: "challenge",
+    title: P("El Cuerno de Caradhras", "The Horn of Caradhras"),
+    lore_intro: P(
+      "La montaña abre y cierra sus pasos con la ventisca. Pinta SÓLO las rutas abiertas: condición + lista.",
+      "The mountain opens and closes its passes with the blizzard. Render ONLY the open routes: condition + list.",
+    ),
+    challenge: {
+      topic: P("Filtrar y renderizar por condición", "Filter and render by condition"),
+      instructions: P(
+        "Escribe `Rutas` que reciba `rutas` (array de `{ nombre, abierta }`) y devuelva un `<ul>` con un `<li key={r.nombre}>{r.nombre}</li>` SÓLO por cada ruta cuyo `abierta` sea true.\n\n`render(<Rutas rutas={[{nombre:\"Paso\",abierta:true},{nombre:\"Cima\",abierta:false}]} />)` → `\"<ul><li>Paso</li></ul>\"`.",
+        "Write `Rutas` taking `rutas` (array of `{ nombre, abierta }`) and returning a `<ul>` with a `<li key={r.nombre}>{r.nombre}</li>` ONLY for each route whose `abierta` is true.\n\n`render(<Rutas rutas={[{nombre:\"Paso\",abierta:true},{nombre:\"Cima\",abierta:false}]} />)` → `\"<ul><li>Paso</li></ul>\"`.",
+      ),
+      starter_code: "function Rutas({ rutas }) {\n}\n",
+      blocks: [
+        "function Rutas({ rutas }) {",
+        "  return <ul>{rutas.filter(r => r.abierta).map(r => <li key={r.nombre}>{r.nombre}</li>)}</ul>;",
+        "}",
+        "  return <ul>{rutas.map(r => <li key={r.nombre}>{r.nombre}</li>)}</ul>;",
+        "  return <ul>{rutas.filter(r => r.abierta)}</ul>;",
+      ],
+      hints: [
+        P("Filtra primero: `rutas.filter(r => r.abierta)`.", "Filter first: `rutas.filter(r => r.abierta)`."),
+        P("Luego `.map(r => <li key={r.nombre}>{r.nombre}</li>)`.", "Then `.map(r => <li key={r.nombre}>{r.nombre}</li>)`."),
+      ],
+      test_cases: [
+        { input: 'render(<Rutas rutas={[{nombre:"Paso",abierta:true},{nombre:"Cima",abierta:false},{nombre:"Puerta",abierta:true}]} />)', expected: "<ul><li>Paso</li><li>Puerta</li></ul>", description: P("Sólo las abiertas", "Only the open ones"), raw: true },
+        { input: 'render(<Rutas rutas={[{nombre:"Cima",abierta:false}]} />)', expected: "<ul></ul>", description: P("Ninguna abierta", "None open"), raw: true },
+      ],
+    },
+  },
+  pergamino_hielo: {
+    kind: "scroll",
+    title: P("El Pergamino de la Condición", "The Scroll of the Condition"),
+    lore_intro: P(
+      "Bajo la ventisca, Gandalf traza runas: enseña a mostrar u ocultar según una condición, sin `if` dentro del JSX.",
+      "Under the blizzard, Gandalf traces runes: they teach how to show or hide based on a condition, with no `if` inside the JSX.",
+    ),
+    scroll: {
+      topic: P("Renderizado condicional", "Conditional rendering"),
+      sections: [
+        {
+          heading: P("Ternario y &&", "Ternary and &&"),
+          body: P(
+            "En JSX sólo caben expresiones. `{cond ? <A/> : <B/>}` elige entre dos; `{cond && <A/>}` muestra sólo si es true.",
+            "JSX only takes expressions. `{cond ? <A/> : <B/>}` chooses between two; `{cond && <A/>}` shows only if true.",
+          ),
+          code: "<span>{oculto ? 'sombra' : nombre}</span>\n<div>{activo && <span>protegido</span>}</div>",
+        },
+        {
+          heading: P("false/null no pintan nada", "false/null render nothing"),
+          body: P(
+            "React ignora `false`, `null` y `undefined`. Ojo con `0`: SÍ se pinta, así que usa `length > 0 && ...`.",
+            "React ignores `false`, `null` and `undefined`. Watch out for `0`: it DOES render, so use `length > 0 && ...`.",
+          ),
+          code: "{items.length > 0 && <Lista/>}\nreturn null; // no pinta nada",
+        },
+        {
+          heading: P("if fuera del return", "if outside the return"),
+          body: P(
+            "Para lógica más larga, decide antes del return (early return) o guarda el JSX en una variable.",
+            "For longer logic, decide before the return (early return) or store the JSX in a variable.",
+          ),
+          code: "if (cargando) return <Spinner/>;\nreturn <Contenido/>;",
+        },
+      ],
+      keyTakeaway: P(
+        "Condicionar en JSX: ternario (dos opciones) o && (mostrar si). false/null/undefined no pintan; 0 sí. Para lógica larga, if/early-return antes del return.",
+        "Conditionals in JSX: ternary (two options) or && (show if). false/null/undefined render nothing; 0 does. For longer logic, if/early-return before the return.",
+      ),
+    },
+  },
+  carga_de_bill: {
+    kind: "challenge",
+    title: P("El Aviso de Bill", "Bill's Warning"),
+    lore_intro: P(
+      "Bill el Poney presiente el peligro. Muestra un aviso u otro según lo que huela.",
+      "Bill the Pony senses danger. Show one warning or another based on what he smells.",
+    ),
+    challenge: {
+      topic: P("Ternario en JSX", "Ternary in JSX"),
+      instructions: P(
+        "Escribe `Aviso` que reciba la prop `peligro` (booleano) y devuelva un `<p>` con `\"¡Peligro!\"` si es true o `\"todo en calma\"` si es false.",
+        "Write `Aviso` taking the prop `peligro` (boolean) and returning a `<p>` with `\"¡Peligro!\"` if true or `\"todo en calma\"` if false.",
+      ),
+      starter_code: "function Aviso({ peligro }) {\n}\n",
+      blocks: [
+        "function Aviso({ peligro }) {",
+        '  return <p>{peligro ? "¡Peligro!" : "todo en calma"}</p>;',
+        "}",
+        '  return <p>{peligro}</p>;',
+        '  return <p>if (peligro) "¡Peligro!"</p>;',
+      ],
+      hints: [
+        P("Ternario dentro de las llaves del JSX.", "Ternary inside the JSX braces."),
+        P('`{peligro ? "¡Peligro!" : "todo en calma"}`.', '`{peligro ? "¡Peligro!" : "todo en calma"}`.'),
+      ],
+      test_cases: [
+        { input: "render(<Aviso peligro={true} />)", expected: "<p>¡Peligro!</p>", description: P("Con peligro", "With danger"), raw: true },
+        { input: "render(<Aviso peligro={false} />)", expected: "<p>todo en calma</p>", description: P("En calma", "Calm"), raw: true },
+      ],
+    },
+  },
+  resistencia_comunidad: {
+    kind: "challenge",
+    title: P("El Escudo de la Comunidad", "The Fellowship's Shield"),
+    lore_intro: P(
+      "El escudo sólo aparece cuando está activo. Muéstralo con `&&`, o no muestres nada.",
+      "The shield only appears when active. Show it with `&&`, or show nothing.",
+    ),
+    challenge: {
+      topic: P("Operador && en JSX", "The && operator in JSX"),
+      instructions: P(
+        "Escribe `Escudo` que reciba la prop `activo` (booleano) y devuelva un `<div>` que contenga `<span>protegido</span>` SÓLO si `activo` es true (usa `&&`). Si es false, el div queda vacío.",
+        "Write `Escudo` taking the prop `activo` (boolean) and returning a `<div>` that contains `<span>protegido</span>` ONLY if `activo` is true (use `&&`). If false, the div is empty.",
+      ),
+      starter_code: "function Escudo({ activo }) {\n}\n",
+      blocks: [
+        "function Escudo({ activo }) {",
+        "  return <div>{activo && <span>protegido</span>}</div>;",
+        "}",
+        "  return <div>{activo ? activo : <span>protegido</span>}</div>;",
+        "  return <span>protegido</span>;",
+      ],
+      hints: [
+        P("`{activo && <span>protegido</span>}` sólo pinta si es true.", "`{activo && <span>protegido</span>}` only renders if true."),
+        P("Cuando `activo` es false, no se pinta nada dentro del div.", "When `activo` is false, nothing renders inside the div."),
+      ],
+      test_cases: [
+        { input: "render(<Escudo activo={true} />)", expected: "<div><span>protegido</span></div>", description: P("Activo: protegido", "Active: protected"), raw: true },
+        { input: "render(<Escudo activo={false} />)", expected: "<div></div>", description: P("Inactivo: vacío", "Inactive: empty"), raw: true },
+      ],
+    },
+  },
+  temperatura_montana: {
+    kind: "challenge",
+    title: P("El Clima de la Montaña", "The Mountain's Weather"),
+    lore_intro: P(
+      "Tres climas según los grados: helada, templado o calor. Encadena dos ternarios.",
+      "Three climates by degrees: freezing, mild or hot. Chain two ternaries.",
+    ),
+    challenge: {
+      topic: P("Ternario encadenado", "Chained ternary"),
+      instructions: P(
+        "Escribe `Clima` que reciba `grados` (número) y devuelva un `<span>` con:\n• `\"helada\"` si `grados < 0`,\n• `\"templado\"` si `grados < 20`,\n• `\"calor\"` en otro caso.",
+        "Write `Clima` taking `grados` (number) and returning a `<span>` with:\n• `\"helada\"` if `grados < 0`,\n• `\"templado\"` if `grados < 20`,\n• `\"calor\"` otherwise.",
+      ),
+      starter_code: "function Clima({ grados }) {\n}\n",
+      blocks: [
+        "function Clima({ grados }) {",
+        '  return <span>{grados < 0 ? "helada" : grados < 20 ? "templado" : "calor"}</span>;',
+        "}",
+        '  return <span>{grados < 0 ? "helada" : "calor"}</span>;',
+        '  return <span>grados</span>;',
+      ],
+      hints: [
+        P("Un ternario dentro de otro: `a < 0 ? 'helada' : (a < 20 ? 'templado' : 'calor')`.", "A ternary inside another: `a < 0 ? 'helada' : (a < 20 ? 'templado' : 'calor')`."),
+        P("El orden importa: primero el corte más bajo.", "Order matters: the lowest cutoff first."),
+      ],
+      test_cases: [
+        { input: "render(<Clima grados={-5} />)", expected: "<span>helada</span>", description: P("Bajo cero", "Below zero"), raw: true },
+        { input: "render(<Clima grados={10} />)", expected: "<span>templado</span>", description: P("Templado", "Mild"), raw: true },
+        { input: "render(<Clima grados={30} />)", expected: "<span>calor</span>", description: P("Calor", "Hot"), raw: true },
+      ],
+    },
+  },
+};
+
+/* ===================================================================== *
+ * Capítulo 6 · Listas y filtrado
+ * ===================================================================== */
+const Q_R6_MAP = {
+  question: P("¿Cómo conviertes un array `xs` en una lista de `<li>`?", "How do you turn an array `xs` into a list of `<li>`?"),
+  options: [
+    P("{xs.map(x => <li key={x}>{x}</li>)}", "{xs.map(x => <li key={x}>{x}</li>)}"),
+    P("{xs.forEach(x => <li>{x}</li>)}", "{xs.forEach(x => <li>{x}</li>)}"),
+    P("{for (x of xs) <li>{x}</li>}", "{for (x of xs) <li>{x}</li>}"),
+    P("{xs.join('<li>')}", "{xs.join('<li>')}"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`map` transforma cada dato en un elemento y devuelve un ARRAY de JSX, que React pinta en orden. `forEach` no devuelve nada y un `for` es una sentencia, no una expresión.",
+    "`map` turns each item into an element and returns an ARRAY of JSX, which React paints in order. `forEach` returns nothing and a `for` is a statement, not an expression.",
+  ),
+};
+const Q_R6_KEY = {
+  question: P("¿Qué prop hay que dar a cada elemento de una lista?", "What prop must you give each list item?"),
+  options: [
+    P("`key`, con un valor único y estable", "`key`, with a unique, stable value"),
+    P("`id`", "`id`"),
+    P("`index`", "`index`"),
+    P("Ninguna", "None"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`key` da a React una identidad estable por elemento para saber cuál cambió, se añadió o se borró. No aparece en el HTML final: es sólo para React.",
+    "`key` gives React a stable identity per item so it knows which changed, was added or removed. It doesn't appear in the final HTML: it's only for React.",
+  ),
+};
+const Q_R6_FILTER = {
+  question: P("¿Cómo pintas SÓLO los elementos que cumplen una condición?", "How do you render ONLY the elements that meet a condition?"),
+  options: [
+    P("Filtra antes de mapear: `xs.filter(...).map(...)`", "Filter before mapping: `xs.filter(...).map(...)`"),
+    P("Con un if dentro del map", "With an if inside the map"),
+    P("Con `xs.only(...)`", "With `xs.only(...)`"),
+    P("No se puede filtrar", "You can't filter"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El patrón habitual es `filter` (quita los que no cumplen) y luego `map` (los convierte en JSX). Se encadenan porque ambos devuelven un array.",
+    "The usual pattern is `filter` (drops those that don't match) and then `map` (turns them into JSX). They chain because both return an array.",
+  ),
+};
+const Q_R6_KEY_UNIQUE = {
+  question: P("¿Entre quién debe ser única la `key`?", "Among whom must the `key` be unique?"),
+  options: [
+    P("Entre los elementos HERMANOS de la misma lista", "Among the SIBLING items of the same list"),
+    P("En toda la aplicación", "Across the whole app"),
+    P("En todo el componente", "Across the whole component"),
+    P("No hace falta que sea única", "It doesn't need to be unique"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La `key` sólo tiene que distinguir a los hermanos de una misma lista. Dos listas distintas pueden repetir keys sin problema.",
+    "The `key` only needs to tell apart siblings in the same list. Two different lists can repeat keys with no problem.",
+  ),
+};
+const Q_R6_LENGTH = {
+  question: P("¿Cómo muestras CUÁNTOS elementos hay en `items`?", "How do you show HOW MANY elements are in `items`?"),
+  options: [
+    P("{items.length}", "{items.length}"),
+    P("{items.count()}", "{items.count()}"),
+    P("{count(items)}", "{count(items)}"),
+    P("{items.size}", "{items.size}"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`items.length` es la propiedad (sin paréntesis) con el número de elementos de un array. Se incrusta como cualquier expresión: `<p>{items.length}</p>`.",
+    "`items.length` is the property (no parentheses) with an array's element count. Embed it like any expression: `<p>{items.length}</p>`.",
+  ),
+};
+const Q_R6_EMPTY = {
+  question: P("¿Qué pinta `{[].map(x => <li>{x}</li>)}` (array vacío)?", "What does `{[].map(x => <li>{x}</li>)}` (empty array) render?"),
+  options: [
+    P("Nada: un array vacío no produce elementos", "Nothing: an empty array produces no elements"),
+    P("Un `<li>` vacío", "An empty `<li>`"),
+    P("Un error", "An error"),
+    P("La palabra 'undefined'", "The word 'undefined'"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`map` sobre un array vacío devuelve un array vacío, y React no pinta nada. Por eso una lista sin datos sale como `<ul></ul>` sin necesitar un caso especial.",
+    "`map` over an empty array returns an empty array, and React renders nothing. That's why an empty list comes out as `<ul></ul>` without a special case.",
+  ),
+};
+const Q_R6_NOINDEX = {
+  question: P("¿Por qué evitar el índice del array como `key` si la lista cambia?", "Why avoid the array index as `key` if the list changes?"),
+  options: [
+    P("Al reordenar/insertar, el índice se desplaza y React confunde los elementos", "On reorder/insert, the index shifts and React confuses the items"),
+    P("El índice es más lento", "The index is slower"),
+    P("El índice no es un número", "The index isn't a number"),
+    P("Da error siempre", "It always errors"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El índice cambia al insertar o reordenar, así que React reutiliza el nodo equivocado (arrastrando estado o inputs). Usa un id estable del dato como `key`.",
+    "The index changes on insert or reorder, so React reuses the wrong node (dragging state or inputs). Use a stable id from the data as `key`.",
+  ),
+};
+const Q_R6_ARRAY = {
+  question: P("En `{xs.map(x => <li>{x}</li>)}`, ¿qué devuelve el map?", "In `{xs.map(x => <li>{x}</li>)}`, what does map return?"),
+  options: [
+    P("Un ARRAY de elementos JSX que React pinta en orden", "An ARRAY of JSX elements React paints in order"),
+    P("Un solo elemento", "A single element"),
+    P("Un string", "A string"),
+    P("Nada visible", "Nothing visible"),
+  ],
+  correct: 0,
+  explanation: P(
+    "React sabe pintar arrays de elementos uno tras otro; por eso `map` es la forma de renderizar listas. `forEach` no vale porque no devuelve nada.",
+    "React knows how to paint arrays of elements one after another; that's why `map` renders lists. `forEach` won't do because it returns nothing.",
+  ),
+};
+const Q_R6_CHAIN = {
+  question: P("¿Qué hace `xs.filter(x => x > 0).map(x => <li>{x}</li>)`?", "What does `xs.filter(x => x > 0).map(x => <li>{x}</li>)` do?"),
+  options: [
+    P("Se queda con los positivos y los convierte en `<li>`", "Keeps the positives and turns them into `<li>`"),
+    P("Suma los positivos", "Sums the positives"),
+    P("Ordena y pinta todo", "Sorts and paints everything"),
+    P("Da error al encadenar", "Errors when chaining"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`filter` devuelve un array con los que cumplen, y sobre ese array se aplica `map`. Encadenar filter→map es el patrón para 'pintar sólo algunos'.",
+    "`filter` returns an array with the matches, and `map` applies to that array. Chaining filter→map is the pattern for 'render only some'.",
+  ),
+};
+
+export const SYL_REACT_COMMUNITY_6: Syllabus = {
+  c6_trasgo_explorador: { kind: "battle", questions: [Q_R6_MAP, Q_R6_KEY, Q_R6_ARRAY] },
+  c6_trol_cavernas: { kind: "battle", questions: [Q_R6_FILTER, Q_R6_CHAIN, Q_R6_EMPTY] },
+  c6_capitan_trasgo: { kind: "battle", questions: [Q_R6_KEY_UNIQUE, Q_R6_NOINDEX, Q_R6_LENGTH] },
+  c6_jefe_balrog: {
+    kind: "challenge",
+    title: P("El Balrog de Moria", "The Balrog of Moria"),
+    lore_intro: P(
+      "La horda de Moria cae uno a uno. Píntalos a todos, marcando con una clase quién sigue vivo y quién ha caído.",
+      "The horde of Moria falls one by one. Paint them all, marking with a class who's alive and who's fallen.",
+    ),
+    challenge: {
+      topic: P("map con clase condicional", "map with a conditional class"),
+      instructions: P(
+        "Escribe `Tablero` que reciba `enemigos` (array de `{ nombre, vivo }`) y devuelva un `<ul>` con un `<li>` por enemigo. Cada `<li>` lleva `key={e.nombre}`, `className=\"vivo\"` si `vivo` es true o `\"caido\"` si es false, y muestra el `nombre`.\n\n`render(<Tablero enemigos={[{nombre:\"orco\",vivo:true}]} />)` → `'<ul><li class=\"vivo\">orco</li></ul>'`.",
+        "Write `Tablero` taking `enemigos` (array of `{ nombre, vivo }`) and returning a `<ul>` with one `<li>` per enemy. Each `<li>` has `key={e.nombre}`, `className=\"vivo\"` if `vivo` is true or `\"caido\"` if false, and shows the `nombre`.\n\n`render(<Tablero enemigos={[{nombre:\"orco\",vivo:true}]} />)` → `'<ul><li class=\"vivo\">orco</li></ul>'`.",
+      ),
+      starter_code: "function Tablero({ enemigos }) {\n}\n",
+      blocks: [
+        "function Tablero({ enemigos }) {",
+        '  return <ul>{enemigos.map(e => <li key={e.nombre} className={e.vivo ? "vivo" : "caido"}>{e.nombre}</li>)}</ul>;',
+        "}",
+        '  return <ul>{enemigos.map(e => <li key={e.nombre} class={e.vivo}>{e.nombre}</li>)}</ul>;',
+        '  return <ul>{enemigos.filter(e => e.vivo)}</ul>;',
+      ],
+      hints: [
+        P("`className={e.vivo ? 'vivo' : 'caido'}` elige la clase.", "`className={e.vivo ? 'vivo' : 'caido'}` picks the class."),
+        P("En JSX es `className`, no `class`.", "In JSX it's `className`, not `class`."),
+      ],
+      test_cases: [
+        { input: 'render(<Tablero enemigos={[{nombre:"orco",vivo:true},{nombre:"trol",vivo:false}]} />)', expected: '<ul><li class="vivo">orco</li><li class="caido">trol</li></ul>', description: P("Vivos y caídos", "Alive and fallen"), raw: true },
+        { input: 'render(<Tablero enemigos={[]} />)', expected: "<ul></ul>", description: P("Horda vacía", "Empty horde"), raw: true },
+      ],
+    },
+  },
+  pergamino_contratos: {
+    kind: "scroll",
+    title: P("El Pergamino de las Listas", "The Scroll of Lists"),
+    lore_intro: P(
+      "En las tumbas de Moria, un pergamino enano enseña a pintar muchos elementos de un array: map, key y filter.",
+      "In the tombs of Moria, a dwarven scroll teaches how to paint many elements from an array: map, key and filter.",
+    ),
+    scroll: {
+      topic: P("Listas: map, key y filter", "Lists: map, key and filter"),
+      sections: [
+        {
+          heading: P("map + key", "map + key"),
+          body: P(
+            "`{xs.map(x => <li key={x}>{x}</li>)}` convierte cada dato en un elemento. La `key` debe ser única y estable entre hermanos.",
+            "`{xs.map(x => <li key={x}>{x}</li>)}` turns each item into an element. The `key` must be unique and stable among siblings.",
+          ),
+          code: "<ul>\n  {nombres.map(n => <li key={n}>{n}</li>)}\n</ul>",
+        },
+        {
+          heading: P("filter antes de map", "filter before map"),
+          body: P(
+            "Para pintar sólo algunos, filtra y luego mapea: ambos devuelven arrays, así que se encadenan.",
+            "To render only some, filter and then map: both return arrays, so they chain.",
+          ),
+          code: "{numeros.filter(n => n >= 50)\n        .map(n => <li key={n}>{n}</li>)}",
+        },
+        {
+          heading: P("Contar y vacío", "Count and empty"),
+          body: P(
+            "`items.length` da el número de elementos. Un array vacío no pinta nada: no hace falta un caso especial.",
+            "`items.length` gives the element count. An empty array renders nothing: no special case needed.",
+          ),
+          code: "<p>{items.length}</p>\n// [] -> <ul></ul>",
+        },
+      ],
+      keyTakeaway: P(
+        "map convierte un array en elementos (con key única y estable entre hermanos); filter+map pinta sólo algunos; length cuenta; un array vacío no pinta nada.",
+        "map turns an array into elements (with a unique, stable key among siblings); filter+map renders only some; length counts; an empty array renders nothing.",
+      ),
+    },
+  },
+  puertas_de_durin: {
+    kind: "challenge",
+    title: P("Las Puertas de Durin", "The Doors of Durin"),
+    lore_intro: P(
+      "Graba en la puerta la lista de nombres que abren el paso. Un `<li>` por cada uno.",
+      "Engrave on the door the list of names that open the way. One `<li>` per name.",
+    ),
+    challenge: {
+      topic: P("map a una lista", "map to a list"),
+      instructions: P(
+        "Escribe `ListaNombres` que reciba `nombres` (array de strings) y devuelva un `<ul>` con un `<li key={n}>{n}</li>` por cada nombre.\n\n`render(<ListaNombres nombres={[\"Frodo\",\"Sam\"]} />)` → `\"<ul><li>Frodo</li><li>Sam</li></ul>\"`.",
+        "Write `ListaNombres` taking `nombres` (array of strings) and returning a `<ul>` with one `<li key={n}>{n}</li>` per name.\n\n`render(<ListaNombres nombres={[\"Frodo\",\"Sam\"]} />)` → `\"<ul><li>Frodo</li><li>Sam</li></ul>\"`.",
+      ),
+      starter_code: "function ListaNombres({ nombres }) {\n}\n",
+      blocks: [
+        "function ListaNombres({ nombres }) {",
+        "  return <ul>{nombres.map(n => <li key={n}>{n}</li>)}</ul>;",
+        "}",
+        "  return <ul>{nombres.forEach(n => <li>{n}</li>)}</ul>;",
+        "  return <ul><li>{nombres}</li></ul>;",
+      ],
+      hints: [
+        P("`nombres.map(n => <li key={n}>{n}</li>)`.", "`nombres.map(n => <li key={n}>{n}</li>)`."),
+        P("Envuélvelo en un `<ul>`.", "Wrap it in a `<ul>`."),
+      ],
+      test_cases: [
+        { input: 'render(<ListaNombres nombres={["Frodo","Sam"]} />)', expected: "<ul><li>Frodo</li><li>Sam</li></ul>", description: P("Dos nombres", "Two names"), raw: true },
+        { input: "render(<ListaNombres nombres={[]} />)", expected: "<ul></ul>", description: P("Lista vacía", "Empty list"), raw: true },
+      ],
+    },
+  },
+  camara_mazarbul: {
+    kind: "challenge",
+    title: P("La Cámara de Mazarbul", "The Chamber of Mazarbul"),
+    lore_intro: P(
+      "Sólo los golpes FUERTES cuentan. Pinta únicamente los números de 50 o más.",
+      "Only the STRONG blows count. Render only the numbers of 50 or more.",
+    ),
+    challenge: {
+      topic: P("filter + map", "filter + map"),
+      instructions: P(
+        "Escribe `Fuertes` que reciba `numeros` (array) y devuelva un `<ul>` con un `<li key={n}>{n}</li>` SÓLO por cada número MAYOR O IGUAL que 50.\n\n`render(<Fuertes numeros={[10,50,90,30]} />)` → `\"<ul><li>50</li><li>90</li></ul>\"`.",
+        "Write `Fuertes` taking `numeros` (array) and returning a `<ul>` with a `<li key={n}>{n}</li>` ONLY for each number GREATER THAN OR EQUAL to 50.\n\n`render(<Fuertes numeros={[10,50,90,30]} />)` → `\"<ul><li>50</li><li>90</li></ul>\"`.",
+      ),
+      starter_code: "function Fuertes({ numeros }) {\n}\n",
+      blocks: [
+        "function Fuertes({ numeros }) {",
+        "  return <ul>{numeros.filter(n => n >= 50).map(n => <li key={n}>{n}</li>)}</ul>;",
+        "}",
+        "  return <ul>{numeros.map(n => <li key={n}>{n}</li>)}</ul>;",
+        "  return <ul>{numeros.filter(n => n >= 50)}</ul>;",
+      ],
+      hints: [
+        P("Filtra: `numeros.filter(n => n >= 50)`.", "Filter: `numeros.filter(n => n >= 50)`."),
+        P("Luego mapea a `<li>`.", "Then map to `<li>`."),
+      ],
+      test_cases: [
+        { input: "render(<Fuertes numeros={[10,50,90,30]} />)", expected: "<ul><li>50</li><li>90</li></ul>", description: P("50 y 90", "50 and 90"), raw: true },
+        { input: "render(<Fuertes numeros={[1,2]} />)", expected: "<ul></ul>", description: P("Ninguno llega", "None reaches it"), raw: true },
+      ],
+    },
+  },
+  puente_khazad_dum: {
+    kind: "challenge",
+    title: P("El Puente de Khazad-dûm", "The Bridge of Khazad-dûm"),
+    lore_intro: P(
+      "«¡No podéis pasar!» Cuenta cuántos enemigos aguardan al otro lado.",
+      "\"You cannot pass!\" Count how many enemies wait on the other side.",
+    ),
+    challenge: {
+      topic: P("length en JSX", "length in JSX"),
+      instructions: P(
+        "Escribe `Cuenta` que reciba `items` (array) y devuelva un `<p>` con el NÚMERO de elementos.\n\n`render(<Cuenta items={[1,2,3]} />)` → `\"<p>3</p>\"`.",
+        "Write `Cuenta` taking `items` (array) and returning a `<p>` with the NUMBER of elements.\n\n`render(<Cuenta items={[1,2,3]} />)` → `\"<p>3</p>\"`.",
+      ),
+      starter_code: "function Cuenta({ items }) {\n}\n",
+      blocks: [
+        "function Cuenta({ items }) {",
+        "  return <p>{items.length}</p>;",
+        "}",
+        "  return <p>{items.count()}</p>;",
+        "  return <p>{items}</p>;",
+      ],
+      hints: [
+        P("`items.length` es el número de elementos (sin paréntesis).", "`items.length` is the element count (no parentheses)."),
+        P("Incrústalo en un `<p>`.", "Embed it in a `<p>`."),
+      ],
+      test_cases: [
+        { input: "render(<Cuenta items={[1,2,3]} />)", expected: "<p>3</p>", description: P("Tres", "Three"), raw: true },
+        { input: "render(<Cuenta items={[]} />)", expected: "<p>0</p>", description: P("Ninguno", "None"), raw: true },
+      ],
+    },
+  },
+  c6_galeria_de_mazarbul: {
+    kind: "challenge",
+    title: P("La Galería de Mazarbul", "The Gallery of Mazarbul"),
+    lore_intro: P(
+      "Cada enemigo llega con su nombre en un objeto. Extrae y pinta cada nombre.",
+      "Each enemy arrives with its name in an object. Pull out and paint each name.",
+    ),
+    challenge: {
+      topic: P("map sobre objetos", "map over objects"),
+      instructions: P(
+        "Escribe `Enemigos` que reciba `lista` (array de `{ nombre }`) y devuelva un `<ul>` con un `<li key={e.nombre}>{e.nombre}</li>` por cada objeto.\n\n`render(<Enemigos lista={[{nombre:\"orco\"},{nombre:\"trol\"}]} />)` → `\"<ul><li>orco</li><li>trol</li></ul>\"`.",
+        "Write `Enemigos` taking `lista` (array of `{ nombre }`) and returning a `<ul>` with a `<li key={e.nombre}>{e.nombre}</li>` per object.\n\n`render(<Enemigos lista={[{nombre:\"orco\"},{nombre:\"trol\"}]} />)` → `\"<ul><li>orco</li><li>trol</li></ul>\"`.",
+      ),
+      starter_code: "function Enemigos({ lista }) {\n}\n",
+      blocks: [
+        "function Enemigos({ lista }) {",
+        "  return <ul>{lista.map(e => <li key={e.nombre}>{e.nombre}</li>)}</ul>;",
+        "}",
+        "  return <ul>{lista.map(e => <li key={e}>{e}</li>)}</ul>;",
+        "  return <ul>{lista.nombre}</ul>;",
+      ],
+      hints: [
+        P("Cada elemento es un objeto: usa `e.nombre`.", "Each element is an object: use `e.nombre`."),
+        P("`key={e.nombre}` y muestra `{e.nombre}`.", "`key={e.nombre}` and show `{e.nombre}`."),
+      ],
+      test_cases: [
+        { input: 'render(<Enemigos lista={[{nombre:"orco"},{nombre:"trol"}]} />)', expected: "<ul><li>orco</li><li>trol</li></ul>", description: P("Dos enemigos", "Two enemies"), raw: true },
+        { input: 'render(<Enemigos lista={[{nombre:"uruk"}]} />)', expected: "<ul><li>uruk</li></ul>", description: P("Uno solo", "Just one"), raw: true },
+      ],
+    },
+  },
+};
+
+
+/* ===================================================================== *
+ * Capítulo 7 · Composición y children
+ * ===================================================================== */
+const Q_R7_CHILDREN = {
+  question: P("¿Qué es la prop `children` de un componente?", "What is a component's `children` prop?"),
+  options: [
+    P("Lo que se escribe ENTRE sus etiquetas: `<Marco>esto</Marco>`", "Whatever is written BETWEEN its tags: `<Marco>this</Marco>`"),
+    P("Sus componentes hijos del fichero", "Its child components in the file"),
+    P("Una lista de sus props", "A list of its props"),
+    P("El componente padre", "The parent component"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`children` es el contenido entre la etiqueta de apertura y cierre. El componente lo coloca donde quiera con `{children}`. Así se hacen envoltorios y layouts reutilizables.",
+    "`children` is the content between the opening and closing tags. The component places it wherever with `{children}`. That's how you build reusable wrappers and layouts.",
+  ),
+};
+const Q_R7_USE = {
+  question: P("¿Cómo usa un componente a OTRO dentro de su JSX?", "How does one component use ANOTHER inside its JSX?"),
+  options: [
+    P("Como una etiqueta: `<Tarjeta titulo=\"x\" />`", "As a tag: `<Tarjeta titulo=\"x\" />`"),
+    P("Llamándolo: `Tarjeta(props)`", "Calling it: `Tarjeta(props)`"),
+    P("Con `import` en el return", "With `import` in the return"),
+    P("No se pueden anidar", "You can't nest them"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La composición es el corazón de React: un componente usa a otro como una etiqueta y le pasa props. Se construyen interfaces complejas combinando piezas simples.",
+    "Composition is the heart of React: a component uses another like a tag and passes it props. You build complex interfaces by combining simple pieces.",
+  ),
+};
+const Q_R7_WRAPPER = {
+  question: P("¿Para qué sirve un componente 'envoltorio' que usa `children`?", "What is a 'wrapper' component using `children` for?"),
+  options: [
+    P("Reutilizar una estructura (marco, tarjeta, layout) alrededor de contenido variable", "Reuse a structure (frame, card, layout) around variable content"),
+    P("Copiar props automáticamente", "Copy props automatically"),
+    P("Evitar el uso de JSX", "Avoid using JSX"),
+    P("Convertir HTML en React", "Turn HTML into React"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un envoltorio define una vez el borde/estilo y coloca dentro el `children`: `<Tarjeta><Lo que sea/></Tarjeta>`. Cambias el contenido sin repetir la estructura.",
+    "A wrapper defines the border/style once and places `children` inside: `<Card><Anything/></Card>`. You change the content without repeating the structure.",
+  ),
+};
+const Q_R7_PLACE = {
+  question: P("¿Dónde aparece el contenido pasado como children?", "Where does the content passed as children appear?"),
+  options: [
+    P("Donde el componente escriba `{children}`", "Wherever the component writes `{children}`"),
+    P("Siempre al principio", "Always at the start"),
+    P("Siempre al final", "Always at the end"),
+    P("No se puede controlar", "You can't control it"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El componente decide la posición: puede envolver `{children}` con cabecera, pie, bordes… Tú controlas el marco; quien lo usa controla el contenido.",
+    "The component decides the position: it can wrap `{children}` with a header, footer, borders… You control the frame; the user controls the content.",
+  ),
+};
+const Q_R7_SPREAD = {
+  question: P("¿Qué hace `<Boton {...props} />`?", "What does `<Boton {...props} />` do?"),
+  options: [
+    P("Pasa todas las propiedades de `props` como props del Botón", "Passes all of `props`'s properties as the Button's props"),
+    P("Crea un array de botones", "Creates an array of buttons"),
+    P("Copia el estado", "Copies the state"),
+    P("Da error", "Errors"),
+  ],
+  correct: 0,
+  explanation: P(
+    "El spread `{...props}` reparte cada propiedad del objeto como una prop. Útil para reenviar props a un componente hijo sin listarlas una a una.",
+    "The spread `{...props}` scatters each property of the object as a prop. Handy to forward props to a child component without listing them one by one.",
+  ),
+};
+const Q_R7_NAMED = {
+  question: P("¿Puede un componente recibir props CON NOMBRE y `children` a la vez?", "Can a component receive NAMED props and `children` at once?"),
+  options: [
+    P("Sí: `function Tarjeta({ titulo, children })`", "Yes: `function Tarjeta({ titulo, children })`"),
+    P("No, o props o children", "No, either props or children"),
+    P("Sólo con un array", "Only with an array"),
+    P("Sólo children", "Only children"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`children` es una prop más: se puede desestructurar junto a las demás. `<Tarjeta titulo=\"Capa\">contenido</Tarjeta>` pasa `titulo` y `children` a la vez.",
+    "`children` is just another prop: you can destructure it alongside the rest. `<Card titulo=\"Cloak\">content</Card>` passes `titulo` and `children` together.",
+  ),
+};
+const Q_R7_MULTI = {
+  question: P("Si pones VARIOS elementos entre `<Marco>...</Marco>`, ¿qué es `children`?", "If you put SEVERAL elements between `<Marco>...</Marco>`, what is `children`?"),
+  options: [
+    P("Un array con todos ellos; React lo pinta solo con `{children}`", "An array with all of them; React paints it with `{children}` on its own"),
+    P("Sólo el primero", "Only the first"),
+    P("Un error", "An error"),
+    P("Un string concatenado", "A concatenated string"),
+  ],
+  correct: 0,
+  explanation: P(
+    "`children` puede ser uno o varios hijos; React renderiza ambos casos igual con `{children}`. No hace falta recorrerlo a mano.",
+    "`children` can be one or several children; React renders both the same with `{children}`. No need to iterate it by hand.",
+  ),
+};
+const Q_R7_NEST = {
+  question: P("¿Se pueden anidar componentes de composición?", "Can you nest composition components?"),
+  options: [
+    P("Sí: `<Panel><Tarjeta>...</Tarjeta></Panel>`", "Yes: `<Panel><Card>...</Card></Panel>`"),
+    P("No, sólo un nivel", "No, only one level"),
+    P("Sólo dos niveles", "Only two levels"),
+    P("Sólo con la misma etiqueta", "Only with the same tag"),
+  ],
+  correct: 0,
+  explanation: P(
+    "La composición se anida libremente: un envoltorio contiene a otro, que contiene contenido. Así se arman layouts complejos con piezas pequeñas y reutilizables.",
+    "Composition nests freely: a wrapper contains another, which contains content. That's how complex layouts are built from small, reusable pieces.",
+  ),
+};
+const Q_R7_REUSE = {
+  question: P("¿Cuál es la ventaja principal de componer con componentes pequeños?", "What's the main advantage of composing with small components?"),
+  options: [
+    P("Reutilizar y combinar piezas simples para formar interfaces complejas", "Reuse and combine simple pieces to form complex UIs"),
+    P("Que el HTML sea más largo", "Make the HTML longer"),
+    P("Evitar usar props", "Avoid using props"),
+    P("Que todo esté en un solo componente", "Keep everything in a single component"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Piezas pequeñas y enfocadas se prueban, entienden y reutilizan mejor. La UI compleja emerge de combinarlas, no de un componente gigante.",
+    "Small, focused pieces are easier to test, understand and reuse. Complex UI emerges from combining them, not from one giant component.",
+  ),
+};
+
+export const SYL_REACT_COMMUNITY_7: Syllabus = {
+  c7_orco_explorador: { kind: "battle", questions: [Q_R7_CHILDREN, Q_R7_USE, Q_R7_WRAPPER] },
+  c7_trasgo_frontera: { kind: "battle", questions: [Q_R7_PLACE, Q_R7_NAMED, Q_R7_MULTI] },
+  c7_uruk_rastreador: { kind: "battle", questions: [Q_R7_SPREAD, Q_R7_NEST, Q_R7_REUSE] },
+  c7_jefe_ugluk: {
+    kind: "challenge",
+    title: P("Uglúk de los Uruk-hai", "Uglúk of the Uruk-hai"),
+    lore_intro: P(
+      "Uglúk arma su panel de guerra: un título y la lista de sus tropas, todo en un componente compuesto.",
+      "Uglúk sets up his war panel: a title and the list of his troops, all in one composed component.",
+    ),
+    challenge: {
+      topic: P("Composición: título + lista", "Composition: title + list"),
+      instructions: P(
+        "Escribe `Panel` que reciba `titulo` (string) e `items` (array). Devuelve un `<section>` con un `<h1>{titulo}</h1>` y un `<ul>` con un `<li key={i}>{i}</li>` por cada item.\n\n`render(<Panel titulo=\"Dones\" items={[\"luz\",\"cuerda\"]} />)` → `\"<section><h1>Dones</h1><ul><li>luz</li><li>cuerda</li></ul></section>\"`.",
+        "Write `Panel` taking `titulo` (string) and `items` (array). Return a `<section>` with an `<h1>{titulo}</h1>` and a `<ul>` with a `<li key={i}>{i}</li>` per item.\n\n`render(<Panel titulo=\"Dones\" items={[\"luz\",\"cuerda\"]} />)` → `\"<section><h1>Dones</h1><ul><li>luz</li><li>cuerda</li></ul></section>\"`.",
+      ),
+      starter_code: "function Panel({ titulo, items }) {\n}\n",
+      blocks: [
+        "function Panel({ titulo, items }) {",
+        "  return (",
+        "    <section>",
+        "      <h1>{titulo}</h1>",
+        "      <ul>{items.map(i => <li key={i}>{i}</li>)}</ul>",
+        "    </section>",
+        "  );",
+        "}",
+        "  return <section>{titulo}{items}</section>;",
+      ],
+      hints: [
+        P("Un `<section>` con el `<h1>` y el `<ul>` dentro.", "A `<section>` with the `<h1>` and the `<ul>` inside."),
+        P("La lista: `items.map(i => <li key={i}>{i}</li>)`.", "The list: `items.map(i => <li key={i}>{i}</li>)`."),
+      ],
+      test_cases: [
+        { input: 'render(<Panel titulo="Dones" items={["luz","cuerda"]} />)', expected: "<section><h1>Dones</h1><ul><li>luz</li><li>cuerda</li></ul></section>", description: P("Título + lista", "Title + list"), raw: true },
+        { input: 'render(<Panel titulo="Vacío" items={[]} />)', expected: "<section><h1>Vacío</h1><ul></ul></section>", description: P("Lista vacía", "Empty list"), raw: true },
+      ],
+    },
+  },
+  pergamino_dones: {
+    kind: "scroll",
+    title: P("El Pergamino de la Composición", "The Scroll of Composition"),
+    lore_intro: P(
+      "Galadriel entrega un pergamino: enseña a envolver contenido con `children` y a componer piezas.",
+      "Galadriel gives a scroll: it teaches how to wrap content with `children` and compose pieces.",
+    ),
+    scroll: {
+      topic: P("Composición y children", "Composition and children"),
+      sections: [
+        {
+          heading: P("children: el contenido de dentro", "children: the content inside"),
+          body: P(
+            "Lo que pones entre `<Marco>` y `</Marco>` llega como `children`. El componente lo coloca con `{children}`.",
+            "What you put between `<Marco>` and `</Marco>` arrives as `children`. The component places it with `{children}`.",
+          ),
+          code: "function Marco({ children }) {\n  return <div className=\"marco\">{children}</div>;\n}",
+        },
+        {
+          heading: P("props con nombre + children", "named props + children"),
+          body: P(
+            "`children` es una prop más: se desestructura junto a las demás. Así una `Tarjeta` recibe `titulo` y contenido.",
+            "`children` is just another prop: destructure it with the rest. So a `Card` takes `titulo` and content.",
+          ),
+          code: "function Tarjeta({ titulo, children }) {\n  return <div><h2>{titulo}</h2><div>{children}</div></div>;\n}",
+        },
+        {
+          heading: P("Componer piezas", "Composing pieces"),
+          body: P(
+            "Un componente usa a otro como etiqueta. Anida libremente para formar layouts a partir de piezas simples.",
+            "A component uses another as a tag. Nest freely to form layouts from simple pieces.",
+          ),
+          code: "function Saludo({ nombre }) {\n  return <Marco>Hola {nombre}</Marco>;\n}",
+        },
+      ],
+      keyTakeaway: P(
+        "children es el contenido entre etiquetas; el componente lo coloca con {children}. Se combina con props con nombre. Componer piezas pequeñas (y anidarlas) forma UIs complejas.",
+        "children is the content between tags; the component places it with {children}. It combines with named props. Composing small pieces (and nesting them) forms complex UIs.",
+      ),
+    },
+  },
+  frasco_de_galadriel: {
+    kind: "challenge",
+    title: P("El Frasco de Galadriel", "Galadriel's Phial"),
+    lore_intro: P(
+      "El frasco es un marco que envuelve cualquier luz. Escribe el envoltorio con `children`.",
+      "The phial is a frame that wraps any light. Write the wrapper with `children`.",
+    ),
+    challenge: {
+      topic: P("children en un envoltorio", "children in a wrapper"),
+      instructions: P(
+        "Escribe `Marco` que devuelva un `<div className=\"marco\">` con su `children` dentro.\n\n`render(<Marco>luz</Marco>)` → `'<div class=\"marco\">luz</div>'`.",
+        "Write `Marco` returning a `<div className=\"marco\">` with its `children` inside.\n\n`render(<Marco>luz</Marco>)` → `'<div class=\"marco\">luz</div>'`.",
+      ),
+      starter_code: "function Marco({ children }) {\n}\n",
+      blocks: [
+        "function Marco({ children }) {",
+        '  return <div className="marco">{children}</div>;',
+        "}",
+        '  return <div class="marco">{children}</div>;',
+        '  return <div className="marco">children</div>;',
+      ],
+      hints: [
+        P("Desestructura `children` y colócalo con `{children}`.", "Destructure `children` and place it with `{children}`."),
+        P("En JSX es `className`, no `class`.", "In JSX it's `className`, not `class`."),
+      ],
+      test_cases: [
+        { input: "render(<Marco>luz</Marco>)", expected: '<div class="marco">luz</div>', description: P("Envuelve el contenido", "Wraps the content"), raw: true },
+        { input: "render(<Marco>Eärendil</Marco>)", expected: '<div class="marco">Eärendil</div>', description: P("Otro contenido", "Other content"), raw: true },
+      ],
+    },
+  },
+  capas_elficas: {
+    kind: "challenge",
+    title: P("Las Capas Élficas", "The Elven Cloaks"),
+    lore_intro: P(
+      "Una tarjeta con título y contenido: props con nombre y `children` juntos.",
+      "A card with a title and content: named props and `children` together.",
+    ),
+    challenge: {
+      topic: P("props con nombre + children", "named props + children"),
+      instructions: P(
+        "Escribe `Tarjeta` que reciba `titulo` y `children`. Devuelve un `<div>` que contenga un `<h2>{titulo}</h2>` y un `<div>{children}</div>`.\n\n`render(<Tarjeta titulo=\"Capa\">gris</Tarjeta>)` → `\"<div><h2>Capa</h2><div>gris</div></div>\"`.",
+        "Write `Tarjeta` taking `titulo` and `children`. Return a `<div>` containing an `<h2>{titulo}</h2>` and a `<div>{children}</div>`.\n\n`render(<Tarjeta titulo=\"Capa\">gris</Tarjeta>)` → `\"<div><h2>Capa</h2><div>gris</div></div>\"`.",
+      ),
+      starter_code: "function Tarjeta({ titulo, children }) {\n}\n",
+      blocks: [
+        "function Tarjeta({ titulo, children }) {",
+        "  return <div><h2>{titulo}</h2><div>{children}</div></div>;",
+        "}",
+        "  return <div><h2>{children}</h2><div>{titulo}</div></div>;",
+        "  return <div>{titulo}{children}</div>;",
+      ],
+      hints: [
+        P("Desestructura ambos: `{ titulo, children }`.", "Destructure both: `{ titulo, children }`."),
+        P("Título en `<h2>`, contenido en un `<div>`.", "Title in `<h2>`, content in a `<div>`."),
+      ],
+      test_cases: [
+        { input: 'render(<Tarjeta titulo="Capa">gris</Tarjeta>)', expected: "<div><h2>Capa</h2><div>gris</div></div>", description: P("Título y contenido", "Title and content"), raw: true },
+        { input: 'render(<Tarjeta titulo="Frasco">luz</Tarjeta>)', expected: "<div><h2>Frasco</h2><div>luz</div></div>", description: P("Otra tarjeta", "Another card"), raw: true },
+      ],
+    },
+  },
+  dones_de_lorien: {
+    kind: "challenge",
+    title: P("Los Dones de Lórien", "The Gifts of Lórien"),
+    lore_intro: P(
+      "Compón dos piezas: un marco reutilizable y un saludo que lo usa.",
+      "Compose two pieces: a reusable frame and a greeting that uses it.",
+    ),
+    challenge: {
+      topic: P("Componer dos componentes", "Composing two components"),
+      instructions: P(
+        "Escribe DOS componentes:\n• `Marco` que devuelva `<div className=\"marco\">{children}</div>`,\n• `Saludo` que reciba `nombre` y devuelva `<Marco>Hola {nombre}</Marco>`.\n\n`render(<Saludo nombre=\"Sam\" />)` → `'<div class=\"marco\">Hola Sam</div>'`.",
+        "Write TWO components:\n• `Marco` returning `<div className=\"marco\">{children}</div>`,\n• `Saludo` taking `nombre` and returning `<Marco>Hola {nombre}</Marco>`.\n\n`render(<Saludo nombre=\"Sam\" />)` → `'<div class=\"marco\">Hola Sam</div>'`.",
+      ),
+      starter_code: "function Marco({ children }) {\n}\n\nfunction Saludo({ nombre }) {\n}\n",
+      blocks: [
+        "function Marco({ children }) {",
+        '  return <div className="marco">{children}</div>;',
+        "}",
+        "function Saludo({ nombre }) {",
+        "  return <Marco>Hola {nombre}</Marco>;",
+        "}",
+        "  return <div>Hola {nombre}</div>;",
+        "  return Marco(nombre);",
+      ],
+      hints: [
+        P("`Saludo` usa `Marco` como etiqueta y le pasa el saludo como children.", "`Saludo` uses `Marco` as a tag and passes it the greeting as children."),
+        P("`<Marco>Hola {nombre}</Marco>`.", "`<Marco>Hola {nombre}</Marco>`."),
+      ],
+      test_cases: [
+        { input: 'render(<Saludo nombre="Sam" />)', expected: '<div class="marco">Hola Sam</div>', description: P("Compuesto", "Composed"), raw: true },
+        { input: 'render(<Saludo nombre="Frodo" />)', expected: '<div class="marco">Hola Frodo</div>', description: P("Otro nombre", "Another name"), raw: true },
+      ],
+    },
+  },
+};
+
+/* ===================================================================== *
+ * Capítulo 8 · Componer estado, props y listas (capstone)
+ * ===================================================================== */
+const Q_R8_PURE = {
+  question: P("¿Qué significa que un componente sea 'puro'?", "What does it mean for a component to be 'pure'?"),
+  options: [
+    P("Con las mismas props, produce siempre el mismo JSX (sin efectos raros)", "With the same props, it always produces the same JSX (no odd side effects)"),
+    P("Que no usa props", "That it uses no props"),
+    P("Que no tiene JSX", "That it has no JSX"),
+    P("Que es muy corto", "That it's very short"),
+  ],
+  correct: 0,
+  explanation: P(
+    "React espera componentes PUROS: mismas props → mismo resultado, sin modificar cosas de fuera durante el render. Eso los hace predecibles y optimizables.",
+    "React expects PURE components: same props → same result, without modifying outside things during render. That makes them predictable and optimizable.",
+  ),
+};
+const Q_R8_TOPDOWN = {
+  question: P("¿En qué dirección fluyen los datos en React?", "In which direction does data flow in React?"),
+  options: [
+    P("De padre a hijo, vía props (flujo unidireccional)", "From parent to child, via props (one-way flow)"),
+    P("De hijo a padre siempre", "From child to parent always"),
+    P("En cualquier dirección", "In any direction"),
+    P("No fluyen", "They don't flow"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los datos bajan por props del padre al hijo. Para 'subir' información, el padre pasa una función que el hijo llama. Este flujo único hace la app más fácil de razonar.",
+    "Data flows down via props from parent to child. To 'send up' info, the parent passes a function the child calls. This one-way flow makes the app easier to reason about.",
+  ),
+};
+const Q_R8_LIFT = {
+  question: P("Dos componentes necesitan compartir un dato que cambia. ¿Dónde va el estado?", "Two components need to share a changing value. Where does the state go?"),
+  options: [
+    P("En el padre común más cercano (levantar el estado)", "In the nearest common parent (lift the state up)"),
+    P("Duplicado en ambos", "Duplicated in both"),
+    P("En una variable global suelta", "In a loose global variable"),
+    P("No se puede compartir", "You can't share it"),
+  ],
+  correct: 0,
+  explanation: P(
+    "'Levantar el estado': se guarda en el ancestro común y se baja por props a los hijos. Así ambos ven el mismo valor y no hay copias que se desincronicen.",
+    "'Lifting state up': keep it in the common ancestor and pass it down by props. Both see the same value and there are no copies that drift out of sync.",
+  ),
+};
+const Q_R8_SMALL = {
+  question: P("¿Por qué dividir la UI en componentes pequeños?", "Why split the UI into small components?"),
+  options: [
+    P("Se entienden, prueban y reutilizan mejor", "They're easier to understand, test and reuse"),
+    P("El HTML pesa menos", "The HTML weighs less"),
+    P("React lo exige", "React requires it"),
+    P("Para usar más props", "To use more props"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un componente con una sola responsabilidad es fácil de leer y reutilizar. La pantalla compleja se arma componiendo esos bloques pequeños.",
+    "A component with a single responsibility is easy to read and reuse. The complex screen is built by composing those small blocks.",
+  ),
+};
+const Q_R8_DERIVE = {
+  question: P("Un valor se puede calcular a partir de las props. ¿Conviene guardarlo también en estado?", "A value can be computed from props. Should you also store it in state?"),
+  options: [
+    P("No: se DERIVA en el render; duplicarlo en estado causa desincronización", "No: DERIVE it during render; duplicating it in state causes drift"),
+    P("Sí, siempre", "Yes, always"),
+    P("Sólo si es un número", "Only if it's a number"),
+    P("Sólo con useEffect", "Only with useEffect"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Lo que se puede calcular de las props o del estado se calcula al vuelo en el render (valor derivado). Guardarlo aparte obliga a mantener dos fuentes de verdad sincronizadas.",
+    "Whatever can be computed from props or state is computed on the fly in render (derived value). Storing it separately forces you to keep two sources of truth in sync.",
+  ),
+};
+const Q_R8_FRAGMENT = {
+  question: P("¿Cómo devuelves DOS elementos hermanos sin añadir un `<div>` extra?", "How do you return TWO sibling elements without adding an extra `<div>`?"),
+  options: [
+    P("Con un Fragment: `<>...</>`", "With a Fragment: `<>...</>`"),
+    P("Con dos returns", "With two returns"),
+    P("Con una coma", "With a comma"),
+    P("No se puede", "You can't"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Un componente devuelve UN nodo raíz. El Fragment `<>...</>` agrupa varios hermanos sin crear un elemento extra en el HTML. Útil para no ensuciar el árbol.",
+    "A component returns ONE root node. The Fragment `<>...</>` groups several siblings without creating an extra element in the HTML. Handy to keep the tree clean.",
+  ),
+};
+const Q_R8_CONDLIST = {
+  question: P("¿Cómo pintas una lista SÓLO de los elementos activos?", "How do you render a list of ONLY the active items?"),
+  options: [
+    P("Combinando filter y map: `xs.filter(x => x.activo).map(...)`", "Combining filter and map: `xs.filter(x => x.activo).map(...)`"),
+    P("Con dos componentes distintos", "With two different components"),
+    P("Sólo con un if antes", "Only with an if before"),
+    P("No se puede combinar", "You can't combine them"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Condición + lista es el patrón diario del analista de UI: `filter` quita los que no cumplen y `map` convierte el resto en JSX. Todo dentro de las llaves.",
+    "Condition + list is the UI builder's daily pattern: `filter` drops non-matches and `map` turns the rest into JSX. All inside the braces.",
+  ),
+};
+const Q_R8_KEY = {
+  question: P("En una lista con estado que se reordena, ¿qué `key` usas?", "In a stateful list that reorders, which `key` do you use?"),
+  options: [
+    P("Un id estable del dato, no el índice", "A stable id from the data, not the index"),
+    P("El índice del array", "The array index"),
+    P("Math.random()", "Math.random()"),
+    P("Ninguna", "None"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Una `key` estable (un id) mantiene la identidad de cada fila al reordenar, conservando su estado. El índice o `Math.random()` rompen esa identidad.",
+    "A stable `key` (an id) keeps each row's identity when reordering, preserving its state. The index or `Math.random()` break that identity.",
+  ),
+};
+const Q_R8_ONEWAY = {
+  question: P("¿Cómo hace un hijo para avisar al padre de un cambio?", "How does a child notify the parent of a change?"),
+  options: [
+    P("El padre le pasa una FUNCIÓN por props, y el hijo la llama", "The parent passes it a FUNCTION via props, and the child calls it"),
+    P("El hijo modifica el estado del padre directamente", "The child mutates the parent's state directly"),
+    P("Con una variable global", "With a global variable"),
+    P("No puede avisar", "It can't notify"),
+  ],
+  correct: 0,
+  explanation: P(
+    "Los datos bajan por props; los eventos suben llamando a un callback que el padre pasó (`onCambio`). El hijo no toca el estado del padre: sólo avisa.",
+    "Data flows down via props; events flow up by calling a callback the parent passed (`onChange`). The child doesn't touch the parent's state: it only notifies.",
+  ),
+};
+
+export const SYL_REACT_COMMUNITY_8: Syllabus = {
+  c8_uruk_arquero: { kind: "battle", questions: [Q_R8_PURE, Q_R8_TOPDOWN, Q_R8_ONEWAY] },
+  c8_orco_saqueador: { kind: "battle", questions: [Q_R8_LIFT, Q_R8_SMALL, Q_R8_DERIVE] },
+  c8_uruk_espadachin: { kind: "battle", questions: [Q_R8_FRAGMENT, Q_R8_CONDLIST, Q_R8_KEY] },
+  c8_jefe_lurtz: {
+    kind: "challenge",
+    title: P("Lurtz, Capitán Uruk-hai", "Lurtz, Uruk-hai Captain"),
+    lore_intro: P(
+      "El informe final de Lurtz: un título con su nombre y la lista SÓLO de los soldados que siguen vivos. Combina props, condición, filtro y composición.",
+      "Lurtz's final report: a title with his name and the list of ONLY the soldiers still alive. Combine props, condition, filter and composition.",
+    ),
+    challenge: {
+      topic: P("Capstone: props + filtro + lista + composición", "Capstone: props + filter + list + composition"),
+      instructions: P(
+        "Escribe `Ejercito` que reciba `nombre` (string) y `soldados` (array de `{ nombre, vivo }`). Devuelve un `<section>` con un `<h1>{nombre}</h1>` y un `<ul>` que contenga un `<li key={s.nombre}>{s.nombre}</li>` SÓLO por cada soldado con `vivo` true.\n\n`render(<Ejercito nombre=\"Isengard\" soldados={[{nombre:\"a\",vivo:true},{nombre:\"b\",vivo:false}]} />)` → `\"<section><h1>Isengard</h1><ul><li>a</li></ul></section>\"`.",
+        "Write `Ejercito` taking `nombre` (string) and `soldados` (array of `{ nombre, vivo }`). Return a `<section>` with an `<h1>{nombre}</h1>` and a `<ul>` containing a `<li key={s.nombre}>{s.nombre}</li>` ONLY for each soldier with `vivo` true.\n\n`render(<Ejercito nombre=\"Isengard\" soldados={[{nombre:\"a\",vivo:true},{nombre:\"b\",vivo:false}]} />)` → `\"<section><h1>Isengard</h1><ul><li>a</li></ul></section>\"`.",
+      ),
+      starter_code: "function Ejercito({ nombre, soldados }) {\n}\n",
+      blocks: [
+        "function Ejercito({ nombre, soldados }) {",
+        "  return (",
+        "    <section>",
+        "      <h1>{nombre}</h1>",
+        "      <ul>{soldados.filter(s => s.vivo).map(s => <li key={s.nombre}>{s.nombre}</li>)}</ul>",
+        "    </section>",
+        "  );",
+        "}",
+        "      <ul>{soldados.map(s => <li key={s.nombre}>{s.nombre}</li>)}</ul>",
+        "      <h1>{soldados}</h1>",
+      ],
+      hints: [
+        P("Título con `<h1>{nombre}</h1>`.", "Title with `<h1>{nombre}</h1>`."),
+        P("Lista filtrada: `soldados.filter(s => s.vivo).map(...)`.", "Filtered list: `soldados.filter(s => s.vivo).map(...)`."),
+      ],
+      test_cases: [
+        { input: 'render(<Ejercito nombre="Isengard" soldados={[{nombre:"a",vivo:true},{nombre:"b",vivo:false},{nombre:"c",vivo:true}]} />)', expected: "<section><h1>Isengard</h1><ul><li>a</li><li>c</li></ul></section>", description: P("Sólo los vivos", "Only the living"), raw: true },
+        { input: 'render(<Ejercito nombre="Solo" soldados={[]} />)', expected: "<section><h1>Solo</h1><ul></ul></section>", description: P("Sin soldados", "No soldiers"), raw: true },
+      ],
+    },
+  },
+  pergamino_fallos: {
+    kind: "scroll",
+    title: P("El Pergamino del Cierre", "The Scroll of the Close"),
+    lore_intro: P(
+      "En Amon Hen, un último pergamino reúne todo: props que bajan, condición, listas y composición.",
+      "At Amon Hen, a last scroll gathers it all: props flowing down, condition, lists and composition.",
+    ),
+    scroll: {
+      topic: P("Componer props, condición y listas", "Composing props, condition and lists"),
+      sections: [
+        {
+          heading: P("Flujo unidireccional", "One-way data flow"),
+          body: P(
+            "Los datos BAJAN por props (padre → hijo). Para avisar hacia arriba, el padre pasa una función que el hijo llama.",
+            "Data flows DOWN via props (parent → child). To notify upward, the parent passes a function the child calls.",
+          ),
+          code: "<Fila dato={d} onBorrar={() => quitar(d.id)} />",
+        },
+        {
+          heading: P("Valores derivados", "Derived values"),
+          body: P(
+            "Lo que se puede calcular de props/estado, se calcula en el render. No lo dupliques en estado: evita fuentes de verdad desincronizadas.",
+            "Whatever can be computed from props/state is computed in render. Don't duplicate it in state: avoid out-of-sync sources of truth.",
+          ),
+          code: "const vivos = soldados.filter(s => s.vivo);\nreturn <p>{vivos.length} en pie</p>;",
+        },
+        {
+          heading: P("Todo junto", "All together"),
+          body: P(
+            "Un componente combina props, condición (ternario/&&), listas (filter+map) y composición. Con Fragment `<>...</>` agrupas sin un div extra.",
+            "A component combines props, condition (ternary/&&), lists (filter+map) and composition. With Fragment `<>...</>` you group without an extra div.",
+          ),
+          code: "<section>\n  <h1>{nombre}</h1>\n  <ul>{items.filter(...).map(...)}</ul>\n</section>",
+        },
+      ],
+      keyTakeaway: P(
+        "Componentes puros con flujo unidireccional (props bajan, callbacks suben); deriva en el render en vez de duplicar estado; combina condición + filter/map; Fragment agrupa sin nodo extra.",
+        "Pure components with one-way flow (props down, callbacks up); derive in render instead of duplicating state; combine condition + filter/map; Fragment groups without an extra node.",
+      ),
+    },
+  },
+  tentacion_de_boromir: {
+    kind: "challenge",
+    title: P("La Tentación de Boromir", "Boromir's Temptation"),
+    lore_intro: P(
+      "Cada objeto se marca como tomado o libre con una clase. Prop booleana + clase condicional.",
+      "Each item is marked taken or free with a class. Boolean prop + conditional class.",
+    ),
+    challenge: {
+      topic: P("Prop booleana y clase condicional", "Boolean prop and conditional class"),
+      instructions: P(
+        "Escribe `Item` que reciba `nombre` (string) y `tomado` (booleano) y devuelva un `<li>` con `className=\"tomado\"` si `tomado` es true o `\"libre\"` si es false, mostrando el `nombre`.\n\n`render(<Item nombre=\"Anillo\" tomado={true} />)` → `'<li class=\"tomado\">Anillo</li>'`.",
+        "Write `Item` taking `nombre` (string) and `tomado` (boolean) and returning a `<li>` with `className=\"tomado\"` if `tomado` is true or `\"libre\"` if false, showing the `nombre`.\n\n`render(<Item nombre=\"Anillo\" tomado={true} />)` → `'<li class=\"tomado\">Anillo</li>'`.",
+      ),
+      starter_code: "function Item({ nombre, tomado }) {\n}\n",
+      blocks: [
+        "function Item({ nombre, tomado }) {",
+        '  return <li className={tomado ? "tomado" : "libre"}>{nombre}</li>;',
+        "}",
+        '  return <li class={tomado ? "tomado" : "libre"}>{nombre}</li>;',
+        '  return <li className={tomado}>{nombre}</li>;',
+      ],
+      hints: [
+        P("`className={tomado ? 'tomado' : 'libre'}`.", "`className={tomado ? 'tomado' : 'libre'}`."),
+        P("Muestra el `{nombre}` dentro del `<li>`.", "Show the `{nombre}` inside the `<li>`."),
+      ],
+      test_cases: [
+        { input: 'render(<Item nombre="Anillo" tomado={true} />)', expected: '<li class="tomado">Anillo</li>', description: P("Tomado", "Taken"), raw: true },
+        { input: 'render(<Item nombre="Anillo" tomado={false} />)', expected: '<li class="libre">Anillo</li>', description: P("Libre", "Free"), raw: true },
+      ],
+    },
+  },
+  solio_de_la_vision: {
+    kind: "challenge",
+    title: P("El Solio de la Visión", "The Seat of Seeing"),
+    lore_intro: P(
+      "La visión se muestra resaltada o normal según esté activa. El ternario elige entre DOS elementos.",
+      "The vision shows highlighted or plain depending on whether it's active. The ternary chooses between TWO elements.",
+    ),
+    challenge: {
+      topic: P("Ternario entre dos elementos", "Ternary between two elements"),
+      instructions: P(
+        "Escribe `Insignia` que reciba `texto` (string) y `activa` (booleano). Si `activa` es true, devuelve `<strong>{texto}</strong>`; si es false, `<span>{texto}</span>`.\n\n`render(<Insignia texto=\"Visión\" activa={true} />)` → `\"<strong>Visión</strong>\"`.",
+        "Write `Insignia` taking `texto` (string) and `activa` (boolean). If `activa` is true, return `<strong>{texto}</strong>`; if false, `<span>{texto}</span>`.\n\n`render(<Insignia texto=\"Visión\" activa={true} />)` → `\"<strong>Visión</strong>\"`.",
+      ),
+      starter_code: "function Insignia({ texto, activa }) {\n}\n",
+      blocks: [
+        "function Insignia({ texto, activa }) {",
+        "  return activa ? <strong>{texto}</strong> : <span>{texto}</span>;",
+        "}",
+        "  return <strong>{activa}</strong>;",
+        "  return activa && <strong>{texto}</strong>;",
+      ],
+      hints: [
+        P("El ternario devuelve un elemento u otro: `activa ? <strong>...</strong> : <span>...</span>`.", "The ternary returns one element or another: `activa ? <strong>...</strong> : <span>...</span>`."),
+        P("Ambas ramas muestran `{texto}`.", "Both branches show `{texto}`."),
+      ],
+      test_cases: [
+        { input: 'render(<Insignia texto="Visión" activa={true} />)', expected: "<strong>Visión</strong>", description: P("Activa: resaltada", "Active: highlighted"), raw: true },
+        { input: 'render(<Insignia texto="Visión" activa={false} />)', expected: "<span>Visión</span>", description: P("Inactiva: normal", "Inactive: plain"), raw: true },
+      ],
+    },
+  },
+  hueste_de_isengard: {
+    kind: "challenge",
+    title: P("La Hueste de Isengard", "The Host of Isengard"),
+    lore_intro: P(
+      "Cada tropa llega con su nombre y su cantidad. Píntalas como `nombre: cantidad`.",
+      "Each troop arrives with its name and count. Render them as `name: count`.",
+    ),
+    challenge: {
+      topic: P("map con varios campos", "map with several fields"),
+      instructions: P(
+        "Escribe `Hueste` que reciba `tropas` (array de `{ nombre, n }`) y devuelva un `<ul>` con un `<li key={t.nombre}>{t.nombre}: {t.n}</li>` por cada tropa.\n\n`render(<Hueste tropas={[{nombre:\"orco\",n:5}]} />)` → `\"<ul><li>orco: 5</li></ul>\"`.",
+        "Write `Hueste` taking `tropas` (array of `{ nombre, n }`) and returning a `<ul>` with a `<li key={t.nombre}>{t.nombre}: {t.n}</li>` per troop.\n\n`render(<Hueste tropas={[{nombre:\"orco\",n:5}]} />)` → `\"<ul><li>orco: 5</li></ul>\"`.",
+      ),
+      starter_code: "function Hueste({ tropas }) {\n}\n",
+      blocks: [
+        "function Hueste({ tropas }) {",
+        "  return <ul>{tropas.map(t => <li key={t.nombre}>{t.nombre}: {t.n}</li>)}</ul>;",
+        "}",
+        "  return <ul>{tropas.map(t => <li key={t.nombre}>{t}</li>)}</ul>;",
+        "  return <ul>{tropas.nombre}: {tropas.n}</ul>;",
+      ],
+      hints: [
+        P("Cada tropa es `{ nombre, n }`: muestra `{t.nombre}: {t.n}`.", "Each troop is `{ nombre, n }`: show `{t.nombre}: {t.n}`."),
+        P("`key={t.nombre}`.", "`key={t.nombre}`."),
+      ],
+      test_cases: [
+        { input: 'render(<Hueste tropas={[{nombre:"orco",n:5},{nombre:"uruk",n:3}]} />)', expected: "<ul><li>orco: 5</li><li>uruk: 3</li></ul>", description: P("Dos tropas", "Two troops"), raw: true },
+        { input: 'render(<Hueste tropas={[]} />)', expected: "<ul></ul>", description: P("Sin tropas", "No troops"), raw: true },
+      ],
+    },
+  },
+};
