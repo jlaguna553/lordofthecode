@@ -184,6 +184,13 @@ export const SYL_DATA_1: Syllabus = {
         "Write `dano_ponderado(golpes, pesos)` returning the sum of each hit times its weight, as an INTEGER.\n\nUse `np.dot(golpes, pesos)` wrapped in `int(...)`.\n\nExample: `dano_ponderado([2, 3, 4], [10, 10, 5])` → `2*10 + 3*10 + 4*5` = `70`.",
       ),
       starter_code: "import numpy as np\n\ndef dano_ponderado(golpes, pesos):\n    pass\n",
+      blocks: [
+        "import numpy as np",
+        "def dano_ponderado(golpes, pesos):",
+        "    return int(np.dot(golpes, pesos))",
+        "    return np.dot(golpes, pesos)",
+        "    return int(np.sum(golpes) * np.sum(pesos))",
+      ],
       hints: [
         P("`np.dot(a, b)` multiplica elemento a elemento y suma el resultado.", "`np.dot(a, b)` multiplies element-wise and sums the result."),
         P("Convierte a entero: `return int(np.dot(golpes, pesos))`.", "Convert to integer: `return int(np.dot(golpes, pesos))`."),
@@ -459,6 +466,13 @@ export const SYL_DATA_2: Syllabus = {
         "Write `estadisticas(valores)` returning a dict with:\n• `min`: the minimum (integer),\n• `max`: the maximum (integer),\n• `media`: the mean rounded to 2 decimals.\n\nUse `np.array(valores)` and its `.min()`, `.max()`, `.mean()` methods.\n\nExample: `estadisticas([10, 20, 35])` → `{'min': 10, 'max': 35, 'media': 21.67}`.",
       ),
       starter_code: "import numpy as np\n\ndef estadisticas(valores):\n    pass\n",
+      blocks: [
+        "import numpy as np",
+        "def estadisticas(valores):",
+        "    v = np.array(valores)",
+        "    return {'min': int(v.min()), 'max': int(v.max()), 'media': round(float(v.mean()), 2)}",
+        "    return {'min': v.min(), 'max': v.max(), 'media': v.mean()}",
+      ],
       hints: [
         P("Convierte una vez: `v = np.array(valores)`.", "Convert once: `v = np.array(valores)`."),
         P("`{'min': int(v.min()), 'max': int(v.max()), 'media': round(float(v.mean()), 2)}`.", "`{'min': int(v.min()), 'max': int(v.max()), 'media': round(float(v.mean()), 2)}`."),
@@ -764,6 +778,13 @@ export const SYL_DATA_3: Syllabus = {
         "You get `datos`, a dict {name: power}. Write `resumen_series(datos)` returning a dict with:\n• `total`: the sum (integer),\n• `media`: the mean rounded to 2 decimals,\n• `top`: the LABEL of the max power (use `idxmax`).\n\nBuild `pd.Series(datos)` and use `.sum()`, `.mean()`, `.idxmax()`.",
       ),
       starter_code: "import pandas as pd\n\ndef resumen_series(datos):\n    pass\n",
+      blocks: [
+        "import pandas as pd",
+        "def resumen_series(datos):",
+        "    s = pd.Series(datos)",
+        "    return {'total': int(s.sum()), 'media': round(float(s.mean()), 2), 'top': s.idxmax()}",
+        "    return {'total': s.sum(), 'media': s.mean(), 'top': s.max()}",
+      ],
       hints: [
         P("`s = pd.Series(datos)` crea la Series con nombres como índice.", "`s = pd.Series(datos)` builds the Series with names as the index."),
         P("`{'total': int(s.sum()), 'media': round(float(s.mean()), 2), 'top': s.idxmax()}`.", "`{'total': int(s.sum()), 'media': round(float(s.mean()), 2), 'top': s.idxmax()}`."),
@@ -1066,6 +1087,15 @@ export const SYL_DATA_4: Syllabus = {
         "You get `registros`, a list of dicts with `nombre`, `ataque` and `defensa`. Write `tabla_poder(registros)` that:\n1. builds the DataFrame,\n2. adds a column `poder = ataque + defensa`,\n3. returns the rows with `df.to_dict('records')`.\n\nResulting column order is nombre, ataque, defensa, poder.",
       ),
       starter_code: "import pandas as pd\n\ndef tabla_poder(registros):\n    pass\n",
+      blocks: [
+        "import pandas as pd",
+        "def tabla_poder(registros):",
+        "    df = pd.DataFrame(registros)",
+        "    df['poder'] = df['ataque'] + df['defensa']",
+        "    return df.to_dict('records')",
+        "    df['poder'] = df['ataque'] * df['defensa']",
+        "    return df.to_dict()",
+      ],
       hints: [
         P("`df = pd.DataFrame(registros)` y luego `df['poder'] = df['ataque'] + df['defensa']`.", "`df = pd.DataFrame(registros)` then `df['poder'] = df['ataque'] + df['defensa']`."),
         P("Devuelve `df.to_dict('records')` (una lista de dicts).", "Return `df.to_dict('records')` (a list of dicts)."),
@@ -1399,6 +1429,14 @@ export const SYL_DATA_5: Syllabus = {
         "You get `registros` (list of dicts with `nombre` and `resistencia`) and `umbral`. Write `resisten(registros, umbral)` returning ONLY the rows whose `resistencia` is STRICTLY GREATER than `umbral`, as a list of dicts (`to_dict('records')`).",
       ),
       starter_code: "import pandas as pd\n\ndef resisten(registros, umbral):\n    pass\n",
+      blocks: [
+        "import pandas as pd",
+        "def resisten(registros, umbral):",
+        "    df = pd.DataFrame(registros)",
+        "    return df[df['resistencia'] > umbral].to_dict('records')",
+        "    return df[df['resistencia'] < umbral].to_dict('records')",
+        "    return df.to_dict('records')",
+      ],
       hints: [
         P("`df = pd.DataFrame(registros)` y la máscara `df['resistencia'] > umbral`.", "`df = pd.DataFrame(registros)` and the mask `df['resistencia'] > umbral`."),
         P("`df[máscara].to_dict('records')`.", "`df[mask].to_dict('records')`."),
@@ -1703,6 +1741,13 @@ export const SYL_DATA_6: Syllabus = {
         "You get `registros` (dicts with `tipo` and `dano`). Write `resumen_por_tipo(registros)` that, PER type, gives the `total` damage and the count `n` of enemies, as a list of dicts sorted by type.\n\nUse `df.groupby('tipo')['dano'].agg(total='sum', n='size').reset_index().to_dict('records')`.",
       ),
       starter_code: "import pandas as pd\n\ndef resumen_por_tipo(registros):\n    pass\n",
+      blocks: [
+        "import pandas as pd",
+        "def resumen_por_tipo(registros):",
+        "    df = pd.DataFrame(registros)",
+        "    return df.groupby('tipo')['dano'].agg(total='sum', n='size').reset_index().to_dict('records')",
+        "    return df.groupby('tipo')['dano'].sum().to_dict()",
+      ],
       hints: [
         P("`df.groupby('tipo')['dano'].agg(total='sum', n='size')` da las dos columnas.", "`df.groupby('tipo')['dano'].agg(total='sum', n='size')` gives both columns."),
         P("`.reset_index()` baja 'tipo' a columna; `.to_dict('records')` exporta.", "`.reset_index()` moves 'tipo' to a column; `.to_dict('records')` exports."),
@@ -2040,6 +2085,14 @@ export const SYL_DATA_7: Syllabus = {
         "You get `registros` (dicts with `valor`, which may be `None`). Write `media_valida(registros)` that drops the missing ones and returns the MEAN of the valid ones, rounded to 2 decimals.\n\nUse `df['valor'].dropna().mean()` with `round(float(...), 2)`.\n\nExample: values [10, None, 35] → mean of [10, 35] = `22.5`.",
       ),
       starter_code: "import pandas as pd\n\ndef media_valida(registros):\n    pass\n",
+      blocks: [
+        "import pandas as pd",
+        "def media_valida(registros):",
+        "    df = pd.DataFrame(registros)",
+        "    return round(float(df['valor'].dropna().mean()), 2)",
+        "    return round(float(df['valor'].mean()), 2)",
+        "    return df['valor'].dropna().mean()",
+      ],
       hints: [
         P("`df['valor'].dropna()` quita los NaN de la columna.", "`df['valor'].dropna()` removes the column's NaN."),
         P("Luego `.mean()` y `round(float(...), 2)`.", "Then `.mean()` and `round(float(...), 2)`."),
@@ -2344,6 +2397,14 @@ export const SYL_DATA_8: Syllabus = {
         "You get `enemigos` (dicts with `nombre` and `ataque`) and `bonos` (dicts with `nombre` and `bono`). Write `informe(enemigos, bonos)` that:\n1. joins both tables on `nombre` (`pd.merge(..., on='nombre')`),\n2. adds `poder = ataque + bono`,\n3. sorts by `poder` DESCENDING,\n4. returns the rows with `to_dict('records')`.\n\nUse `.reset_index(drop=True)` before exporting. Column order: nombre, ataque, bono, poder.",
       ),
       starter_code: "import pandas as pd\n\ndef informe(enemigos, bonos):\n    pass\n",
+      blocks: [
+        "import pandas as pd",
+        "def informe(enemigos, bonos):",
+        "    df = pd.merge(pd.DataFrame(enemigos), pd.DataFrame(bonos), on='nombre')",
+        "    df['poder'] = df['ataque'] + df['bono']",
+        "    return df.sort_values('poder', ascending=False).reset_index(drop=True).to_dict('records')",
+        "    return df.sort_values('poder').reset_index(drop=True).to_dict('records')",
+      ],
       hints: [
         P("`df = pd.merge(pd.DataFrame(enemigos), pd.DataFrame(bonos), on='nombre')`.", "`df = pd.merge(pd.DataFrame(enemigos), pd.DataFrame(bonos), on='nombre')`."),
         P("`df['poder'] = df['ataque'] + df['bono']`, luego `sort_values('poder', ascending=False)`.", "`df['poder'] = df['ataque'] + df['bono']`, then `sort_values('poder', ascending=False)`."),
