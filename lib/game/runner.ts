@@ -5,11 +5,13 @@ import { runJsChallenge, warmupJs } from "./js-evaluator";
 import { runTsChallenge, warmupTs } from "./ts-evaluator";
 import { runGoChallenge, warmupGo } from "./go-evaluator";
 import { runReactChallenge, warmupReact } from "./react-evaluator";
+import { runSqlChallenge, warmupSql } from "./sql-evaluator";
 
 /**
  * Punto único de ejecución de retos: despacha al evaluador según `challenge.lang`
  * (php-wasm, Pyodide, JavaScript nativo, TypeScript transpilado, Go interpretado
- * en WASM o React con JSX renderizado a HTML). Cada aventura usa el suyo.
+ * en WASM, React con JSX renderizado a HTML o SQL con SQLite en WASM). Cada
+ * aventura usa el suyo.
  */
 
 export type Lang =
@@ -18,7 +20,8 @@ export type Lang =
   | "javascript"
   | "typescript"
   | "go"
-  | "react";
+  | "react"
+  | "sql";
 
 export function langOf(c: PooChallenge): Lang {
   return c.lang ?? "php";
@@ -32,6 +35,7 @@ export function warmup(c: PooChallenge): void {
   else if (lang === "typescript") warmupTs();
   else if (lang === "go") warmupGo();
   else if (lang === "react") warmupReact();
+  else if (lang === "sql") warmupSql();
   else warmupPhp();
 }
 
@@ -45,5 +49,6 @@ export function runChallenge(
   if (lang === "typescript") return runTsChallenge(code, c);
   if (lang === "go") return runGoChallenge(code, c);
   if (lang === "react") return runReactChallenge(code, c);
+  if (lang === "sql") return runSqlChallenge(code, c);
   return runPhp(code, c);
 }

@@ -18,6 +18,9 @@ next-env.d.ts
 # en cada build (ver el script `build`), así que no hace falta versionarlo.
 /public/php-wasm
 
+# runtime de sql.js (SQLite WASM), copiado desde la dependencia en cada build.
+/public/sql
+
 # configuración local del agente
 /.claude
 

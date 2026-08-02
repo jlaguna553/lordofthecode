@@ -29,7 +29,14 @@ export interface PooChallenge {
    * capítulos de Las Dos Torres usan "python". Determina el evaluador y la
    * sintaxis de starter_code, support_code y test_cases.
    */
-  lang?: "php" | "python" | "javascript" | "typescript" | "go" | "react";
+  lang?:
+    | "php"
+    | "python"
+    | "javascript"
+    | "typescript"
+    | "go"
+    | "react"
+    | "sql";
   topic: Localized<string>;
   instructions: Localized<string>;
   /** Código inicial que ve y edita el jugador. */

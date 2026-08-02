@@ -6,12 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/copy-php-wasm.mjs && next build",
+    "build": "node scripts/copy-php-wasm.mjs && node scripts/copy-sql-wasm.mjs && next build",
+    "setup:sql": "node scripts/copy-sql-wasm.mjs",
     "start": "next start",
     "lint": "next lint",
     "fetch:lpc": "node scripts/fetch-lpc.mjs",
     "setup:php": "node scripts/copy-php-wasm.mjs",
-    "postinstall": "node scripts/copy-php-wasm.mjs",
+    "postinstall": "node scripts/copy-php-wasm.mjs && node scripts/copy-sql-wasm.mjs",
     "fetch:tiles": "node scripts/fetch-tiles.mjs",
     "check:balance": "node scripts/check-balance.mjs"
   },
@@ -22,7 +23,8 @@
     "phaser": "^4.2.1",
     "php-wasm": "^0.1.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "sql.js": "^1.14.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.13",

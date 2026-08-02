@@ -100,6 +100,16 @@ import {
   SYL_MPL_7,
   SYL_MPL_8,
 } from "./syllabus/matplotlib-python";
+import {
+  SYL_SQL_1,
+  SYL_SQL_2,
+  SYL_SQL_3,
+  SYL_SQL_4,
+  SYL_SQL_5,
+  SYL_SQL_6,
+  SYL_SQL_7,
+  SYL_SQL_8,
+} from "./syllabus/sql";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -175,6 +185,14 @@ const MPL_5 = buildChapter(NARR_COMMUNITY_5, SYL_MPL_5, "python");
 const MPL_6 = buildChapter(NARR_COMMUNITY_6, SYL_MPL_6, "python");
 const MPL_7 = buildChapter(NARR_COMMUNITY_7, SYL_MPL_7, "python");
 const MPL_8 = buildChapter(NARR_COMMUNITY_8, SYL_MPL_8, "python");
+const SQL_1 = buildChapter(NARR_COMMUNITY_1, SYL_SQL_1, "sql");
+const SQL_2 = buildChapter(NARR_COMMUNITY_2, SYL_SQL_2, "sql");
+const SQL_3 = buildChapter(NARR_COMMUNITY_3, SYL_SQL_3, "sql");
+const SQL_4 = buildChapter(NARR_COMMUNITY_4, SYL_SQL_4, "sql");
+const SQL_5 = buildChapter(NARR_COMMUNITY_5, SYL_SQL_5, "sql");
+const SQL_6 = buildChapter(NARR_COMMUNITY_6, SYL_SQL_6, "sql");
+const SQL_7 = buildChapter(NARR_COMMUNITY_7, SYL_SQL_7, "sql");
+const SQL_8 = buildChapter(NARR_COMMUNITY_8, SYL_SQL_8, "sql");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -335,13 +353,18 @@ export const ADVENTURES: Adventure[] = [
     tech: "SQL",
     icon: "🗄️",
     accent: "emerald",
-    status: "soon",
+    status: "available",
     name: { es: "SQL", en: "SQL" },
     blurb: {
-      es: "Consultas a bases de datos, de SELECT a los JOIN más retorcidos.",
-      en: "Querying databases, from SELECT to the trickiest JOINs.",
+      es: "Consultas a bases de datos con SQLite en el navegador: de SELECT y WHERE a GROUP BY, JOIN y subconsultas.",
+      en: "Querying databases with SQLite in the browser: from SELECT and WHERE to GROUP BY, JOIN and subqueries.",
     },
-    books: [],
+    books: [
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [SQL_1, SQL_2, SQL_3, SQL_4, SQL_5, SQL_6, SQL_7, SQL_8],
+      },
+    ],
   },
   {
     id: "java",
