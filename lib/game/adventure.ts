@@ -39,6 +39,7 @@ export interface Adventure {
 /** Secciones del selector de aventuras. */
 export type Category =
   | "languages"
+  | "data"
   | "frameworks"
   | "cloud"
   | "devops"
@@ -55,6 +56,7 @@ export interface CategoryInfo {
 /** Secciones en el orden en que se muestran en el selector. */
 export const CATEGORIES: CategoryInfo[] = [
   { id: "languages", icon: "📜", name: { es: "Lenguajes", en: "Languages" } },
+  { id: "data", icon: "📊", name: { es: "Datos", en: "Data" } },
   { id: "frameworks", icon: "🧩", name: { es: "Frameworks", en: "Frameworks" } },
   { id: "cloud", icon: "☁️", name: { es: "Nube", en: "Cloud" } },
   { id: "devops", icon: "⚙️", name: { es: "DevOps", en: "DevOps" } },

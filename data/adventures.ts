@@ -547,6 +547,23 @@ export const ADVENTURES: Adventure[] = [
     },
     books: [],
   },
+  {
+    id: "data-analyst-python",
+    category: "data",
+    tech: "Data Analyst",
+    icon: "🐼",
+    accent: "emerald",
+    status: "soon",
+    name: {
+      es: "Analista de Datos con Python",
+      en: "Data Analyst with Python",
+    },
+    blurb: {
+      es: "Análisis de datos con Python: pandas, NumPy, limpieza de datos y visualización con Matplotlib.",
+      en: "Data analysis with Python: pandas, NumPy, data cleaning and visualization with Matplotlib.",
+    },
+    books: [],
+  },
 ];
 
 export const DEFAULT_ADVENTURE = "php";
