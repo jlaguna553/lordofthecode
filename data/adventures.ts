@@ -76,6 +76,16 @@ import {
   SYL_PY_COMMUNITY_7,
   SYL_PY_COMMUNITY_8,
 } from "./syllabus/community-python";
+import {
+  SYL_DATA_1,
+  SYL_DATA_2,
+  SYL_DATA_3,
+  SYL_DATA_4,
+  SYL_DATA_5,
+  SYL_DATA_6,
+  SYL_DATA_7,
+  SYL_DATA_8,
+} from "./syllabus/data-python";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -135,6 +145,14 @@ const PY_COMMUNITY_5 = buildChapter(NARR_COMMUNITY_5, SYL_PY_COMMUNITY_5, "pytho
 const PY_COMMUNITY_6 = buildChapter(NARR_COMMUNITY_6, SYL_PY_COMMUNITY_6, "python");
 const PY_COMMUNITY_7 = buildChapter(NARR_COMMUNITY_7, SYL_PY_COMMUNITY_7, "python");
 const PY_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_PY_COMMUNITY_8, "python");
+const DATA_1 = buildChapter(NARR_COMMUNITY_1, SYL_DATA_1, "python");
+const DATA_2 = buildChapter(NARR_COMMUNITY_2, SYL_DATA_2, "python");
+const DATA_3 = buildChapter(NARR_COMMUNITY_3, SYL_DATA_3, "python");
+const DATA_4 = buildChapter(NARR_COMMUNITY_4, SYL_DATA_4, "python");
+const DATA_5 = buildChapter(NARR_COMMUNITY_5, SYL_DATA_5, "python");
+const DATA_6 = buildChapter(NARR_COMMUNITY_6, SYL_DATA_6, "python");
+const DATA_7 = buildChapter(NARR_COMMUNITY_7, SYL_DATA_7, "python");
+const DATA_8 = buildChapter(NARR_COMMUNITY_8, SYL_DATA_8, "python");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -553,16 +571,30 @@ export const ADVENTURES: Adventure[] = [
     tech: "Data Analyst",
     icon: "🐼",
     accent: "emerald",
-    status: "soon",
+    status: "available",
     name: {
       es: "Analista de Datos con Python",
       en: "Data Analyst with Python",
     },
     blurb: {
-      es: "Análisis de datos con Python: pandas, NumPy, limpieza de datos y visualización con Matplotlib.",
-      en: "Data analysis with Python: pandas, NumPy, data cleaning and visualization with Matplotlib.",
+      es: "Análisis de datos con Python: NumPy, pandas, filtrado, agrupación, limpieza y análisis.",
+      en: "Data analysis with Python: NumPy, pandas, filtering, grouping, cleaning and analysis.",
     },
-    books: [],
+    books: [
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [
+          DATA_1,
+          DATA_2,
+          DATA_3,
+          DATA_4,
+          DATA_5,
+          DATA_6,
+          DATA_7,
+          DATA_8,
+        ],
+      },
+    ],
   },
 ];
 

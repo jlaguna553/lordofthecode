@@ -27,7 +27,7 @@ export function langOf(c: PooChallenge): Lang {
 /** Precarga el runtime del lenguaje del reto mientras el jugador lee el lore. */
 export function warmup(c: PooChallenge): void {
   const lang = langOf(c);
-  if (lang === "python") warmupPython();
+  if (lang === "python") warmupPython(c.packages);
   else if (lang === "javascript") warmupJs();
   else if (lang === "typescript") warmupTs();
   else if (lang === "go") warmupGo();

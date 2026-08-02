@@ -21,10 +21,13 @@ interface Pyodide {
   runPython: (code: string, opts?: { globals?: PyProxy }) => unknown;
   setStdout: (opts: { batched: (s: string) => void }) => void;
   setStderr: (opts: { batched: (s: string) => void }) => void;
+  loadPackage: (names: string | string[]) => Promise<unknown>;
 }
 
 let pyodidePromise: Promise<Pyodide> | null = null;
 const buffer = { out: "", err: "" };
+/** Paquetes de Pyodide ya cargados (numpy, pandas…) para no recargarlos. */
+const loadedPackages = new Set<string>();
 
 /** Carga el script de Pyodide del CDN una sola vez (inyectando un <script>). */
 function loadPyodideScript(): Promise<void> {
@@ -59,9 +62,23 @@ export function pythonSupported(): boolean {
   return typeof window !== "undefined" && typeof WebAssembly !== "undefined";
 }
 
-/** Precarga Pyodide (para lanzarlo mientras el jugador lee el lore). */
-export function warmupPython(): void {
-  if (pythonSupported()) void getPyodide();
+/**
+ * Precarga Pyodide (y, opcionalmente, paquetes como numpy/pandas) mientras el
+ * jugador lee el lore, para que el primer "Ejecutar" no espere la descarga.
+ */
+export function warmupPython(packages?: string[]): void {
+  if (!pythonSupported()) return;
+  void (async () => {
+    const py = await getPyodide();
+    const pending = (packages ?? []).filter((p) => !loadedPackages.has(p));
+    if (pending.length === 0) return;
+    try {
+      await py.loadPackage(pending);
+      for (const p of pending) loadedPackages.add(p);
+    } catch {
+      // Si falla la precarga, runPyChallenge lo reintentará al ejecutar.
+    }
+  })();
 }
 
 /** Quita un posible bloque markdown ```python ... ``` envolvente. */
@@ -80,8 +97,20 @@ function stripFences(code: string): string {
 export function buildPyHarness(playerCode: string, c: PooChallenge): string {
   const lines: string[] = [
     "import json as __json",
+    // Conversor tolerante con numpy/pandas: sus escalares y contenedores no son
+    // JSON-serializables de fábrica, así que los reducimos a tipos nativos.
+    "def __coerce(o):",
+    "    if hasattr(o, 'item') and getattr(o, 'ndim', None) == 0:",
+    "        return o.item()",
+    "    if hasattr(o, 'to_dict') and hasattr(o, 'columns'):",
+    "        return o.to_dict(orient='records')",
+    "    if hasattr(o, 'tolist'):",
+    "        return o.tolist()",
+    "    if hasattr(o, 'to_dict'):",
+    "        return o.to_dict()",
+    "    raise TypeError(repr(o))",
     "def __ser(v):",
-    "    return __json.dumps(v, ensure_ascii=False, separators=(',', ':'))",
+    "    return __json.dumps(v, ensure_ascii=False, separators=(',', ':'), default=__coerce)",
     "",
     c.support_code ?? "",
     "",
@@ -158,12 +187,26 @@ function parseOutput(
   return { ok, results, phpError, stdout: stdout || undefined };
 }
 
+/** Carga los paquetes que pida el reto (numpy, pandas…) una sola vez. */
+async function loadChallengePackages(
+  py: Pyodide,
+  challenge: PooChallenge,
+): Promise<void> {
+  const pending = (challenge.packages ?? []).filter(
+    (p) => !loadedPackages.has(p),
+  );
+  if (pending.length === 0) return;
+  await py.loadPackage(pending);
+  for (const p of pending) loadedPackages.add(p);
+}
+
 /** Ejecuta el código Python del jugador contra los test_cases del reto. */
 export async function runPyChallenge(
   playerCode: string,
   challenge: PooChallenge,
 ): Promise<EvalResult> {
   const py = await getPyodide();
+  await loadChallengePackages(py, challenge);
   buffer.out = "";
   buffer.err = "";
   const harness = buildPyHarness(playerCode, challenge);

@@ -42,6 +42,12 @@ export interface PooChallenge {
   sut?: string;
   /** Clases/funciones auxiliares inyectadas antes del código del jugador (ocultas). */
   support_code?: string;
+  /**
+   * Paquetes de Pyodide a cargar antes de ejecutar (sólo Python), p. ej.
+   * ["numpy", "pandas"] para los retos de análisis de datos. Se cargan una vez
+   * y quedan cacheados en la instancia de Pyodide.
+   */
+  packages?: string[];
   /** Pistas que el jugador puede pedir una a una si se atasca. */
   hints?: Localized<string>[];
   /**
