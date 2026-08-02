@@ -1,10 +1,6 @@
 import type { Adventure } from "@/lib/game/adventure";
 import { allChapters } from "@/lib/game/adventure";
-import {
-  BOOK_FELLOWSHIP,
-  BOOK_TWO_TOWERS,
-  BOOK_APPENDICES,
-} from "@/lib/game/book";
+import { BOOK_FELLOWSHIP, BOOK_APPENDICES } from "@/lib/game/book";
 import {
   CHAPTER_SOLID,
   CHAPTER_ALGOS,
@@ -12,8 +8,6 @@ import {
   CHAPTER_ALGOS_3,
   CHAPTER_LOGICA,
   CHAPTER_CALENTAMIENTO,
-  CHAPTER_GOLLUM,
-  CHAPTER_HELM,
 } from "./chapters";
 import { buildChapter } from "@/lib/game/narrative";
 import {
@@ -72,6 +66,16 @@ import {
   SYL_REACT_COMMUNITY_3,
   SYL_REACT_COMMUNITY_4,
 } from "./syllabus/community-react";
+import {
+  SYL_PY_COMMUNITY_1,
+  SYL_PY_COMMUNITY_2,
+  SYL_PY_COMMUNITY_3,
+  SYL_PY_COMMUNITY_4,
+  SYL_PY_COMMUNITY_5,
+  SYL_PY_COMMUNITY_6,
+  SYL_PY_COMMUNITY_7,
+  SYL_PY_COMMUNITY_8,
+} from "./syllabus/community-python";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -123,6 +127,14 @@ const GO_COMMUNITY_5 = buildChapter(NARR_COMMUNITY_5, SYL_GO_COMMUNITY_5, "go");
 const GO_COMMUNITY_6 = buildChapter(NARR_COMMUNITY_6, SYL_GO_COMMUNITY_6, "go");
 const GO_COMMUNITY_7 = buildChapter(NARR_COMMUNITY_7, SYL_GO_COMMUNITY_7, "go");
 const GO_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_GO_COMMUNITY_8, "go");
+const PY_COMMUNITY_1 = buildChapter(NARR_COMMUNITY_1, SYL_PY_COMMUNITY_1, "python");
+const PY_COMMUNITY_2 = buildChapter(NARR_COMMUNITY_2, SYL_PY_COMMUNITY_2, "python");
+const PY_COMMUNITY_3 = buildChapter(NARR_COMMUNITY_3, SYL_PY_COMMUNITY_3, "python");
+const PY_COMMUNITY_4 = buildChapter(NARR_COMMUNITY_4, SYL_PY_COMMUNITY_4, "python");
+const PY_COMMUNITY_5 = buildChapter(NARR_COMMUNITY_5, SYL_PY_COMMUNITY_5, "python");
+const PY_COMMUNITY_6 = buildChapter(NARR_COMMUNITY_6, SYL_PY_COMMUNITY_6, "python");
+const PY_COMMUNITY_7 = buildChapter(NARR_COMMUNITY_7, SYL_PY_COMMUNITY_7, "python");
+const PY_COMMUNITY_8 = buildChapter(NARR_COMMUNITY_8, SYL_PY_COMMUNITY_8, "python");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -198,11 +210,23 @@ export const ADVENTURES: Adventure[] = [
     status: "available",
     name: { es: "Python", en: "Python" },
     blurb: {
-      es: "Python desde cero: variables, control de flujo, funciones, colecciones y clases.",
-      en: "Python from scratch: variables, control flow, functions, collections and classes.",
+      es: "Python desde cero: variables, control de flujo, funciones, colecciones, clases, herencia y excepciones.",
+      en: "Python from scratch: variables, control flow, functions, collections, classes, inheritance and exceptions.",
     },
     books: [
-      { book: BOOK_TWO_TOWERS, chapters: [CHAPTER_GOLLUM, CHAPTER_HELM] },
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [
+          PY_COMMUNITY_1,
+          PY_COMMUNITY_2,
+          PY_COMMUNITY_3,
+          PY_COMMUNITY_4,
+          PY_COMMUNITY_5,
+          PY_COMMUNITY_6,
+          PY_COMMUNITY_7,
+          PY_COMMUNITY_8,
+        ],
+      },
     ],
   },
   {
