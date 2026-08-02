@@ -187,6 +187,13 @@ export const SYL_JS_COMMUNITY_1: Syllabus = {
         "Write `resistir(nombre, tentacion)`:\n• if `tentacion` is 100 or more, return `'{nombre} sucumbe'`,\n• otherwise, return `'{nombre} resiste con {X} de voluntad'`, where `X` is `100 - tentacion`.\n\nExample: `resistir('Frodo', 30)` → `'Frodo resiste con 70 de voluntad'`.",
       ),
       starter_code: "function resistir(nombre, tentacion) {\n}\n",
+      blocks: [
+        "function resistir(nombre, tentacion) {",
+        "  if (tentacion >= 100) return `${nombre} sucumbe`;",
+        "  return `${nombre} resiste con ${100 - tentacion} de voluntad`;",
+        "}",
+        "  if (tentacion > 100) return `${nombre} sucumbe`;",
+      ],
       hints: [
         P("Un `if` con el caso de sucumbir; el resto, resistir.", "An `if` for the succumb case; the rest, resist."),
         P("Interpola con template strings: `` `${nombre} resiste con ${100 - tentacion} de voluntad` ``.", "Interpolate with template strings: `` `${nombre} resiste con ${100 - tentacion} de voluntad` ``."),
@@ -491,6 +498,12 @@ export const SYL_JS_COMMUNITY_2: Syllabus = {
         "Write `filtrarFuertes(danios, minimo)` returning a NEW array with the damages GREATER THAN OR EQUAL to `minimo`. Iterate with a loop and add with `push`.\n\nExample: `filtrarFuertes([3, 7, 2, 9], 5)` → `[7, 9]`.",
       ),
       starter_code: "function filtrarFuertes(danios, minimo) {\n}\n",
+      blocks: [
+        "function filtrarFuertes(danios, minimo) {",
+        "  return danios.filter((d) => d >= minimo);",
+        "}",
+        "  return danios.filter((d) => d > minimo);",
+      ],
       hints: [
         P("Empieza con un array vacío y recórrelos: `for (const d of danios)`.", "Start with an empty array and iterate: `for (const d of danios)`."),
         P("`if (d >= minimo) r.push(d);`.", "`if (d >= minimo) r.push(d);`."),
@@ -802,6 +815,13 @@ export const SYL_JS_COMMUNITY_3: Syllabus = {
         "Write `crearCuenta(inicio)` that RETURNS a function. Each time that function is called (no arguments), it increments the value (starting at `inicio`) by 1 and returns it.\n\nExamples: `crearCuenta(10)()` → `11`; and calling the same tally three times from 0 → `3`.",
       ),
       starter_code: "function crearCuenta(inicio) {\n}\n",
+      blocks: [
+        "function crearCuenta(inicio) {",
+        "  let n = inicio;",
+        "  return () => ++n;",
+        "}",
+        "  return () => n++;",
+      ],
       hints: [
         P("Guarda el estado en una variable local y devuelve una función que la usa.", "Keep the state in a local variable and return a function that uses it."),
         P("`let n = inicio; return () => { n += 1; return n; };`.", "`let n = inicio; return () => { n += 1; return n; };`."),
@@ -867,6 +887,12 @@ export const SYL_JS_COMMUNITY_3: Syllabus = {
         "Write `saludar(nombre, saludo = 'Salve')` returning `'{saludo}, {nombre}'`.\n\nIf `saludo` isn't passed, use 'Salve'. Examples: `saludar('Frodo')` → `'Salve, Frodo'`; `saludar('Sam', 'Hola')` → `'Hola, Sam'`.",
       ),
       starter_code: "function saludar(nombre, saludo = 'Salve') {\n}\n",
+      blocks: [
+        "function saludar(nombre, saludo = 'Salve') {",
+        "  return `${saludo}, ${nombre}`;",
+        "}",
+        "function saludar(nombre, saludo) {",
+      ],
       hints: [
         P("El valor por defecto va en la firma: `(nombre, saludo = 'Salve')`.", "The default goes in the signature: `(nombre, saludo = 'Salve')`."),
         P("`return `${saludo}, ${nombre}``;", "`return `${saludo}, ${nombre}``;"),
@@ -892,6 +918,12 @@ export const SYL_JS_COMMUNITY_3: Syllabus = {
         "Write `aplicarDoble(fn, x)` that calls the function `fn` TWICE on `x` and returns the result: `fn(fn(x))`.\n\nExample: `aplicarDoble((n) => n + 1, 5)` → `7`.",
       ),
       starter_code: "function aplicarDoble(fn, x) {\n}\n",
+      blocks: [
+        "function aplicarDoble(fn, x) {",
+        "  return fn(fn(x));",
+        "}",
+        "  return fn(x);",
+      ],
       hints: [
         P("`fn` es una función: la llamas con paréntesis, `fn(x)`.", "`fn` is a function: call it with parentheses, `fn(x)`."),
         P("`return fn(fn(x));` — el resultado de la primera llamada entra en la segunda.", "`return fn(fn(x));` — the first call's result feeds the second."),
@@ -917,6 +949,12 @@ export const SYL_JS_COMMUNITY_3: Syllabus = {
         "Write `crearGolpe(danio)` that RETURNS a function. That function, called with no arguments, returns the `danio` it was created with.\n\nExample: `crearGolpe(20)()` → `20`.",
       ),
       starter_code: "function crearGolpe(danio) {\n}\n",
+      blocks: [
+        "function crearGolpe(danio) {",
+        "  return () => danio;",
+        "}",
+        "  return danio;",
+      ],
       hints: [
         P("`crearGolpe` debe `return` una función, p. ej. una arrow.", "`crearGolpe` must `return` a function, e.g. an arrow."),
         P("`return () => danio;` — la función interior recuerda `danio` (closure).", "`return () => danio;` — the inner function remembers `danio` (closure)."),
@@ -1076,6 +1114,12 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
         "Write `nombresFuertes(guerreros, min)` taking an array of objects `{ nombre, poder }` and returning an array with ONLY the `nombre`s of those whose `poder` is GREATER THAN OR EQUAL to `min`, in order.\n\nExample: `nombresFuertes([{ nombre: 'Aragorn', poder: 80 }, { nombre: 'Frodo', poder: 20 }], 50)` → `['Aragorn']`.",
       ),
       starter_code: "function nombresFuertes(guerreros, min) {\n}\n",
+      blocks: [
+        "function nombresFuertes(guerreros, min) {",
+        "  return guerreros.filter((g) => g.poder >= min).map((g) => g.nombre);",
+        "}",
+        "  return guerreros.filter((g) => g.poder >= min);",
+      ],
       hints: [
         P("Primero filtra por poder: `guerreros.filter(g => g.poder >= min)`.", "First filter by power: `guerreros.filter(g => g.poder >= min)`."),
         P("Luego transforma a nombres: `.map(g => g.nombre)`.", "Then transform to names: `.map(g => g.nombre)`."),
@@ -1143,6 +1187,15 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
         "Write `crearMontura(velocidadMaxima)` that RETURNS an object with:\n• the property `velocidadMaxima`,\n• the method `galopar(deseada)` returning the wanted speed never above `this.velocidadMaxima`.\n\nExample: `crearMontura(120).galopar(200)` → `120`.",
       ),
       starter_code: "function crearMontura(velocidadMaxima) {\n}\n",
+      blocks: [
+        "function crearMontura(velocidadMaxima) {",
+        "  return {",
+        "    velocidadMaxima,",
+        "    galopar(v) { return Math.min(v, velocidadMaxima); },",
+        "  };",
+        "}",
+        "    galopar(v) { return Math.max(v, velocidadMaxima); },",
+      ],
       hints: [
         P("Devuelve un objeto literal: `return { velocidadMaxima, galopar(deseada) { ... } };`.", "Return an object literal: `return { velocidadMaxima, galopar(deseada) { ... } };`."),
         P("Dentro del método usa `this.velocidadMaxima` y `Math.min(...)`.", "Inside the method use `this.velocidadMaxima` and `Math.min(...)`."),
@@ -1168,6 +1221,12 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
         "Write `fuerzaTotal(fuerzas)` taking an array of numbers and returning their SUM using `reduce`. For an empty array, return `0`.\n\nExample: `fuerzaTotal([5, 4])` → `9`.",
       ),
       starter_code: "function fuerzaTotal(fuerzas) {\n}\n",
+      blocks: [
+        "function fuerzaTotal(fuerzas) {",
+        "  return fuerzas.reduce((s, f) => s + f, 0);",
+        "}",
+        "  return fuerzas.reduce((s, f) => s + f);",
+      ],
       hints: [
         P("`reduce` recibe un acumulador y el elemento actual: `(a, b) => a + b`.", "`reduce` takes an accumulator and the current element: `(a, b) => a + b`."),
         P("No olvides el valor inicial: `fuerzas.reduce((a, b) => a + b, 0)`.", "Don't forget the initial value: `fuerzas.reduce((a, b) => a + b, 0)`."),
@@ -1193,6 +1252,12 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
         "The flood has strength 50. Write `arrastrados(fuerzas)` taking an array of each rider's strength and returning HOW MANY are swept away: those with strength LESS than 50.\n\nExample: `arrastrados([10, 20, 80])` → `2`.",
       ),
       starter_code: "function arrastrados(fuerzas) {\n}\n",
+      blocks: [
+        "function arrastrados(fuerzas) {",
+        "  return fuerzas.filter((f) => f < 50).length;",
+        "}",
+        "  return fuerzas.filter((f) => f > 50).length;",
+      ],
       hints: [
         P("Primero selecciona: `fuerzas.filter(f => f < 50)`.", "First select: `fuerzas.filter(f => f < 50)`."),
         P("Luego cuenta con `.length`.", "Then count with `.length`."),
@@ -1218,6 +1283,12 @@ export const SYL_JS_COMMUNITY_4: Syllabus = {
         "Write `nombres(jinetes)` taking an array of objects `{ nombre, fuerza }` and returning an array with ONLY the `nombre`s, in the same order.\n\nExample: `nombres([{ nombre: 'Khamûl', fuerza: 8 }])` → `['Khamûl']`.",
       ),
       starter_code: "function nombres(jinetes) {\n}\n",
+      blocks: [
+        "function nombres(jinetes) {",
+        "  return jinetes.map((j) => j.nombre);",
+        "}",
+        "  return jinetes.map((j) => j.fuerza);",
+      ],
       hints: [
         P("`map` transforma cada elemento: `jinetes.map(j => ...)`.", "`map` transforms each element: `jinetes.map(j => ...)`."),
         P("De cada jinete quieres su nombre: `j => j.nombre`.", "From each rider you want its name: `j => j.nombre`."),
@@ -1377,6 +1448,23 @@ export const SYL_JS_COMMUNITY_5: Syllabus = {
         "Create the class `Espada` with a PRIVATE field `#filo`:\n• the `constructor(filo)` throws an `Error` if `filo` is negative; otherwise stores it,\n• the method `filo()` returns the edge,\n• the method `golpear(objetivo)` returns `objetivo - #filo`, never below 0.\n\nExample: `new Espada(10).golpear(30)` → `20`.",
       ),
       starter_code: "class Espada {\n  #filo;\n  constructor(filo) {\n  }\n  filo() {\n  }\n  golpear(objetivo) {\n  }\n}\n",
+      blocks: [
+        "class Espada {",
+        "  #filo;",
+        "  constructor(filo) {",
+        "    if (filo < 0) throw new Error('filo negativo');",
+        "    this.#filo = filo;",
+        "  }",
+        "  filo() {",
+        "    return this.#filo;",
+        "  }",
+        "  golpear(objetivo) {",
+        "    return Math.max(0, objetivo - this.#filo);",
+        "  }",
+        "}",
+        "    return Math.min(0, objetivo - this.#filo);",
+        "    this.#filo = filo;",
+      ],
       hints: [
         P("Guard clause en el constructor: `if (filo < 0) throw new Error('...');`.", "Guard clause in the constructor: `if (filo < 0) throw new Error('...');`."),
         P("`golpear` no baja de 0: `Math.max(0, objetivo - this.#filo)`.", "`golpear` doesn't go below 0: `Math.max(0, objetivo - this.#filo)`."),
@@ -1446,6 +1534,16 @@ export const SYL_JS_COMMUNITY_5: Syllabus = {
       ),
       sut: "new Provision('lembas', 5)",
       starter_code: "class Provision {\n  constructor(nombre, peso) {\n  }\n}\n",
+      blocks: [
+        "class Provision {",
+        "  constructor(nombre, peso) {",
+        "    this.nombre = nombre;",
+        "    this.peso = peso;",
+        "    Object.freeze(this);",
+        "  }",
+        "}",
+        "    Object.seal(this);",
+      ],
       hints: [
         P("Asigna con `this.nombre = nombre;` y `this.peso = peso;`.", "Assign with `this.nombre = nombre;` and `this.peso = peso;`."),
         P("Al final del constructor: `Object.freeze(this);`.", "At the end of the constructor: `Object.freeze(this);`."),
@@ -1477,6 +1575,23 @@ export const SYL_JS_COMMUNITY_5: Syllabus = {
       ),
       sut: "new ResistenciaComunidad()",
       starter_code: "class ResistenciaComunidad {\n  static UMBRAL = 20;\n  #calor = 100;\n\n  getCalor() {\n  }\n  enfriar(grados) {\n  }\n  estaCongelada() {\n  }\n}\n",
+      blocks: [
+        "class ResistenciaComunidad {",
+        "  static UMBRAL = 20;",
+        "  #calor = 100;",
+        "  getCalor() {",
+        "    return this.#calor;",
+        "  }",
+        "  enfriar(grados) {",
+        "    if (grados < 0) throw new Error('grados negativos');",
+        "    this.#calor = Math.max(0, this.#calor - grados);",
+        "  }",
+        "  estaCongelada() {",
+        "    return this.#calor <= ResistenciaComunidad.UMBRAL;",
+        "  }",
+        "}",
+        "    this.#calor -= grados;",
+      ],
       hints: [
         P("Guard clause: `if (grados < 0) throw new Error('...');`.", "Guard clause: `if (grados < 0) throw new Error('...');`."),
         P("Sin bajar de 0: `this.#calor = Math.max(0, this.#calor - grados);`.", "No below 0: `this.#calor = Math.max(0, this.#calor - grados);`."),
@@ -1519,6 +1634,19 @@ export const SYL_JS_COMMUNITY_5: Syllabus = {
       ),
       sut: "new Temperatura(-10)",
       starter_code: "class Temperatura {\n  constructor(grados) {\n  }\n  conMas(g) {\n  }\n}\n",
+      blocks: [
+        "class Temperatura {",
+        "  constructor(grados) {",
+        "    if (grados < -50) throw new Error('demasiado fria');",
+        "    this.grados = grados;",
+        "    Object.freeze(this);",
+        "  }",
+        "  conMas(g) {",
+        "    return new Temperatura(this.grados + g);",
+        "  }",
+        "}",
+        "  conMas(g) { this.grados += g; return this; }",
+      ],
       hints: [
         P("Valida primero: `if (grados < -40 || grados > 40) throw new Error('...');`.", "Validate first: `if (grados < -40 || grados > 40) throw new Error('...');`."),
         P("Congela al final: `Object.freeze(this);`.", "Freeze at the end: `Object.freeze(this);`."),
@@ -1698,6 +1826,14 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
       support_code:
         "class Enemigo {\n  atacar() { return 1; }\n}\nfunction danioTotal(enemigos) {\n  return enemigos.reduce((s, e) => s + e.atacar(), 0);\n}",
       starter_code: "class Balrog extends Enemigo {\n}\n",
+      blocks: [
+        "class Balrog extends Enemigo {",
+        "  atacar() {",
+        "    return 10;",
+        "  }",
+        "}",
+        "class Balrog {",
+      ],
       hints: [
         P("Sobrescribe `atacar()` y reutiliza al padre: `return super.atacar() * 10;`.", "Override `atacar()` and reuse the parent: `return super.atacar() * 10;`."),
         P("`danioTotal` trata a Enemigo y Balrog por igual: eso es polimorfismo.", "`danioTotal` treats Enemigo and Balrog alike: that's polymorphism."),
@@ -1765,6 +1901,14 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
       ),
       sut: "new PuertaDurin()",
       starter_code: "class PuertaDurin {\n  susurrarPalabra(palabra) {\n  }\n}\n",
+      blocks: [
+        "class PuertaDurin {",
+        "  susurrarPalabra(palabra) {",
+        "    return palabra.toLowerCase() === 'mellon';",
+        "  }",
+        "}",
+        "    return palabra === 'mellon';",
+      ],
       hints: [
         P("Normaliza a minúsculas: `palabra.toLowerCase()`.", "Normalize to lowercase: `palabra.toLowerCase()`."),
         P("Compara: `return palabra.toLowerCase() === 'mellon';`.", "Compare: `return palabra.toLowerCase() === 'mellon';`."),
@@ -1792,6 +1936,17 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
       support_code:
         "const Camara = {\n  danioTotal(horda) {\n    return horda.reduce((s, e) => s + e.atacar(), 0);\n  },\n};",
       starter_code: "\nclass Trasgo {\n}\n\nclass Troll {\n}\n",
+      blocks: [
+        "class Trasgo {",
+        "  nombre() { return 'Trasgo'; }",
+        "  atacar() { return 5; }",
+        "}",
+        "class Troll {",
+        "  nombre() { return 'Troll'; }",
+        "  atacar() { return 20; }",
+        "}",
+        "  atacar() { return 10; }",
+      ],
       hints: [
         P("Cada clase define los dos métodos: `nombre()` devuelve el texto, `atacar()` el número.", "Each class defines both methods: `nombre()` returns the text, `atacar()` the number."),
         P("`Camara.danioTotal` no sabe si son trasgos o trolls: eso es polimorfismo por forma.", "`Camara.danioTotal` doesn't know if they're goblins or trolls: that's polymorphism by shape."),
@@ -1820,6 +1975,18 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
       support_code:
         "class Puente {\n  constructor() { this.roto = false; }\n}\nclass Hechizo {\n  constructor(nombre) { this.nombre = nombre; }\n  describir() { return `Hechizo: ${this.nombre}`; }\n  lanzar(puente) { return 'nada ocurre'; }\n}\nconst Gandalf = {\n  ejecutar(hechizo, puente) { return hechizo.lanzar(puente); },\n};",
       starter_code: "\nclass PalabraDeMando extends Hechizo {\n}\n",
+      blocks: [
+        "class PalabraDeMando extends Hechizo {",
+        "  constructor() {",
+        "    super('Palabra de Mando');",
+        "  }",
+        "  lanzar(puente) {",
+        "    puente.roto = true;",
+        "    return '¡No puedes pasar!';",
+        "  }",
+        "}",
+        "    return 'nada ocurre';",
+      ],
       hints: [
         P("En el constructor, primero: `super('Palabra de Mando');`.", "In the constructor, first: `super('Palabra de Mando');`."),
         P("`lanzar` modifica el puente: `puente.roto = true;` y `return '¡No puedes pasar!';`.", "`lanzar` modifies the bridge: `puente.roto = true;` then `return '¡No puedes pasar!';`."),
@@ -1851,6 +2018,22 @@ export const SYL_JS_COMMUNITY_6: Syllabus = {
         "Create class `Galeria` with the halls in a PRIVATE field `#salas`:\n• `agregar(sala)` — adds the hall and returns `this` (fluent interface),\n• `*[Symbol.iterator]()` — a generator yielding the halls in order with `yield*`,\n• the getter `tamano` — how many halls there are.\n\nThen `[...galeria]` and `for...of` walk it.",
       ),
       starter_code: "class Galeria {\n  #salas = [];\n\n  agregar(sala) {\n  }\n\n  *[Symbol.iterator]() {\n  }\n\n  get tamano() {\n  }\n}\n",
+      blocks: [
+        "class Galeria {",
+        "  #salas = [];",
+        "  agregar(sala) {",
+        "    this.#salas.push(sala);",
+        "    return this;",
+        "  }",
+        "  *[Symbol.iterator]() {",
+        "    yield* this.#salas;",
+        "  }",
+        "  get tamano() {",
+        "    return this.#salas.length;",
+        "  }",
+        "}",
+        "    return sala;",
+      ],
       hints: [
         P("Fluida: al final de `agregar`, `return this;`.", "Fluent: at the end of `agregar`, `return this;`."),
         P("El generador delega: `yield* this.#salas;`.", "The generator delegates: `yield* this.#salas;`."),
@@ -2016,6 +2199,15 @@ export const SYL_JS_COMMUNITY_7: Syllabus = {
       support_code:
         "class Don {\n  constructor() { if (new.target === Don) throw new Error('Don es abstracta'); }\n  poder() { throw new Error('poder() no implementado'); }\n}\nconst Bendecido = { bendicion() { return 10; } };",
       starter_code: "class Reliquia extends Don {\n}\n",
+      blocks: [
+        "class Reliquia extends Don {",
+        "  poder() {",
+        "    return 5 + this.bendicion();",
+        "  }",
+        "}",
+        "Object.assign(Reliquia.prototype, Bendecido);",
+        "Object.assign(Reliquia, Bendecido);",
+      ],
       hints: [
         P("En `poder()` usa el método del mixin: `return 5 + this.bendicion();`.", "In `poder()` use the mixin's method: `return 5 + this.bendicion();`."),
         P("Aplica el mixin al prototipo: `Object.assign(Reliquia.prototype, Bendecido);`.", "Apply the mixin to the prototype: `Object.assign(Reliquia.prototype, Bendecido);`."),
@@ -2085,6 +2277,14 @@ export const SYL_JS_COMMUNITY_7: Syllabus = {
       support_code:
         "class ObjetoMagico {\n  constructor(nombre) {\n    if (new.target === ObjetoMagico) throw new Error('ObjetoMagico es abstracta');\n    this.nombre = nombre;\n  }\n  usar() { throw new Error('usar() no implementado'); }\n  describir() { return `Don de Galadriel: ${this.nombre}`; }\n}",
       starter_code: "\nclass FrascoDeGaladriel extends ObjetoMagico {\n}\n",
+      blocks: [
+        "class FrascoDeGaladriel extends ObjetoMagico {",
+        "  usar() {",
+        "    return 'una luz en los lugares oscuros';",
+        "  }",
+        "}",
+        "    return 'luz';",
+      ],
       hints: [
         P("Sólo implementa `usar()`: `describir()` se hereda ya resuelto.", "Just implement `usar()`: `describir()` is inherited already solved."),
         P("Devuelve el texto exacto: `return 'una luz en los lugares oscuros';`.", "Return the exact text: `return 'una luz en los lugares oscuros';`."),
@@ -2117,6 +2317,13 @@ export const SYL_JS_COMMUNITY_7: Syllabus = {
       support_code:
         "const CamuflajeElfico = {\n  ocultar() { return 'te fundes con el bosque'; },\n};",
       starter_code: "\nclass CapaElfica {}\nclass Barca {}\n",
+      blocks: [
+        "class CapaElfica {}",
+        "class Barca {}",
+        "Object.assign(CapaElfica.prototype, CamuflajeElfico);",
+        "Object.assign(Barca.prototype, CamuflajeElfico);",
+        "Object.assign(CapaElfica, CamuflajeElfico);",
+      ],
       hints: [
         P("`Object.assign(CapaElfica.prototype, CamuflajeElfico);`.", "`Object.assign(CapaElfica.prototype, CamuflajeElfico);`."),
         P("Haz lo mismo con `Barca.prototype`. No copies el método a mano.", "Do the same with `Barca.prototype`. Don't hand-copy the method."),
@@ -2145,6 +2352,21 @@ export const SYL_JS_COMMUNITY_7: Syllabus = {
       support_code:
         "class Don {\n  constructor() { if (new.target === Don) throw new Error('Don es abstracta'); }\n  poder() { throw new Error('poder() no implementado'); }\n}\nconst Bendecido = { bendicion() { return 10; } };\nconst Cofre = {\n  poderTotal(dones) { return dones.reduce((s, d) => s + d.poder(), 0); },\n};",
       starter_code: "\nclass Frasco extends Don {\n  poder() { /* 5 + this.bendicion() */ }\n}\nclass Capa extends Don {\n  poder() { /* 2 + this.bendicion() */ }\n}\n",
+      blocks: [
+        "class Frasco extends Don {",
+        "  poder() {",
+        "    return 5 + this.bendicion();",
+        "  }",
+        "}",
+        "class Capa extends Don {",
+        "  poder() {",
+        "    return 2 + this.bendicion();",
+        "  }",
+        "}",
+        "Object.assign(Frasco.prototype, Bendecido);",
+        "Object.assign(Capa.prototype, Bendecido);",
+        "    return 5;",
+      ],
       hints: [
         P("Dentro de `poder()` usa el método del mixin: `return 5 + this.bendicion();`.", "Inside `poder()` use the mixin's method: `return 5 + this.bendicion();`."),
         P("Aplica el mixin: `Object.assign(Frasco.prototype, Bendecido);` (y Capa).", "Apply the mixin: `Object.assign(Frasco.prototype, Bendecido);` (and Capa)."),
@@ -2313,6 +2535,14 @@ export const SYL_JS_COMMUNITY_8: Syllabus = {
       support_code:
         "class Orco {\n  fuerza() { return 10; }\n}\nclass UrukHai {\n  fuerza() { return 30; }\n}",
       starter_code: "function crear(tipo) {\n}\n",
+      blocks: [
+        "function crear(tipo) {",
+        "  if (tipo === 'orco') return new Orco();",
+        "  if (tipo === 'uruk') return new UrukHai();",
+        "  throw new Error('tipo desconocido');",
+        "}",
+        "  return new Orco();",
+      ],
       hints: [
         P("Compara el tipo y devuelve la instancia; para lo desconocido, `throw new Error(...)`.", "Compare the type and return the instance; for the unknown, `throw new Error(...)`."),
         P("`if (tipo === 'orco') return new Orco();` … `throw new Error('tipo desconocido: ' + tipo);`.", "`if (tipo === 'orco') return new Orco();` … `throw new Error('tipo desconocido: ' + tipo);`."),
@@ -2380,6 +2610,16 @@ export const SYL_JS_COMMUNITY_8: Syllabus = {
       ),
       sut: "new Boromir()",
       starter_code: "class CorruptionError extends Error {}\n\nclass Boromir {\n  resistir(tentacion) {\n  }\n}\n",
+      blocks: [
+        "class CorruptionError extends Error {}",
+        "class Boromir {",
+        "  resistir(tentacion) {",
+        "    if (tentacion >= 90) throw new CorruptionError('El Anillo lo reclama');",
+        "    return 'resiste';",
+        "  }",
+        "}",
+        "    return 'sucumbe';",
+      ],
       hints: [
         P("Guard clause: `if (tentacion > 80) throw new CorruptionError('El Anillo lo reclama');`.", "Guard clause: `if (tentacion > 80) throw new CorruptionError('El Anillo lo reclama');`."),
         P("El mensaje se lee con `e.message`.", "The message is read with `e.message`."),
@@ -2418,6 +2658,16 @@ export const SYL_JS_COMMUNITY_8: Syllabus = {
       support_code:
         "class VisionError extends Error {}\n\nclass Solio {\n  mirar(conAnillo) {\n    if (conAnillo) throw new VisionError('El Ojo te ve');\n    return 'ves las tierras de Rohan';\n  }\n}",
       starter_code: "\nfunction observar(solio, conAnillo) {\n}\n",
+      blocks: [
+        "function observar(solio, conAnillo) {",
+        "  try {",
+        "    return solio.mirar(conAnillo);",
+        "  } catch (e) {",
+        "    return `te quitas el Anillo: ${e.message}`;",
+        "  }",
+        "}",
+        "  return solio.mirar(conAnillo);",
+      ],
       hints: [
         P("Envuelve la llamada: `try { return solio.mirar(conAnillo); } catch (e) { ... }`.", "Wrap the call: `try { return solio.mirar(conAnillo); } catch (e) { ... }`."),
         P("En el catch: `return 'te quitas el Anillo: ' + e.message;`.", "In the catch: `return 'te quitas el Anillo: ' + e.message;`."),
@@ -2444,6 +2694,16 @@ export const SYL_JS_COMMUNITY_8: Syllabus = {
       support_code:
         "class Orco {\n  resistenciaSol() { return 0; }\n}\nclass UrukHai {\n  resistenciaSol() { return 100; }\n}",
       starter_code: "\nclass FabricaDeHuestes {\n  static crear(tipo) {\n  }\n}\n",
+      blocks: [
+        "class FabricaDeHuestes {",
+        "  static crear(tipo) {",
+        "    if (tipo === 'orco') return new Orco();",
+        "    if (tipo === 'uruk') return new UrukHai();",
+        "    throw new Error('tipo desconocido');",
+        "  }",
+        "}",
+        "    return new Orco();",
+      ],
       hints: [
         P("Compara el tipo y devuelve la instancia: `if (tipo === 'orco') return new Orco();`.", "Compare the type and return the instance: `if (tipo === 'orco') return new Orco();`."),
         P("Para lo desconocido: `throw new Error(`Tipo desconocido: ${tipo}`);`.", "For the unknown: `throw new Error(`Tipo desconocido: ${tipo}`);`."),
