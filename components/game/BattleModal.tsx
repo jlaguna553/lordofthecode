@@ -286,7 +286,7 @@ export default function BattleModal({
                   <p className="mb-1 font-bold">
                     {acerto
                       ? "⚔ ¡Golpe certero!"
-                      : `✗ Fallas, y ${enemigo.name} te alcanza (−${enemigo.damage})`}
+                      : `✗ Fallas, y ${tc(enemigo.name)} te alcanza (−${enemigo.damage})`}
                   </p>
                   <p className="leading-relaxed opacity-90">
                     {tc(pregunta.explanation)}
@@ -298,7 +298,7 @@ export default function BattleModal({
             <div className="py-8 text-center">
               <p className="text-5xl">{ganado ? "⚔" : "☠"}</p>
               <h3 className="mt-3 text-xl font-bold text-slate-100">
-                {ganado ? `${enemigo.name} cae` : "Has caído"}
+                {ganado ? `${tc(enemigo.name)} cae` : "Has caído"}
               </h3>
               {ganado ? (
                 <p className="mt-2 text-sm text-emerald-300">
