@@ -100,6 +100,27 @@ export type SyllabusEntry =
 /** Temario de un capítulo: contenido técnico por node_id. */
 export type Syllabus = Record<string, SyllabusEntry>;
 
+/**
+ * Devuelve una copia del temario con las partes EJECUTABLES de ciertos retos
+ * sustituidas (support_code, starter_code, blocks, test_cases…). Se usa para las
+ * variantes por lenguaje de una aventura (p. ej. Patrones de Diseño en PHP):
+ * preguntas, pergaminos, títulos e instrucciones se conservan; sólo cambia el
+ * código y sus pruebas.
+ */
+export function applyChallengeOverrides(
+  syl: Syllabus,
+  overrides: Record<string, Partial<Omit<PooChallenge, "lang">>>,
+): Syllabus {
+  const out: Syllabus = { ...syl };
+  for (const [nodeId, ov] of Object.entries(overrides)) {
+    const entry = syl[nodeId];
+    if (entry && entry.kind === "challenge") {
+      out[nodeId] = { ...entry, challenge: { ...entry.challenge, ...ov } };
+    }
+  }
+  return out;
+}
+
 /** Funde una narrativa con un temario para producir el capítulo jugable. */
 export function buildChapter(
   narr: ChapterNarrative,

@@ -7,7 +7,7 @@ import type { LpcManifest } from "@/lib/lpc/types";
 import { buildPresetSheet, type PresetSheet } from "@/lib/game/sheet";
 import { CHAPTER_1 } from "@/data/chapters";
 import { DEFAULT_ADVENTURE, getAdventure } from "@/data/adventures";
-import { allChapters } from "@/lib/game/adventure";
+import { allChapters, chaptersFor } from "@/lib/game/adventure";
 import { migrateLegacyProgress } from "@/data/migrate";
 import {
   capituloDesbloqueado,
@@ -105,7 +105,12 @@ export default function GamePage() {
   // Aventura activa y sus capítulos (la campaña de la tecnología elegida).
   const adventure =
     getAdventure(adventureId) ?? getAdventure(DEFAULT_ADVENTURE)!;
-  const chapters = useMemo(() => allChapters(adventure), [adventure]);
+  // Lenguaje elegido en aventuras con variantes (p. ej. Patrones de Diseño).
+  const [variantLang, setVariantLang] = useState<string | undefined>(undefined);
+  const chapters = useMemo(
+    () => chaptersFor(adventure, variantLang),
+    [adventure, variantLang],
+  );
   const chapter =
     chapters.find((c) => c.chapter === currentChapter) ??
     chapters[0] ??
@@ -158,6 +163,7 @@ export default function GamePage() {
     }
 
     setAdventureId(advId);
+    setVariantLang(undefined); // vuelve a la variante por defecto al cambiar de aventura
     const saved = loadProgress(advId);
     setProgress(saved);
     const adv = getAdventure(advId)!;
@@ -688,6 +694,8 @@ export default function GamePage() {
           adventure={adventure}
           progress={progress}
           current={currentChapter}
+          variantLang={variantLang}
+          onVariant={setVariantLang}
           onSelect={handleSelectChapter}
           onReset={handleReset}
           onClose={() => setShowChapters(false)}

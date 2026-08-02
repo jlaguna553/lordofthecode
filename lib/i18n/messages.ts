@@ -86,6 +86,7 @@ export const MESSAGES = {
   "chapters.locked": { es: "🔒 Bloqueado", en: "🔒 Locked" },
   "chapters.completed": { es: "✦ Completado", en: "✦ Completed" },
   "chapters.runes": { es: "runas", en: "runes" },
+  "chapters.language": { es: "Lenguaje:", en: "Language:" },
   "chapters.savedHere": {
     es: "El progreso se guarda en este navegador.",
     en: "Progress is saved in this browser.",

@@ -5,13 +5,16 @@ import { getBook } from "@/lib/game/book";
 import type { Progress } from "@/lib/game/progress";
 import { completedOf } from "@/lib/game/progress";
 import { capituloDesbloqueado } from "@/lib/game/rpg";
-import { allChapters } from "@/lib/game/adventure";
+import { chaptersFor } from "@/lib/game/adventure";
 import { useLang } from "@/lib/i18n/context";
 
 interface Props {
   adventure: Adventure;
   progress: Progress;
   current: number;
+  /** Variante de lenguaje elegida (aventuras con `variants`, p. ej. Patrones). */
+  variantLang?: string;
+  onVariant?: (lang: string | undefined) => void;
   onSelect: (chapter: number) => void;
   onReset: () => void;
   onClose: () => void;
@@ -21,12 +24,16 @@ export default function ChapterSelect({
   adventure,
   progress,
   current,
+  variantLang,
+  onVariant,
   onSelect,
   onReset,
   onClose,
 }: Props) {
   const { t, tc } = useLang();
-  const chapters = allChapters(adventure);
+  const chapters = chaptersFor(adventure, variantLang);
+  const variants = adventure.variants ?? [];
+  const activeLang = variantLang ?? variants[0]?.lang;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
@@ -39,6 +46,31 @@ export default function ChapterSelect({
             <h2 className="text-xl font-bold text-slate-100">
               {t("header.chapters")}
             </h2>
+            {variants.length > 1 && (
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                <span className="text-[11px] text-slate-500">
+                  {t("chapters.language")}
+                </span>
+                {variants.map((v) => {
+                  const active = v.lang === activeLang;
+                  return (
+                    <button
+                      key={v.lang}
+                      onClick={() => onVariant?.(v.lang)}
+                      className={
+                        "rounded-md px-2 py-0.5 text-xs font-semibold ring-1 transition " +
+                        (active
+                          ? "bg-rose-500/20 text-rose-200 ring-rose-500/50"
+                          : "bg-slate-800 text-slate-300 ring-white/10 hover:bg-slate-700")
+                      }
+                    >
+                      {v.icon ? `${v.icon} ` : ""}
+                      {v.label}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
           <button
             onClick={onClose}

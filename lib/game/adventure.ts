@@ -34,6 +34,24 @@ export interface Adventure {
   status: "available" | "soon";
   /** Contenido agrupado por libro. Un libro sin capítulos simplemente no está. */
   books: AdventureBook[];
+  /**
+   * Variantes por lenguaje del MISMO contenido (mismos node_id y narrativa, sólo
+   * cambia el lenguaje de los retos). Para aventuras de arquitectura donde el
+   * jugador elige en qué lenguaje repasar los patrones. La primera es la de por
+   * defecto (debe coincidir con `books`).
+   */
+  variants?: AdventureVariant[];
+}
+
+/** Una variante por lenguaje de una aventura. */
+export interface AdventureVariant {
+  /** Identificador de lenguaje (p. ej. "typescript", "php"). */
+  lang: string;
+  /** Etiqueta corta para el selector (p. ej. "TypeScript"). */
+  label: string;
+  /** Emoji del lenguaje. */
+  icon?: string;
+  books: AdventureBook[];
 }
 
 /** Secciones del selector de aventuras. */
@@ -70,6 +88,19 @@ export const CATEGORIES: CategoryInfo[] = [
 /** Todos los capítulos de una aventura, aplanados en orden de libro. */
 export function allChapters(a: Adventure): Chapter[] {
   return a.books.flatMap((b) => b.chapters);
+}
+
+/**
+ * Capítulos de una aventura para la variante de lenguaje elegida. Si la aventura
+ * no tiene variantes, devuelve sus capítulos normales. Si `variantLang` no casa,
+ * usa la primera variante (la de por defecto).
+ */
+export function chaptersFor(a: Adventure, variantLang?: string): Chapter[] {
+  if (a.variants && a.variants.length > 0) {
+    const v = a.variants.find((x) => x.lang === variantLang) ?? a.variants[0];
+    return v.books.flatMap((b) => b.chapters);
+  }
+  return allChapters(a);
 }
 
 /** Cuántos capítulos jugables tiene una aventura. */

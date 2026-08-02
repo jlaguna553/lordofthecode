@@ -9,7 +9,17 @@ import {
   CHAPTER_LOGICA,
   CHAPTER_CALENTAMIENTO,
 } from "./chapters";
-import { buildChapter } from "@/lib/game/narrative";
+import { buildChapter, applyChallengeOverrides } from "@/lib/game/narrative";
+import {
+  DP_PHP_1,
+  DP_PHP_2,
+  DP_PHP_3,
+  DP_PHP_4,
+  DP_PHP_5,
+  DP_PHP_6,
+  DP_PHP_7,
+  DP_PHP_8,
+} from "./syllabus/design-patterns-php";
 import {
   NARR_COMMUNITY_1,
   NARR_COMMUNITY_2,
@@ -211,6 +221,15 @@ const DP_5 = buildChapter(NARR_COMMUNITY_5, SYL_DP_5, "typescript");
 const DP_6 = buildChapter(NARR_COMMUNITY_6, SYL_DP_6, "typescript");
 const DP_7 = buildChapter(NARR_COMMUNITY_7, SYL_DP_7, "typescript");
 const DP_8 = buildChapter(NARR_COMMUNITY_8, SYL_DP_8, "typescript");
+// Variante PHP: mismos node_id y narrativa, retos reimplementados en PHP.
+const DPP_1 = buildChapter(NARR_COMMUNITY_1, applyChallengeOverrides(SYL_DP_1, DP_PHP_1), "php");
+const DPP_2 = buildChapter(NARR_COMMUNITY_2, applyChallengeOverrides(SYL_DP_2, DP_PHP_2), "php");
+const DPP_3 = buildChapter(NARR_COMMUNITY_3, applyChallengeOverrides(SYL_DP_3, DP_PHP_3), "php");
+const DPP_4 = buildChapter(NARR_COMMUNITY_4, applyChallengeOverrides(SYL_DP_4, DP_PHP_4), "php");
+const DPP_5 = buildChapter(NARR_COMMUNITY_5, applyChallengeOverrides(SYL_DP_5, DP_PHP_5), "php");
+const DPP_6 = buildChapter(NARR_COMMUNITY_6, applyChallengeOverrides(SYL_DP_6, DP_PHP_6), "php");
+const DPP_7 = buildChapter(NARR_COMMUNITY_7, applyChallengeOverrides(SYL_DP_7, DP_PHP_7), "php");
+const DPP_8 = buildChapter(NARR_COMMUNITY_8, applyChallengeOverrides(SYL_DP_8, DP_PHP_8), "php");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -554,6 +573,30 @@ export const ADVENTURES: Adventure[] = [
       {
         book: BOOK_FELLOWSHIP,
         chapters: [DP_1, DP_2, DP_3, DP_4, DP_5, DP_6, DP_7, DP_8],
+      },
+    ],
+    variants: [
+      {
+        lang: "typescript",
+        label: "TypeScript",
+        icon: "🔷",
+        books: [
+          {
+            book: BOOK_FELLOWSHIP,
+            chapters: [DP_1, DP_2, DP_3, DP_4, DP_5, DP_6, DP_7, DP_8],
+          },
+        ],
+      },
+      {
+        lang: "php",
+        label: "PHP",
+        icon: "🐘",
+        books: [
+          {
+            book: BOOK_FELLOWSHIP,
+            chapters: [DPP_1, DPP_2, DPP_3, DPP_4, DPP_5, DPP_6, DPP_7, DPP_8],
+          },
+        ],
       },
     ],
   },
