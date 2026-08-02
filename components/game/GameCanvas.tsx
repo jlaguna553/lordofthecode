@@ -10,6 +10,8 @@ interface Props {
   frodoUrl: string;
   cols: number;
   frameSize: number;
+  /** Héroe que controla el jugador (el protagonista activo). */
+  heroId?: string;
   /** Spritesheets de los PNJ que habitan los nodos, por spriteId. */
   nodeSheets?: Record<string, { url: string; cols: number; frameSize: number }>;
   completed: Set<string>;
@@ -55,6 +57,7 @@ export default function GameCanvas({
   frodoUrl,
   cols,
   frameSize,
+  heroId = "frodo",
   nodeSheets = {},
   completed,
   lockedNodes = {},
@@ -563,8 +566,14 @@ export default function GameCanvas({
           // El jugador choca con troncos, rocas y el estanque.
           this.physics.add.collider(this.player, blockers);
 
-          // --- La Comunidad: compañeros en fila tras Frodo ---
-          for (const id of chapter.companions ?? []) {
+          // --- La Comunidad: compañeros en fila tras el protagonista ---
+          // La comitiva es {Frodo} ∪ compañeros del capítulo. Quien controla el
+          // jugador (heroId) NO se duplica como acompañante; si el protagonista
+          // no es Frodo, Frodo pasa a seguirlo. Sin repetidos.
+          const seguidores = ["frodo", ...(chapter.companions ?? [])].filter(
+            (id, i, arr) => id !== heroId && arr.indexOf(id) === i,
+          );
+          for (const id of seguidores) {
             const s = nodeSheets[id];
             if (!s) continue;
             const tex = `npc-${id}`;
@@ -760,12 +769,17 @@ export default function GameCanvas({
               const necesario = (this.companions.length + 1) * 7 + 5;
               if (this.trail.length > necesario) this.trail.length = necesario;
             }
+            const jugadorSeMueve = dir !== null;
             this.companions.forEach((c, i) => {
               const punto = this.trail[(i + 1) * 7];
               if (!punto) {
-                // Aún no hay rastro suficiente: espera detrás del jugador.
+                // Aún no hay rastro suficiente: camina en fila tras el jugador,
+                // animándose mientras el protagonista se mueve.
                 c.sprite.setPosition(p.x, p.y + 6 * (i + 1));
                 c.sprite.setDepth(c.sprite.y + frameSize * 0.45);
+                if (jugadorSeMueve)
+                  c.sprite.anims.play(`walk-${this.lastDir}-npc-${c.id}`, true);
+                else c.sprite.anims.stop();
                 return;
               }
               const seMueve =
@@ -864,7 +878,7 @@ export default function GameCanvas({
       (game as any)?.destroy(true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chapter, frodoUrl, cols, frameSize, nodeSheets, lang]);
+  }, [chapter, frodoUrl, cols, frameSize, heroId, nodeSheets, lang]);
 
   // ---- Joystick analógico ----
   const RADIO = 46; // recorrido máximo del pomo, en píxeles

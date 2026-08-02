@@ -186,6 +186,7 @@ export default function GamePage() {
         // Sprites necesarios: PNJ de nodos + ambientales + la Comunidad.
         const ids = [
           ...new Set([
+            "frodo", // el protagonista por defecto: puede ir de acompañante
             ...chapter.nodes
               .map((n) => n.spriteId)
               .filter((id): id is string => Boolean(id)),
@@ -552,6 +553,7 @@ export default function GamePage() {
           frodoUrl={frodo.url}
           cols={frodo.cols}
           frameSize={frodo.frameSize}
+          heroId={heroId}
           nodeSheets={nodeSheets}
           completed={completed}
           lockedNodes={bloqueados}
