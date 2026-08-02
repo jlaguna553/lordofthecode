@@ -90,6 +90,7 @@ import {
   SYL_DATA_7,
   SYL_DATA_8,
 } from "./syllabus/data-python";
+import { SYL_MPL_1 } from "./syllabus/matplotlib-python";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -157,6 +158,7 @@ const DATA_5 = buildChapter(NARR_COMMUNITY_5, SYL_DATA_5, "python");
 const DATA_6 = buildChapter(NARR_COMMUNITY_6, SYL_DATA_6, "python");
 const DATA_7 = buildChapter(NARR_COMMUNITY_7, SYL_DATA_7, "python");
 const DATA_8 = buildChapter(NARR_COMMUNITY_8, SYL_DATA_8, "python");
+const MPL_1 = buildChapter(NARR_COMMUNITY_1, SYL_MPL_1, "python");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -607,6 +609,23 @@ export const ADVENTURES: Adventure[] = [
         ],
       },
     ],
+  },
+  {
+    id: "matplotlib-python",
+    category: "data",
+    tech: "Matplotlib",
+    icon: "📈",
+    accent: "cyan",
+    status: "available",
+    name: {
+      es: "Visualización con Matplotlib",
+      en: "Visualization with Matplotlib",
+    },
+    blurb: {
+      es: "Visualización de datos con Python: figuras y ejes, líneas, barras, estilo y anotaciones con Matplotlib.",
+      en: "Data visualization with Python: figures and axes, lines, bars, styling and annotations with Matplotlib.",
+    },
+    books: [{ book: BOOK_FELLOWSHIP, chapters: [MPL_1] }],
   },
 ];
 
