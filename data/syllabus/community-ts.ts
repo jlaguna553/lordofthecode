@@ -178,6 +178,13 @@ export const SYL_TS_COMMUNITY_1: Syllabus = {
         "Write `resistir(nombre: string, tentacion: number): string`:\n• if `tentacion` is 100 or more, return `'{nombre} sucumbe'`,\n• otherwise, return `'{nombre} resiste con {100 - tentacion} de voluntad'`.\n\nExample: `resistir('Frodo', 30)` → `'Frodo resiste con 70 de voluntad'`.",
       ),
       starter_code: "function resistir(nombre: string, tentacion: number): string {\n}\n",
+      blocks: [
+        "function resistir(nombre: string, tentacion: number): string {",
+        "  if (tentacion >= 100) return `${nombre} sucumbe`;",
+        "  return `${nombre} resiste con ${100 - tentacion} de voluntad`;",
+        "}",
+        "  if (tentacion > 100) return `${nombre} sucumbe`;",
+      ],
       hints: [
         P("Anota los parámetros y el retorno: `(nombre: string, tentacion: number): string`.", "Annotate the params and return: `(nombre: string, tentacion: number): string`."),
         P("Interpola con template strings: `` `${nombre} resiste con ${100 - tentacion} de voluntad` ``.", "Interpolate with template strings: `` `${nombre} resiste con ${100 - tentacion} de voluntad` ``."),
@@ -491,6 +498,13 @@ export const SYL_TS_COMMUNITY_2: Syllabus = {
         "Write `resumen(danios: number[]): [number, number]` returning a TUPLE with:\n• how many damages there are,\n• the MAXIMUM damage (0 if the list is empty).\n\nExample: `resumen([3, 7, 2])` → `[3, 7]`.",
       ),
       starter_code: "function resumen(danios: number[]): [number, number] {\n}\n",
+      blocks: [
+        "function resumen(danios: number[]): [number, number] {",
+        "  const max = danios.length === 0 ? 0 : Math.max(...danios);",
+        "  return [danios.length, max];",
+        "}",
+        "  return [max, danios.length];",
+      ],
       hints: [
         P("La longitud es `danios.length`; el máximo, un bucle que guarde el mayor.", "The length is `danios.length`; the max, a loop keeping the largest."),
         P("Devuelve la tupla: `return [danios.length, max];`.", "Return the tuple: `return [danios.length, max];`."),
@@ -811,6 +825,12 @@ export const SYL_TS_COMMUNITY_3: Syllabus = {
       ),
       starter_code:
         "interface Guerrero {\n  nombre: string;\n  poder: number;\n}\n\nfunction nombresFuertes(guerreros: Guerrero[], min: number): string[] {\n}\n",
+      blocks: [
+        "function nombresFuertes(guerreros: Guerrero[], min: number): string[] {",
+        "  return guerreros.filter((g) => g.poder >= min).map((g) => g.nombre);",
+        "}",
+        "  return guerreros.filter((g) => g.poder >= min);",
+      ],
       hints: [
         P("La interfaz describe la forma del objeto; el array es `Guerrero[]`.", "The interface describes the object's shape; the array is `Guerrero[]`."),
         P("Filtra y transforma: `.filter(g => g.poder >= min).map(g => g.nombre)`.", "Filter and transform: `.filter(g => g.poder >= min).map(g => g.nombre)`."),
@@ -880,6 +900,12 @@ export const SYL_TS_COMMUNITY_3: Syllabus = {
         "Declare `interface Montaraz { nombre: string; oficio: string }` and write `crearMontaraz(nombre: string): Montaraz` returning an object with that `nombre` and `oficio` always `'montaraz'`.\n\nExample: `crearMontaraz('Trancos')` → `{ nombre: 'Trancos', oficio: 'montaraz' }`.",
       ),
       starter_code: "interface Montaraz {\n  nombre: string;\n  oficio: string;\n}\n\nfunction crearMontaraz(nombre: string): Montaraz {\n}\n",
+      blocks: [
+        "function crearMontaraz(nombre: string): Montaraz {",
+        "  return { nombre, oficio: 'montaraz' };",
+        "}",
+        "  return { nombre, oficio: nombre };",
+      ],
       hints: [
         P("Devuelve un objeto literal con los dos campos: `{ nombre, oficio: 'montaraz' }`.", "Return an object literal with both fields: `{ nombre, oficio: 'montaraz' }`."),
         P("`{ nombre }` es abreviatura de `{ nombre: nombre }`.", "`{ nombre }` is shorthand for `{ nombre: nombre }`."),
@@ -905,6 +931,12 @@ export const SYL_TS_COMMUNITY_3: Syllabus = {
         "With `interface Arma { nombre: string; danio: number; encantada?: boolean }`, write `describir(a: Arma): string` returning `'{nombre}: {danio}'`, and if `encantada` is `true`, append ` (encantada)`.\n\nExamples: `describir({ nombre: 'Daga', danio: 5 })` → `'Daga: 5'`; with `encantada: true` → `'Hoja: 8 (encantada)'`.",
       ),
       starter_code: "interface Arma {\n  nombre: string;\n  danio: number;\n  encantada?: boolean;\n}\n\nfunction describir(a: Arma): string {\n}\n",
+      blocks: [
+        "function describir(a: Arma): string {",
+        "  return a.encantada ? `${a.nombre}: ${a.danio} (encantada)` : `${a.nombre}: ${a.danio}`;",
+        "}",
+        "  return `${a.nombre}: ${a.danio}`;",
+      ],
       hints: [
         P("Base: `` `${a.nombre}: ${a.danio}` ``.", "Base: `` `${a.nombre}: ${a.danio}` ``."),
         P("`a.encantada` puede ser undefined: `a.encantada ? ... : ...` lo cubre.", "`a.encantada` may be undefined: `a.encantada ? ... : ...` covers it."),
@@ -930,6 +962,12 @@ export const SYL_TS_COMMUNITY_3: Syllabus = {
         "With `interface Jinete { nombre: string; fuerza: number }`, write `masFuerte(jinetes: Jinete[]): string` returning the `nombre` of the rider with the highest `fuerza`. The list has at least one.\n\nExample: `masFuerte([{ nombre: 'A', fuerza: 3 }, { nombre: 'B', fuerza: 9 }])` → `'B'`.",
       ),
       starter_code: "interface Jinete {\n  nombre: string;\n  fuerza: number;\n}\n\nfunction masFuerte(jinetes: Jinete[]): string {\n}\n",
+      blocks: [
+        "function masFuerte(jinetes: Jinete[]): string {",
+        "  return jinetes.reduce((a, b) => (b.fuerza > a.fuerza ? b : a)).nombre;",
+        "}",
+        "  return jinetes.reduce((a, b) => (b.fuerza < a.fuerza ? b : a)).nombre;",
+      ],
       hints: [
         P("`reduce` compara pares: `(a, b) => b.fuerza > a.fuerza ? b : a`.", "`reduce` compares pairs: `(a, b) => b.fuerza > a.fuerza ? b : a`."),
         P("Al final, toma su `.nombre`.", "At the end, take its `.nombre`."),
@@ -1106,6 +1144,14 @@ export const SYL_TS_COMMUNITY_4: Syllabus = {
       ),
       starter_code:
         "type Estado = 'calmo' | 'crecido' | 'desbordado';\n\nfunction estado(caudal: number): Estado {\n}\n",
+      blocks: [
+        "function estado(caudal: number): Estado {",
+        "  if (caudal < 50) return 'calmo';",
+        "  if (caudal < 150) return 'crecido';",
+        "  return 'desbordado';",
+        "}",
+        "  if (caudal < 50) return 'crecido';",
+      ],
       hints: [
         P("El tipo de retorno `Estado` obliga a devolver uno de los tres literales exactos.", "The return type `Estado` forces you to return one of the three exact literals."),
         P("Dos `if` en cascada: `< 30` → calmo, `< 70` → crecido, y el resto desbordado.", "Two cascading `if`s: `< 30` → calm, `< 70` → risen, and the rest overflowing."),
@@ -1176,6 +1222,14 @@ export const SYL_TS_COMMUNITY_4: Syllabus = {
         "Declare `type Marcha = 'paso' | 'trote' | 'galope'` and write `galopar(v: number): Marcha` returning `'paso'` if `v < 30`, `'trote'` if `v < 70`, and `'galope'` otherwise.\n\nExample: `galopar(50)` → `'trote'`.",
       ),
       starter_code: "type Marcha = 'paso' | 'trote' | 'galope';\n\nfunction galopar(v: number): Marcha {\n}\n",
+      blocks: [
+        "function galopar(v: number): Marcha {",
+        "  if (v < 50) return 'paso';",
+        "  if (v < 150) return 'trote';",
+        "  return 'galope';",
+        "}",
+        "  if (v < 50) return 'trote';",
+      ],
       hints: [
         P("Un ternario encadenado: `v < 30 ? 'paso' : v < 70 ? 'trote' : 'galope'`.", "A chained ternary: `v < 30 ? 'paso' : v < 70 ? 'trote' : 'galope'`."),
         P("Sólo puedes devolver una de las tres cadenas del tipo Marcha.", "You can only return one of the three strings of the Marcha type."),
@@ -1201,6 +1255,16 @@ export const SYL_TS_COMMUNITY_4: Syllabus = {
         "Declare `enum Rango { Jinete = 1, Capitan = 3 }` and write `contar(rangos: Rango[]): number` returning the SUM of their values.\n\nExample: `contar([Rango.Jinete, Rango.Capitan])` → `4`.",
       ),
       starter_code: "enum Rango { Jinete = 1, Capitan = 3 }\n\nfunction contar(rangos: Rango[]): number {\n}\n",
+      blocks: [
+        "enum Rango {",
+        "  Jinete = 1,",
+        "  Capitan = 3,",
+        "}",
+        "function contar(rangos: Rango[]): number {",
+        "  return rangos.reduce((s, r) => s + r, 0);",
+        "}",
+        "  return rangos.length;",
+      ],
       hints: [
         P("Los valores del enum son números: `rangos.reduce((a, r) => a + r, 0)`.", "The enum values are numbers: `rangos.reduce((a, r) => a + r, 0)`."),
         P("`Rango.Jinete` vale 1 y `Rango.Capitan` vale 3.", "`Rango.Jinete` is 1 and `Rango.Capitan` is 3."),
@@ -1226,6 +1290,12 @@ export const SYL_TS_COMMUNITY_4: Syllabus = {
         "Write `esVadeable(estado: 'calmo' | 'crecido' | 'desbordado'): boolean` returning `true` ONLY if the state is `'calmo'`.\n\nExample: `esVadeable('calmo')` → `true`; `esVadeable('crecido')` → `false`.",
       ),
       starter_code: "function esVadeable(estado: 'calmo' | 'crecido' | 'desbordado'): boolean {\n}\n",
+      blocks: [
+        "function esVadeable(estado: 'calmo' | 'crecido' | 'desbordado'): boolean {",
+        "  return estado === 'calmo';",
+        "}",
+        "  return estado !== 'calmo';",
+      ],
       hints: [
         P("Una comparación ya es booleana: `return estado === 'calmo';`.", "A comparison is already boolean: `return estado === 'calmo';`."),
         P("El parámetro sólo acepta una de las tres cadenas.", "The parameter only accepts one of the three strings."),
@@ -1251,6 +1321,19 @@ export const SYL_TS_COMMUNITY_4: Syllabus = {
         "Declare `enum Vado { Calmo = 'calmo', Crecido = 'crecido', Desbordado = 'desbordado' }` and write `segunCaudal(caudal: number): Vado` returning `Vado.Calmo` if `caudal < 30`, `Vado.Crecido` if `< 70`, and `Vado.Desbordado` otherwise.\n\nExample: `segunCaudal(10)` → `Vado.Calmo` (value `'calmo'`).",
       ),
       starter_code: "enum Vado {\n  Calmo = 'calmo',\n  Crecido = 'crecido',\n  Desbordado = 'desbordado',\n}\n\nfunction segunCaudal(caudal: number): Vado {\n}\n",
+      blocks: [
+        "enum Vado {",
+        "  Calmo = 'calmo',",
+        "  Crecido = 'crecido',",
+        "  Desbordado = 'desbordado',",
+        "}",
+        "function segunCaudal(caudal: number): Vado {",
+        "  if (caudal < 50) return Vado.Calmo;",
+        "  if (caudal < 150) return Vado.Crecido;",
+        "  return Vado.Desbordado;",
+        "}",
+        "  return Vado.Calmo;",
+      ],
       hints: [
         P("Ternario encadenado devolviendo miembros del enum: `Vado.Calmo`, `Vado.Crecido`, `Vado.Desbordado`.", "Chained ternary returning enum members: `Vado.Calmo`, `Vado.Crecido`, `Vado.Desbordado`."),
         P("Un enum de string es igual a su valor: `Vado.Calmo === 'calmo'`.", "A string enum equals its value: `Vado.Calmo === 'calmo'`."),
@@ -1431,6 +1514,22 @@ export const SYL_TS_COMMUNITY_5: Syllabus = {
       ),
       starter_code:
         "class Espada {\n  private filo: number;\n  constructor(filo: number) {\n  }\n  getFilo(): number {\n  }\n  golpear(objetivo: number): number {\n  }\n}\n",
+      blocks: [
+        "class Espada {",
+        "  private filo: number;",
+        "  constructor(filo: number) {",
+        "    if (filo < 0) throw new Error('filo negativo');",
+        "    this.filo = filo;",
+        "  }",
+        "  getFilo(): number {",
+        "    return this.filo;",
+        "  }",
+        "  golpear(objetivo: number): number {",
+        "    return Math.max(0, objetivo - this.filo);",
+        "  }",
+        "}",
+        "    return Math.min(0, objetivo - this.filo);",
+      ],
       hints: [
         P("Guard clause en el constructor: `if (filo < 0) throw new Error('...');`.", "Guard clause in the constructor: `if (filo < 0) throw new Error('...');`."),
         P("`golpear` no baja de 0: `Math.max(0, objetivo - this.filo)`.", "`golpear` doesn't go below 0: `Math.max(0, objetivo - this.filo)`."),
@@ -1502,6 +1601,15 @@ export const SYL_TS_COMMUNITY_5: Syllabus = {
         "Create `class Provision` whose constructor uses parameter properties `public readonly nombre: string` and `public readonly peso: number` (without writing `this.x = x`).\n\nExample: `new Provision('lembas', 5).nombre` → `'lembas'`.",
       ),
       starter_code: "class Provision {\n  constructor(\n  ) {}\n}\n",
+      blocks: [
+        "class Provision {",
+        "  constructor(",
+        "    public readonly nombre: string,",
+        "    public readonly peso: number,",
+        "  ) {}",
+        "}",
+        "    private readonly nombre: string,",
+      ],
       hints: [
         P("Pon los modificadores en los parámetros: `constructor(public readonly nombre: string, public readonly peso: number) {}`.", "Put the modifiers on the parameters: `constructor(public readonly nombre: string, public readonly peso: number) {}`."),
         P("No necesitas cuerpo en el constructor: TS crea y asigna los campos.", "No constructor body needed: TS creates and assigns the fields."),
@@ -1527,6 +1635,22 @@ export const SYL_TS_COMMUNITY_5: Syllabus = {
         "Create `class ResistenciaComunidad` with `static readonly UMBRAL = 20` and a field `private calor: number = 100`. Add:\n• `getCalor(): number`,\n• `enfriar(g: number): void` that subtracts without going below 0 (`Math.max`),\n• `estaCongelada(): boolean` returning true when warmth is ≤ UMBRAL.",
       ),
       starter_code: "class ResistenciaComunidad {\n  static readonly UMBRAL = 20;\n  private calor: number = 100;\n\n  getCalor(): number {\n  }\n  enfriar(g: number): void {\n  }\n  estaCongelada(): boolean {\n  }\n}\n",
+      blocks: [
+        "class ResistenciaComunidad {",
+        "  static readonly UMBRAL = 20;",
+        "  private calor: number = 100;",
+        "  getCalor(): number {",
+        "    return this.calor;",
+        "  }",
+        "  enfriar(g: number): void {",
+        "    this.calor = Math.max(0, this.calor - g);",
+        "  }",
+        "  estaCongelada(): boolean {",
+        "    return this.calor <= ResistenciaComunidad.UMBRAL;",
+        "  }",
+        "}",
+        "    this.calor -= g;",
+      ],
       hints: [
         P("Resta acotada: `this.calor = Math.max(0, this.calor - g);`.", "Clamped subtraction: `this.calor = Math.max(0, this.calor - g);`."),
         P("La constante se lee por la clase: `this.calor <= ResistenciaComunidad.UMBRAL`.", "Read the constant via the class: `this.calor <= ResistenciaComunidad.UMBRAL`."),
@@ -1554,6 +1678,17 @@ export const SYL_TS_COMMUNITY_5: Syllabus = {
         "Create `class Temperatura` with `public readonly grados: number` (parameter property). The constructor must throw an `Error` if `grados` is outside -40..40. Add `conMas(g: number): Temperatura` returning a NEW INSTANCE with the added degrees.\n\nExample: `new Temperatura(-10).conMas(-5).grados` → `-15`.",
       ),
       starter_code: "class Temperatura {\n  constructor(public readonly grados: number) {\n  }\n  conMas(g: number): Temperatura {\n  }\n}\n",
+      blocks: [
+        "class Temperatura {",
+        "  constructor(public readonly grados: number) {",
+        "    if (grados < -50) throw new Error('demasiado fria');",
+        "  }",
+        "  conMas(g: number): Temperatura {",
+        "    return new Temperatura(this.grados + g);",
+        "  }",
+        "}",
+        "    return this;",
+      ],
       hints: [
         P("Valida en el constructor: `if (grados < -40 || grados > 40) throw new Error('rango');`.", "Validate in the constructor: `if (grados < -40 || grados > 40) throw new Error('rango');`."),
         P("`conMas` no muta: `return new Temperatura(this.grados + g);`.", "`conMas` doesn't mutate: `return new Temperatura(this.grados + g);`."),
@@ -1734,6 +1869,12 @@ export const SYL_TS_COMMUNITY_6: Syllabus = {
         "Write `mapear<T, U>(xs: T[], fn: (x: T) => U): U[]` applying `fn` to each element and returning the array of results. With two type parameters, it works with any input and output.\n\nExample: `mapear([1, 2, 3], (n) => n * 2)` → `[2, 4, 6]`.",
       ),
       starter_code: "function mapear<T, U>(xs: T[], fn: (x: T) => U): U[] {\n}\n",
+      blocks: [
+        "function mapear<T, U>(xs: T[], fn: (x: T) => U): U[] {",
+        "  return xs.map(fn);",
+        "}",
+        "  return xs;",
+      ],
       hints: [
         P("`T` es el tipo de entrada y `U` el de salida; el resultado es `U[]`.", "`T` is the input type and `U` the output; the result is `U[]`."),
         P("El cuerpo es una línea: `return xs.map(fn);`.", "The body is one line: `return xs.map(fn);`."),
@@ -1803,6 +1944,12 @@ export const SYL_TS_COMMUNITY_6: Syllabus = {
         "Write `primero<T>(xs: T[]): T` returning the FIRST element of the array, preserving its type. The list has at least one.\n\nExample: `primero([1, 2, 3])` → `1`; `primero(['a', 'b'])` → `'a'`.",
       ),
       starter_code: "function primero<T>(xs: T[]): T {\n}\n",
+      blocks: [
+        "function primero<T>(xs: T[]): T {",
+        "  return xs[0];",
+        "}",
+        "  return xs[1];",
+      ],
       hints: [
         P("El primer elemento es `xs[0]`.", "The first element is `xs[0]`."),
         P("`<T>` liga la entrada `T[]` con la salida `T`: no hace falta anotar el tipo al llamar.", "`<T>` links the input `T[]` with the output `T`: no need to annotate the type when calling."),
@@ -1828,6 +1975,12 @@ export const SYL_TS_COMMUNITY_6: Syllabus = {
         "Write `mapear<T, U>(xs: T[], fn: (x: T) => U): U[]` applying `fn` to each element and returning the array of results (like `Array.map`).\n\nExample: `mapear([1, 2], (n) => n * 2)` → `[2, 4]`.",
       ),
       starter_code: "function mapear<T, U>(xs: T[], fn: (x: T) => U): U[] {\n}\n",
+      blocks: [
+        "function mapear<T, U>(xs: T[], fn: (x: T) => U): U[] {",
+        "  return xs.map(fn);",
+        "}",
+        "  return xs.forEach(fn);",
+      ],
       hints: [
         P("Es `xs.map(fn)`.", "It's `xs.map(fn)`."),
         P("T es el tipo de entrada y U el de salida; TS los deduce del uso.", "T is the input type and U the output; TS infers both from usage."),
@@ -1853,6 +2006,12 @@ export const SYL_TS_COMMUNITY_6: Syllabus = {
         "Write `elMasFuerte<T extends { fuerza: number }>(xs: T[]): T` returning the element with the highest `fuerza`, preserving its concrete type. The list has at least one.\n\nExample: `elMasFuerte([{ nombre: 'A', fuerza: 3 }, { nombre: 'B', fuerza: 9 }]).nombre` → `'B'`.",
       ),
       starter_code: "function elMasFuerte<T extends { fuerza: number }>(xs: T[]): T {\n}\n",
+      blocks: [
+        "function elMasFuerte<T extends { fuerza: number }>(xs: T[]): T {",
+        "  return xs.reduce((a, b) => (b.fuerza > a.fuerza ? b : a));",
+        "}",
+        "  return xs.reduce((a, b) => (b.fuerza < a.fuerza ? b : a));",
+      ],
       hints: [
         P("`xs.reduce((a, b) => b.fuerza > a.fuerza ? b : a)` sin valor inicial.", "`xs.reduce((a, b) => b.fuerza > a.fuerza ? b : a)` with no initial value."),
         P("La restricción `extends { fuerza: number }` te deja leer `.fuerza` con seguridad.", "The constraint `extends { fuerza: number }` lets you safely read `.fuerza`."),
@@ -1878,6 +2037,19 @@ export const SYL_TS_COMMUNITY_6: Syllabus = {
         "Create `class Cofre<T>` with a private array `items: T[]`:\n• `guardar(x: T): this` — adds and returns `this` (fluent),\n• `todo(): T[]` — returns everything stored.\n\nExample: `new Cofre<string>().guardar('a').guardar('b').todo()` → `['a', 'b']`.",
       ),
       starter_code: "class Cofre<T> {\n  private items: T[] = [];\n\n  guardar(x: T): this {\n  }\n  todo(): T[] {\n  }\n}\n",
+      blocks: [
+        "class Cofre<T> {",
+        "  private items: T[] = [];",
+        "  guardar(x: T): this {",
+        "    this.items.push(x);",
+        "    return this;",
+        "  }",
+        "  todo(): T[] {",
+        "    return this.items;",
+        "  }",
+        "}",
+        "    return x;",
+      ],
       hints: [
         P("`this.items.push(x); return this;` hace la interfaz fluida.", "`this.items.push(x); return this;` makes the fluent interface."),
         P("`todo()` devuelve `this.items`.", "`todo()` returns `this.items`."),
@@ -2059,6 +2231,12 @@ export const SYL_TS_COMMUNITY_7: Syllabus = {
       ),
       starter_code:
         "type ConNombre = { nombre: string };\ntype ConPoder = { poder: number };\n\nfunction crearGuerrero(nombre: string, poder: number): ConNombre & ConPoder {\n}\n",
+      blocks: [
+        "function crearGuerrero(nombre: string, poder: number): ConNombre & ConPoder {",
+        "  return { nombre, poder };",
+        "}",
+        "  return { nombre };",
+      ],
       hints: [
         P("La intersección `A & B` exige TODAS las propiedades de ambos.", "The intersection `A & B` requires ALL properties of both."),
         P("Devuelve un objeto con las dos: `return { nombre, poder };`.", "Return an object with both: `return { nombre, poder };`."),
@@ -2127,6 +2305,12 @@ export const SYL_TS_COMMUNITY_7: Syllabus = {
         "With `type Don = { nombre: string }` and `type Brillo = { luz: number }`, write `forjar(nombre: string, luz: number): Don & Brillo` returning an object with both properties.\n\nExample: `forjar('Frasco', 5)` → `{ nombre: 'Frasco', luz: 5 }`.",
       ),
       starter_code: "type Don = { nombre: string };\ntype Brillo = { luz: number };\n\nfunction forjar(nombre: string, luz: number): Don & Brillo {\n}\n",
+      blocks: [
+        "function forjar(nombre: string, luz: number): Don & Brillo {",
+        "  return { nombre, luz };",
+        "}",
+        "  return { nombre };",
+      ],
       hints: [
         P("El objeto debe tener AMBAS propiedades: `{ nombre, luz }`.", "The object must have BOTH properties: `{ nombre, luz }`."),
         P("`Don & Brillo` exige todo lo de Don y todo lo de Brillo.", "`Don & Brillo` requires everything from Don and everything from Brillo."),
@@ -2152,6 +2336,12 @@ export const SYL_TS_COMMUNITY_7: Syllabus = {
         "With `interface Config { camuflaje: boolean; peso: number }`, write `conValores(base: Config, cambios: Partial<Config>): Config` returning a copy of `base` with the `cambios` applied on top.\n\nExample: `conValores({ camuflaje: false, peso: 1 }, { camuflaje: true })` → `{ camuflaje: true, peso: 1 }`.",
       ),
       starter_code: "interface Config { camuflaje: boolean; peso: number }\n\nfunction conValores(base: Config, cambios: Partial<Config>): Config {\n}\n",
+      blocks: [
+        "function conValores(base: Config, cambios: Partial<Config>): Config {",
+        "  return { ...base, ...cambios };",
+        "}",
+        "  return { ...cambios, ...base };",
+      ],
       hints: [
         P("El spread combina, y el segundo pisa al primero: `{ ...base, ...cambios }`.", "Spread merges, and the second overrides the first: `{ ...base, ...cambios }`."),
         P("`Partial<Config>` hace opcionales todos los campos de `cambios`.", "`Partial<Config>` makes all fields of `cambios` optional."),
@@ -2177,6 +2367,14 @@ export const SYL_TS_COMMUNITY_7: Syllabus = {
         "Write `inventario(dones: string[]): Record<string, boolean>` returning an object with each name in the list as a key and `true` as its value.\n\nExample: `inventario(['frasco', 'capa'])` → `{ frasco: true, capa: true }`.",
       ),
       starter_code: "function inventario(dones: string[]): Record<string, boolean> {\n  const r: Record<string, boolean> = {};\n  return r;\n}\n",
+      blocks: [
+        "function inventario(dones: string[]): Record<string, boolean> {",
+        "  const r: Record<string, boolean> = {};",
+        "  for (const d of dones) r[d] = true;",
+        "  return r;",
+        "}",
+        "    r[d] = false;",
+      ],
       hints: [
         P("Recorre con `for (const d of dones)` y asigna `r[d] = true;`.", "Iterate with `for (const d of dones)` and assign `r[d] = true;`."),
         P("`Record<string, boolean>` es un objeto de clave string a valor boolean.", "`Record<string, boolean>` is an object from string key to boolean value."),
@@ -2356,6 +2554,12 @@ export const SYL_TS_COMMUNITY_8: Syllabus = {
         "Write `describir(x: string | number): string` that:\n• if `x` is a number, returns `'numero {x}'`,\n• if it's text, returns `'texto {x}'`.\n\nUse `typeof` to narrow the type. Example: `describir(5)` → `'numero 5'`; `describir('hola')` → `'texto hola'`.",
       ),
       starter_code: "function describir(x: string | number): string {\n}\n",
+      blocks: [
+        "function describir(x: string | number): string {",
+        "  return typeof x === 'number' ? `numero ${x}` : `texto ${x}`;",
+        "}",
+        "  return `texto ${x}`;",
+      ],
       hints: [
         P("`if (typeof x === 'number') { ... }` estrecha `x` a number en esa rama.", "`if (typeof x === 'number') { ... }` narrows `x` to number in that branch."),
         P("Interpola con template strings: `` `numero ${x}` `` y `` `texto ${x}` ``.", "Interpolate with template strings: `` `numero ${x}` `` and `` `texto ${x}` ``."),
@@ -2425,6 +2629,12 @@ export const SYL_TS_COMMUNITY_8: Syllabus = {
         "Write `describir(v: string | number): string` returning `'número {v}'` if `v` is a number, and `'texto {v}'` if it's a string. Use `typeof`.\n\nExample: `describir(5)` → `'número 5'`; `describir('oro')` → `'texto oro'`.",
       ),
       starter_code: "function describir(v: string | number): string {\n}\n",
+      blocks: [
+        "function describir(v: string | number): string {",
+        "  return typeof v === 'number' ? `número ${v}` : `texto ${v}`;",
+        "}",
+        "  return typeof v === \"number\" ? `numero ${v}` : `texto ${v}`;",
+      ],
       hints: [
         P("`typeof v === 'number'` reduce v a number en esa rama.", "`typeof v === 'number'` narrows v to a number in that branch."),
         P("Usa template strings: `` `número ${v}` `` y `` `texto ${v}` ``.", "Use template strings: `` `número ${v}` `` and `` `texto ${v}` ``."),
@@ -2450,6 +2660,12 @@ export const SYL_TS_COMMUNITY_8: Syllabus = {
         "With `type Vision = { tipo: 'reino'; nombre: string } | { tipo: 'ojo'; peligro: number }`, write `leer(v: Vision): string` returning `'ves {nombre}'` for a kingdom and `'el Ojo (peligro {peligro})'` for the eye.\n\nExamples: `leer({ tipo: 'reino', nombre: 'Rohan' })` → `'ves Rohan'`; `leer({ tipo: 'ojo', peligro: 9 })` → `'el Ojo (peligro 9)'`.",
       ),
       starter_code: "type Vision =\n  | { tipo: 'reino'; nombre: string }\n  | { tipo: 'ojo'; peligro: number };\n\nfunction leer(v: Vision): string {\n}\n",
+      blocks: [
+        "function leer(v: Vision): string {",
+        "  return v.tipo === 'reino' ? `ves ${v.nombre}` : `el Ojo (peligro ${v.peligro})`;",
+        "}",
+        "  return `ves ${v.nombre}`;",
+      ],
       hints: [
         P("`v.tipo === 'reino'` reduce v a la variante con `nombre`.", "`v.tipo === 'reino'` narrows v to the variant with `nombre`."),
         P("En la otra rama, TS ya sabe que existe `v.peligro`.", "In the other branch, TS already knows `v.peligro` exists."),
@@ -2475,6 +2691,15 @@ export const SYL_TS_COMMUNITY_8: Syllabus = {
         "Write a guard `esNumero(x: unknown): x is number` (true if `x` is a number) and `sumarSeguros(xs: unknown[]): number` that SUMS only the elements that are numbers, using `filter(esNumero)`.\n\nExample: `sumarSeguros([1, 'a', 2, true, 3])` → `6`.",
       ),
       starter_code: "function esNumero(x: unknown): x is number {\n}\n\nfunction sumarSeguros(xs: unknown[]): number {\n}\n",
+      blocks: [
+        "function esNumero(x: unknown): x is number {",
+        "  return typeof x === 'number';",
+        "}",
+        "function sumarSeguros(xs: unknown[]): number {",
+        "  return xs.filter(esNumero).reduce((s, n) => s + n, 0);",
+        "}",
+        "  return typeof x === \"string\";",
+      ],
       hints: [
         P("El guard: `return typeof x === 'number';`.", "The guard: `return typeof x === 'number';`."),
         P("`xs.filter(esNumero)` ya es `number[]`, así que puedes `reduce((a, b) => a + b, 0)`.", "`xs.filter(esNumero)` is already `number[]`, so you can `reduce((a, b) => a + b, 0)`."),
