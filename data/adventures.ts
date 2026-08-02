@@ -90,7 +90,16 @@ import {
   SYL_DATA_7,
   SYL_DATA_8,
 } from "./syllabus/data-python";
-import { SYL_MPL_1 } from "./syllabus/matplotlib-python";
+import {
+  SYL_MPL_1,
+  SYL_MPL_2,
+  SYL_MPL_3,
+  SYL_MPL_4,
+  SYL_MPL_5,
+  SYL_MPL_6,
+  SYL_MPL_7,
+  SYL_MPL_8,
+} from "./syllabus/matplotlib-python";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -159,6 +168,13 @@ const DATA_6 = buildChapter(NARR_COMMUNITY_6, SYL_DATA_6, "python");
 const DATA_7 = buildChapter(NARR_COMMUNITY_7, SYL_DATA_7, "python");
 const DATA_8 = buildChapter(NARR_COMMUNITY_8, SYL_DATA_8, "python");
 const MPL_1 = buildChapter(NARR_COMMUNITY_1, SYL_MPL_1, "python");
+const MPL_2 = buildChapter(NARR_COMMUNITY_2, SYL_MPL_2, "python");
+const MPL_3 = buildChapter(NARR_COMMUNITY_3, SYL_MPL_3, "python");
+const MPL_4 = buildChapter(NARR_COMMUNITY_4, SYL_MPL_4, "python");
+const MPL_5 = buildChapter(NARR_COMMUNITY_5, SYL_MPL_5, "python");
+const MPL_6 = buildChapter(NARR_COMMUNITY_6, SYL_MPL_6, "python");
+const MPL_7 = buildChapter(NARR_COMMUNITY_7, SYL_MPL_7, "python");
+const MPL_8 = buildChapter(NARR_COMMUNITY_8, SYL_MPL_8, "python");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -625,7 +641,12 @@ export const ADVENTURES: Adventure[] = [
       es: "Visualización de datos con Python: figuras y ejes, líneas, barras, estilo y anotaciones con Matplotlib.",
       en: "Data visualization with Python: figures and axes, lines, bars, styling and annotations with Matplotlib.",
     },
-    books: [{ book: BOOK_FELLOWSHIP, chapters: [MPL_1] }],
+    books: [
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [MPL_1, MPL_2, MPL_3, MPL_4, MPL_5, MPL_6, MPL_7, MPL_8],
+      },
+    ],
   },
 ];
 
