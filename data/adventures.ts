@@ -21,6 +21,16 @@ import {
   DP_PHP_8,
 } from "./syllabus/design-patterns-php";
 import {
+  DP_PY_1,
+  DP_PY_2,
+  DP_PY_3,
+  DP_PY_4,
+  DP_PY_5,
+  DP_PY_6,
+  DP_PY_7,
+  DP_PY_8,
+} from "./syllabus/design-patterns-python";
+import {
   NARR_COMMUNITY_1,
   NARR_COMMUNITY_2,
   NARR_COMMUNITY_3,
@@ -230,6 +240,15 @@ const DPP_5 = buildChapter(NARR_COMMUNITY_5, applyChallengeOverrides(SYL_DP_5, D
 const DPP_6 = buildChapter(NARR_COMMUNITY_6, applyChallengeOverrides(SYL_DP_6, DP_PHP_6), "php");
 const DPP_7 = buildChapter(NARR_COMMUNITY_7, applyChallengeOverrides(SYL_DP_7, DP_PHP_7), "php");
 const DPP_8 = buildChapter(NARR_COMMUNITY_8, applyChallengeOverrides(SYL_DP_8, DP_PHP_8), "php");
+// Variante Python.
+const DPY_1 = buildChapter(NARR_COMMUNITY_1, applyChallengeOverrides(SYL_DP_1, DP_PY_1), "python");
+const DPY_2 = buildChapter(NARR_COMMUNITY_2, applyChallengeOverrides(SYL_DP_2, DP_PY_2), "python");
+const DPY_3 = buildChapter(NARR_COMMUNITY_3, applyChallengeOverrides(SYL_DP_3, DP_PY_3), "python");
+const DPY_4 = buildChapter(NARR_COMMUNITY_4, applyChallengeOverrides(SYL_DP_4, DP_PY_4), "python");
+const DPY_5 = buildChapter(NARR_COMMUNITY_5, applyChallengeOverrides(SYL_DP_5, DP_PY_5), "python");
+const DPY_6 = buildChapter(NARR_COMMUNITY_6, applyChallengeOverrides(SYL_DP_6, DP_PY_6), "python");
+const DPY_7 = buildChapter(NARR_COMMUNITY_7, applyChallengeOverrides(SYL_DP_7, DP_PY_7), "python");
+const DPY_8 = buildChapter(NARR_COMMUNITY_8, applyChallengeOverrides(SYL_DP_8, DP_PY_8), "python");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -595,6 +614,17 @@ export const ADVENTURES: Adventure[] = [
           {
             book: BOOK_FELLOWSHIP,
             chapters: [DPP_1, DPP_2, DPP_3, DPP_4, DPP_5, DPP_6, DPP_7, DPP_8],
+          },
+        ],
+      },
+      {
+        lang: "python",
+        label: "Python",
+        icon: "🐍",
+        books: [
+          {
+            book: BOOK_FELLOWSHIP,
+            chapters: [DPY_1, DPY_2, DPY_3, DPY_4, DPY_5, DPY_6, DPY_7, DPY_8],
           },
         ],
       },
