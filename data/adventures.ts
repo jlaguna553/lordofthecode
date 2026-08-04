@@ -150,6 +150,16 @@ import {
   SYL_VUE_7,
   SYL_VUE_8,
 } from "./syllabus/vue";
+import {
+  SYL_AWS_1,
+  SYL_AWS_2,
+  SYL_AWS_3,
+  SYL_AWS_4,
+  SYL_AWS_5,
+  SYL_AWS_6,
+  SYL_AWS_7,
+  SYL_AWS_8,
+} from "./syllabus/aws";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -267,6 +277,14 @@ const VUE_5 = buildChapter(NARR_COMMUNITY_5, SYL_VUE_5, "vue");
 const VUE_6 = buildChapter(NARR_COMMUNITY_6, SYL_VUE_6, "vue");
 const VUE_7 = buildChapter(NARR_COMMUNITY_7, SYL_VUE_7, "vue");
 const VUE_8 = buildChapter(NARR_COMMUNITY_8, SYL_VUE_8, "vue");
+const AWS_1 = buildChapter(NARR_COMMUNITY_1, SYL_AWS_1, "aws");
+const AWS_2 = buildChapter(NARR_COMMUNITY_2, SYL_AWS_2, "aws");
+const AWS_3 = buildChapter(NARR_COMMUNITY_3, SYL_AWS_3, "aws");
+const AWS_4 = buildChapter(NARR_COMMUNITY_4, SYL_AWS_4, "aws");
+const AWS_5 = buildChapter(NARR_COMMUNITY_5, SYL_AWS_5, "aws");
+const AWS_6 = buildChapter(NARR_COMMUNITY_6, SYL_AWS_6, "aws");
+const AWS_7 = buildChapter(NARR_COMMUNITY_7, SYL_AWS_7, "aws");
+const AWS_8 = buildChapter(NARR_COMMUNITY_8, SYL_AWS_8, "aws");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -544,13 +562,18 @@ export const ADVENTURES: Adventure[] = [
     tech: "AWS",
     icon: "☁️",
     accent: "amber",
-    status: "soon",
+    status: "available",
     name: { es: "AWS", en: "AWS" },
     blurb: {
-      es: "La nube de Amazon: cómputo, almacenamiento y despliegue.",
-      en: "Amazon's cloud: compute, storage and deployment.",
+      es: "La nube de Amazon ejecutable de verdad: S3, IAM, DynamoDB, Lambda, SQS y SNS contra un SDK simulado y un motor de políticas. Bilingüe.",
+      en: "Amazon's cloud, truly executable: S3, IAM, DynamoDB, Lambda, SQS and SNS against a simulated SDK and a policy engine. Bilingual.",
     },
-    books: [],
+    books: [
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [AWS_1, AWS_2, AWS_3, AWS_4, AWS_5, AWS_6, AWS_7, AWS_8],
+      },
+    ],
   },
   {
     id: "cloud",
