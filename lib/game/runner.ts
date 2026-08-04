@@ -6,6 +6,7 @@ import { runTsChallenge, warmupTs } from "./ts-evaluator";
 import { runGoChallenge, warmupGo } from "./go-evaluator";
 import { runReactChallenge, warmupReact } from "./react-evaluator";
 import { runSqlChallenge, warmupSql } from "./sql-evaluator";
+import { runVueChallenge, warmupVue } from "./vue-evaluator";
 
 /**
  * Punto único de ejecución de retos: despacha al evaluador según `challenge.lang`
@@ -21,7 +22,8 @@ export type Lang =
   | "typescript"
   | "go"
   | "react"
-  | "sql";
+  | "sql"
+  | "vue";
 
 export function langOf(c: PooChallenge): Lang {
   return c.lang ?? "php";
@@ -36,6 +38,7 @@ export function warmup(c: PooChallenge): void {
   else if (lang === "go") warmupGo();
   else if (lang === "react") warmupReact();
   else if (lang === "sql") warmupSql();
+  else if (lang === "vue") warmupVue();
   else warmupPhp();
 }
 
@@ -50,5 +53,6 @@ export function runChallenge(
   if (lang === "go") return runGoChallenge(code, c);
   if (lang === "react") return runReactChallenge(code, c);
   if (lang === "sql") return runSqlChallenge(code, c);
+  if (lang === "vue") return runVueChallenge(code, c);
   return runPhp(code, c);
 }

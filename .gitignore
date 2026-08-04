@@ -21,6 +21,12 @@ next-env.d.ts
 # runtime de sql.js (SQLite WASM), copiado desde la dependencia en cada build.
 /public/sql
 
+# build global de Vue, copiado desde la dependencia en cada build.
+/public/vue
+
 # configuración local del agente
 /.claude
 
+
+# scratch local (scripts de validación efímeros)
+/scratchpad

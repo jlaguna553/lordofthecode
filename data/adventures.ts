@@ -140,6 +140,16 @@ import {
   SYL_DP_7,
   SYL_DP_8,
 } from "./syllabus/design-patterns";
+import {
+  SYL_VUE_1,
+  SYL_VUE_2,
+  SYL_VUE_3,
+  SYL_VUE_4,
+  SYL_VUE_5,
+  SYL_VUE_6,
+  SYL_VUE_7,
+  SYL_VUE_8,
+} from "./syllabus/vue";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -249,6 +259,14 @@ const DPY_5 = buildChapter(NARR_COMMUNITY_5, applyChallengeOverrides(SYL_DP_5, D
 const DPY_6 = buildChapter(NARR_COMMUNITY_6, applyChallengeOverrides(SYL_DP_6, DP_PY_6), "python");
 const DPY_7 = buildChapter(NARR_COMMUNITY_7, applyChallengeOverrides(SYL_DP_7, DP_PY_7), "python");
 const DPY_8 = buildChapter(NARR_COMMUNITY_8, applyChallengeOverrides(SYL_DP_8, DP_PY_8), "python");
+const VUE_1 = buildChapter(NARR_COMMUNITY_1, SYL_VUE_1, "vue");
+const VUE_2 = buildChapter(NARR_COMMUNITY_2, SYL_VUE_2, "vue");
+const VUE_3 = buildChapter(NARR_COMMUNITY_3, SYL_VUE_3, "vue");
+const VUE_4 = buildChapter(NARR_COMMUNITY_4, SYL_VUE_4, "vue");
+const VUE_5 = buildChapter(NARR_COMMUNITY_5, SYL_VUE_5, "vue");
+const VUE_6 = buildChapter(NARR_COMMUNITY_6, SYL_VUE_6, "vue");
+const VUE_7 = buildChapter(NARR_COMMUNITY_7, SYL_VUE_7, "vue");
+const VUE_8 = buildChapter(NARR_COMMUNITY_8, SYL_VUE_8, "vue");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -664,13 +682,18 @@ export const ADVENTURES: Adventure[] = [
     tech: "Vue",
     icon: "💚",
     accent: "emerald",
-    status: "soon",
+    status: "available",
     name: { es: "Vue.js", en: "Vue.js" },
     blurb: {
-      es: "El framework progresivo: componentes, reactividad, directivas y composición.",
-      en: "The progressive framework: components, reactivity, directives and composition.",
+      es: "El framework progresivo: componentes, reactividad, directivas y composición, ejecutados de verdad en tu navegador. Bilingüe.",
+      en: "The progressive framework: components, reactivity, directives and composition, truly running in your browser. Bilingual.",
     },
-    books: [],
+    books: [
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [VUE_1, VUE_2, VUE_3, VUE_4, VUE_5, VUE_6, VUE_7, VUE_8],
+      },
+    ],
   },
   {
     id: "dotnet",

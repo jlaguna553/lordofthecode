@@ -134,7 +134,9 @@ export default function ChallengeModal({
                             ? "bg-cyan-500/15 text-cyan-200 ring-cyan-400/40"
                             : langOf(c) === "sql"
                               ? "bg-emerald-500/15 text-emerald-300 ring-emerald-500/40"
-                              : "bg-violet-500/15 text-violet-300 ring-violet-500/40")
+                              : langOf(c) === "vue"
+                                ? "bg-green-500/15 text-green-300 ring-green-500/40"
+                                : "bg-violet-500/15 text-violet-300 ring-violet-500/40")
                 }
               >
                 {langOf(c) === "python"
@@ -149,7 +151,9 @@ export default function ChallengeModal({
                           ? "⚛️ React"
                           : langOf(c) === "sql"
                             ? "🗃️ SQL"
-                            : "🐘 PHP"}
+                            : langOf(c) === "vue"
+                              ? "💚 Vue"
+                              : "🐘 PHP"}
               </span>
               Capítulo · {tc(c.topic)}
             </p>
@@ -362,8 +366,8 @@ export default function ChallengeModal({
                 */
                 <Editor
                   height="100%"
-                  language={langOf(c) === "react" ? "typescript" : langOf(c)}
-                  path={`reto-${node.node_id}.${langOf(c) === "python" ? "py" : langOf(c) === "javascript" ? "js" : langOf(c) === "typescript" ? "ts" : langOf(c) === "go" ? "go" : langOf(c) === "react" ? "tsx" : langOf(c) === "sql" ? "sql" : "php"}`}
+                  language={langOf(c) === "react" || langOf(c) === "vue" ? "javascript" : langOf(c)}
+                  path={`reto-${node.node_id}.${langOf(c) === "python" ? "py" : langOf(c) === "javascript" ? "js" : langOf(c) === "typescript" ? "ts" : langOf(c) === "go" ? "go" : langOf(c) === "react" ? "tsx" : langOf(c) === "sql" ? "sql" : langOf(c) === "vue" ? "js" : "php"}`}
                   theme="vs-dark"
                   defaultValue={code}
                   onMount={(editor) => {

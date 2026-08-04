@@ -36,7 +36,8 @@ export interface PooChallenge {
     | "typescript"
     | "go"
     | "react"
-    | "sql";
+    | "sql"
+    | "vue";
   topic: Localized<string>;
   instructions: Localized<string>;
   /** Código inicial que ve y edita el jugador. */
