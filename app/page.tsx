@@ -341,6 +341,7 @@ export default function GamePage() {
     setShowAdventures(false);
     if (id === adventureId) return;
     setAdventureId(id);
+    setVariantLang(undefined); // vuelve a la variante por defecto (la 1ª) al cambiar de aventura
     try {
       window.localStorage.setItem(ADVENTURE_KEY, id);
     } catch {
@@ -630,7 +631,13 @@ export default function GamePage() {
         ))}
 
       {showIntro && frodo && !showChapters && (
-        <ChapterIntro chapter={chapter} onStart={() => setShowIntro(false)} />
+        <ChapterIntro
+          chapter={chapter}
+          variants={adventure.variants}
+          variantLang={variantLang}
+          onVariant={setVariantLang}
+          onStart={() => setShowIntro(false)}
+        />
       )}
 
       {aviso && (

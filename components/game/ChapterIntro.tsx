@@ -1,16 +1,28 @@
 "use client";
 
 import type { Chapter } from "@/lib/game/types";
+import type { AdventureVariant } from "@/lib/game/adventure";
 import { useLang } from "@/lib/i18n/context";
 
 interface Props {
   chapter: Chapter;
+  /** Variantes de lenguaje de la aventura (arquitectura), si las hay. */
+  variants?: AdventureVariant[];
+  variantLang?: string;
+  onVariant?: (lang: string | undefined) => void;
   onStart: () => void;
 }
 
 /** Tarjeta narrativa que abre cada capítulo. */
-export default function ChapterIntro({ chapter, onStart }: Props) {
+export default function ChapterIntro({
+  chapter,
+  variants = [],
+  variantLang,
+  onVariant,
+  onStart,
+}: Props) {
   const { t, tc } = useLang();
+  const activeLang = variantLang ?? variants[0]?.lang;
 
   const topics = [
     ...new Set(
@@ -41,6 +53,31 @@ export default function ChapterIntro({ chapter, onStart }: Props) {
         </div>
 
         <div className="space-y-4 p-6">
+          {variants.length > 1 && (
+            <div className="flex flex-wrap items-center gap-1.5 rounded-lg bg-slate-950/50 px-3 py-2">
+              <span className="text-[11px] text-slate-400">
+                {t("chapters.language")}
+              </span>
+              {variants.map((v) => {
+                const active = v.lang === activeLang;
+                return (
+                  <button
+                    key={v.lang}
+                    onClick={() => onVariant?.(v.lang)}
+                    className={
+                      "rounded-md px-2.5 py-1 text-xs font-semibold ring-1 transition " +
+                      (active
+                        ? "bg-rose-500/20 text-rose-200 ring-rose-500/50"
+                        : "bg-slate-800 text-slate-300 ring-white/10 hover:bg-slate-700")
+                    }
+                  >
+                    {v.icon ? `${v.icon} ` : ""}
+                    {v.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
           <p className="text-sm leading-relaxed text-slate-300">
             {tc(chapter.lore)}
           </p>
