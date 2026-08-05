@@ -8,6 +8,7 @@ import { runReactChallenge, warmupReact } from "./react-evaluator";
 import { runSqlChallenge, warmupSql } from "./sql-evaluator";
 import { runVueChallenge, warmupVue } from "./vue-evaluator";
 import { runAwsChallenge, warmupAws } from "./aws-evaluator";
+import { runDockerChallenge, warmupDocker } from "./docker-evaluator";
 
 /**
  * Punto único de ejecución de retos: despacha al evaluador según `challenge.lang`
@@ -25,7 +26,8 @@ export type Lang =
   | "react"
   | "sql"
   | "vue"
-  | "aws";
+  | "aws"
+  | "docker";
 
 export function langOf(c: PooChallenge): Lang {
   return c.lang ?? "php";
@@ -42,6 +44,7 @@ export function warmup(c: PooChallenge): void {
   else if (lang === "sql") warmupSql();
   else if (lang === "vue") warmupVue();
   else if (lang === "aws") warmupAws();
+  else if (lang === "docker") warmupDocker();
   else warmupPhp();
 }
 
@@ -58,5 +61,6 @@ export function runChallenge(
   if (lang === "sql") return runSqlChallenge(code, c);
   if (lang === "vue") return runVueChallenge(code, c);
   if (lang === "aws") return runAwsChallenge(code, c);
+  if (lang === "docker") return runDockerChallenge(code, c);
   return runPhp(code, c);
 }

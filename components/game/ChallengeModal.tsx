@@ -138,7 +138,9 @@ export default function ChallengeModal({
                                 ? "bg-green-500/15 text-green-300 ring-green-500/40"
                                 : langOf(c) === "aws"
                                   ? "bg-amber-500/15 text-amber-300 ring-amber-500/40"
-                                  : "bg-violet-500/15 text-violet-300 ring-violet-500/40")
+                                  : langOf(c) === "docker"
+                                    ? "bg-sky-500/15 text-sky-300 ring-sky-500/40"
+                                    : "bg-violet-500/15 text-violet-300 ring-violet-500/40")
                 }
               >
                 {langOf(c) === "python"
@@ -157,7 +159,9 @@ export default function ChallengeModal({
                               ? "💚 Vue"
                               : langOf(c) === "aws"
                                 ? "☁️ AWS"
-                                : "🐘 PHP"}
+                                : langOf(c) === "docker"
+                                  ? "🐳 Docker"
+                                  : "🐘 PHP"}
               </span>
               Capítulo · {tc(c.topic)}
             </p>
@@ -370,8 +374,8 @@ export default function ChallengeModal({
                 */
                 <Editor
                   height="100%"
-                  language={langOf(c) === "react" || langOf(c) === "vue" || langOf(c) === "aws" ? "javascript" : langOf(c)}
-                  path={`reto-${node.node_id}.${langOf(c) === "python" ? "py" : langOf(c) === "javascript" ? "js" : langOf(c) === "typescript" ? "ts" : langOf(c) === "go" ? "go" : langOf(c) === "react" ? "tsx" : langOf(c) === "sql" ? "sql" : langOf(c) === "vue" ? "js" : langOf(c) === "aws" ? "js" : "php"}`}
+                  language={langOf(c) === "react" || langOf(c) === "vue" || langOf(c) === "aws" ? "javascript" : langOf(c) === "docker" ? "dockerfile" : langOf(c)}
+                  path={`reto-${node.node_id}.${langOf(c) === "python" ? "py" : langOf(c) === "javascript" ? "js" : langOf(c) === "typescript" ? "ts" : langOf(c) === "go" ? "go" : langOf(c) === "react" ? "tsx" : langOf(c) === "sql" ? "sql" : langOf(c) === "vue" ? "js" : langOf(c) === "aws" ? "js" : langOf(c) === "docker" ? "dockerfile" : "php"}`}
                   theme="vs-dark"
                   defaultValue={code}
                   onMount={(editor) => {

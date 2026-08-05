@@ -184,6 +184,16 @@ import {
   SYL_AWS_7,
   SYL_AWS_8,
 } from "./syllabus/aws";
+import {
+  SYL_DOCKER_1,
+  SYL_DOCKER_2,
+  SYL_DOCKER_3,
+  SYL_DOCKER_4,
+  SYL_DOCKER_5,
+  SYL_DOCKER_6,
+  SYL_DOCKER_7,
+  SYL_DOCKER_8,
+} from "./syllabus/docker";
 
 // Capítulo 1 de la Comunidad, construido fundiendo la MISMA narrativa con el
 // temario de cada lenguaje.
@@ -310,6 +320,14 @@ const AWS_5 = buildChapter(NARR_COMMUNITY_5, SYL_AWS_5, "aws");
 const AWS_6 = buildChapter(NARR_COMMUNITY_6, SYL_AWS_6, "aws");
 const AWS_7 = buildChapter(NARR_COMMUNITY_7, SYL_AWS_7, "aws");
 const AWS_8 = buildChapter(NARR_COMMUNITY_8, SYL_AWS_8, "aws");
+const DOCKER_1 = buildChapter(NARR_COMMUNITY_1, SYL_DOCKER_1, "docker");
+const DOCKER_2 = buildChapter(NARR_COMMUNITY_2, SYL_DOCKER_2, "docker");
+const DOCKER_3 = buildChapter(NARR_COMMUNITY_3, SYL_DOCKER_3, "docker");
+const DOCKER_4 = buildChapter(NARR_COMMUNITY_4, SYL_DOCKER_4, "docker");
+const DOCKER_5 = buildChapter(NARR_COMMUNITY_5, SYL_DOCKER_5, "docker");
+const DOCKER_6 = buildChapter(NARR_COMMUNITY_6, SYL_DOCKER_6, "docker");
+const DOCKER_7 = buildChapter(NARR_COMMUNITY_7, SYL_DOCKER_7, "docker");
+const DOCKER_8 = buildChapter(NARR_COMMUNITY_8, SYL_DOCKER_8, "docker");
 const REACT_COMMUNITY_1 = buildChapter(
   NARR_COMMUNITY_1,
   SYL_REACT_COMMUNITY_1,
@@ -620,13 +638,18 @@ export const ADVENTURES: Adventure[] = [
     tech: "Docker",
     icon: "🐳",
     accent: "sky",
-    status: "soon",
+    status: "available",
     name: { es: "Docker", en: "Docker" },
     blurb: {
-      es: "Contenedores desde cero: imágenes, Dockerfile, volúmenes y redes.",
-      en: "Containers from scratch: images, Dockerfile, volumes and networks.",
+      es: "Contenedores desde cero: escribe Dockerfiles y un simulador de build los ejecuta —FROM, COPY, RUN, ENV, CMD, capas y multi-stage. Bilingüe.",
+      en: "Containers from scratch: write Dockerfiles and a build simulator runs them —FROM, COPY, RUN, ENV, CMD, layers and multi-stage. Bilingual.",
     },
-    books: [],
+    books: [
+      {
+        book: BOOK_FELLOWSHIP,
+        chapters: [DOCKER_1, DOCKER_2, DOCKER_3, DOCKER_4, DOCKER_5, DOCKER_6, DOCKER_7, DOCKER_8],
+      },
+    ],
   },
   {
     id: "cicd",
