@@ -121,6 +121,57 @@ export function applyChallengeOverrides(
   return out;
 }
 
+/**
+ * Override por nodo para una variante de idioma. Según el tipo de nodo destino:
+ * - retos (`challenge`): cualquier campo del reto (código, `instructions`, `hints`…).
+ * - batallas (`battle`): `questions` reemplaza las preguntas.
+ * - pergaminos (`scroll`): `scroll` reemplaza el contenido del pergamino.
+ */
+export type VariantOverride = Partial<Omit<PooChallenge, "lang">> & {
+  questions?: CombatQuestion[];
+  scroll?: ScrollContent;
+};
+
+/**
+ * Como `applyChallengeOverrides`, pero además puede sustituir las PREGUNTAS de
+ * las batallas y el contenido de los PERGAMINOS. Se usa para variantes por
+ * idioma cuyo temario cambia por completo (no sólo el código de los retos):
+ * cada idioma trae sus preguntas, pergaminos e instrucciones propios.
+ */
+export function applyVariantOverrides(
+  syl: Syllabus,
+  overrides: Record<string, VariantOverride>,
+): Syllabus {
+  const out: Syllabus = { ...syl };
+  for (const [nodeId, ov] of Object.entries(overrides)) {
+    const entry = syl[nodeId];
+    if (!entry) continue;
+    if (entry.kind === "challenge") {
+      const { questions: _q, scroll: _s, ...challengeFields } = ov;
+      void _q;
+      void _s;
+      out[nodeId] = { ...entry, challenge: { ...entry.challenge, ...challengeFields } };
+    } else if (entry.kind === "battle" && ov.questions) {
+      out[nodeId] = { ...entry, questions: ov.questions };
+    } else if (entry.kind === "scroll" && ov.scroll) {
+      out[nodeId] = { ...entry, scroll: ov.scroll };
+    }
+  }
+  return out;
+}
+
+/** Combina dos mapas de override por node_id (el segundo gana campo a campo). */
+export function mergeOverrides(
+  a: Record<string, VariantOverride>,
+  b: Record<string, VariantOverride>,
+): Record<string, VariantOverride> {
+  const out: Record<string, VariantOverride> = {};
+  for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
+    out[k] = { ...(a[k] ?? {}), ...(b[k] ?? {}) };
+  }
+  return out;
+}
+
 /** Funde una narrativa con un temario para producir el capítulo jugable. */
 export function buildChapter(
   narr: ChapterNarrative,

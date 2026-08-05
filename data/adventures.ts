@@ -9,7 +9,11 @@ import {
   CHAPTER_LOGICA,
   CHAPTER_CALENTAMIENTO,
 } from "./chapters";
-import { buildChapter, applyChallengeOverrides } from "@/lib/game/narrative";
+import {
+  buildChapter,
+  applyVariantOverrides,
+  mergeOverrides,
+} from "@/lib/game/narrative";
 import {
   DP_PHP_1,
   DP_PHP_2,
@@ -141,6 +145,26 @@ import {
   SYL_DP_8,
 } from "./syllabus/design-patterns";
 import {
+  DP_PHP_C_1,
+  DP_PHP_C_2,
+  DP_PHP_C_3,
+  DP_PHP_C_4,
+  DP_PHP_C_5,
+  DP_PHP_C_6,
+  DP_PHP_C_7,
+  DP_PHP_C_8,
+} from "./syllabus/design-patterns-php-content";
+import {
+  DP_PY_C_1,
+  DP_PY_C_2,
+  DP_PY_C_3,
+  DP_PY_C_4,
+  DP_PY_C_5,
+  DP_PY_C_6,
+  DP_PY_C_7,
+  DP_PY_C_8,
+} from "./syllabus/design-patterns-python-content";
+import {
   SYL_VUE_1,
   SYL_VUE_2,
   SYL_VUE_3,
@@ -251,24 +275,25 @@ const DP_5 = buildChapter(NARR_COMMUNITY_5, SYL_DP_5, "typescript");
 const DP_6 = buildChapter(NARR_COMMUNITY_6, SYL_DP_6, "typescript");
 const DP_7 = buildChapter(NARR_COMMUNITY_7, SYL_DP_7, "typescript");
 const DP_8 = buildChapter(NARR_COMMUNITY_8, SYL_DP_8, "typescript");
-// Variante PHP: mismos node_id y narrativa, retos reimplementados en PHP.
-const DPP_1 = buildChapter(NARR_COMMUNITY_1, applyChallengeOverrides(SYL_DP_1, DP_PHP_1), "php");
-const DPP_2 = buildChapter(NARR_COMMUNITY_2, applyChallengeOverrides(SYL_DP_2, DP_PHP_2), "php");
-const DPP_3 = buildChapter(NARR_COMMUNITY_3, applyChallengeOverrides(SYL_DP_3, DP_PHP_3), "php");
-const DPP_4 = buildChapter(NARR_COMMUNITY_4, applyChallengeOverrides(SYL_DP_4, DP_PHP_4), "php");
-const DPP_5 = buildChapter(NARR_COMMUNITY_5, applyChallengeOverrides(SYL_DP_5, DP_PHP_5), "php");
-const DPP_6 = buildChapter(NARR_COMMUNITY_6, applyChallengeOverrides(SYL_DP_6, DP_PHP_6), "php");
-const DPP_7 = buildChapter(NARR_COMMUNITY_7, applyChallengeOverrides(SYL_DP_7, DP_PHP_7), "php");
-const DPP_8 = buildChapter(NARR_COMMUNITY_8, applyChallengeOverrides(SYL_DP_8, DP_PHP_8), "php");
+// Variante PHP: mismos node_id y narrativa, pero con retos, preguntas,
+// pergaminos e instrucciones propios del lenguaje (código + contenido por idioma).
+const DPP_1 = buildChapter(NARR_COMMUNITY_1, applyVariantOverrides(SYL_DP_1, mergeOverrides(DP_PHP_1, DP_PHP_C_1)), "php");
+const DPP_2 = buildChapter(NARR_COMMUNITY_2, applyVariantOverrides(SYL_DP_2, mergeOverrides(DP_PHP_2, DP_PHP_C_2)), "php");
+const DPP_3 = buildChapter(NARR_COMMUNITY_3, applyVariantOverrides(SYL_DP_3, mergeOverrides(DP_PHP_3, DP_PHP_C_3)), "php");
+const DPP_4 = buildChapter(NARR_COMMUNITY_4, applyVariantOverrides(SYL_DP_4, mergeOverrides(DP_PHP_4, DP_PHP_C_4)), "php");
+const DPP_5 = buildChapter(NARR_COMMUNITY_5, applyVariantOverrides(SYL_DP_5, mergeOverrides(DP_PHP_5, DP_PHP_C_5)), "php");
+const DPP_6 = buildChapter(NARR_COMMUNITY_6, applyVariantOverrides(SYL_DP_6, mergeOverrides(DP_PHP_6, DP_PHP_C_6)), "php");
+const DPP_7 = buildChapter(NARR_COMMUNITY_7, applyVariantOverrides(SYL_DP_7, mergeOverrides(DP_PHP_7, DP_PHP_C_7)), "php");
+const DPP_8 = buildChapter(NARR_COMMUNITY_8, applyVariantOverrides(SYL_DP_8, mergeOverrides(DP_PHP_8, DP_PHP_C_8)), "php");
 // Variante Python.
-const DPY_1 = buildChapter(NARR_COMMUNITY_1, applyChallengeOverrides(SYL_DP_1, DP_PY_1), "python");
-const DPY_2 = buildChapter(NARR_COMMUNITY_2, applyChallengeOverrides(SYL_DP_2, DP_PY_2), "python");
-const DPY_3 = buildChapter(NARR_COMMUNITY_3, applyChallengeOverrides(SYL_DP_3, DP_PY_3), "python");
-const DPY_4 = buildChapter(NARR_COMMUNITY_4, applyChallengeOverrides(SYL_DP_4, DP_PY_4), "python");
-const DPY_5 = buildChapter(NARR_COMMUNITY_5, applyChallengeOverrides(SYL_DP_5, DP_PY_5), "python");
-const DPY_6 = buildChapter(NARR_COMMUNITY_6, applyChallengeOverrides(SYL_DP_6, DP_PY_6), "python");
-const DPY_7 = buildChapter(NARR_COMMUNITY_7, applyChallengeOverrides(SYL_DP_7, DP_PY_7), "python");
-const DPY_8 = buildChapter(NARR_COMMUNITY_8, applyChallengeOverrides(SYL_DP_8, DP_PY_8), "python");
+const DPY_1 = buildChapter(NARR_COMMUNITY_1, applyVariantOverrides(SYL_DP_1, mergeOverrides(DP_PY_1, DP_PY_C_1)), "python");
+const DPY_2 = buildChapter(NARR_COMMUNITY_2, applyVariantOverrides(SYL_DP_2, mergeOverrides(DP_PY_2, DP_PY_C_2)), "python");
+const DPY_3 = buildChapter(NARR_COMMUNITY_3, applyVariantOverrides(SYL_DP_3, mergeOverrides(DP_PY_3, DP_PY_C_3)), "python");
+const DPY_4 = buildChapter(NARR_COMMUNITY_4, applyVariantOverrides(SYL_DP_4, mergeOverrides(DP_PY_4, DP_PY_C_4)), "python");
+const DPY_5 = buildChapter(NARR_COMMUNITY_5, applyVariantOverrides(SYL_DP_5, mergeOverrides(DP_PY_5, DP_PY_C_5)), "python");
+const DPY_6 = buildChapter(NARR_COMMUNITY_6, applyVariantOverrides(SYL_DP_6, mergeOverrides(DP_PY_6, DP_PY_C_6)), "python");
+const DPY_7 = buildChapter(NARR_COMMUNITY_7, applyVariantOverrides(SYL_DP_7, mergeOverrides(DP_PY_7, DP_PY_C_7)), "python");
+const DPY_8 = buildChapter(NARR_COMMUNITY_8, applyVariantOverrides(SYL_DP_8, mergeOverrides(DP_PY_8, DP_PY_C_8)), "python");
 const VUE_1 = buildChapter(NARR_COMMUNITY_1, SYL_VUE_1, "vue");
 const VUE_2 = buildChapter(NARR_COMMUNITY_2, SYL_VUE_2, "vue");
 const VUE_3 = buildChapter(NARR_COMMUNITY_3, SYL_VUE_3, "vue");

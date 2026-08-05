@@ -1256,3 +1256,19 @@ export const SYL_DP_8: Syllabus = {
     },
   },
 };
+
+/**
+ * Todas las preguntas de combate, para que las variantes por idioma reutilicen
+ * las CONCEPTUALES (el patrón no cambia con el lenguaje) y sólo redefinan las
+ * que dependen de la sintaxis. Ver design-patterns-*-content.ts.
+ */
+export const DP_Q = {
+  Q_F_WHAT, Q_F_WHY, Q_F_RETURN, Q_F_OCP, Q_F_METHOD, Q_F_UNKNOWN, Q_F_CLIENT, Q_F_POLY, Q_F_CENTRAL,
+  Q_S_WHAT, Q_S_SWAP, Q_S_VS_IF, Q_S_FN, Q_S_CONTEXT, Q_S_OCP, Q_S_COMPOSE, Q_S_INTER, Q_S_TEST,
+  Q_O_WHAT, Q_O_DECOUPLE, Q_O_SUBSCRIBE, Q_O_NOTIFY, Q_O_MANY, Q_O_INDEP, Q_O_PUSH, Q_O_EVENTS, Q_O_ADD,
+  Q_SG_WHAT, Q_SG_ACCESS, Q_SG_PRIVATE, Q_SG_LAZY, Q_SG_STATE, Q_SG_STATIC, Q_SG_WHEN, Q_SG_CONS, Q_SG_POINT,
+  Q_D_WHAT, Q_D_INTERFACE, Q_D_STACK, Q_D_DELEGATE, Q_D_VS_INHERIT, Q_D_TRANSPARENT, Q_D_RUNTIME, Q_D_COMPOSE, Q_D_REAL,
+  Q_A_WHAT, Q_A_WRAP, Q_A_TARGET, Q_A_TRANSLATE, Q_A_REUSE, Q_A_DELEGATION, Q_A_CONVERT, Q_A_VS_FACADE, Q_A_CLIENT,
+  Q_C_WHAT, Q_C_EXECUTE, Q_C_DECOUPLE, Q_C_QUEUE, Q_C_UNDO, Q_C_INVOKER, Q_C_PARAM, Q_C_MACRO, Q_C_FIRST,
+  Q_CO_WHAT, Q_CO_UNIFORM, Q_CO_RECURSION, Q_CO_ADD, Q_CO_PARTWHOLE, Q_CO_CLIENT, Q_CO_NEST, Q_CO_VS_DEC, Q_CO_LEAF,
+};
